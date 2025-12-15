@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Admin | PAGARNUSA UNUSIA</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1B7548',
+                        primaryDark: '#145c38'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        body { 
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth; 
+        }
+        /* Style untuk menampilkan pesan error di form */
+        .error-message {
+            color: #ef4444; /* Tailwind red-500 */
+            font-size: 0.875rem; /* text-sm */
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-gradient-to-b from-emerald-50 to-slate-50 text-slate-800">
+
+    <header id="main-header" class="sticky top-0 z-50 bg-primary text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            
+            <div class="flex items-center space-x-3">
+                <img src="logopn.png" alt="Logo PAGARNUSA" class="h-10">
+                <h1 class="text-sm font-bold tracking-wide leading-tight uppercase">
+                    PAGARNUSA<br>UNUSIA
+                </h1>
+            </div>
+            
+            <nav id="nav-desktop" class="hidden md:flex space-x-8">
+                <a href="index.html" class="nav-link text-sm font-medium hover:text-slate-200 transition">Beranda</a>
+                <span class="nav-link bg-primaryDark px-3 py-1 rounded-lg">Login</span>
+            </nav>
+
+            <button id="nav-toggle" class="md:hidden p-2">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            
+        </div>
+        
+        <nav id="nav-mobile" class="hidden md:hidden absolute w-full bg-primaryDark shadow-md">
+            <a href="Beranda.html" class="nav-link block px-4 py-3 text-sm font-medium hover:bg-primary/50 transition border-t border-primaryDark/50">Beranda</a>
+            <span class="nav-link block px-4 py-3 text-sm font-medium active bg-primary hover:bg-primaryDark/70 transition border-b border-primaryDark/50">Login</span>
+        </nav>
+    </header>
+
+    <main class="flex-1 w-full max-w-sm mx-auto px-4 py-12 flex items-center justify-center">
+
+        <section id="login-section" class="w-full bg-white rounded-xl shadow-2xl p-8" aria-labelledby="login-heading">
+            <h2 id="login-heading" class="text-center text-2xl font-bold text-primary mb-2">Login</h2>
+            <p class="text-center text-sm text-slate-500 mb-6">Masukkan kredensial Anda.</p>
+
+            <form id="loginForm" class="space-y-6">
+
+                <div>
+                    <label for="username" class="block text-sm font-semibold mb-1">Username</label>
+                    <input type="text" id="username" name="username" required placeholder="admin atau siswa"
+                        class="w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-semibold mb-1">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="********"
+                        class="w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+                </div>
+                
+                <p id="error-message" class="error-message hidden">Username atau Password salah!</p>
+
+                <button type="submit" id="loginButton"
+                    class="w-full bg-primary hover:bg-primaryDark text-white font-semibold py-2.5 rounded-lg transition transform hover:scale-[1.01] shadow-md">
+                    <i class="fas fa-sign-in-alt mr-2"></i> Masuk
+                </button>
+                
+            </form>
+
+            <p class="mt-4 text-center text-xs text-slate-500">
+                <a href="Beranda.html" class="hover:text-primary transition">Kembali ke Beranda</a>
+            </p>
+
+        </section>
+
+    </main>
+
+    <footer class="bg-primary text-white text-center py-3 mt-auto">
+        <p class="text-xs opacity-90">© 2025 PAGARNUSA UNUSIA. Semua hak cipta dilindungi.</p>
+    </footer>
+
+    <script>
+        // SCRIPT NAVIGASI MOBILE (Sama)
+        const navToggle = document.getElementById('nav-toggle');
+        const navMobile = document.getElementById('nav-mobile');
+        
+        navToggle.addEventListener('click', () => {
+            navMobile.classList.toggle('hidden');
+            const icon = navToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        navMobile.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMobile.classList.add('hidden');
+                const icon = navToggle.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+
+        // --- SCRIPT LOGIKA LOGIN KONDISIONAL ---
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('error-message');
+        const loginButton = document.getElementById('loginButton');
+
+        // Menentukan kredensial yang valid dan menyimpan data profil lengkap
+        const ALL_USERS = [
+            // KREDENSIAL DAN DATA ADMIN
+            { 
+                username: 'admin', 
+                password: 'pn85', 
+                redirectUrl: 'profil_admin.html',
+                data: {
+                    nama: 'Admin Pagar Nusa',
+                    role: 'Admin',
+                    is_admin: true
+                }
+            },
+            // KREDENSIAL DAN DATA NOKE
+            // KREDENSIAL DAN DATA MUNDZIR (SISWA)
+            { 
+                username: 'plp', 
+                password: '22240011', 
+                redirectUrl: 'profil_siswa.html',
+                data: {
+                    nama: 'Muhammad Ibnu Mundzir',
+                    email: 'mundzir011@gmail.com',
+                    ttl: 'Mamuju, 06 Maret 2004',
+                    alamat: 'Mamuju, Sulawesi Barat',
+                    whatsapp: '085715232441',
+                    angkatan: '2022',
+                    ujian: 'Coklat',
+                    status: 'Diverifikasi✅️'
+                }
+                
+            }
+        ];
+
+        // --- Ekstrak data Siswa untuk Admin ---
+        const studentData = ALL_USERS.filter(user => !user.data.is_admin)
+            .map(user => user.data);
+
+        // Sebelum login, simpan semua data siswa yang dibutuhkan admin
+        localStorage.setItem('allStudentsData', JSON.stringify(studentData));
+        
+        
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            loginButton.disabled = true;
+            loginButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Memproses...';
+            errorMessage.classList.add('hidden');
+
+            const inputUsername = document.getElementById('username').value;
+            const inputPassword = document.getElementById('password').value;
+            
+            setTimeout(() => {
+                
+                const matchedUser = ALL_USERS.find(cred => 
+                    cred.username === inputUsername && cred.password === inputPassword
+                );
+
+                if (matchedUser) {
+                    // Berhasil: Simpan data profil pengguna yang login saat ini
+                    localStorage.setItem('currentUserProfile', JSON.stringify(matchedUser.data));
+
+                    // Arahkan ke halaman profil yang sesuai
+                    window.location.href = matchedUser.redirectUrl;
+                } else {
+                    // Gagal: Tampilkan pesan error
+                    errorMessage.classList.remove('hidden');
+                    loginButton.disabled = false;
+                    loginButton.innerHTML = '<i class="fas fa-sign-in-alt mr-2"></i> Masuk';
+                }
+
+            }, 500); // Penundaan 0.5 detik
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beranda | PAGARNUSA UNUSIA</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Warna kustom dari referensi sebelumnya
+                        primary: '#1B7548',
+                        primaryDark: '#145c38'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        body { 
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth; 
+        }
+        /* Style untuk membuat garis bawah menu aktif (khusus untuk halaman ini) */
+        .nav-link.active {
+            text-decoration: underline;
+            text-underline-offset: 6px;
+            text-decoration-thickness: 2px;
+            text-decoration-color: white; /* Garis putih untuk kontras */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-gradient-to-b from-emerald-50 to-slate-50 text-slate-800">
+
+    <header id="main-header" class="sticky top-0 z-50 bg-primary text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            
+            <div class="flex items-center space-x-3">
+                <img src="logopn.png" alt="Logo PAGARNUSA" class="h-10">
+                <h1 class="text-sm font-bold tracking-wide leading-tight uppercase">
+                    PAGARNUSA<br>UNUSIA
+                </h1>
+            </div>
+            
+            <div class="flex items-center space-x-4"> 
+                
+                <nav id="nav-desktop" class="hidden md:flex space-x-8">
+                    <a href="#hero-section" class="nav-link active text-sm font-medium hover:text-slate-200 transition">Beranda</a>
+                    <a href="#information-section" class="nav-link text-sm font-medium hover:text-slate-200 transition">Informasi</a>
+                </nav>
+
+                <div class="hidden md:flex space-x-2">
+                    <a href="login.html" class="nav-link bg-primaryDark px-3 py-1 rounded-lg hover:bg-white hover:text-primary transition">
+                        Login
+                    </a>
+                    <a href="daftar.html" class="nav-link bg-yellow-500 text-slate-900 px-3 py-1 rounded-lg hover:bg-yellow-600 transition">
+                        Daftar
+                    </a>
+                </div>
+
+                <button id="nav-toggle" class="md:hidden p-2">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <nav id="nav-mobile" class="hidden md:hidden absolute w-full bg-primaryDark shadow-md">
+            <a href="#hero-section" class="nav-link block px-4 py-3 text-sm font-medium active hover:bg-primary/50 transition border-t border-primaryDark/50">Beranda</a>
+            <a href="#information-section" class="nav-link block px-4 py-3 text-sm font-medium hover:bg-primary/50 transition">Informasi</a>
+            <a href="login.html" class="nav-link block px-4 py-3 text-sm font-medium hover:bg-primary/50 transition">Login</a>
+            <a href="daftar.html" class="nav-link block px-4 py-3 text-sm font-medium bg-yellow-500 text-slate-900 hover:bg-yellow-600 transition border-b border-primaryDark/50">Daftar</a>
+        </nav>
+    </header>
+
+    <main class="flex-1 container mx-auto px-4 py-8">
+
+        <section id="hero-section" class="text-center md:text-left bg-white rounded-xl shadow-xl p-8 md:p-12 mb-12">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-primary mb-4">
+                Selamat Datang di PAGARNUSA UNUSIA
+            </h2>
+            <p class="text-xl text-slate-600 mb-6">
+                Mengembangkan potensi diri, menguatkan spiritualitas, dan menjunjung tinggi nilai-nilai tradisi.
+            </p>
+            <p class="text-slate-700 max-w-3xl mx-auto md:mx-0 mb-8">
+                Pencak Silat Nahdlatul Ulama Pagar Nusa Rayon Universitas Nahdlatul Ulama Indonesia (UNUSIA) adalah wadah bagi mahasiswa untuk berkreasi, berprestasi, dan melestarikan budaya bangsa.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
+                <a href="daftar.html" 
+                    class="bg-primary hover:bg-primaryDark text-white font-semibold py-3 px-8 rounded-lg transition transform hover:scale-105 shadow-md">
+                    <i class="fas fa-user-plus mr-2"></i> Daftar UKT Sekarang
+                </a>
+                <a href="#information-section" 
+                    class="bg-white border-2 border-primary text-primary hover:bg-primary/10 font-semibold py-3 px-8 rounded-lg transition transform hover:scale-105 shadow-md">
+                    <i class="fas fa-info-circle mr-2"></i> Baca Informasi
+                </a>
+            </div>
+        </section>
+
+        <section id="information-section" class="bg-white rounded-xl shadow-lg p-8 md:p-12 mt-8">
+            <h2 class="text-2xl font-bold text-primaryDark mb-4 border-b pb-2">Informasi Ujian Kenaikan Tingkat Ke IV</h2>
+            <div class="space-y-4 text-slate-700">
+                <div class="p-4 bg-emerald-50 rounded-lg border-l-4 border-primary">
+                    <h3 class="font-semibold text-lg text-primaryDark">Jadwal Ujian Kenaikan Tingkat</h3>
+                    <p class="text-sm">UKT akan dilaksanakan pada tanggal **10-11 Januari 2026**. Pastikan Anda sudah melengkapi semua persyaratan administrasi sebelum tanggal tersebut.</p>
+                </div>
+                <div class="p-4 bg-emerald-50 rounded-lg border-l-4 border-primary">
+                    <h3 class="font-semibold text-lg text-primaryDark">Persyaratan Dokumen</h3>
+                    <p class="text-sm">Peserta wajib melampirkan *scan* kartu tanda anggota (KTA) dan sertifikat UKT terakhir (jika ada).</p>
+                </div>
+            </div>
+            <a href="#hero-section" class="mt-6 inline-block text-primary hover:text-primaryDark text-sm underline">Kembali ke atas</a>
+        </section>
+
+    </main>
+
+    <footer class="bg-primary text-white text-center py-3 mt-auto">
+        <p class="text-xs opacity-90">© 2025 PAGARNUSA UNUSIA. Semua hak cipta dilindungi.</p>
+    </footer>
+
+    <script>
+        // Elemen Navigasi Mobile
+        const navToggle = document.getElementById('nav-toggle');
+        const navMobile = document.getElementById('nav-mobile');
+        const navLinks = document.querySelectorAll('.nav-link'); 
+        
+        // Fungsi Toggle Navigasi Mobile
+        navToggle.addEventListener('click', () => {
+            navMobile.classList.toggle('hidden');
+            // Mengubah icon burger menjadi close
+            const icon = navToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // Tutup menu mobile saat link diklik
+        navMobile.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                // Hanya tutup jika link bukan Daftar atau Login (yang mungkin memicu redirect)
+                if (link.getAttribute('href').startsWith('#')) {
+                     navMobile.classList.add('hidden');
+                     // Mengembalikan icon burger
+                     const icon = navToggle.querySelector('i');
+                     icon.classList.remove('fa-times');
+                     icon.classList.add('fa-bars');
+                }
+            });
+        });
+
+        // Fungsi untuk mengatur menu aktif berdasarkan hash/URL
+        function setActiveLink(hash) {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                // Hanya aktifkan link Beranda dan Informasi (yang menggunakan hash)
+                if (link.getAttribute('href') !== 'daftar.html' && link.getAttribute('href') !== 'login.html' && link.getAttribute('href') === hash) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        // Observasi scroll untuk menentukan menu aktif saat pengguna menggulir
+        const sections = document.querySelectorAll('main section');
+        const header = document.getElementById('main-header');
+        const headerHeight = header.offsetHeight;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                // Jika section terlihat
+                if (entry.isIntersecting) {
+                    const currentHash = '#' + entry.target.id;
+                    setActiveLink(currentHash);
+                }
+            });
+        }, { 
+            // rootMargin disesuaikan dengan tinggi header agar penandaan aktif lebih akurat
+            rootMargin: `-${headerHeight}px 0px -50% 0px`, 
+        }); 
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Setel link aktif awal
+        window.onload = function() {
+            // Jika ada hash di URL (misal: #information-section), gunakan itu
+            const initialHash = window.location.hash || '#hero-section';
+            setActiveLink(initialHash);
+
+            // Jika ada hash, scroll ke posisi hash dengan offset header
+            if (window.location.hash) {
+                const target = document.querySelector(window.location.hash);
+                if (target) {
+                    // Penyesuaian scroll dengan offset header
+                    window.scrollTo({
+                        top: target.offsetTop - headerHeight,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        };
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pendaftaran Peserta UKT - PAGARNUSA UNUSIA</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1B7548',
+                        primaryDark: '#145c38'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        body { 
+            font-family: 'Poppins', sans-serif;
+            /* Menambahkan scroll-behavior: smooth; seperti di Beranda.html */
+            scroll-behavior: smooth; 
+        }
+        /* Style untuk membuat garis bawah menu aktif (khusus untuk halaman ini) */
+        .nav-link.active {
+            text-decoration: underline;
+            text-underline-offset: 6px;
+            text-decoration-thickness: 2px;
+            text-decoration-color: white; /* Garis putih untuk kontras */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-gradient-to-b from-emerald-50 to-slate-50 text-slate-800">
+
+    <header id="main-header" class="sticky top-0 z-50 bg-primary text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            
+            <div class="flex items-center space-x-3">
+                <img src="logopn.png" alt="Logo PAGARNUSA" class="h-10">
+                <h1 class="text-sm font-bold tracking-wide leading-tight uppercase">
+                    PAGARNUSA<br>UNUSIA
+                </h1>
+            </div>
+            
+            <nav id="nav-desktop" class="hidden md:flex space-x-8">
+                <a href="index.html" class="nav-link text-sm font-medium hover:text-slate-200 transition">Beranda</a>
+                <a href="index.html" class="nav-link text-sm font-medium hover:text-slate-200 transition">Informasi</a>
+                <a href="daftar.html" class="nav-link active bg-primaryDark px-3 py-1 rounded-lg hover:bg-white hover:text-primary transition">Daftar</a>
+            </nav>
+
+            <button id="nav-toggle" class="md:hidden p-2">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            
+        </div>
+        
+        <nav id="nav-mobile" class="hidden md:hidden absolute w-full bg-primaryDark shadow-md">
+            <a href="index.html" class="nav-link block px-4 py-3 text-sm font-medium hover:bg-primary/50 transition border-t border-primaryDark/50">Beranda</a>
+            <a href="index.html" class="nav-link block px-4 py-3 text-sm font-medium hover:bg-primary/50 transition">Informasi</a>
+            <a href="daftar.html" class="nav-link block px-4 py-3 text-sm font-medium active bg-primary hover:bg-primaryDark/70 transition border-b border-primaryDark/50">Daftar</a>
+        </nav>
+    </header>
+    <main class="flex-1 w-full max-w-2xl mx-auto px-4 py-6">
+
+        <section id="form-section" class="bg-white rounded-xl shadow-lg p-6 md:p-8 mt-4" aria-labelledby="form-heading">
+            <h2 id="form-heading" class="text-center text-xl md:text-2xl font-bold text-primary mb-1">PENDAFTARAN PESERTA<br></h2>
+            <p class="text-center text-sm text-slate-500 mb-6">UJIAN KENAIKAN TINGKAT</p>
+
+            <form id="formData" class="space-y-4">
+
+                <div>
+                    <label for="nama" class="block text-sm font-semibold mb-1">Nama *</label>
+                    <input type="text" id="nama" name="nama" required placeholder="Nama Lengkap"
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-semibold mb-1">Email *</label>
+                    <input type="email" id="email" name="email" required placeholder="nama@gmail.com"
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+                </div>
+
+                <div>
+                    <label for="ttl" class="block text-sm font-semibold mb-1">Tempat dan Tanggal Lahir *</label>
+                    <input type="text" id="ttl" name="ttl" required placeholder="Jakarta, 01 Januari 2026"
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+                </div>
+
+                <div>
+                    <label for="alamat" class="block text-sm font-semibold mb-1">Alamat *</label>
+                    <input type="text" id="alamat" name="alamat" required placeholder="Bogor, Jawa Barat"
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+                </div>
+
+                <div>
+                    <label for="whatsapp" class="block text-sm font-semibold mb-1">Nomor WhatsApp *</label>
+                    <input type="tel" id="whatsapp" name="whatsapp" required pattern="08[0-9]{8,11}" placeholder="08xxxxxxxxxx"
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+                </div>
+
+                <div>
+                    <label for="angkatan" class="block text-sm font-semibold mb-1">Angkatan *</label>
+                    <select id="angkatan" name="angkatan" required
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+                        <option value="">-- Pilih Angkatan --</option>
+                        <option>2022</option>
+                        <option>2023</option>
+                        <option>2024</option>
+                        <option>2025</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="ujian" class="block text-sm font-semibold mb-1">Ujian yang Diikuti *</label>
+                    <select id="ujian" name="ujian" required
+                        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+                        <option value="">-- Pilih Ujian --</option>
+                        <option>Putih</option>
+                        <option>Kuning</option>
+                        <option>Merah</option>
+                    </select>
+                </div>
+
+                <div class="space-y-1">
+                    <label for="link_sertifikat" class="block text-sm font-semibold">Link Sertifikat (jika sudah UKT sebelumnya)</label>
+                    <p class="text-xs text-slate-500">Klik link di bawah → Upload Sertifikat → Ubah nama file ke Nama Lengkap → Salin Link File → Tempel di kolom berikut.</p>
+                    <a href="https://drive.google.com/drive/folders/12ijbVqbuR9A7ffhKK6ut5n_pIt-UHHmZ?usp=sharing" target="_blank"
+                        class="inline-block text-sm text-primary underline hover:text-primaryDark transition">Upload Disini</a>
+                    <input type="url" id="link_sertifikat" name="link_sertifikat" placeholder="https://drive.google.com/..."
+                        class="w-full mt-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+                </div>
+                
+                <button type="submit"
+                    class="w-full mt-4 bg-primary hover:bg-primaryDark text-white font-semibold py-3 rounded-xl transition">
+                    Kirim Pendaftaran
+                </button>
+            </form>
+        </section>
+
+        <section id="success-section" class="hidden bg-white rounded-xl shadow-lg p-6 md:p-8 text-center mt-4" aria-labelledby="success-heading">
+            <h2 id="success-heading" class="text-xl font-bold text-primary mb-2">✅ Pendaftaran Berhasil</h2>
+            <p class="text-sm text-slate-600 mb-4">Untuk informasi selanjutnya, silahkan bergabung ke group dibawah ini:</p>
+            <a href="https://chat.whatsapp.com/FRcfpT5vH536nGg0nBOC9w" target="_blank"
+                class="inline-block text-primary underline hover:text-primaryDark transition mb-4">Bergabung</a>
+            <button id="reset-button" type="button" 
+                class="block w-full mt-6 bg-primary hover:bg-primaryDark text-white font-semibold py-3 rounded-xl transition">
+                Kirim Data Lagi
+            </button>
+        </section>
+        
+        <section id="information-section" class="hidden"></section>
+        <section id="contact-section" class="hidden"></section>
+
+    </main>
+
+    <footer class="bg-primary text-white text-center py-3 mt-auto">
+        <p class="text-xs opacity-90">© 2025 PAGARNUSA UNUSIA. Semua hak cipta dilindungi.</p>
+    </footer>
+
+    <script>
+        const form = document.getElementById('formData');
+        const formSection = document.getElementById('form-section');
+        const successSection = document.getElementById('success-section');
+        const resetButton = document.getElementById('reset-button');
+        
+        // Menambahkan action URL ke form di JavaScript
+        const formActionURL = "https://script.google.com/macros/s/AKfycbyCrP0iYfrjSY_PpKfyLExdMUgjeZWrvCbjQhv1qfZXigtaCYNVr7AuwLm7cRaPR5YjrQ/exec";
+
+        // Fungsi untuk mereset form (dibuat global karena dipanggil dari success button)
+        function resetForm() {
+            successSection.classList.add('hidden');
+            formSection.classList.remove('hidden');
+            // Scroll ke form
+            formSection.scrollIntoView({ behavior: 'smooth' }); 
+        }
+
+        // Event listener untuk submit form
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            // Tampilkan pesan loading jika perlu
+            const submitButton = form.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Mengirim...';
+
+            const data = new FormData(form);
+            
+            fetch(formActionURL, { method: 'POST', body: data })
+                .then(() => {
+                    formSection.classList.add('hidden');
+                    successSection.classList.remove('hidden');
+                    form.reset();
+                    // Scroll ke bagian sukses
+                    successSection.scrollIntoView({ behavior: 'smooth' }); 
+                })
+                .catch(error => {
+                    console.error('Error submitting form:', error);
+                    alert('Gagal mengirim data. Silakan coba lagi.');
+                })
+                .finally(() => {
+                    // Kembalikan tombol ke keadaan semula
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Kirim Pendaftaran';
+                });
+        });
+
+        // Event listener untuk tombol Kirim Data Lagi
+        resetButton.addEventListener('click', resetForm);
+
+
+        // --- SCRIPT UNTUK NAVIGASI MOBILE (DISAMAKAN DENGAN Beranda.html) ---
+
+        // Elemen Navigasi Mobile
+        const navToggle = document.getElementById('nav-toggle');
+        const navMobile = document.getElementById('nav-mobile');
+        const navLinks = document.querySelectorAll('.nav-link'); 
+        
+        // Fungsi Toggle Navigasi Mobile
+        navToggle.addEventListener('click', () => {
+            navMobile.classList.toggle('hidden');
+            // Mengubah icon burger menjadi close
+            const icon = navToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // Tutup menu mobile saat link diklik
+        navMobile.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMobile.classList.add('hidden');
+                // Mengembalikan icon burger
+                const icon = navToggle.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+
+        // Tidak perlu fungsi setActiveLink yang kompleks karena ini adalah halaman tunggal (Daftar)
+        // Namun, kita pastikan hanya link 'Daftar' yang memiliki class 'active' (sudah diatur di HTML)
+        
+    </script>
+
+</body>
+</html>

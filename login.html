@@ -81,9 +81,14 @@
 
                 <div>
                     <label for="password" class="block text-sm font-semibold mb-1">Password</label>
-                    <input type="password" id="password" name="password" required placeholder="********"
-                        class="w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
-                </div>
+                    <div class="relative">
+                        <input type="password" id="password" name="password" required placeholder="********"
+                            class="w-full rounded-lg border border-slate-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary pr-10">
+                        
+                        <button type="button" id="togglePassword" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-500 hover:text-primary transition">
+                            <i class="fas fa-eye-slash text-base"></i> </button>
+                    </div>
+                    </div>
                 
                 <p id="error-message" class="error-message hidden">Username atau Password salah!</p>
 
@@ -126,6 +131,27 @@
                 icon.classList.add('fa-bars');
             });
         });
+
+        // --- SCRIPT TOGGLE PASSWORD (FITUR BARU) ---
+        const passwordInput = document.getElementById('password');
+        const toggleButton = document.getElementById('togglePassword');
+        const toggleIcon = toggleButton.querySelector('i');
+
+        toggleButton.addEventListener('click', function() {
+            // Toggle tipe input antara 'password' dan 'text'
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            // Ganti ikon mata
+            if (type === 'text') {
+                toggleIcon.classList.remove('fa-eye-slash'); // Icon tersembunyi
+                toggleIcon.classList.add('fa-eye'); // Icon terlihat
+            } else {
+                toggleIcon.classList.remove('fa-eye'); // Icon terlihat
+                toggleIcon.classList.add('fa-eye-slash'); // Icon tersembunyi
+            }
+        });
+        // --- END SCRIPT TOGGLE PASSWORD ---
 
         // --- SCRIPT LOGIKA LOGIN KONDISIONAL ---
         const loginForm = document.getElementById('loginForm');
@@ -209,5 +235,3 @@
 </body>
 
 </html>
-
-

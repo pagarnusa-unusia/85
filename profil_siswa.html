@@ -26,11 +26,6 @@
         body { 
             font-family: 'Poppins', sans-serif;
         }
-        /* Style untuk status */
-        .status-verified {
-            border-color: #10b981; /* green-500 */
-            background-color: #ecfdf5; /* green-50 */
-        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col bg-gradient-to-b from-emerald-50 to-slate-50 text-slate-800">
@@ -84,8 +79,14 @@
                     <div class="mt-4 space-y-3 text-slate-700">
                         <p><strong>Ujian Diikuti:</strong> <span id="data-ujian">...</span></p>
                         <p><strong>Jadwal Ujian:</strong> 10 Januari 2026</p>
-                        <p><strong>Sertifikat UKT:</strong> <a href="#" id="data-sertifikat" class="text-primary hover:underline">Link Sertifikat</a></p>
-                    </div>
+                        
+                        <div id="sertifikat-container" class="hidden">
+                            <p><strong>Sertifikat UKT:</strong> <a href="#" id="data-sertifikat" class="text-primary hover:underline font-medium" target="_blank">Lihat Sertifikat <i class="fas fa-external-link-alt ml-1 text-xs"></i></a></p>
+                        </div>
+                        <div id="sertifikat-placeholder">
+                            <p><strong>Sertifikat UKT:</strong> <span class="text-slate-500 italic">Belum tersedia (Status ${displayStatus})</span></p>
+                        </div>
+                        </div>
 
                     <p class="mt-6 text-sm italic text-slate-500">
                         Pastikan data Anda sudah benar. Hubungi Admin jika ada kesalahan.
@@ -104,16 +105,37 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const profileDataString = localStorage.getItem('currentUserProfile');
+            const allStudentsDataString = localStorage.getItem('allStudentsData');
 
             if (!profileDataString) {
-                // Jika tidak ada data profil, paksa kembali ke halaman login
                 alert("Sesi berakhir atau Anda belum login.");
                 window.location.href = 'login.html';
                 return; 
             }
 
-            const profile = JSON.parse(profileDataString);
+            let profile = JSON.parse(profileDataString);
             const statusBox = document.getElementById('status-box');
+            const sertifikatContainer = document.getElementById('sertifikat-container');
+            const sertifikatPlaceholder = document.getElementById('sertifikat-placeholder');
+            const dataSertifikatLink = document.getElementById('data-sertifikat');
+            
+            // --- SINKRONISASI STATUS DENGAN DATA ADMIN ---
+            // Ambil status paling baru dari data global yang diubah Admin
+            if (allStudentsDataString && profile.email) {
+                try {
+                    const allStudents = JSON.parse(allStudentsDataString);
+                    const latestStudentData = allStudents.find(s => s.email === profile.email);
+
+                    if (latestStudentData) {
+                        // Perbarui status profil siswa dengan status terbaru dari Admin
+                        profile.status = latestStudentData.status; 
+                        // Perbarui juga data sertifikat, jaga-jaga jika Admin yang mengupdate
+                        profile.sertifikatUrl = latestStudentData.sertifikatUrl || profile.sertifikatUrl; 
+                    }
+                } catch (e) {
+                    console.error("Gagal sinkronisasi data siswa:", e);
+                }
+            }
             
             // 1. Isi Data Pribadi
             document.getElementById('data-nama').textContent = profile.nama;
@@ -123,33 +145,60 @@
             document.getElementById('data-whatsapp').textContent = profile.whatsapp;
             document.getElementById('data-angkatan').textContent = profile.angkatan;
             
-            // 2. Isi Data Status
+            // 2. Isi Data Status & Tentukan Warna
             document.getElementById('data-ujian').textContent = profile.ujian;
-            document.getElementById('data-status').textContent = profile.status;
+            
+            let displayStatus = 'Pending'; // Default
+            let colorClass = 'text-yellow-600';
+            let borderColorClass = 'border-yellow-500';
+            let bgColorClass = 'bg-yellow-50';
+
+            if (profile.status.includes('Kualifikasi')) {
+                displayStatus = 'Kualifikasi';
+                colorClass = 'text-green-600';
+                borderColorClass = 'border-green-500';
+                bgColorClass = 'bg-green-50';
+            } else if (profile.status.includes('Diskualifikasi')) {
+                displayStatus = 'Diskualifikasi';
+                colorClass = 'text-red-600';
+                borderColorClass = 'border-red-500';
+                bgColorClass = 'bg-red-50';
+            }
+            // else, biarkan tetap Pending
+
+            document.getElementById('data-status').textContent = displayStatus;
             
             // 3. Update Header dan Greeting
             document.getElementById('header-nama').textContent = `Hello, ${profile.nama.split(' ')[0]}!`;
             document.getElementById('greeting-text').textContent = `Selamat Datang, ${profile.nama}!`;
 
             // 4. Logika Warna Status dan Teks
-            if (profile.status.includes('Diverifikasi')) {
-                // Status DITERIMA/VERIFIKASI
-                statusBox.classList.remove('border-yellow-500', 'bg-yellow-50');
-                statusBox.classList.add('border-green-500', 'bg-green-50');
-                document.getElementById('data-status').classList.remove('text-yellow-600');
-                document.getElementById('data-status').classList.add('text-green-600');
+            // Hapus semua kelas warna yang mungkin ada
+            statusBox.className = 'p-4 rounded-lg border-2 shadow-sm';
+            document.getElementById('data-status').className = 'text-2xl font-bold';
+
+            // Terapkan kelas baru
+            statusBox.classList.add(borderColorClass, bgColorClass);
+            document.getElementById('data-status').classList.add(colorClass);
+
+            // **5. Logika Tautan Sertifikat Kondisional**
+            const sertifikatLink = document.getElementById('data-sertifikat');
+            const sertifikatPlaceholderText = sertifikatPlaceholder.querySelector('span');
+
+            sertifikatPlaceholderText.textContent = `Belum tersedia (Status ${displayStatus})`;
+
+            if (displayStatus === 'Kualifikasi' && profile.sertifikatUrl) {
+                sertifikatLink.href = profile.sertifikatUrl;
+                sertifikatContainer.classList.remove('hidden');
+                sertifikatPlaceholder.classList.add('hidden');
             } else {
-                // Status MENUNGGU/PENDING
-                statusBox.classList.remove('border-green-500', 'bg-green-50');
-                statusBox.classList.add('border-yellow-500', 'bg-yellow-50');
-                document.getElementById('data-status').classList.remove('text-green-600');
-                document.getElementById('data-status').classList.add('text-yellow-600');
+                sertifikatContainer.classList.add('hidden');
+                sertifikatPlaceholder.classList.remove('hidden');
             }
 
-            // 5. Fungsi Logout
+            // 6. Fungsi Logout
             document.getElementById('logout-button').addEventListener('click', () => {
                 localStorage.removeItem('currentUserProfile');
-                // Redirect dilakukan oleh link href="login.html"
             });
         });
     </script>

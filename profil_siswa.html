@@ -23,182 +23,165 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        body { 
-            font-family: 'Poppins', sans-serif;
-        }
+        body { font-family: 'Poppins', sans-serif; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col bg-gradient-to-b from-emerald-50 to-slate-50 text-slate-800">
 
     <header id="main-header" class="sticky top-0 z-50 bg-primary text-white shadow-lg">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            
             <div class="flex items-center space-x-3">
-                <img src="logopn.png" alt="Logo PAGARNUSA" class="h-10">
+                <img src="logopn.png" alt="Logo" class="h-10">
                 <h1 class="text-sm font-bold tracking-wide leading-tight uppercase">
-                    PROFIL<br>PESERTA
+                    PAGARNUSA<br>UNUSIA
                 </h1>
             </div>
-            
-            <div class="flex items-center space-x-4">
-                <span id="header-nama" class="text-sm hidden sm:inline">Hello, Siswa!</span>
-                <a href="login.html" id="logout-button" class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded-lg text-sm transition">
-                    <i class="fas fa-sign-out-alt mr-1"></i> Logout
-                </a>
-            </div>
+            <button id="logout-button" class="bg-white/20 hover:bg-white/30 px-4 py-1.5 rounded-lg text-xs font-semibold transition">
+                <i class="fas fa-sign-out-alt mr-1"></i> Logout
+            </button>
         </div>
     </header>
 
-    <main class="flex-1 w-full max-w-3xl mx-auto px-4 py-8">
-
-        <section id="profil-section" class="bg-white rounded-xl shadow-2xl p-6 md:p-10">
-            <h2 id="greeting-text" class="text-2xl md:text-3xl font-bold text-primary mb-6 border-b pb-3">Selamat Datang!</h2>
+    <main class="flex-1 container mx-auto max-w-4xl px-4 py-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                
-                <div>
-                    <h3 class="text-xl font-semibold text-primaryDark mb-4"><i class="fas fa-user-circle mr-2"></i> Data Pribadi</h3>
-                    <div class="space-y-3 text-slate-700">
-                        <p><strong>Nama Lengkap:</strong> <span id="data-nama">...</span></p>
-                        <p><strong>Email:</strong> <span id="data-email">...</span></p>
-                        <p><strong>Tempat/Tgl Lahir:</strong> <span id="data-ttl">...</span></p>
-                        <p><strong>Alamat:</strong> <span id="data-alamat">...</span></p>
-                        <p><strong>Nomor WA:</strong> <span id="data-whatsapp">...</span></p>
-                        <p><strong>Angkatan:</strong> <span id="data-angkatan">...</span></p>
+            <div class="lg:col-span-1 space-y-6">
+                <div class="bg-white rounded-2xl shadow-xl p-6 text-center border border-emerald-100">
+                    <div class="w-24 h-24 bg-emerald-100 text-primary rounded-full mx-auto flex items-center justify-center text-3xl font-bold mb-4 border-2 border-primary">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h2 id="display-nama" class="text-xl font-bold text-slate-800">Nama Peserta</h2>
+                    <p id="display-email" class="text-sm text-slate-500 mb-4 italic">email@peserta.com</p>
+                    
+                    <div id="status-box" class="py-3 px-4 rounded-xl border-2 transition-all duration-500">
+                        <p class="text-[10px] uppercase font-bold tracking-widest mb-1 opacity-70">Status Pendaftaran</p>
+                        <p id="status-text" class="text-xl font-black italic uppercase italic tracking-tighter">Memuat...</p>
                     </div>
                 </div>
 
-                <div>
-                    <h3 class="text-xl font-semibold text-primaryDark mb-4"><i class="fas fa-clipboard-list mr-2"></i> Status Pendaftaran UKT</h3>
-                    
-                    <div id="status-box" class="p-4 rounded-lg border-2 border-yellow-500 bg-yellow-50 shadow-sm">
-                        <p class="text-sm font-semibold text-slate-700 mb-1">Status Anda:</p>
-                        <p id="data-status" class="text-2xl font-bold text-yellow-600">...</p>
-                    </div>
-
-                    <div class="mt-4 space-y-3 text-slate-700">
-                        <p><strong>Ujian Diikuti:</strong> <span id="data-ujian">...</span></p>
-                        <p><strong>Jadwal Ujian:</strong> 10 Januari 2026</p>
-                        
-                        <div id="sertifikat-container" class="hidden">
-                            <p><strong>Sertifikat UKT:</strong> <a href="#" id="data-sertifikat" class="text-primary hover:underline font-medium" target="_blank">Lihat Sertifikat <i class="fas fa-external-link-alt ml-1 text-xs"></i></a></p>
-                        </div>
-                        <div id="sertifikat-placeholder">
-                            <p><strong>Sertifikat UKT:</strong> <span class="text-slate-500 italic">Belum tersedia (Status ${displayStatus})</span></p>
-                        </div>
-                        </div>
-
-                    <p class="mt-6 text-sm italic text-slate-500">
-                        Pastikan data Anda sudah benar. Hubungi Admin jika ada kesalahan.
-                    </p>
+                <div class="space-y-3">
+                    <a href="pembayaran.html" class="flex items-center justify-between w-full bg-white p-4 rounded-xl shadow-sm border border-slate-200 hover:border-primary transition group">
+                        <span class="text-sm font-semibold"><i class="fas fa-wallet mr-2 text-primary"></i> Konfirmasi Pembayaran</span>
+                        <i class="fas fa-chevron-right text-xs text-slate-300 group-hover:text-primary transition"></i>
+                    </a>
                 </div>
             </div>
-            
-        </section>
 
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-white rounded-2xl shadow-xl p-8 border border-emerald-100">
+                    <h3 class="text-lg font-bold text-primary border-b pb-4 mb-6 flex items-center">
+                        <i class="fas fa-id-card mr-3"></i> Detail Profil Peserta
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <p class="text-xs text-slate-400 font-bold uppercase mb-1">Tempat, Tanggal Lahir</p>
+                            <p id="display-ttl" class="text-sm font-medium text-slate-700">-</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-400 font-bold uppercase mb-1">Angkatan</p>
+                            <p id="display-angkatan" class="text-sm font-medium text-slate-700">-</p>
+                        </div>
+                        <div class="md:col-span-2">
+                            <p class="text-xs text-slate-400 font-bold uppercase mb-1">Alamat Lengkap</p>
+                            <p id="display-alamat" class="text-sm font-medium text-slate-700">-</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-400 font-bold uppercase mb-1">WhatsApp</p>
+                            <p id="display-whatsapp" class="text-sm font-medium text-slate-700">-</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-400 font-bold uppercase mb-1">Kategori Ujian</p>
+                            <p id="display-ujian" class="text-sm font-medium text-slate-700">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sertifikat-section" class="bg-white rounded-2xl shadow-xl p-8 border border-emerald-100">
+                    <h3 class="text-lg font-bold text-primary border-b pb-4 mb-6 flex items-center">
+                        <i class="fas fa-certificate mr-3"></i> Sertifikat Kelulusan
+                    </h3>
+                    <div id="sertifikat-container" class="hidden text-center py-6">
+                        <i class="fas fa-file-pdf text-5xl text-red-500 mb-4"></i>
+                        <p class="text-sm mb-4">Sertifikat Anda telah tersedia dan dapat diunduh.</p>
+                        <a id="download-sertifikat" href="#" target="_blank" class="inline-block bg-primary hover:bg-primaryDark text-white px-8 py-3 rounded-xl font-bold transition shadow-lg">
+                            <i class="fas fa-download mr-2"></i> Unduh Sertifikat
+                        </a>
+                    </div>
+                    <div id="sertifikat-placeholder" class="text-center py-10 bg-slate-50 rounded-xl border-2 border-dashed border-slate-200">
+                        <p id="placeholder-text" class="text-slate-400 text-sm italic">Status pendaftaran belum disetujui.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
-    <footer class="bg-primary text-white text-center py-3 mt-auto">
-        <p class="text-xs opacity-90">© 2025 PAGARNUSA UNUSIA. Semua hak cipta dilindungi.</p>
+    <footer class="bg-primary text-white text-center py-4 mt-8">
+        <p class="text-xs opacity-80">© 2025 PAGARNUSA UNUSIA. Semua hak cipta dilindungi.</p>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const profileDataString = localStorage.getItem('currentUserProfile');
-            const allStudentsDataString = localStorage.getItem('allStudentsData');
-
-            if (!profileDataString) {
-                alert("Sesi berakhir atau Anda belum login.");
+            // 1. Ambil Data Sesi Login
+            const currentUser = JSON.parse(localStorage.getItem('currentUserProfile'));
+            
+            // Proteksi Halaman: Jika tidak login, tendang balik ke login.html
+            if (!currentUser || currentUser.is_admin) {
                 window.location.href = 'login.html';
-                return; 
+                return;
             }
 
-            let profile = JSON.parse(profileDataString);
+            // 2. Sinkronisasi Data Terbaru dari "Database" (localStorage)
+            // Ini penting supaya kalau Admin ganti status, di sini langsung berubah.
+            const allData = JSON.parse(localStorage.getItem('allStudentsData')) || [];
+            const latestProfile = allData.find(s => s.email === currentUser.email) || currentUser;
+
+            // 3. Isi Tampilan Profil
+            document.getElementById('display-nama').textContent = latestProfile.nama;
+            document.getElementById('display-email').textContent = latestProfile.email;
+            document.getElementById('display-ttl').textContent = latestProfile.ttl;
+            document.getElementById('display-alamat').textContent = latestProfile.alamat;
+            document.getElementById('display-whatsapp').textContent = latestProfile.whatsapp;
+            document.getElementById('display-angkatan').textContent = latestProfile.angkatan;
+            document.getElementById('display-ujian').textContent = latestProfile.ujian;
+
+            // 4. Logika Tampilan Status & Sertifikat
             const statusBox = document.getElementById('status-box');
+            const statusText = document.getElementById('status-text');
+            const placeholderText = document.getElementById('placeholder-text');
             const sertifikatContainer = document.getElementById('sertifikat-container');
             const sertifikatPlaceholder = document.getElementById('sertifikat-placeholder');
-            const dataSertifikatLink = document.getElementById('data-sertifikat');
-            
-            // --- SINKRONISASI STATUS DENGAN DATA ADMIN ---
-            // Ambil status paling baru dari data global yang diubah Admin
-            if (allStudentsDataString && profile.email) {
-                try {
-                    const allStudents = JSON.parse(allStudentsDataString);
-                    const latestStudentData = allStudents.find(s => s.email === profile.email);
 
-                    if (latestStudentData) {
-                        // Perbarui status profil siswa dengan status terbaru dari Admin
-                        profile.status = latestStudentData.status; 
-                        // Perbarui juga data sertifikat, jaga-jaga jika Admin yang mengupdate
-                        profile.sertifikatUrl = latestStudentData.sertifikatUrl || profile.sertifikatUrl; 
-                    }
-                } catch (e) {
-                    console.error("Gagal sinkronisasi data siswa:", e);
+            const currentStatus = latestProfile.status;
+
+            if (currentStatus === 'Kualifikasi') {
+                statusText.textContent = "Kualifikasi ✅";
+                statusBox.classList.add('bg-green-50', 'border-green-500', 'text-green-700');
+                
+                // Cek link sertifikat
+                if (latestProfile.sertifikatUrl) {
+                    sertifikatContainer.classList.remove('hidden');
+                    sertifikatPlaceholder.classList.add('hidden');
+                    document.getElementById('download-sertifikat').href = latestProfile.sertifikatUrl;
+                } else {
+                    placeholderText.textContent = "Sertifikat sedang dalam proses pembuatan.";
                 }
-            }
-            
-            // 1. Isi Data Pribadi
-            document.getElementById('data-nama').textContent = profile.nama;
-            document.getElementById('data-email').textContent = profile.email;
-            document.getElementById('data-ttl').textContent = profile.ttl;
-            document.getElementById('data-alamat').textContent = profile.alamat;
-            document.getElementById('data-whatsapp').textContent = profile.whatsapp;
-            document.getElementById('data-angkatan').textContent = profile.angkatan;
-            
-            // 2. Isi Data Status & Tentukan Warna
-            document.getElementById('data-ujian').textContent = profile.ujian;
-            
-            let displayStatus = 'Pending'; // Default
-            let colorClass = 'text-yellow-600';
-            let borderColorClass = 'border-yellow-500';
-            let bgColorClass = 'bg-yellow-50';
-
-            if (profile.status.includes('Kualifikasi')) {
-                displayStatus = 'Kualifikasi';
-                colorClass = 'text-green-600';
-                borderColorClass = 'border-green-500';
-                bgColorClass = 'bg-green-50';
-            } else if (profile.status.includes('Diskualifikasi')) {
-                displayStatus = 'Diskualifikasi';
-                colorClass = 'text-red-600';
-                borderColorClass = 'border-red-500';
-                bgColorClass = 'bg-red-50';
-            }
-            // else, biarkan tetap Pending
-
-            document.getElementById('data-status').textContent = displayStatus;
-            
-            // 3. Update Header dan Greeting
-            document.getElementById('header-nama').textContent = `Hello, ${profile.nama.split(' ')[0]}!`;
-            document.getElementById('greeting-text').textContent = `Selamat Datang, ${profile.nama}!`;
-
-            // 4. Logika Warna Status dan Teks
-            // Hapus semua kelas warna yang mungkin ada
-            statusBox.className = 'p-4 rounded-lg border-2 shadow-sm';
-            document.getElementById('data-status').className = 'text-2xl font-bold';
-
-            // Terapkan kelas baru
-            statusBox.classList.add(borderColorClass, bgColorClass);
-            document.getElementById('data-status').classList.add(colorClass);
-
-            // **5. Logika Tautan Sertifikat Kondisional**
-            const sertifikatLink = document.getElementById('data-sertifikat');
-            const sertifikatPlaceholderText = sertifikatPlaceholder.querySelector('span');
-
-            sertifikatPlaceholderText.textContent = `Belum tersedia (Status ${displayStatus})`;
-
-            if (displayStatus === 'Kualifikasi' && profile.sertifikatUrl) {
-                sertifikatLink.href = profile.sertifikatUrl;
-                sertifikatContainer.classList.remove('hidden');
-                sertifikatPlaceholder.classList.add('hidden');
+            } else if (currentStatus === 'Diskualifikasi') {
+                statusText.textContent = "Diskualifikasi ❌";
+                statusBox.classList.add('bg-red-50', 'border-red-500', 'text-red-700');
+                placeholderText.textContent = "Mohon maaf, Anda tidak memenuhi kualifikasi.";
             } else {
-                sertifikatContainer.classList.add('hidden');
-                sertifikatPlaceholder.classList.remove('hidden');
+                // Default: Pending
+                statusText.textContent = "Pending ⏳";
+                statusBox.classList.add('bg-yellow-50', 'border-yellow-500', 'text-yellow-700');
+                placeholderText.textContent = "Status Anda sedang ditinjau oleh Admin.";
             }
 
-            // 6. Fungsi Logout
+            // 5. Fungsi Logout
             document.getElementById('logout-button').addEventListener('click', () => {
                 localStorage.removeItem('currentUserProfile');
+                window.location.href = 'login.html';
             });
         });
     </script>

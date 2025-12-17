@@ -23,92 +23,149 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        body { 
-            font-family: 'Poppins', sans-serif;
-            scroll-behavior: smooth; 
-        }
-        .menu-card {
-            transition: all 0.3s ease;
-        }
+        body { font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+        .menu-card { transition: all 0.3s ease; }
         .menu-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
         }
+        /* Face ID Overlay */
+        #face-id-overlay {
+            position: fixed;
+            inset: 0;
+            background: #ffffff;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+        .scan-line {
+            width: 100%;
+            height: 2px;
+            background: #1B7548;
+            position: absolute;
+            top: 0;
+            animation: scan 2s linear infinite;
+            box-shadow: 0 0 15px #1B7548;
+        }
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+        .hidden-content { display: none; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col bg-gradient-to-b from-emerald-50 to-slate-50 text-slate-800">
 
-    <header id="main-header" class="sticky top-0 z-50 bg-primary text-white shadow-lg">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <img src="https://uktpagarnusa.my.id/penilaian/fisik/logopn.png" alt="Logo PAGARNUSA" class="h-10">
-                <h1 class="text-sm font-bold tracking-wide leading-tight uppercase">
-                    PAGARNUSA<br>UNUSIA
-                </h1>
+    <div id="face-id-overlay">
+        <div class="relative w-48 h-48 mb-8 border-4 border-emerald-100 rounded-3xl overflow-hidden bg-slate-100 flex items-center justify-center">
+            <i class="fas fa-user-shield text-6xl text-emerald-200"></i>
+            <div id="scan-bar" class="scan-line hidden"></div>
+            <div id="camera-placeholder" class="absolute inset-0 bg-slate-900 flex flex-col items-center justify-center text-white opacity-0 transition-opacity duration-500">
+                <i class="fas fa-camera text-2xl mb-2"></i>
+                <span class="text-[10px] uppercase tracking-widest">Scanning...</span>
             </div>
+        </div>
+        
+        <div class="text-center px-6">
+            <h2 id="auth-status" class="text-xl font-bold text-slate-800">Akses Terbatas</h2>
+            <p id="auth-desc" class="text-sm text-slate-500 mt-2">Gunakan Face ID untuk membuka Portal Penilaian</p>
             
-            <nav id="nav-desktop" class="hidden md:flex space-x-8">
-                <a href="https://uktpagarnusa.my.id/penilaian/menu_penilaian" class="nav-link text-sm font-medium hover:text-emerald-200 transition">Refresh</a>
-            </nav>
-
-            <button id="nav-toggle" class="md:hidden p-2">
-                <i class="fas fa-bars text-xl"></i>
+            <button onclick="startScan()" id="btn-scan" class="mt-8 bg-primary hover:bg-primaryDark text-white px-8 py-3 rounded-full font-semibold transition-all flex items-center gap-3 mx-auto">
+                <i class="fas fa-expand"></i> Scan Wajah
             </button>
         </div>
-    </header>
+        
+        <p class="absolute bottom-10 text-[10px] text-slate-400 tracking-[0.2em] uppercase">Security Level: High Risk</p>
+    </div>
 
-    <main class="flex-1 w-full max-w-4xl mx-auto px-4 py-12">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-extrabold text-primary md:text-4xl">Portal Penilaian UKT</h2>
-            <div class="h-1 w-20 bg-primary mx-auto mt-4 rounded-full"></div>
-            <p class="text-slate-500 mt-4 text-sm md:text-base">Silakan pilih kategori penilaian untuk memulai penginputan skor peserta.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 max-w-2xl mx-auto">
-            
-            <a href="https://uktpagarnusa.my.id/penilaian/hafalan/penilaian" class="menu-card bg-white p-6 rounded-2xl shadow-md border border-slate-100 flex flex-col items-center text-center">
-                <div class="w-16 h-16 bg-emerald-50 text-primary rounded-full flex items-center justify-center text-2xl mb-4 group-hover:bg-primary group-hover:text-white transition">
-                    <i class="fas fa-book-open"></i>
+    <div id="main-content" class="hidden-content">
+        <header id="main-header" class="sticky top-0 z-50 bg-primary text-white shadow-lg">
+            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <img src="https://uktpagarnusa.my.id/penilaian/fisik/logopn.png" alt="Logo PAGARNUSA" class="h-10">
+                    <h1 class="text-sm font-bold tracking-wide leading-tight uppercase">
+                        PAGARNUSA<br>UNUSIA
+                    </h1>
                 </div>
-                <h3 class="font-bold text-lg">Hafalan</h3>
-                <p class="text-xs text-slate-400 mt-2">Doa harian, wirid, dan materi ke-NU-an.</p>
-            </a>
+                
+                <nav class="hidden md:flex space-x-8">
+                    <button onclick="location.reload()" class="nav-link text-sm font-medium hover:text-emerald-200 transition">Logout</button>
+                </nav>
 
-            <a href="https://uktpagarnusa.my.id/penilaian/fisik/penilaian" class="menu-card bg-white p-6 rounded-2xl shadow-md border border-slate-100 flex flex-col items-center text-center">
-                <div class="w-16 h-16 bg-emerald-50 text-primary rounded-full flex items-center justify-center text-2xl mb-4">
-                    <i class="fas fa-running"></i>
-                </div>
-                <h3 class="font-bold text-lg">Fisik</h3>
-                <p class="text-xs text-slate-400 mt-2">Ketahanan, kekuatan, dan kelincahan fisik.</p>
-            </a>
+                <button class="md:hidden p-2">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </header>
 
-            <a href="https://uktpagarnusa.my.id/penilaian/sejarah&teknik/penilaian" class="menu-card bg-white p-6 rounded-2xl shadow-md border border-slate-100 flex flex-col items-center text-center">
-                <div class="w-16 h-16 bg-emerald-50 text-primary rounded-full flex items-center justify-center text-2xl mb-4">
-                    <i class="fas fa-history"></i>
-                </div>
-                <h3 class="font-bold text-lg">Sejarah & Teknik</h3>
-                <p class="text-xs text-slate-400 mt-2">Wawasan sejarah, jurus, dan teknik.</p>
-            </a>
+        <main class="flex-1 w-full max-w-4xl mx-auto px-4 py-12">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-extrabold text-primary md:text-4xl">Portal Penilaian UKT</h2>
+                <div class="h-1 w-20 bg-primary mx-auto mt-4 rounded-full"></div>
+                <p class="text-slate-500 mt-4 text-sm md:text-base">Akses Terverifikasi. Silakan pilih kategori penilaian.</p>
+            </div>
 
-            <a href="https://uktpagarnusa.my.id/penilaian/mental/penilaian" class="menu-card bg-white p-6 rounded-2xl shadow-md border border-slate-100 flex flex-col items-center text-center">
-                <div class="w-16 h-16 bg-emerald-50 text-primary rounded-full flex items-center justify-center text-2xl mb-4">
-                    <i class="fas fa-brain"></i>
-                </div>
-                <h3 class="font-bold text-lg">Mental</h3>
-                <p class="text-xs text-slate-400 mt-2">Ujian mental, adab, dan kedisiplinan.</p>
-            </a>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                <a href="https://uktpagarnusa.my.id/penilaian/hafalan/penilaian" class="menu-card bg-white p-6 rounded-2xl shadow-md border border-slate-100 flex flex-col items-center text-center">
+                    <div class="w-16 h-16 bg-emerald-50 text-primary rounded-full flex items-center justify-center text-2xl mb-4"><i class="fas fa-book-open"></i></div>
+                    <h3 class="font-bold text-lg">Hafalan</h3>
+                </a>
+                <a href="https://uktpagarnusa.my.id/penilaian/fisik/penilaian" class="menu-card bg-white p-6 rounded-2xl shadow-md border border-slate-100 flex flex-col items-center text-center">
+                    <div class="w-16 h-16 bg-emerald-50 text-primary rounded-full flex items-center justify-center text-2xl mb-4"><i class="fas fa-running"></i></div>
+                    <h3 class="font-bold text-lg">Fisik</h3>
+                </a>
+                <a href="https://uktpagarnusa.my.id/penilaian/sejarah&teknik/penilaian" class="menu-card bg-white p-6 rounded-2xl shadow-md border border-slate-100 flex flex-col items-center text-center">
+                    <div class="w-16 h-16 bg-emerald-50 text-primary rounded-full flex items-center justify-center text-2xl mb-4"><i class="fas fa-history"></i></div>
+                    <h3 class="font-bold text-lg">Sejarah & Teknik</h3>
+                </a>
+                <a href="https://uktpagarnusa.my.id/penilaian/mental/penilaian" class="menu-card bg-white p-6 rounded-2xl shadow-md border border-slate-100 flex flex-col items-center text-center">
+                    <div class="w-16 h-16 bg-emerald-50 text-primary rounded-full flex items-center justify-center text-2xl mb-4"><i class="fas fa-brain"></i></div>
+                    <h3 class="font-bold text-lg">Mental</h3>
+                </a>
+            </div>
+        </main>
 
-        </div>
-    </main>
-
-    <footer class="bg-primary text-white text-center py-4 mt-auto">
-        <p class="text-[10px] md:text-xs opacity-90 tracking-wider">© 2025 PAGARNUSA UNUSIA. OFFICIAL ASSESSMENT PORTAL.</p>
-    </footer>
+        <footer class="bg-primary text-white text-center py-4 mt-auto">
+            <p class="text-[10px] md:text-xs opacity-90 tracking-wider">© 2025 PAGARNUSA UNUSIA.</p>
+        </footer>
+    </div>
 
     <script>
-        document.getElementById('nav-toggle').addEventListener('click', () => {
-            alert("Menu Navigasi Mobile");
-        });
+        function startScan() {
+            const btn = document.getElementById('btn-scan');
+            const placeholder = document.getElementById('camera-placeholder');
+            const scanBar = document.getElementById('scan-bar');
+            const statusText = document.getElementById('auth-status');
+            const descText = document.getElementById('auth-desc');
+
+            // 1. Persiapan Scan
+            btn.style.display = 'none';
+            placeholder.classList.remove('opacity-0');
+            scanBar.classList.remove('hidden');
+            statusText.innerText = "Mengenali Wajah...";
+            descText.innerText = "Harap tetap diam di depan kamera";
+
+            // 2. Simulasi Proses Loading (2.5 Detik)
+            setTimeout(() => {
+                statusText.innerText = "Verifikasi Identitas...";
+                statusText.classList.add('text-emerald-600');
+            }, 1500);
+
+            // 3. Berhasil
+            setTimeout(() => {
+                const overlay = document.getElementById('face-id-overlay');
+                const mainContent = document.getElementById('main-content');
+                
+                overlay.style.opacity = '0';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    mainContent.classList.remove('hidden-content');
+                }, 500);
+            }, 3000);
+        }
     </script>
 </body>
 </html>

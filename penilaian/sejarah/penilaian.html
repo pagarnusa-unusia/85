@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Penilaian | PAGARNUSA UNUSIA</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1B7548',
+                        primaryDark: '#145c38'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        body { 
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth; 
+        }
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-gradient-to-b from-emerald-50 to-slate-50 text-slate-800">
+
+    <header id="main-header" class="sticky top-0 z-50 bg-primary text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="logopn.png" alt="Logo PAGARNUSA" class="h-10">
+                <h1 class="text-sm font-bold tracking-wide leading-tight uppercase">
+                    PAGARNUSA<br>UNUSIA
+                </h1>
+            </div>
+            
+            <nav id="nav-desktop" class="hidden md:flex space-x-8">
+                <a href="#" class="nav-link text-sm font-medium hover:text-slate-200 transition">Refresh</a>
+                </nav>
+
+            <button id="nav-toggle" class="md:hidden p-2">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-1 w-full max-w-2xl mx-auto px-4 py-10">
+        <section class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div class="bg-primary p-6 text-white text-center">
+                <h2 class="text-2xl font-bold">Penilaian UKT IV</h2>
+                <p class="text-emerald-100 text-sm">PSNU PAGARNUSA UNUSIA</p>
+            </div>
+
+            <form id="penilaianForm" class="p-8 space-y-6">
+                <div>
+                    <label class="block text-sm font-semibold mb-2 flex items-center">
+                        <i class="fas fa-users mr-2 text-primary"></i> Kelompok
+                    </label>
+                    <select id="kelompok" required class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none transition">
+                        <option value="" disabled selected>Pilih Kelompok</option>
+                        <option value="1">Kelompok 1</option>
+                        <option value="2">Kelompok 2</option>
+                        <option value="3">Kelompok 3</option>
+                        <option value="4">Kelompok 4</option>
+                        <option value="5">Kelompok 5</option>
+                        <option value="6">Kelompok 6</option>
+                        <option value="7">Kelompok 7</option>
+                        <option value="8">Kelompok 8</option>
+                        <option value="9">Kelompok 9</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-2 flex items-center">
+                        <i class="fas fa-user-circle mr-2 text-primary"></i> Nama Peserta
+                    </label>
+                    <select id="namaPeserta" required class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none transition">
+                        <option value="" disabled selected>Pilih Nama Peserta</option>
+                        </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-2 flex items-center">
+                        <i class="fas fa-star mr-2 text-primary"></i> Kriteria Penilaian
+                    </label>
+                <select id="kriteria" required class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm outline-none">
+                    <option value="Sejarah" selected>Sejarah</option>
+                </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-2 flex items-center">
+                        <i class="fas fa-poll-h mr-2 text-primary"></i> Skor (70 - 100)
+                    </label>
+                   <select id="skor" name="skor" required 
+                    class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none transition">
+                    <option value="" disabled selected>Pilih Skor</option>
+                    <option value="60">60</option>
+                    <option value="70">70</option>
+                    <option value="80">80</option>
+                    <option value="90">90</option>
+                    <option value="95">95</option>
+                    <option value="95">99</option>
+                    </select>
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" class="w-full bg-primary hover:bg-primaryDark text-white font-bold py-3 rounded-lg transition transform hover:scale-[1.01] shadow-lg flex items-center justify-center">
+                        <i class="fas fa-save mr-2"></i> Simpan Penilaian
+                    </button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer class="bg-primary text-white text-center py-3 mt-auto">
+        <p class="text-xs opacity-90">© 2025 PAGARNUSA UNUSIA. Semua hak cipta dilindungi.</p>
+    </footer>
+
+<script>
+    // --- 1. DATA MASTER (Dikelompokkan) ---
+    const DATA_KELOMPOK = {
+        "1": [
+            { nama: 'Muhammad Ibnu Mundzir' },
+            { nama: 'Dwi Nur Aini' },
+            { nama: 'Khairun Anwar' }
+        ],
+        "2": [
+            { nama: 'Rendi Imam Saputra' },
+            { nama: 'Ardan mizanul khoiri' },
+            { nama: 'Wilda Nazwatun Nisa' }
+        ],
+        // Anda bisa menambahkan kelompok 3-9 di sini jika sudah ada datanya
+        "3": [], "4": [], "5": [], "6": [], "7": [], "8": [], "9": []
+    };
+
+    const selectKelompok = document.getElementById('kelompok');
+    const selectNama = document.getElementById('namaPeserta');
+
+    // --- 2. LOGIKA OTOMATISASI NAMA BERDASARKAN KELOMPOK ---
+    selectKelompok.addEventListener('change', function() {
+        const kelompokTerpilih = this.value;
+        const daftarSiswa = DATA_KELOMPOK[kelompokTerpilih] || [];
+
+        // Bersihkan dropdown nama terlebih dahulu
+        selectNama.innerHTML = '<option value="" disabled selected>Pilih Nama Peserta</option>';
+
+        // Jika ada data siswa di kelompok tersebut, masukkan ke dropdown
+        if (daftarSiswa.length > 0) {
+            daftarSiswa.forEach(siswa => {
+                const option = document.createElement('option');
+                option.value = siswa.nama;
+                option.textContent = siswa.nama;
+                selectNama.appendChild(option);
+            });
+            selectNama.disabled = false;
+        } else {
+            const option = document.createElement('option');
+            option.textContent = "Data belum tersedia";
+            selectNama.appendChild(option);
+            selectNama.disabled = true;
+        }
+    });
+
+// --- 3. HANDLE FORM SUBMISSION ---
+    const penilaianForm = document.getElementById('penilaianForm');
+    penilaianForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const dataBaru = {
+            id: Date.now(), // ID unik untuk setiap baris
+            kelompok: selectKelompok.value,
+            nama: selectNama.value,
+            kriteria: document.getElementById('kriteria').value,
+            skor: document.getElementById('skor').value,
+            tanggal: new Date().toLocaleDateString('id-ID'),
+            waktu: new Date().toLocaleTimeString('id-ID')
+        };
+
+        // Mengambil data lama dari localStorage (jika ada)
+        let rekapNilai = JSON.parse(localStorage.getItem('rekapNilaiPagarNusa')) || [];
+        
+        // Menambahkan data baru ke dalam array
+        rekapNilai.push(dataBaru);
+        
+        // Menyimpan kembali ke localStorage
+        localStorage.setItem('rekapNilaiPagarNusa', JSON.stringify(rekapNilai));
+        
+        // Notifikasi dan pindah halaman
+        alert(`Nilai ${dataBaru.nama} berhasil disimpan ke rekap!`);
+        window.location.href = 'rekapnilai.html';
+    });
+
+    // --- 4. NAV MOBILE ---
+    const navToggle = document.getElementById('nav-toggle');
+    navToggle.addEventListener('click', () => {
+        alert("Fitur navigasi akan diarahkan ke halaman utama.");
+    });
+</script>
+</body>
+</html>

@@ -14,20 +14,6 @@
                         primary: '#1B7548',
                         primaryDark: '#145c38',
                         whatsapp: '#25D366'
-                    },
-                    animation: {
-                        'slide-up': 'slideUp 0.3s ease-out forwards',
-                        'fade-in': 'fadeIn 0.4s ease-in-out'
-                    },
-                    keyframes: {
-                        slideUp: {
-                            '0%': { transform: 'translateY(10px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' }
-                        },
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' }
-                        }
                     }
                 }
             }
@@ -39,161 +25,144 @@
     
     <style>
         body { font-family: 'Poppins', sans-serif; }
-        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-        .input-focus { transition: all 0.3s ease; }
-        .input-focus:focus { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(27, 117, 72, 0.15); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col bg-[#f8fafc] text-slate-800">
+<body class="bg-gradient-to-b from-emerald-50 to-slate-50 min-h-screen flex flex-col">
 
-    <header class="sticky top-0 z-50 bg-primary text-white shadow-md">
-        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+    <header class="bg-primary text-white shadow-lg p-4">
+        <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <div class="bg-white p-1 rounded-full text-center">
-                    <img src="logopn.png" alt="Logo" class="h-8 w-8 object-contain inline">
-                </div>
-                <h1 class="text-xs font-bold tracking-widest leading-tight uppercase">PAGARNUSA<br><span class="text-[10px] font-medium opacity-80">UNUSIA JAKARTA</span></h1>
+                <img src="logopn.png" alt="Logo" class="h-8">
+                <span class="font-bold text-sm tracking-widest uppercase">Pembayaran</span>
             </div>
-            <a href="index.html" class="bg-primaryDark/50 hover:bg-white hover:text-primary px-4 py-1.5 rounded-full text-xs font-semibold transition-all border border-white/20">
-                <i class="fas fa-home mr-1"></i> Beranda
+            <a href="profil_siswa.html" class="text-xs bg-white/20 px-3 py-1 rounded-lg hover:bg-white/30 transition">
+                <i class="fas fa-arrow-left mr-1"></i> Kembali
             </a>
         </div>
     </header>
 
-    <main class="flex-1 w-full max-w-md mx-auto px-4 py-8 flex items-center justify-center">
-        <section class="w-full glass-card rounded-2xl shadow-xl overflow-hidden animate-slide-up border border-slate-200">
-            <div class="bg-primary px-8 py-6 text-white text-center">
-                <i class="fas fa-check-double mb-3 text-3xl opacity-90"></i>
-                <h2 class="text-xl font-bold italic">Konfirmasi Pembayaran</h2>
-                <p class="text-[11px] opacity-80 mt-1 uppercase tracking-tighter">Pencak Silat Nahdlatul Ulama Pagar Nusa</p>
+    <main class="flex-1 container mx-auto max-w-lg px-4 py-10">
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-emerald-100">
+            <div class="bg-primary p-6 text-white text-center">
+                <i class="fas fa-receipt text-4xl mb-3 opacity-80"></i>
+                <h2 class="text-xl font-bold">Konfirmasi Pembayaran</h2>
+                <p class="text-xs opacity-70">UKT IV Pagar Nusa UNUSIA</p>
             </div>
 
-            <div class="mx-8 -mt-5 bg-white rounded-lg border border-emerald-100 shadow-sm p-4 text-center animate-fade-in">
-                <p class="text-[10px] font-bold text-emerald-700 uppercase mb-1 tracking-widest">Informasi Rekening</p>
-                <div class="flex justify-center items-center space-x-2 text-primary font-bold">
-                    <span>SEA BANK</span>
-                    <span class="text-slate-300">|</span>
-                    <span class="tracking-widest">9017 0194 3895</span>
-                </div>
-            </div>
-
-            <div class="p-8 space-y-5">
-                <div class="group">
-                    <label class="block text-xs font-bold text-slate-500 mb-1 uppercase tracking-wider ml-1">Nama Lengkap / Unit</label>
+            <form id="paymentForm" class="p-8 space-y-5">
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Nama Lengkap</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 group-focus-within:text-primary">
-                            <i class="fas fa-id-card"></i>
-                        </span>
-                        <input type="text" id="nama" placeholder="Contoh: PAC PAGARNUSA KEMANG" 
-                            class="input-focus w-full rounded-xl border border-slate-200 bg-slate-50/50 pl-10 pr-4 py-3 text-sm outline-none focus:border-primary focus:bg-white uppercase">
+                        <i class="fas fa-user absolute left-3 top-3 text-slate-400"></i>
+                        <input type="text" id="nama-otomatis" readonly
+                            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-10 py-3 text-sm font-semibold text-slate-700 focus:outline-none cursor-not-allowed">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 mb-1 uppercase tracking-wider ml-1">Opsi Pembayaran</label>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Metode Bayar</label>
+                    <select id="status-bayar" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none transition">
+                        <option value="Lunas">Lunas (Rp. 100.000)</option>
+                        <option value="Cicil">Cicil / DP</option>
+                    </select>
+                </div>
+
+                <div id="cicilan-container" class="hidden animate-slide-up">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Nominal Cicilan</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 pointer-events-none">
-                            <i class="fas fa-money-bill-wave"></i>
-                        </span>
-                        <select id="statusBayar" onchange="toggleCicilan()" 
-                            class="input-focus w-full rounded-xl border border-slate-200 bg-slate-50/50 pl-10 pr-10 py-3 text-sm outline-none focus:border-primary focus:bg-white appearance-none cursor-pointer">
-                            <option value="Rp. 100.000">Lunas (Rp. 100.000)</option>
-                            <option value="Cicil">Cicil Nominal Lain</option>
-                        </select>
-                        <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 pointer-events-none text-[10px]">
-                            <i class="fas fa-chevron-down"></i>
-                        </span>
+                        <span class="absolute left-4 top-3 text-sm font-bold text-slate-400">Rp</span>
+                        <input type="number" id="nominal-cicil" placeholder="Contoh: 50000"
+                            class="w-full border border-slate-300 rounded-xl px-12 py-3 text-sm focus:ring-2 focus:ring-primary focus:outline-none transition">
                     </div>
                 </div>
 
-                <div id="inputCicilan" class="hidden animate-fade-in bg-emerald-50/50 p-4 rounded-xl border border-emerald-100">
-                    <label class="block text-xs font-bold text-primary mb-1 uppercase tracking-wider">Masukkan Nominal</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-primary font-bold text-sm">Rp</span>
-                        <input type="number" id="nominalCicil" placeholder="Contoh: 50000" 
-                            class="input-focus w-full rounded-lg border border-emerald-200 bg-white pl-10 pr-4 py-2 text-sm font-semibold outline-none focus:border-primary">
-                    </div>
+                <div class="pt-4">
+                    <button type="submit" class="w-full bg-whatsapp hover:bg-green-600 text-white font-bold py-4 rounded-xl shadow-lg transition transform hover:scale-[1.02] flex items-center justify-center space-x-3">
+                        <i class="fab fa-whatsapp text-xl"></i>
+                        <span>Kirim Konfirmasi via WA</span>
+                    </button>
+                    <p class="text-[10px] text-center text-slate-400 mt-4 italic">
+                        *Anda akan diarahkan ke WhatsApp untuk mengirim bukti transfer.
+                    </p>
                 </div>
+            </form>
+        </div>
 
-                <div class="bg-blue-50 border border-blue-100 rounded-lg p-3 flex items-start space-x-3">
-                    <i class="fas fa-info-circle text-blue-500 mt-0.5 text-xs"></i>
-                    <p class="text-[10px] text-blue-700 leading-relaxed italic">Sistem akan secara otomatis menyusun pesan konfirmasi sesuai template resmi.</p>
-                </div>
-
-                <button onclick="kirimWA()" 
-                    class="w-full bg-whatsapp hover:bg-[#1da851] text-white font-bold py-4 rounded-xl transition-all transform active:scale-[0.98] shadow-lg shadow-emerald-200 flex items-center justify-center space-x-2">
-                    <i class="fab fa-whatsapp text-xl"></i>
-                    <span>Kirim Konfirmasi WA</span>
-                </button>
+        <div class="mt-8 bg-emerald-900 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
+            <i class="fas fa-university absolute -right-4 -bottom-4 text-8xl opacity-10"></i>
+            <h3 class="text-sm font-bold mb-4 flex items-center">
+                <i class="fas fa-info-circle mr-2 text-yellow-400"></i> Tujuan Transfer
+            </h3>
+            <div class="space-y-2">
+                <p class="text-xs opacity-80">Bank BRI (002)</p>
+                <p class="text-lg font-mono font-bold tracking-wider">0000-01-000000-00-0</p>
+                <p class="text-xs font-medium">A.n Bendahara Pagar Nusa</p>
             </div>
-        </section>
+        </div>
     </main>
 
-    <footer class="bg-white border-t border-slate-200 py-4">
-        <p class="text-center text-[10px] text-slate-400 font-medium tracking-widest uppercase">
-            Official System © 2025 PSNU Pagar Nusa
-        </p>
+    <footer class="text-center py-6 text-slate-400 text-[10px]">
+        © 2025 PAGARNUSA UNUSIA. Sistem Pendaftaran UKT.
     </footer>
 
     <script>
-        function toggleCicilan() {
-            const status = document.getElementById("statusBayar").value;
-            const divCicilan = document.getElementById("inputCicilan");
-            if (status === "Cicil") {
-                divCicilan.classList.remove("hidden");
-                document.getElementById("nominalCicil").focus();
-            } else {
-                divCicilan.classList.add("hidden");
-            }
-        }
-
-        function kirimWA() {
-            const namaInput = document.getElementById("nama").value.trim();
-            const status = document.getElementById("statusBayar").value;
-            const nominalCicil = document.getElementById("nominalCicil").value;
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Ambil Nama dari Sesi Login
+            const currentUser = JSON.parse(localStorage.getItem('currentUserProfile'));
             
-            if (!namaInput) {
-                alert("Harap masukkan Nama Anda atau Unit PAC.");
+            // Proteksi: Jika tidak login, kembalikan ke login
+            if (!currentUser) {
+                window.location.href = 'login.html';
                 return;
             }
 
-            const nama = namaInput.toUpperCase();
-            let jumlahBayar = status;
-            if (status === "Cicil") {
-                if (!nominalCicil) {
-                    alert("Harap masukkan nominal cicilan.");
-                    return;
+            // Masukkan nama ke input secara otomatis
+            document.getElementById('nama-otomatis').value = currentUser.nama;
+
+            // 2. Logika Tampilan Cicilan
+            const selectBayar = document.getElementById('status-bayar');
+            const cicilanContainer = document.getElementById('cicilan-container');
+
+            selectBayar.addEventListener('change', () => {
+                if (selectBayar.value === 'Cicil') {
+                    cicilanContainer.classList.remove('hidden');
+                } else {
+                    cicilanContainer.classList.add('hidden');
                 }
-                jumlahBayar = "Rᴘ. " + parseInt(nominalCicil).toLocaleString('id-ID');
-            } else {
-                // Mengubah format Rp biasa ke Small Caps Rᴘ
-                jumlahBayar = "Rᴘ. 100.000";
-            }
+            });
 
-            const nomor = "6285707195371";
-            
-            // Template Pesan dengan font khusus (Small Caps)
-            const pesan = `Assᴀʟᴀᴍᴜᴀʟᴀɪᴋᴜᴍ Mʙᴀᴋ,
-Mᴏʜᴏɴ Iᴢɪɴ Kᴏɴꜰɪʀᴍᴀsɪ PᴇᴍʙAYARAN:
+            // 3. Logika Kirim Pesan WhatsApp
+            const paymentForm = document.getElementById('paymentForm');
+            paymentForm.addEventListener('submit', (e) => {
+                e.preventDefault();
 
-📌 Nᴀᴍᴀ : ${nama}
-📌 Jᴜᴍʟᴀʜ : ${jumlahBayar}
-📌 Kᴇᴛᴇʀᴀɴɢᴀɴ : Uᴊɪᴀɴ Kᴇɴᴀɪᴋᴀɴ Tɪɴɢᴋᴀᴛ IV
+                const nama = document.getElementById('nama-otomatis').value.toUpperCase();
+                const status = selectBayar.value;
+                const nominalCicil = document.getElementById('nominal-cicil').value;
 
-Sᴇʙᴀɢᴀɪ *Pᴇsᴇʀᴛᴀ Uᴊɪᴀɴ Kᴇɴᴀɪᴋᴀɴ Tɪɴɢᴋᴀᴛ IV* PSNU Pᴀɢᴀʀɴᴜsᴀ UNUSIA`;
+                let jumlahBayarText = "Rᴘ. 100.000 (Lᴜɴᴀs)";
+                
+                if (status === "Cicil") {
+                    if (!nominalCicil) {
+                        alert("Silakan masukkan nominal cicilan Anda.");
+                        return;
+                    }
+                    jumlahBayarText = "Rᴘ. " + parseInt(nominalCicil).toLocaleString('id-ID') + " (Cɪᴄɪʟ)";
+                }
 
-            const btn = document.querySelector('button');
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> Mᴇɴʏᴜsᴜɴ Pᴇsᴀɴ...`;
-            btn.disabled = true;
+                // Pengaturan Nomor Admin (Ganti sesuai nomor bendahara Anda)
+                const nomorWA = "6285707195371"; 
 
-            setTimeout(() => {
-                const url = `https://wa.me/${nomor}?text=${encodeURIComponent(pesan)}`;
-                window.open(url, '_blank');
-                btn.innerHTML = `<i class="fab fa-whatsapp text-xl"></i> <span>Kirim Konfirmasi WA</span>`;
-                btn.disabled = false;
-            }, 800);
-        }
+                // Draft Pesan dengan font Small Caps agar estetis
+                const pesan = `Assᴀʟᴀᴍᴜᴀʟᴀɪᴋᴜᴍ Mʙᴀᴋ,\r\nMᴏʜᴏɴ Iᴢɪɴ Kᴏɴꜰɪʀᴍᴀsɪ PᴇᴍʙAYARAN:\r\n\r\n📌 Nᴀᴍᴀ : ${nama}\r\n📌 Jᴜᴍʟᴀʜ : ${jumlahBayarText}\r\n📌 KᴇᴛᴇRᴀɴɢᴀɴ : Uᴊɪᴀɴ Kᴇɴᴀɪᴋᴀɴ Tɪɴɢᴋᴀᴛ IV\r\n\r\nSᴇʙᴀɢᴀɪ *PᴇsᴇRᴛᴀ Uᴊɪᴀɴ Kᴇɴᴀɪᴋᴀɴ Tɪɴɢᴋᴀᴛ IV* PSNU Pᴀɢᴀʀɴᴜsᴀ UNUSIA`;
+
+                // URL Encode untuk link WhatsApp
+                const linkWA = `https://wa.me/${nomorWA}?text=${encodeURIComponent(pesan)}`;
+                
+                // Buka di tab baru
+                window.open(linkWA, '_blank');
+            });
+        });
     </script>
-
 </body>
 </html>

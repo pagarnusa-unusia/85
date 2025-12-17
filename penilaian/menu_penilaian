@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu Utama Penilaian | PAGARNUSA UNUSIA</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1B7548',
+                        primaryDark: '#145c38'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        body { 
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth; 
+        }
+        .menu-card {
+            transition: all 0.3s ease;
+        }
+        .menu-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-gradient-to-b from-emerald-50 to-slate-50 text-slate-800">
+
+    <header id="main-header" class="sticky top-0 z-50 bg-primary text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="https://uktpagarnusa.my.id/penilaian/fisik/logopn.png" alt="Logo PAGARNUSA" class="h-10">
+                <h1 class="text-sm font-bold tracking-wide leading-tight uppercase">
+                    PAGARNUSA<br>UNUSIA
+                </h1>
+            </div>
+            
+            <nav id="nav-desktop" class="hidden md:flex space-x-8">
+                <a href="https://uktpagarnusa.my.id/penilaian/menu_penilaian" class="nav-link text-sm font-medium hover:text-emerald-200 transition">Refresh</a>
+            </nav>
+
+            <button id="nav-toggle" class="md:hidden p-2">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-1 w-full max-w-4xl mx-auto px-4 py-12">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-extrabold text-primary md:text-4xl">Portal Penilaian UKT</h2>
+            <div class="h-1 w-20 bg-primary mx-auto mt-4 rounded-full"></div>
+            <p class="text-slate-500 mt-4 text-sm md:text-base">Silakan pilih kategori penilaian untuk memulai penginputan skor peserta.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 max-w-2xl mx-auto">
+            
+            <a href="https://uktpagarnusa.my.id/penilaian/hafalan/penilaian" class="menu-card bg-white p-6 rounded-2xl shadow-md border border-slate-100 flex flex-col items-center text-center">
+                <div class="w-16 h-16 bg-emerald-50 text-primary rounded-full flex items-center justify-center text-2xl mb-4 group-hover:bg-primary group-hover:text-white transition">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h3 class="font-bold text-lg">Hafalan</h3>
+                <p class="text-xs text-slate-400 mt-2">Doa harian, wirid, dan materi ke-NU-an.</p>
+            </a>
+
+            <a href="https://uktpagarnusa.my.id/penilaian/fisik/penilaian" class="menu-card bg-white p-6 rounded-2xl shadow-md border border-slate-100 flex flex-col items-center text-center">
+                <div class="w-16 h-16 bg-emerald-50 text-primary rounded-full flex items-center justify-center text-2xl mb-4">
+                    <i class="fas fa-running"></i>
+                </div>
+                <h3 class="font-bold text-lg">Fisik</h3>
+                <p class="text-xs text-slate-400 mt-2">Ketahanan, kekuatan, dan kelincahan fisik.</p>
+            </a>
+
+            <a href="https://uktpagarnusa.my.id/penilaian/sejarah&teknik/penilaian" class="menu-card bg-white p-6 rounded-2xl shadow-md border border-slate-100 flex flex-col items-center text-center">
+                <div class="w-16 h-16 bg-emerald-50 text-primary rounded-full flex items-center justify-center text-2xl mb-4">
+                    <i class="fas fa-history"></i>
+                </div>
+                <h3 class="font-bold text-lg">Sejarah & Teknik</h3>
+                <p class="text-xs text-slate-400 mt-2">Wawasan sejarah, jurus, dan teknik.</p>
+            </a>
+
+            <a href="https://uktpagarnusa.my.id/penilaian/mental/penilaian" class="menu-card bg-white p-6 rounded-2xl shadow-md border border-slate-100 flex flex-col items-center text-center">
+                <div class="w-16 h-16 bg-emerald-50 text-primary rounded-full flex items-center justify-center text-2xl mb-4">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3 class="font-bold text-lg">Mental</h3>
+                <p class="text-xs text-slate-400 mt-2">Ujian mental, adab, dan kedisiplinan.</p>
+            </a>
+
+        </div>
+    </main>
+
+    <footer class="bg-primary text-white text-center py-4 mt-auto">
+        <p class="text-[10px] md:text-xs opacity-90 tracking-wider">© 2025 PAGARNUSA UNUSIA. OFFICIAL ASSESSMENT PORTAL.</p>
+    </footer>
+
+    <script>
+        document.getElementById('nav-toggle').addEventListener('click', () => {
+            alert("Menu Navigasi Mobile");
+        });
+    </script>
+</body>
+</html>

@@ -24,6 +24,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
+        /* Animasi getar saat salah kode */
+    .animate-shake {
+        animation: shake 0.2s ease-in-out 0s 2;
+    }
+    @keyframes shake {
+        0% { margin-left: 0rem; }
+        25% { margin-left: 0.5rem; }
+        75% { margin-left: -0.5rem; }
+        100% { margin-left: 0rem; }
+    }
         body { 
             font-family: 'Poppins', sans-serif;
             scroll-behavior: smooth; 
@@ -105,7 +115,7 @@
                 Mengembangkan potensi diri, menguatkan spiritualitas, dan menjunjung tinggi nilai-nilai tradisi.
             </p>
             <p class="text-slate-700 max-w-3xl mx-auto md:mx-0 mb-8">
-                Pencak Silat Nahdlatul Ulama Pagar Nusa Rayon Universitas Nahdlatul Ulama Indonesia (UNUSIA) adalah wadah bagi mahasiswa untuk berkreasi, berprestasi, dan melestarikan budaya bangsa.
+                Pencak Silat Nahdlatul Ulama Pagarnusa Rayon Universitas Nahdlatul Ulama Indonesia (UNUSIA) adalah wadah bagi mahasiswa untuk berkreasi, berprestasi, dan melestarikan budaya bangsa.
             </p>
             
             <div class="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
@@ -120,22 +130,24 @@
             </div>
         </section>
 
-        <section id="announcement-section" class="bg-white rounded-xl shadow-2xl p-8 md:p-12 mt-8 border-t-4 border-primary">
+<section id="announcement-section" class="bg-white rounded-xl shadow-2xl p-8 md:p-12 mt-8 border-t-4 border-primary">
             <h2 class="text-3xl font-extrabold text-primaryDark mb-2 flex items-center">
                 <span class="mr-2 text-4xl">📢</span> Ujian Kenaikan Tingkat IV
             </h2>
             <p class="text-xl font-semibold text-slate-600 mb-6 border-b pb-4">
-                PSNU PAGARNUSA UNUSIA
+                Unit Kegiatan Mahasiswa Pagarnusa UNUSIA Masa Khidmat 2024-2025
             </p>
 
             <div class="bg-blue-50 p-4 rounded-lg mb-6 border-l-4 border-blue-500">
+               
                 <p class="text-sm italic text-blue-800">Assalamu’alaikum warahmatullahi wabarakatuh.</p>
                 <p class="text-base font-medium text-slate-800 mt-2">
-                    Tema: Mengukir Bakti, Memuliakan Marwah Kolektif Santri PSNU PAGARNUSA
+                    Berdasarkan Surat Keputusan Nomor: 014/UKM.PS.LT.PN/SK.PANITIA/I/11.2025 tentang Panitia Pelaksanaan Ujian Kenaikan Tingkat IV.
                 </p>
+                
             </div>
 
-            <div class="space-y-6">
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
                 <div class="p-5 bg-emerald-50 rounded-xl border-l-4 border-emerald-600 shadow-md">
                     <h3 class="font-bold text-xl text-emerald-800 mb-3 flex items-center">
                         <span class="mr-2 text-2xl">📅</span> Linimasa Kegiatan
@@ -146,42 +158,99 @@
                         <li>Pelaksanaan Ujian: 10–11 Januari 2026</li>
                     </ul>
                 </div>
+                <div class="p-5 bg-amber-50 rounded-xl border-l-4 border-amber-600 shadow-md">
+                    <h3 class="font-bold text-xl text-amber-800 mb-3 flex items-center">
+                        <span class="mr-2 text-2xl">📍</span> Lokasi Pelaksanaan
+                    </h3>
+                    <p class="text-slate-700 mb-2">Gelanggang Olahraga Kampus UNUSIA</p>
+                    <p class="text-sm text-slate-500 italic">Ditetapkan di Jakarta, 19 November 2025</p>
+                </div>
+            </div>
 
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="p-5 bg-amber-50 rounded-xl border-l-4 border-amber-600 shadow-md">
-                        <h3 class="font-bold text-xl text-amber-800 mb-3 flex items-center">
-                            <span class="mr-2 text-2xl">📍</span> Lokasi Pelaksanaan
-                        </h3>
-                        <p class="text-slate-700">Gelanggang Olahraga Kampus UNUSIA</p>
+            <div class="p-6 bg-slate-50 rounded-xl border border-slate-200 shadow-sm mb-8">
+                <h3 class="font-bold text-2xl text-primaryDark mb-6 text-center border-b pb-2">
+                    Struktur Panitia Pelaksana
+                </h3>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="font-bold text-lg text-slate-800 mb-4 flex items-center">
+                            <i class="fas fa-users-cog mr-2 text-primary"></i> Steering Committee
+                        </h4>
+                        <ul class="space-y-3 text-slate-700">
+                            <li class="flex flex-col"><span class="font-semibold">Pelindung:</span> Pak Ulinuha</li>
+                            <li class="flex flex-col"><span class="font-semibold">Pembina:</span> M. Ridho Malik Ibrahim (Ketua UKM Pencak Silat)</li>
+                            <li class="flex flex-col"><span class="font-semibold">Penanggung Jawab:</span> Fakhrizal Sa’dan M (Ketua Unit Pagarnusa UNUSIA)</li>
+                        </ul>
                     </div>
-                    
-                    <div class="p-5 bg-indigo-50 rounded-xl border-l-4 border-indigo-600 shadow-md">
-                        <h3 class="font-bold text-xl text-indigo-800 mb-3 flex items-center">
-                            <span class="mr-2 text-2xl">🔗</span> Link Pendaftaran
-                        </h3>
-                        <a href="daftar.html" class="text-indigo-600 hover:text-indigo-800 font-semibold underline break-word-sm">
-                            Daftar Sekarang
-                        </a>
+
+                    <div>
+                        <h4 class="font-bold text-lg text-slate-800 mb-4 flex items-center">
+                            <i class="fas fa-user-friends mr-2 text-primary"></i> Organizing Committee
+                        </h4>
+                        <ul class="space-y-3 text-slate-700">
+                            <li><span class="font-semibold">Ketua Pelaksana:</span> Kang Iqbal</li>
+                            <li><span class="font-semibold">Sekretaris:</span> Kang Mundzir</li>
+                            <li><span class="font-semibold">Bendahara:</span> Ning Kaniska</li>
+                        </ul>
                     </div>
                 </div>
 
-                <div class="p-5 bg-red-50 rounded-xl border-l-4 border-red-600 shadow-md">
-                    <h3 class="font-bold text-xl text-red-800 mb-3 flex items-center">
-                        <span class="mr-2 text-2xl">📞</span> Contact Person
-                    </h3>
-                    <p class="text-slate-700 break-word-sm">Silakan hubungi: **0857-1523-2441**</p>
+                <div class="mt-8 grid md:grid-cols-3 gap-6">
+                    <div class="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
+                        <h5 class="font-bold text-primary mb-2">Devisi Acara</h5>
+                        <p class="text-sm text-slate-600">Neng Erin, Neng Risna, Neng Amelda</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
+                        <h5 class="font-bold text-primary mb-2">Devisi Konsumsi</h5>
+                        <p class="text-sm text-slate-600">Kang Ikram, Kang Munir, Neng Niken, Neng Yeyen</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
+                        <h5 class="font-bold text-primary mb-2">Humas, Perlengkapan & PDD</h5>
+                        <p class="text-sm text-slate-600">Neng Syifa, Neng Fatma, Kang Ilham, Kang Azar, Ning Khalisa, Ning Tiara</p>
+                    </div>
                 </div>
             </div>
 
             <div class="mt-8 pt-4 border-t border-slate-200 text-sm text-slate-600">
-                <p>Diharapkan seluruh santri yang memenuhi syarat dapat segera mendaftar dan mempersiapkan diri dengan sebaik-baiknya.</p>
-                <p class="mt-3">Atas perhatian dan partisipasinya kami ucapkan terima kasih.</p>
-                <p class="mt-4 font-semibold">Wassalamu’alaikum warahmatullahi wabarakatuh.</p>
-                <p class="mt-2 text-xs">Hormat kami,</p>
-                <p class="font-bold text-primaryDark">Panitia Pelaksana PSNU PAGARNUSA UNUSIA</p>
+                <p>Mengetahui,</p>
+                <p class="mt-4 font-semibold text-primaryDark">Ketua Unit: Fakhrizal Sa’dan M</p>
+                <p class="text-xs mt-2 font-semibold">Sekretaris: M Nur Wahid</p>
             </div>
 
-            <a href="#hero-section" class="mt-6 inline-block text-primary hover:text-primaryDark text-sm underline">Kembali ke atas</a>
+</div>
+
+<a href="javascript:void(0)" onclick="openAccessModal()" class="mt-6 inline-flex items-center text-primary hover:text-primaryDark text-sm underline font-semibold transition">
+    <i class="fas fa-download mr-2"></i> Unduh SK Panitia
+</a>
+
+<div id="access-modal" class="fixed inset-0 z-[999] hidden items-center justify-center bg-black/60 backdrop-blur-sm">
+    <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-sm mx-4 transform transition-all">
+        <div class="text-center mb-6">
+            <div class="inline-flex items-center justify-center w-12 h-12 bg-primary/10 rounded-full mb-3">
+                <i class="fas fa-lock text-primary text-xl"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-800">Akses Terbatas</h3>
+            <p class="text-xs text-slate-500 mt-1">Masukkan kode akses untuk mengunduh SK Panitia UKT IV</p>
+        </div>
+
+        <input type="password" id="modal-code" placeholder="Kode Akses" 
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary mb-4 text-center tracking-widest">
+        
+        <div class="flex flex-col gap-2">
+            <button onclick="verifyAndDownload()" 
+                class="w-full bg-primary hover:bg-primaryDark text-white font-bold py-3 rounded-lg transition shadow-md">
+                Konfirmasi & Unduh
+            </button>
+            <button onclick="closeAccessModal()" 
+                class="w-full bg-transparent hover:bg-slate-100 text-slate-500 py-2 rounded-lg text-sm transition">
+                Batal
+            </button>
+        </div>
+        
+        <p id="modal-error" class="text-red-500 text-xs text-center mt-3 hidden">Kode akses salah!</p>
+    </div>
+</div>
         </section>
 
         <div class="my-10 border-t border-slate-300"></div>
@@ -273,6 +342,57 @@
     </footer>
 
     <script>
+        const modal = document.getElementById('access-modal');
+    const input = document.getElementById('modal-code');
+    const errorMsg = document.getElementById('modal-error');
+
+    // Membuka Popup
+    function openAccessModal() {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        input.focus();
+    }
+
+    // Menutup Popup
+    function closeAccessModal() {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        input.value = "";
+        errorMsg.classList.add('hidden');
+    }
+
+    // Verifikasi dan Download
+    function verifyAndDownload() {
+        const secretCode = "adminpn";
+        const fileUrl = "014 SK Panitia UKT.pdf";
+
+        if (input.value === secretCode) {
+            // Jika Benar: Download File
+            const link = document.createElement('a');
+            link.href = fileUrl;
+            link.download = "SK_Panitia_UKT_PagarNusa_UNUSIA.pdf"; 
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Tutup Modal
+            closeAccessModal();
+        } else {
+            // Jika Salah: Tampilkan Error
+            errorMsg.classList.remove('hidden');
+            input.classList.add('border-red-500', 'animate-shake');
+            setTimeout(() => {
+                input.classList.remove('border-red-500', 'animate-shake');
+            }, 500);
+        }
+    }
+
+    // Menutup modal jika klik di luar area box
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            closeAccessModal();
+        }
+    }
         // Elemen Navigasi Mobile
         const navToggle = document.getElementById('nav-toggle');
         const navMobile = document.getElementById('nav-mobile');

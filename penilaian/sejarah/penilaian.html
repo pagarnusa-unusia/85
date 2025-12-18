@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Form Penilaian | PAGARNUSA UNUSIA</title>
+    <title>Sejarah</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -47,9 +47,15 @@
                 </h1>
             </div>
             
-            <nav id="nav-desktop" class="hidden md:flex space-x-8">
-                <a href="#" class="nav-link text-sm font-medium hover:text-slate-200 transition">Refresh</a>
-                </nav>
+<nav id="nav-desktop" class="hidden md:flex space-x-8">
+    <a href="https://uktpagarnusa.my.id/penilaian/sejarah/rekapnilai" 
+       class="nav-link flex items-center gap-2 text-sm font-medium hover:text-slate-200 transition">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.375m1.875-11.25c.621 0 1.125.504 1.125 1.125v17.25c0 .621-.504 1.125-1.125 1.125H5.625c-.621 0-1.125-.504-1.125-1.125V4.875c0-.621.504-1.125 1.125-1.125H9.75ZM13.25 1.5l1.5 1.5m-.75-1.5l-1.5 1.5m-3-1.5h.75m1.5 0h.75m-4.5 0H3c-.621 0-1.125.504-1.125 1.125V18a2.25 2.25 0 0 0 2.25 2.25h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 18 4.5h-2.25a2.25 2.25 0 0 0-2.25-2.25H13.25Z" />
+        </svg>
+        <span>Rekap Nilai</span>
+    </a>
+</nav>
 
             <button id="nav-toggle" class="md:hidden p-2">
                 <i class="fas fa-bars text-xl"></i>
@@ -97,7 +103,7 @@
                         <i class="fas fa-star mr-2 text-primary"></i> Kriteria Penilaian
                     </label>
                 <select id="kriteria" required class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm outline-none">
-                    <option value="Sejarah" selected>Sejarah</option>
+                    <option value="sejarah" selected>sejarah</option>
                 </select>
                 </div>
 
@@ -176,39 +182,51 @@
     });
 
 // --- 3. HANDLE FORM SUBMISSION ---
-    const penilaianForm = document.getElementById('penilaianForm');
-    penilaianForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
+const penilaianForm = document.getElementById('penilaianForm');
+
+penilaianForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    // 1. Ambil data dari form
+    const nama = selectNama.value;
+    const skor = document.getElementById('skor').value;
+    const kelompok = selectKelompok.value;
+
+    // 2. Munculkan Pop-up Konfirmasi
+    const konfirmasi = confirm(`Apakah Anda yakin ingin menyimpan nilai ini?\n\nNama: ${nama}\nKelompok: ${kelompok}\nSkor: ${skor}`);
+
+    // 3. Jika user menekan "OK", proses penyimpanan dijalankan
+    if (konfirmasi) {
         const dataBaru = {
-            id: Date.now(), // ID unik untuk setiap baris
-            kelompok: selectKelompok.value,
-            nama: selectNama.value,
+            id: Date.now(),
+            kelompok: kelompok,
+            nama: nama,
             kriteria: document.getElementById('kriteria').value,
-            skor: document.getElementById('skor').value,
+            skor: skor,
             tanggal: new Date().toLocaleDateString('id-ID'),
             waktu: new Date().toLocaleTimeString('id-ID')
         };
 
-        // Mengambil data lama dari localStorage (jika ada)
+        // Simpan ke localStorage
         let rekapNilai = JSON.parse(localStorage.getItem('rekapNilaiPagarNusa')) || [];
-        
-        // Menambahkan data baru ke dalam array
         rekapNilai.push(dataBaru);
-        
-        // Menyimpan kembali ke localStorage
         localStorage.setItem('rekapNilaiPagarNusa', JSON.stringify(rekapNilai));
         
-        // Notifikasi dan pindah halaman
-        alert(`Nilai ${dataBaru.nama} berhasil disimpan ke rekap!`);
-        window.location.href = 'rekapnilai.html';
-    });
-
+        // Notifikasi akhir dan pindah halaman
+        alert(`Data ${nama} berhasil disimpan!`);
+        window.location.href = 'https://uktpagarnusa.my.id/penilaian/fisik/rekapnilai';
+    } else {
+        // Jika user menekan "Cancel"
+        console.log("Penyimpanan dibatalkan oleh user.");
+    }
+});
     // --- 4. NAV MOBILE ---
-    const navToggle = document.getElementById('nav-toggle');
-    navToggle.addEventListener('click', () => {
-        alert("Fitur navigasi akan diarahkan ke halaman utama.");
-    });
+const navToggle = document.getElementById('nav-toggle');
+navToggle.addEventListener('click', () => {
+    // Langsung arahkan ke halaman rekap jika ikon menu di klik di HP
+    window.location.href = 'https://uktpagarnusa.my.id/penilaian/fisik/rekapnilai';
+});
 </script>
 </body>
+
 </html>

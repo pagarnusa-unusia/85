@@ -48,9 +48,10 @@
             
             <div class="lg:col-span-1 space-y-6">
                 <div class="bg-white rounded-2xl shadow-xl p-6 text-center border border-emerald-100">
-                    <div class="w-24 h-24 bg-emerald-100 text-primary rounded-full mx-auto flex items-center justify-center text-3xl font-bold mb-4 border-2 border-primary">
-                        <i class="fas fa-user"></i>
-                    </div>
+<div class="w-24 h-24 bg-emerald-100 text-primary rounded-full mx-auto flex items-center justify-center overflow-hidden mb-4 border-2 border-primary">
+    <img id="display-foto" src="" alt="Foto Profil" class="w-full h-full object-cover hidden">
+    <i id="foto-icon-placeholder" class="fas fa-user text-3xl font-bold"></i>
+</div>
                     <h2 id="display-nama" class="text-xl font-bold text-slate-800">Nama Peserta</h2>
                     <p id="display-email" class="text-sm text-slate-500 mb-4 italic">email@peserta.com</p>
                     
@@ -121,69 +122,83 @@
         <p class="text-xs opacity-80">© 2025 PAGARNUSA UNUSIA. Semua hak cipta dilindungi.</p>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // 1. Ambil Data Sesi Login
-            const currentUser = JSON.parse(localStorage.getItem('currentUserProfile'));
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // 1. Ambil Data Sesi Login
+        const currentUser = JSON.parse(localStorage.getItem('currentUserProfile'));
+        
+        // Proteksi Halaman: Jika tidak login, tendang balik ke login.html
+        if (!currentUser || currentUser.is_admin) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // 2. Sinkronisasi Data Terbaru dari "Database" (localStorage)
+        const allData = JSON.parse(localStorage.getItem('allStudentsData')) || [];
+        const latestProfile = allData.find(s => s.email === currentUser.email) || currentUser;
+
+        // 3. Isi Tampilan Profil (Teks)
+        document.getElementById('display-nama').textContent = latestProfile.nama;
+        document.getElementById('display-email').textContent = latestProfile.email;
+        document.getElementById('display-ttl').textContent = latestProfile.ttl;
+        document.getElementById('display-alamat').textContent = latestProfile.alamat;
+        document.getElementById('display-whatsapp').textContent = latestProfile.whatsapp;
+        document.getElementById('display-angkatan').textContent = latestProfile.angkatan;
+        document.getElementById('display-ujian').textContent = latestProfile.ujian;
+
+        // --- LOGIKA TAMPILAN FOTO ---
+        const fotoElement = document.getElementById('display-foto');
+        const iconPlaceholder = document.getElementById('foto-icon-placeholder');
+
+        if (latestProfile.fotoUrl && latestProfile.fotoUrl.trim() !== "") {
+            // Jika ada link foto, tampilkan img dan sembunyikan icon
+            fotoElement.src = latestProfile.fotoUrl;
+            fotoElement.classList.remove('hidden');
+            iconPlaceholder.classList.add('hidden');
+        } else {
+            // Jika tidak ada foto, tampilkan icon default
+            fotoElement.classList.add('hidden');
+            iconPlaceholder.classList.remove('hidden');
+        }
+
+        // 4. Logika Tampilan Status & Sertifikat
+        const statusBox = document.getElementById('status-box');
+        const statusText = document.getElementById('status-text');
+        const placeholderText = document.getElementById('placeholder-text');
+        const sertifikatContainer = document.getElementById('sertifikat-container');
+        const sertifikatPlaceholder = document.getElementById('sertifikat-placeholder');
+
+        const currentStatus = latestProfile.status;
+
+        if (currentStatus === 'Kualifikasi') {
+            statusText.textContent = "Kualifikasi ✅";
+            statusBox.className = "py-3 px-4 rounded-xl border-2 transition-all duration-500 bg-green-50 border-green-500 text-green-700";
             
-            // Proteksi Halaman: Jika tidak login, tendang balik ke login.html
-            if (!currentUser || currentUser.is_admin) {
-                window.location.href = 'login.html';
-                return;
-            }
-
-            // 2. Sinkronisasi Data Terbaru dari "Database" (localStorage)
-            // Ini penting supaya kalau Admin ganti status, di sini langsung berubah.
-            const allData = JSON.parse(localStorage.getItem('allStudentsData')) || [];
-            const latestProfile = allData.find(s => s.email === currentUser.email) || currentUser;
-
-            // 3. Isi Tampilan Profil
-            document.getElementById('display-nama').textContent = latestProfile.nama;
-            document.getElementById('display-email').textContent = latestProfile.email;
-            document.getElementById('display-ttl').textContent = latestProfile.ttl;
-            document.getElementById('display-alamat').textContent = latestProfile.alamat;
-            document.getElementById('display-whatsapp').textContent = latestProfile.whatsapp;
-            document.getElementById('display-angkatan').textContent = latestProfile.angkatan;
-            document.getElementById('display-ujian').textContent = latestProfile.ujian;
-
-            // 4. Logika Tampilan Status & Sertifikat
-            const statusBox = document.getElementById('status-box');
-            const statusText = document.getElementById('status-text');
-            const placeholderText = document.getElementById('placeholder-text');
-            const sertifikatContainer = document.getElementById('sertifikat-container');
-            const sertifikatPlaceholder = document.getElementById('sertifikat-placeholder');
-
-            const currentStatus = latestProfile.status;
-
-            if (currentStatus === 'Kualifikasi') {
-                statusText.textContent = "Kualifikasi ✅";
-                statusBox.classList.add('bg-green-50', 'border-green-500', 'text-green-700');
-                
-                // Cek link sertifikat
-                if (latestProfile.sertifikatUrl) {
-                    sertifikatContainer.classList.remove('hidden');
-                    sertifikatPlaceholder.classList.add('hidden');
-                    document.getElementById('download-sertifikat').href = latestProfile.sertifikatUrl;
-                } else {
-                    placeholderText.textContent = "Sertifikat sedang dalam proses pembuatan.";
-                }
-            } else if (currentStatus === 'Diskualifikasi') {
-                statusText.textContent = "Diskualifikasi ❌";
-                statusBox.classList.add('bg-red-50', 'border-red-500', 'text-red-700');
-                placeholderText.textContent = "Mohon maaf, Anda tidak memenuhi kualifikasi.";
+            // Logika Link Sertifikat
+            if (latestProfile.sertifikatUrl) {
+                sertifikatContainer.classList.remove('hidden');
+                sertifikatPlaceholder.classList.add('hidden');
+                document.getElementById('download-sertifikat').href = latestProfile.sertifikatUrl;
             } else {
-                // Default: Pending
-                statusText.textContent = "Pending ⏳";
-                statusBox.classList.add('bg-yellow-50', 'border-yellow-500', 'text-yellow-700');
-                placeholderText.textContent = "Status Anda sedang ditinjau oleh Admin.";
+                placeholderText.textContent = "Sertifikat sedang dalam proses pembuatan.";
             }
+        } else if (currentStatus === 'Diskualifikasi') {
+            statusText.textContent = "Diskualifikasi ❌";
+            statusBox.className = "py-3 px-4 rounded-xl border-2 transition-all duration-500 bg-red-50 border-red-500 text-red-700";
+            placeholderText.textContent = "Mohon maaf, Anda tidak memenuhi kualifikasi.";
+        } else {
+            // Default: Pending
+            statusText.textContent = "Pending ⏳";
+            statusBox.className = "py-3 px-4 rounded-xl border-2 transition-all duration-500 bg-yellow-50 border-yellow-500 text-yellow-700";
+            placeholderText.textContent = "Status Anda sedang ditinjau oleh Admin.";
+        }
 
-            // 5. Fungsi Logout
-            document.getElementById('logout-button').addEventListener('click', () => {
-                localStorage.removeItem('currentUserProfile');
-                window.location.href = 'login.html';
-            });
+        // 5. Fungsi Logout
+        document.getElementById('logout-button').addEventListener('click', () => {
+            localStorage.removeItem('currentUserProfile');
+            window.location.href = 'login.html';
         });
-    </script>
+    });
+</script>
 </body>
 </html>

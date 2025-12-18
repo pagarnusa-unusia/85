@@ -158,193 +158,191 @@
         const errorMessage = document.getElementById('error-message');
         const loginButton = document.getElementById('loginButton');
 
-        // Menentukan kredensial yang valid dan menyimpan data profil lengkap
-        const ALL_USERS = [
-            // KREDENSIAL DAN DATA ADMIN
-            { 
-                username: 'admin', 
-                password: 'adminpn', 
-                redirectUrl: 'profil_admin.html',
-                data: {
-                    nama: 'Admin Pagar Nusa',
-                    role: 'Admin',
-                    is_admin: true
-                }
-            },
-            // KREDENSIAL PENGUJI
-                        { 
-                username: 'penguji', 
-                password: 'hafalan', 
-                redirectUrl: 'https://uktpagarnusa.my.id/penilaian/hafalan/penilaian',
-                data: {
-                    nama: 'Admin Pagar Nusa',
-                    role: 'Admin',
-                    is_admin: true
-                }
-            },
-                        // KREDENSIAL PENGUJI
-                        { 
-                username: 'penguji', 
-                password: 'fisik', 
-                redirectUrl: 'https://uktpagarnusa.my.id/penilaian/fisik/penilaian',
-                data: {
-                    nama: 'Admin Pagar Nusa',
-                    role: 'Admin',
-                    is_admin: true
-                }
-            },
-                        // KREDENSIAL PENGUJI
-                        { 
-                username: 'penguji', 
-                password: 'senaman&teknik', 
-                redirectUrl: 'https://uktpagarnusa.my.id/penilaian/senaman&teknik/penilaian',
-                data: {
-                    nama: 'Admin Pagar Nusa',
-                    role: 'Admin',
-                    is_admin: true
-                }
-            },
-                                    // KREDENSIAL PENGUJI
-                        { 
-                username: 'penguji', 
-                password: 'sejarah', 
-                redirectUrl: 'https://uktpagarnusa.my.id/penilaian/sejarah/penilaian',
-                data: {
-                    nama: 'Admin Pagar Nusa',
-                    role: 'Admin',
-                    is_admin: true
-                }
-            },
-                                                // KREDENSIAL PENGUJI
-                        { 
-                username: 'penguji', 
-                password: 'mental', 
-                redirectUrl: 'https://uktpagarnusa.my.id/penilaian/mental/penilaian',
-                data: {
-                    nama: 'Admin Pagar Nusa',
-                    role: 'Admin',
-                    is_admin: true
-                }
-            },
-            
-            // KREDENSIAL DAN DATA MUNDZIR (SISWA)
-            { 
-                username: 'siswa', 
-                password: '123', 
-                redirectUrl: 'profil_siswa.html',
-                data: {
-                    nama: 'Muhammad Ibnu Mundzir',
-                    email: 'mundzir011@gmail.com',
-                    ttl: 'Mamuju, 06 Maret 2004',
-                    alamat: 'Mamuju, Sulawesi Barat',
-                    whatsapp: '085715232441',
-                    angkatan: '2022',
-                    ujian: 'Coklat',
-                    status: 'Kualifikasi', // Mengubah status diverifikasi menjadi Kualifikasi
-                    sertifikatUrl: 'https://drive.google.com/file/d/1RD_rQQYA5I5qHuOhkKr1wHlqR-PFQVjI/view?usp=drive_link' // **TAMBAHAN BARU**
-                }
-            },
-            // KREDENSIAL DAN DATA DWI NUR AINI (SISWA BARU DARI GAMBAR)
-            { 
-                username: 'dwinnuraini51@gmail.com', 
-                password: '2024', // Asumsi password: Tahun Angkatan
-                redirectUrl: 'profil_siswa.html',
-                data: {
-                    nama: 'Dwi Nur Aini',
-                    email: 'dwinnuraini51@gmail.com',
-                    ttl: 'Sidoarjo, 23 Mei 2005',
-                    alamat: 'Sukajaya, Damarsi, Buduran, Sidoarjo',
-                    whatsapp: '0815175643',
-                    angkatan: '2024',
-                    ujian: 'Merah',
-                    status: 'Pending',
-                    sertifikatUrl: null // **TAMBAHAN BARU: Tidak punya sertifikat karena status Pending**
-                }
-            },
-                // KREDENSIAL DAN DATA KHAYRUN ANWAR (SISWA BARU DARI GAMBAR)
-            { 
-                username: 'khairuna806@gmail.com', 
-                password: '2024', // Password menggunakan angkatan
-                redirectUrl: 'profil_siswa.html',
-                data: {
-                    nama: 'Khairun Anwar',
-                    email: 'khairuna806@gmail.com',
-                    ttl: 'Mapane tambu, 14 Desember 2005',
-                    alamat: 'Donggal, Sulawesi tengah',
-                    whatsapp: '085814698694',
-                    angkatan: '2024',
-                    ujian: 'Merah',
-                    status: 'Pending',
-                    sertifikatUrl: null // Status Pending
-                }
-            },
-            // KREDENSIAL DAN DATA RENDI IMAM SAPUTRA (SISWA BARU DARI GAMBAR)
-            { 
-                username: 'rendiimam.s33@gmail.com', 
-                password: '2024', // Password menggunakan angkatan
-                redirectUrl: 'profil_siswa.html',
-                data: {
-                    nama: 'Rendi Imam Saputra',
-                    email: 'rendiimam.s33@gmail.com',
-                    ttl: 'Lampung, 18 Maret 2005',
-                    alamat: 'Lampung utara, Lampung',
-                    whatsapp: '081225866794',
-                    angkatan: '2024',
-                    ujian: 'Merah',
-                    status: 'Pending',
-                    sertifikatUrl: null // Status Pending
-                }
-            },
-            // KREDENSIAL DAN DATA ARDAN MIZANUL KHOIRI (DARI GAMBAR)
-            { 
-                username: 'Ardanmaskur767@gmail.com', 
-                password: '2025', // Password menggunakan angkatan (dari gambar: 2025)
-                redirectUrl: 'profil_siswa.html',
-                data: {
-                    nama: 'Ardan mizanul khoiri',
-                    email: 'Ardanmaskur767@gmail.com',
-                    ttl: 'Brebes, 07 juni 2007',
-                    alamat: 'Brebes, Jawa Tengah',
-                    whatsapp: '083857670720',
-                    angkatan: '2025',
-                    ujian: 'Putih',
-                    status: 'Pending',
-                    sertifikatUrl: null // Status Belum tersedia (Status Pending)
-                }
-            },
-            {
-                username: 'wildanazwatunisa@gmail.com', // diambil dari email
-                password: '2025', // diambil dari angkatan
-                redirectUrl: 'profil_siswa.html',
-                data: {
-                    nama: 'Wilda Nazwatun Nisa',
-                    email: 'wildanazwatunisa@gmail.com',
-                    ttl: 'Lebak, 15 april 2006',
-                    alamat: 'Lebak, Banten',
-                    whatsapp: '083160439639',
-                    angkatan: '2025',
-                    ujian: 'Putih',
-                    status: 'Pending',
-                    sertifikatUrl: null // Belum tersedia (Status Pending)
-                }
-                },
-                        {
-                username: 'dedeahmadfauzan348@gmail.com', // diambil dari email
-                password: '2024', // diambil dari angkatan
-                redirectUrl: 'profil_siswa.html',
-                data: {
-                    nama: 'Dede Ahmad Fauzan',
-                    email: 'dedeahmadfauzan348@gmail.com',
-                    ttl: 'Garut, 13 November 2005',
-                    alamat: 'Garut, jawa barat',
-                    whatsapp: '083147387373',
-                    angkatan: '2024',
-                    ujian: 'Merah',
-                    status: 'Panding',
-                    sertifikatUrl: null // Belum tersedia (Status Pending)
-                }
-                }
-        ];
+const userDatabase = [
+    // ==========================================
+    // KREDENSIAL DAN DATA ADMIN
+    // ==========================================
+    {
+        username: 'admin',
+        password: 'adminpn',
+        redirectUrl: 'profil_admin.html',
+        data: {
+            nama: 'Admin Pagar Nusa',
+            role: 'Admin',
+            is_admin: true
+        }
+    },
+
+    // ==========================================
+    // KREDENSIAL PENGUJI
+    // ==========================================
+    {
+        username: 'penguji',
+        password: 'hafalan',
+        redirectUrl: 'https://uktpagarnusa.my.id/penilaian/hafalan/penilaian',
+        data: {
+            nama: 'Penguji Hafalan',
+            role: 'Penguji',
+            is_admin: false
+        }
+    },
+    {
+        username: 'penguji',
+        password: 'fisik',
+        redirectUrl: 'https://uktpagarnusa.my.id/penilaian/fisik/penilaian',
+        data: {
+            nama: 'Penguji Fisik',
+            role: 'Penguji',
+            is_admin: false
+        }
+    },
+    {
+        username: 'penguji',
+        password: 'senaman&teknik',
+        redirectUrl: 'https://uktpagarnusa.my.id/penilaian/senaman&teknik/penilaian',
+        data: {
+            nama: 'Penguji Senaman & Teknik',
+            role: 'Penguji',
+            is_admin: false
+        }
+    },
+    {
+        username: 'penguji',
+        password: 'sejarah',
+        redirectUrl: 'https://uktpagarnusa.my.id/penilaian/sejarah/penilaian',
+        data: {
+            nama: 'Penguji Sejarah',
+            role: 'Penguji',
+            is_admin: false
+        }
+    },
+    {
+        username: 'penguji',
+        password: 'mental',
+        redirectUrl: 'https://uktpagarnusa.my.id/penilaian/mental/penilaian',
+        data: {
+            nama: 'Penguji Mental',
+            role: 'Penguji',
+            is_admin: false
+        }
+    },
+
+    // ==========================================
+    // KREDENSIAL DAN DATA SISWA
+    // ==========================================
+    {
+        username: 'siswa',
+        password: '123',
+        redirectUrl: 'profil_siswa.html',
+        data: {
+            nama: 'Muhammad Ibnu Mundzir',
+            email: 'mundzir011@gmail.com',
+            ttl: 'Mamuju, 06 Maret 2004',
+            alamat: 'Mamuju, Sulawesi Barat',
+            whatsapp: '085715232441',
+            angkatan: '2022',
+            ujian: 'Coklat',
+            status: 'Kualifikasi',
+            sertifikatUrl: 'https://drive.google.com/file/d/1RD_rQQYA5I5qHuOhkKr1wHlqR-PFQVjI/view?usp=drive_link'
+        }
+    },
+    {
+        username: 'dwinnuraini51@gmail.com',
+        password: '2024',
+        redirectUrl: 'profil_siswa.html',
+        data: {
+            nama: 'Dwi Nur Aini',
+            email: 'dwinnuraini51@gmail.com',
+            ttl: 'Sidoarjo, 23 Mei 2005',
+            alamat: 'Sukajaya, Damarsi, Buduran, Sidoarjo',
+            whatsapp: '0815175643',
+            angkatan: '2024',
+            ujian: 'Merah',
+            status: 'Pending',
+            sertifikatUrl: null
+        }
+    },
+    {
+        username: 'khairuna806@gmail.com',
+        password: '2024',
+        redirectUrl: 'profil_siswa.html',
+        data: {
+            nama: 'Khairun Anwar',
+            email: 'khairuna806@gmail.com',
+            ttl: 'Mapane tambu, 14 Desember 2005',
+            alamat: 'Donggal, Sulawesi tengah',
+            whatsapp: '085814698694',
+            angkatan: '2024',
+            ujian: 'Merah',
+            status: 'Pending',
+            sertifikatUrl: null
+        }
+    },
+    {
+        username: 'rendiimam.s33@gmail.com',
+        password: '2024',
+        redirectUrl: 'profil_siswa.html',
+        data: {
+            nama: 'Rendi Imam Saputra',
+            email: 'rendiimam.s33@gmail.com',
+            ttl: 'Lampung, 18 Maret 2005',
+            alamat: 'Lampung utara, Lampung',
+            whatsapp: '081225866794',
+            angkatan: '2024',
+            ujian: 'Merah',
+            status: 'Pending',
+            sertifikatUrl: null
+        }
+    },
+    {
+        username: 'Ardanmaskur767@gmail.com',
+        password: '2025',
+        redirectUrl: 'profil_siswa.html',
+        data: {
+            nama: 'Ardan mizanul khoiri',
+            email: 'Ardanmaskur767@gmail.com',
+            ttl: 'Brebes, 07 juni 2007',
+            alamat: 'Brebes, Jawa Tengah',
+            whatsapp: '083857670720',
+            angkatan: '2025',
+            ujian: 'Putih',
+            status: 'Pending',
+            sertifikatUrl: null
+        }
+    },
+    {
+        username: 'wildanazwatunisa@gmail.com',
+        password: '2025',
+        redirectUrl: 'profil_siswa.html',
+        data: {
+            nama: 'Wilda Nazwatun Nisa',
+            email: 'wildanazwatunisa@gmail.com',
+            ttl: 'Lebak, 15 april 2006',
+            alamat: 'Lebak, Banten',
+            whatsapp: '083160439639',
+            angkatan: '2025',
+            ujian: 'Putih',
+            status: 'Pending',
+            sertifikatUrl: null
+        }
+    },
+    {
+        username: 'dedeahmadfauzan348@gmail.com',
+        password: '2024',
+        redirectUrl: 'profil_siswa.html',
+        data: {
+            nama: 'Dede Ahmad Fauzan',
+            email: 'dedeahmadfauzan348@gmail.com',
+            ttl: 'Garut, 13 November 2005',
+            alamat: 'Garut, jawa barat',
+            whatsapp: '083147387373',
+            angkatan: '2024',
+            ujian: 'Merah',
+            status: 'Pending',
+            sertifikatUrl: null
+        }
+    }
+];
 
         // --- Ekstrak data Siswa untuk Admin ---
         const studentData = ALL_USERS.filter(user => !user.data.is_admin)
@@ -390,6 +388,7 @@
 </body>
 
 </html>
+
 
 
 

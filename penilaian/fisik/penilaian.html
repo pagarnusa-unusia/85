@@ -182,40 +182,52 @@
     });
 
 // --- 3. HANDLE FORM SUBMISSION ---
-    const penilaianForm = document.getElementById('penilaianForm');
-    penilaianForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
+const penilaianForm = document.getElementById('penilaianForm');
+
+penilaianForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    // 1. Ambil data dari form
+    const nama = selectNama.value;
+    const skor = document.getElementById('skor').value;
+    const kelompok = selectKelompok.value;
+
+    // 2. Munculkan Pop-up Konfirmasi
+    const konfirmasi = confirm(`Apakah Anda yakin ingin menyimpan nilai ini?\n\nNama: ${nama}\nKelompok: ${kelompok}\nSkor: ${skor}`);
+
+    // 3. Jika user menekan "OK", proses penyimpanan dijalankan
+    if (konfirmasi) {
         const dataBaru = {
-            id: Date.now(), // ID unik untuk setiap baris
-            kelompok: selectKelompok.value,
-            nama: selectNama.value,
+            id: Date.now(),
+            kelompok: kelompok,
+            nama: nama,
             kriteria: document.getElementById('kriteria').value,
-            skor: document.getElementById('skor').value,
+            skor: skor,
             tanggal: new Date().toLocaleDateString('id-ID'),
             waktu: new Date().toLocaleTimeString('id-ID')
         };
 
-        // Mengambil data lama dari localStorage (jika ada)
+        // Simpan ke localStorage
         let rekapNilai = JSON.parse(localStorage.getItem('rekapNilaiPagarNusa')) || [];
-        
-        // Menambahkan data baru ke dalam array
         rekapNilai.push(dataBaru);
-        
-        // Menyimpan kembali ke localStorage
         localStorage.setItem('rekapNilaiPagarNusa', JSON.stringify(rekapNilai));
         
-        // Notifikasi dan pindah halaman
-        alert(`Nilai ${dataBaru.nama} berhasil disimpan ke rekap!`);
-        window.location.href = 'rekapnilai.html';
-    });
-
+        // Notifikasi akhir dan pindah halaman
+        alert(`Data ${nama} berhasil disimpan!`);
+        window.location.href = 'https://uktpagarnusa.my.id/penilaian/fisik/rekapnilai';
+    } else {
+        // Jika user menekan "Cancel"
+        console.log("Penyimpanan dibatalkan oleh user.");
+    }
+});
     // --- 4. NAV MOBILE ---
-    const navToggle = document.getElementById('nav-toggle');
-    navToggle.addEventListener('click', () => {
-        alert("Fitur navigasi akan diarahkan ke halaman utama.");
-    });
+const navToggle = document.getElementById('nav-toggle');
+navToggle.addEventListener('click', () => {
+    // Langsung arahkan ke halaman rekap jika ikon menu di klik di HP
+    window.location.href = 'https://uktpagarnusa.my.id/penilaian/fisik/rekapnilai';
+});
 </script>
 </body>
 
 </html>
+

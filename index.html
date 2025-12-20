@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pagarnusa UNUSIA</title>
-    <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ ">
     <link rel="icon" href="logopn.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,9 +12,22 @@
             theme: {
                 extend: {
                     colors: {
-                        // Warna kustom
-                        primary: '#1B7548', // Hijau Pagar Nusa
-                        primaryDark: '#145c38' // Hijau gelap
+                        primary: '#1B7548',
+                        primaryDark: '#145c38'
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'fade-in': 'fadeIn 1s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        }
                     }
                 }
             }
@@ -26,455 +38,455 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        /* Animasi getar saat salah kode */
-    .animate-shake {
-        animation: shake 0.2s ease-in-out 0s 2;
-    }
-    @keyframes shake {
-        0% { margin-left: 0rem; }
-        25% { margin-left: 0.5rem; }
-        75% { margin-left: -0.5rem; }
-        100% { margin-left: 0rem; }
-    }
         body { 
             font-family: 'Poppins', sans-serif;
             scroll-behavior: smooth; 
+            /* Perhalus rendering teks */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
         }
-        /* Style untuk membuat garis bawah menu aktif */
+
+        /* --- Custom Scroll Animations --- */
+        .reveal {
+            opacity: 0;
+            filter: blur(8px);
+            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform, opacity, filter;
+        }
+
+        .reveal-up { transform: translateY(50px); }
+        .reveal-left { transform: translateX(-50px); }
+        .reveal-right { transform: translateX(50px); }
+        .reveal-zoom { transform: scale(0.95); }
+
+        .reveal.active {
+            opacity: 1;
+            filter: blur(0);
+            transform: translate(0) scale(1);
+        }
+
+        /* Staggered Delay untuk grid items */
+        .delay-1 { transition-delay: 100ms; }
+        .delay-2 { transition-delay: 200ms; }
+        .delay-3 { transition-delay: 300ms; }
+
+        /* Animasi Shake untuk Input Salah */
+        .animate-shake {
+            animation: shake 0.3s ease-in-out;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+
+        /* Active Nav Styling */
         .nav-link.active {
-            text-decoration: underline;
-            text-underline-offset: 6px;
-            text-decoration-thickness: 2px;
-            text-decoration-color: white; 
+            position: relative;
+            color: #fff;
         }
-        /* Penyesuaian agar smooth scroll dengan offset header */
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: white;
+            border-radius: 2px;
+        }
+
         :target::before {
             content: "";
             display: block;
-            height: 64px; /* Sesuaikan dengan tinggi header */
-            margin-top: -64px; /* Sesuaikan dengan tinggi header */
+            height: 80px;
+            margin-top: -80px;
         }
-        /* Fix untuk link pendaftaran di bagian achievement agar tidak overflow */
-        .break-word-sm {
-            word-break: break-word;
-        }
-        @media (max-width: 640px) {
-            .break-word-sm {
-                word-break: break-all;
-            }
-        }
+
+        .break-word-sm { word-break: break-word; }
+        @media (max-width: 640px) { .break-word-sm { word-break: break-all; } }
     </style>
 </head>
-<body class="min-h-screen flex flex-col bg-gradient-to-b from-emerald-50 to-slate-50 text-slate-800">
+<body class="min-h-screen flex flex-col bg-gradient-to-b from-emerald-50 to-slate-50 text-slate-800 overflow-x-hidden">
 
-    <header id="main-header" class="sticky top-0 z-50 bg-primary text-white shadow-lg">
+    <header id="main-header" class="sticky top-0 z-50 bg-primary text-white shadow-xl transition-all duration-300">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             
-            <div class="flex items-center space-x-3">
-                <img src="logopn.png" alt="Logo PAGARNUSA" class="h-10">
+            <div class="flex items-center space-x-3 group cursor-pointer">
+                <img src="logopn.png" alt="Logo PAGARNUSA" class="h-10 transition-transform duration-500 group-hover:rotate-[360deg]">
                 <h1 class="text-sm font-bold tracking-wide leading-tight uppercase">
                     PAGARNUSA<br>UNUSIA
                 </h1>
             </div>
             
             <div class="flex items-center space-x-4"> 
-                
                 <nav id="nav-desktop" class="hidden md:flex space-x-8">
-                    <a href="#hero-section" class="nav-link active text-sm font-medium hover:text-slate-200 transition">Beranda</a>
-                    <a href="#announcement-section" class="nav-link text-sm font-medium hover:text-slate-200 transition">Informasi</a>
+                    <a href="#hero-section" class="nav-link text-sm font-medium hover:text-emerald-200 transition-colors duration-300">Beranda</a>
+                    <a href="#announcement-section" class="nav-link text-sm font-medium hover:text-emerald-200 transition-colors duration-300">Informasi</a>
                 </nav>
 
                 <div class="hidden md:flex space-x-2">
-                    <a href="login.html" class="nav-link bg-primaryDark px-3 py-1 rounded-lg hover:bg-white hover:text-primary transition text-sm">
+                    <a href="login.html" class="bg-primaryDark border border-emerald-400/30 px-4 py-1.5 rounded-lg hover:bg-white hover:text-primary transition-all duration-300 text-sm font-medium">
                         Login
                     </a>
-                    <a href="daftar.html" class="nav-link bg-yellow-500 text-slate-900 px-3 py-1 rounded-lg hover:bg-yellow-600 transition text-sm font-medium">
+                    <a href="daftar.html" class="bg-yellow-500 text-slate-900 px-4 py-1.5 rounded-lg hover:bg-yellow-400 transition-all duration-300 shadow-md hover:shadow-yellow-500/20 text-sm font-bold">
                         Daftar
                     </a>
                 </div>
 
-                <button id="nav-toggle" class="md:hidden p-2">
+                <button id="nav-toggle" class="md:hidden p-2 focus:outline-none">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
             </div>
         </div>
         
-        <nav id="nav-mobile" class="hidden md:hidden absolute w-full bg-primaryDark shadow-md">
-            <a href="#hero-section" class="nav-link block px-4 py-3 text-sm font-medium active hover:bg-primary/50 transition border-t border-primaryDark/50">Beranda</a>
-            <a href="#announcement-section" class="nav-link block px-4 py-3 text-sm font-medium hover:bg-primary/50 transition">Informasi</a>
-            <a href="login.html" class="nav-link block px-4 py-3 text-sm font-medium hover:bg-primary/50 transition">Login</a>
-            <a href="daftar.html" class="nav-link block px-4 py-3 text-sm font-medium bg-yellow-500 text-slate-900 hover:bg-yellow-600 transition border-b border-primaryDark/50">Daftar</a>
+        <nav id="nav-mobile" class="hidden md:hidden absolute w-full bg-primaryDark shadow-2xl animate-fade-in">
+            <a href="#hero-section" class="nav-link block px-6 py-4 text-sm font-medium border-t border-emerald-800/50">Beranda</a>
+            <a href="#announcement-section" class="nav-link block px-6 py-4 text-sm font-medium border-t border-emerald-800/50">Informasi</a>
+            <a href="login.html" class="nav-link block px-6 py-4 text-sm font-medium border-t border-emerald-800/50">Login</a>
+            <a href="daftar.html" class="nav-link block px-6 py-4 text-sm font-bold bg-yellow-500 text-slate-900">Daftar</a>
         </nav>
     </header>
 
     <main class="flex-1 container mx-auto px-4 py-8">
 
-        <section id="hero-section" class="text-center md:text-left bg-white rounded-xl shadow-xl p-8 md:p-12 mb-12">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-primary mb-4">
-                Selamat Datang di PAGARNUSA UNUSIA
+        <section id="hero-section" class="animate-fade-in-up text-center md:text-left bg-white rounded-2xl shadow-xl p-8 md:p-12 mb-12 border border-emerald-100">
+            <h2 class="text-3xl md:text-5xl font-extrabold text-primary mb-6 leading-tight">
+                Selamat Datang di <span class="text-slate-800">PAGARNUSA UNUSIA</span>
             </h2>
-            <p class="text-xl text-slate-600 mb-6">
+            <p class="text-xl text-slate-600 mb-6 leading-relaxed">
                 Mengembangkan potensi diri, menguatkan spiritualitas, dan menjunjung tinggi nilai-nilai tradisi.
             </p>
-            <p class="text-slate-700 max-w-3xl mx-auto md:mx-0 mb-8">
+            <p class="text-slate-700 max-w-3xl mx-auto md:mx-0 mb-10 leading-relaxed">
                 Pencak Silat Nahdlatul Ulama Pagarnusa Rayon Universitas Nahdlatul Ulama Indonesia (UNUSIA) adalah wadah bagi mahasiswa untuk berkreasi, berprestasi, dan melestarikan budaya bangsa.
             </p>
             
             <div class="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
                 <a href="daftar.html" 
-                    class="bg-primary hover:bg-primaryDark text-white font-semibold py-3 px-8 rounded-lg transition transform hover:scale-105 shadow-md">
+                    class="bg-primary hover:bg-primaryDark text-white font-bold py-4 px-10 rounded-xl transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-emerald-900/20">
                     <i class="fas fa-user-plus mr-2"></i> Daftar UKT
                 </a>
                 <a href="#announcement-section" 
-                    class="bg-white border-2 border-primary text-primary hover:bg-primary/10 font-semibold py-3 px-8 rounded-lg transition transform hover:scale-105 shadow-md">
+                    class="bg-white border-2 border-primary text-primary hover:bg-emerald-50 font-bold py-4 px-10 rounded-xl transition-all duration-300 transform hover:-translate-y-1 shadow-md">
                     <i class="fas fa-info-circle mr-2"></i> Baca Informasi
                 </a>
             </div>
         </section>
 
-<section id="announcement-section" class="bg-white rounded-xl shadow-2xl p-8 md:p-12 mt-8 border-t-4 border-primary">
-            <h2 class="text-3xl font-extrabold text-primaryDark mb-2 flex items-center">
-                <span class="mr-2 text-4xl">📢</span> Ujian Kenaikan Tingkat IV
-            </h2>
-            <p class="text-xl font-semibold text-slate-600 mb-6 border-b pb-4">
+        <section id="announcement-section" class="reveal reveal-up bg-white rounded-2xl shadow-2xl p-8 md:p-12 mt-8 border-t-8 border-primary relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-bl-full opacity-50 -z-0"></div>
+            
+            <h2 class="text-3xl font-extrabold text-primaryDark mb-2 flex items-center relative z-10"><span class="mr-3 text-4xl animate-bounce">📢</span> Ujian Kenaikan Tingkat IV</h2>
+            <p class="text-xl font-semibold text-slate-500 mb-8 border-b pb-4 relative z-10">
                 Unit Kegiatan Mahasiswa Pagarnusa UNUSIA Masa Khidmat 2024-2025
             </p>
 
-            <div class="bg-blue-50 p-4 rounded-lg mb-6 border-l-4 border-blue-500">
-               
-                <p class="text-sm italic text-blue-800">Assalamu’alaikum warahmatullahi wabarakatuh.</p>
-                <p class="text-base font-medium text-slate-800 mt-2">
+            <div class="bg-blue-50 p-6 rounded-xl mb-8 border-l-4 border-blue-500 shadow-sm reveal reveal-up delay-1">
+                <p class="text-sm italic text-blue-800 font-medium">Assalamu’alaikum warahmatullahi wabarakatuh.</p>
+                <p class="text-base text-slate-700 mt-3 leading-relaxed">
                     Berdasarkan Surat Keputusan Nomor: 014/UKM.PS.LT.PN/SK.PANITIA/I/11.2025 tentang Panitia Pelaksanaan Ujian Kenaikan Tingkat IV.
                 </p>
-                
             </div>
 
-            <div class="grid md:grid-cols-2 gap-6 mb-8">
-                <div class="p-5 bg-emerald-50 rounded-xl border-l-4 border-emerald-600 shadow-md">
-                    <h3 class="font-bold text-xl text-emerald-800 mb-3 flex items-center">
-                        <span class="mr-2 text-2xl">📅</span> Linimasa Kegiatan
+            <div class="grid md:grid-cols-2 gap-6 mb-10">
+                <div class="reveal reveal-left group p-6 bg-emerald-50 rounded-2xl border border-emerald-100 shadow-sm hover:shadow-md transition-all duration-300">
+                    <h3 class="font-bold text-xl text-emerald-800 mb-4 flex items-center">
+                        <i class="far fa-calendar-alt mr-3 text-2xl"></i> Linimasa Kegiatan
                     </h3>
-                    <ul class="list-disc list-inside space-y-2 text-slate-700 ml-4">
-                        <li>Pendaftaran dibuka: 16 Desember 2025</li>
-                        <li>Pendaftaran ditutup: 31 Desember 2025</li>
-                        <li>Pelaksanaan Ujian: 10–11 Januari 2026</li>
+                    <ul class="space-y-3 text-slate-700">
+                        <li class="flex items-center"><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i> Pendaftaran dibuka: 16 Des 2025</li>
+                        <li class="flex items-center"><i class="fas fa-check-circle text-emerald-500 mr-2 text-xs"></i> Pendaftaran ditutup: 31 Des 2025</li>
+                        <li class="flex items-center font-bold text-emerald-900"><i class="fas fa-star text-yellow-500 mr-2 text-xs"></i> Pelaksanaan: 10–11 Jan 2026</li>
                     </ul>
                 </div>
-                <div class="p-5 bg-amber-50 rounded-xl border-l-4 border-amber-600 shadow-md">
-                    <h3 class="font-bold text-xl text-amber-800 mb-3 flex items-center">
-                        <span class="mr-2 text-2xl">📍</span> Lokasi Pelaksanaan
+                <div class="reveal reveal-right group p-6 bg-amber-50 rounded-2xl border border-amber-100 shadow-sm hover:shadow-md transition-all duration-300">
+                    <h3 class="font-bold text-xl text-amber-800 mb-4 flex items-center">
+                        <i class="fas fa-map-marker-alt mr-3 text-2xl"></i> Lokasi Pelaksanaan
                     </h3>
-                    <p class="text-slate-700 mb-2">Gelanggang Olahraga Kampus UNUSIA</p>
-                    <p class="text-sm text-slate-500 italic">Ditetapkan di Jakarta, 19 November 2025</p>
+                    <p class="text-slate-700 font-medium mb-2">Gelanggang Olahraga Kampus UNUSIA</p>
+                    <p class="text-xs text-slate-400 italic mt-4">Ditetapkan di Jakarta, 19 November 2025</p>
                 </div>
             </div>
 
-            <div class="p-6 bg-slate-50 rounded-xl border border-slate-200 shadow-sm mb-8">
-                <h3 class="font-bold text-2xl text-primaryDark mb-6 text-center border-b pb-2">
+            <div class="reveal reveal-up p-6 md:p-10 bg-slate-50 rounded-2xl border border-slate-200 shadow-inner mb-10">
+                <h3 class="font-bold text-2xl text-primaryDark mb-8 text-center uppercase tracking-widest border-b-2 border-primary/20 pb-4">
                     Struktur Panitia Pelaksana
                 </h3>
                 
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div>
+                <div class="grid md:grid-cols-2 gap-10">
+                    <div class="space-y-6">
                         <h4 class="font-bold text-lg text-slate-800 mb-4 flex items-center">
-                            <i class="fas fa-users-cog mr-2 text-primary"></i> Steering Committee
+                            <span class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 text-xs"><i class="fas fa-gavel"></i></span>
+                            Steering Committee
                         </h4>
-                        <ul class="space-y-3 text-slate-700">
-                            <li class="flex flex-col"><span class="font-semibold">Pelindung:</span> Pak Ulinuha</li>
-                            <li class="flex flex-col"><span class="font-semibold">Pembina:</span> M. Ridho Malik Ibrahim (Ketua UKM Pencak Silat)</li>
-                            <li class="flex flex-col"><span class="font-semibold">Penanggung Jawab:</span> Fakhrizal Sa’dan M (Ketua Unit Pagarnusa UNUSIA)</li>
+                        <ul class="space-y-4 text-slate-700">
+                            <li class="flex flex-col border-l-2 border-emerald-200 pl-4"><span class="text-xs text-emerald-600 font-bold uppercase">Pelindung</span> <span class="font-semibold text-slate-800">Pak Ulinuha</span></li>
+                            <li class="flex flex-col border-l-2 border-emerald-200 pl-4"><span class="text-xs text-emerald-600 font-bold uppercase">Pembina</span> <span class="font-semibold text-slate-800">M. Ridho Malik Ibrahim</span></li>
+                            <li class="flex flex-col border-l-2 border-emerald-200 pl-4"><span class="text-xs text-emerald-600 font-bold uppercase">Penanggung Jawab</span> <span class="font-semibold text-slate-800">Fakhrizal Sa’dan M</span></li>
                         </ul>
                     </div>
 
-                    <div>
+                    <div class="space-y-6">
                         <h4 class="font-bold text-lg text-slate-800 mb-4 flex items-center">
-                            <i class="fas fa-user-friends mr-2 text-primary"></i> Organizing Committee
+                            <span class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center mr-3 text-xs"><i class="fas fa-users"></i></span>
+                            Organizing Committee
                         </h4>
-                        <ul class="space-y-3 text-slate-700">
-                            <li><span class="font-semibold">Ketua Pelaksana:</span> Kang Iqbal</li>
-                            <li><span class="font-semibold">Sekretaris:</span> Kang Mundzir</li>
-                            <li><span class="font-semibold">Bendahara:</span> Ning Kaniska</li>
+                        <ul class="space-y-4 text-slate-700">
+                            <li class="flex flex-col border-l-2 border-emerald-200 pl-4"><span class="text-xs text-emerald-600 font-bold uppercase">Ketua Pelaksana</span> <span class="font-semibold text-slate-800">Kang Iqbal</span></li>
+                            <li class="flex flex-col border-l-2 border-emerald-200 pl-4"><span class="text-xs text-emerald-600 font-bold uppercase">Sekretaris</span> <span class="font-semibold text-slate-800">Kang Mundzir</span></li>
+                            <li class="flex flex-col border-l-2 border-emerald-200 pl-4"><span class="text-xs text-emerald-600 font-bold uppercase">Bendahara</span> <span class="font-semibold text-slate-800">Ning Kaniska</span></li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="mt-8 grid md:grid-cols-3 gap-6">
-                    <div class="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
-                        <h5 class="font-bold text-primary mb-2">Devisi Acara</h5>
-                        <p class="text-sm text-slate-600">Neng Erin, Neng Risna, Neng Amelda</p>
+                <div class="mt-12 grid md:grid-cols-3 gap-6">
+                    <div class="reveal reveal-up delay-1 bg-white p-5 rounded-xl shadow-sm border border-slate-100 hover:border-emerald-300 transition-colors">
+                        <h5 class="font-bold text-primary text-sm mb-2 uppercase tracking-tighter">Devisi Acara</h5>
+                        <p class="text-sm text-slate-600 leading-relaxed">Neng Erin, Neng Risna, Neng Amelda</p>
                     </div>
-                    <div class="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
-                        <h5 class="font-bold text-primary mb-2">Devisi Konsumsi</h5>
-                        <p class="text-sm text-slate-600">Kang Ikram, Kang Munir, Neng Niken, Neng Yeyen</p>
+                    <div class="reveal reveal-up delay-2 bg-white p-5 rounded-xl shadow-sm border border-slate-100 hover:border-emerald-300 transition-colors">
+                        <h5 class="font-bold text-primary text-sm mb-2 uppercase tracking-tighter">Devisi Konsumsi</h5>
+                        <p class="text-sm text-slate-600 leading-relaxed">Kang Ikram, Kang Munir, Neng Niken, Neng Yeyen</p>
                     </div>
-                    <div class="bg-white p-4 rounded-lg shadow-sm border border-slate-100">
-                        <h5 class="font-bold text-primary mb-2">Humas, Perlengkapan & PDD</h5>
-                        <p class="text-sm text-slate-600">Neng Syifa, Neng Fatma, Kang Ilham, Kang Azar, Ning Khalisa, Ning Tiara</p>
+                    <div class="reveal reveal-up delay-3 bg-white p-5 rounded-xl shadow-sm border border-slate-100 hover:border-emerald-300 transition-colors">
+                        <h5 class="font-bold text-primary text-sm mb-2 uppercase tracking-tighter">Humas & PDD</h5>
+                        <p class="text-sm text-slate-600 leading-relaxed">Neng Syifa, Neng Fatma, Kang Ilham, Kang Azar, Ning Khalisa, Ning Tiara</p>
                     </div>
                 </div>
             </div>
 
-            <div class="mt-8 pt-4 border-t border-slate-200 text-sm text-slate-600">
-                <p>Mengetahui,</p>
-                <p class="mt-4 font-semibold text-primaryDark">Ketua Unit: Fakhrizal Sa’dan M</p>
-                <p class="text-xs mt-2 font-semibold">Sekretaris: M Nur Wahid</p>
+            <div class="mt-8 pt-6 border-t border-slate-200 flex flex-col md:flex-row md:justify-between items-start md:items-center gap-4">
+                <div>
+                    <p class="text-xs text-slate-400 uppercase font-bold tracking-widest">Mengetahui,</p>
+                    <p class="mt-1 font-bold text-primaryDark">Fakhrizal Sa’dan M</p>
+                    <p class="text-[10px] text-slate-500 font-medium">Ketua Unit Pagarnusa UNUSIA</p>
+                </div>
+                <a href="javascript:void(0)" onclick="openAccessModal()" class="inline-flex items-center bg-slate-100 hover:bg-primary hover:text-white px-5 py-2.5 rounded-full text-slate-700 text-sm font-bold transition-all duration-300 group">
+                    <i class="fas fa-file-pdf mr-2 group-hover:scale-110 transition-transform"></i> Unduh SK Panitia
+                </a>
             </div>
-
-</div>
-
-<a href="javascript:void(0)" onclick="openAccessModal()" class="mt-6 inline-flex items-center text-primary hover:text-primaryDark text-sm underline font-semibold transition">
-    <i class="fas fa-download mr-2"></i> Unduh SK Panitia
-</a>
-
-<div id="access-modal" class="fixed inset-0 z-[999] hidden items-center justify-center bg-black/60 backdrop-blur-sm">
-    <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-sm mx-4 transform transition-all">
-        <div class="text-center mb-6">
-            <div class="inline-flex items-center justify-center w-12 h-12 bg-primary/10 rounded-full mb-3">
-                <i class="fas fa-lock text-primary text-xl"></i>
-            </div>
-            <h3 class="text-lg font-bold text-slate-800">Akses Terbatas</h3>
-            <p class="text-xs text-slate-500 mt-1">Masukkan kode akses untuk mengunduh SK Panitia UKT IV</p>
-        </div>
-
-        <input type="password" id="modal-code" placeholder="Kode Akses" 
-            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary mb-4 text-center tracking-widest">
-        
-        <div class="flex flex-col gap-2">
-            <button onclick="verifyAndDownload()" 
-                class="w-full bg-primary hover:bg-primaryDark text-white font-bold py-3 rounded-lg transition shadow-md">
-                Konfirmasi & Unduh
-            </button>
-            <button onclick="closeAccessModal()" 
-                class="w-full bg-transparent hover:bg-slate-100 text-slate-500 py-2 rounded-lg text-sm transition">
-                Batal
-            </button>
-        </div>
-        
-        <p id="modal-error" class="text-red-500 text-xs text-center mt-3 hidden">Kode akses salah!</p>
-    </div>
-</div>
         </section>
 
-        <div class="my-10 border-t border-slate-300"></div>
+        <div class="my-16 flex justify-center">
+            <div class="w-24 h-1 bg-slate-200 rounded-full"></div>
+        </div>
 
-        <section id="achievement-section" class="bg-white rounded-xl shadow-2xl p-8 md:p-12 border-t-4 border-yellow-500">
-            <h2 class="text-3xl font-extrabold text-slate-800 mb-6 flex items-center">
-                <span class="mr-2 text-4xl text-yellow-600">🏆</span> Prestasi Membanggakan
+        <section id="achievement-section" class="reveal reveal-zoom bg-white rounded-2xl shadow-2xl p-8 md:p-12 border-t-8 border-yellow-500 overflow-hidden">
+            <h2 class="text-3xl font-extrabold text-slate-800 mb-8 flex items-center">
+                <span class="mr-3 text-4xl animate-bounce">🏆</span> Prestasi Membanggakan
             </h2>
             
-            <div class="w-full h-auto bg-gray-200 rounded-lg overflow-hidden mb-6 shadow-lg">
-                <img src="berita_juara.jpg" alt="Foto Kontingen Unusia UIKA Championship 2 2025" class="w-full h-auto object-cover" loading="lazy">
-                <div class="p-3 text-sm text-center text-gray-500 italic">
-                    Placeholder Foto Kontingen UKM Pencak Silat UNUSIA
+            <div class="group relative w-full h-auto bg-slate-100 rounded-2xl overflow-hidden mb-8 shadow-lg">
+                <img src="berita_juara.jpg" alt="Foto Kontingen" class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
+                    <p class="text-white text-sm font-medium">Kontingen UKM Pencak Silat UNUSIA di UIKA Championship 2 2025</p>
                 </div>
             </div>
 
-            <div class="mb-6 text-slate-700">
-                <p class="font-semibold text-lg mb-3">
-                    Mahasiswa Universitas Nahdlatul Ulama Indonesia (Unusia) kembali menorehkan prestasi membanggakan pada ajang UIKA Championship 2 2025 Tingkat Nasional yang digelar pada 5–7 Desember 2025 di GOR Gymnasium SV IPB.
+            <div class="mb-10 text-slate-700">
+                <p class="font-bold text-xl mb-4 text-slate-800 leading-snug">
+                    Mahasiswa Universitas Nahdlatul Ulama Indonesia (Unusia) kembali menorehkan prestasi membanggakan pada ajang UIKA Championship 2 2025.
                 </p>
-                <p class="text-base">
-                    Kontingen Unusia tampil gemilang dengan meraih delapan gelar juara dari kategori tanding dan seni.
+                <p class="text-slate-600 leading-relaxed">
+                    Kontingen Unusia tampil gemilang dengan meraih delapan gelar juara dari kategori tanding dan seni pada tingkat Nasional yang digelar di GOR Gymnasium SV IPB.
                 </p>
             </div>
 
-            <div class="p-5 bg-yellow-50 rounded-xl border-l-4 border-yellow-600 shadow-md mb-6">
-                <h3 class="font-bold text-xl text-yellow-800 mb-3 flex items-center">
-                    <span class="mr-2">🥇</span> Peraih Prestasi
-                </h3>
-                <ul class="space-y-2 text-slate-700">
-                    <li class="flex justify-between items-start border-b border-yellow-100 pb-1 flex-wrap">
-                        <span class="font-medium mr-2">M. Nizam Hasbi F</span>
-                        <span class="text-sm text-right break-word-sm">Juara 1 Tanding Kelas A (SPI)</span>
-                    </li>
-                    <li class="flex justify-between items-start border-b border-yellow-100 pb-1 flex-wrap">
-                        <span class="font-medium mr-2">Ramlan</span>
-                        <span class="text-sm text-right break-word-sm">Juara 1 Tanding Kelas C (SPI)</span>
-                    </li>
-                    <li class="flex justify-between items-start border-b border-yellow-100 pb-1 flex-wrap">
-                        <span class="font-medium mr-2">Dinda Ayuni</span>
-                        <span class="text-sm text-right break-word-sm">Juara 2 Seni Tunggal Dewasa (SPI)</span>
-                    </li>
-                    <li class="flex justify-between items-start border-b border-yellow-100 pb-1 flex-wrap">
-                        <span class="font-medium mr-2">Dede Ahmad Fauzan</span>
-                        <span class="text-sm text-right break-word-sm">Juara 2 Tanding Prestasi Kelas Under A (Teknik Informatika)</span>
-                    </li>
-                    <li class="flex justify-between items-start border-b border-yellow-100 pb-1 flex-wrap">
-                        <span class="font-medium mr-2">Dwi Nur Aini</span>
-                        <span class="text-sm text-right break-word-sm">Juara 2 Tanding Kelas A (PAI)</span>
-                    </li>
-                    <li class="flex justify-between items-start border-b border-yellow-100 pb-1 flex-wrap">
-                        <span class="font-medium mr-2">Hoirul Sambudi</span>
-                        <span class="text-sm text-right break-word-sm">Juara 2 Seni Tunggal Dewasa (Pendidikan Bahasa Inggris)</span>
-                    </li>
-                    <li class="flex justify-between items-start border-b border-yellow-100 pb-1 flex-wrap">
-                        <span class="font-medium mr-2">MUhammad Ibnu Mundzir</span>
-                        <span class="text-sm text-right break-word-sm">Juara 2 Seni Tunggal Baku Dewasa Prestasi (Teknologi Agroindustri)</span>
-                    </li>
-                    <li class="flex justify-between items-start flex-wrap">
-                        <span class="font-medium mr-2">Khairun Anwar</span>
-                        <span class="text-sm text-right break-word-sm">Juara 3 Tanding Prestasi Kelas A (SPI)</span>
-                    </li>
-                </ul>
+            <div class="reveal reveal-up p-1 bg-yellow-500 rounded-2xl mb-10 shadow-lg">
+                <div class="bg-yellow-50 rounded-[calc(1rem-1px)] p-6 md:p-8">
+                    <h3 class="font-bold text-xl text-yellow-900 mb-6 flex items-center">
+                        <i class="mr-3 text-4xl animate-bounce">🏅</i> Daftar Peraih Medali
+                    </h3>
+                    <div class="grid gap-3">
+                        <div class="flex justify-between items-center p-3 hover:bg-white rounded-lg transition-colors border-b border-yellow-200/50">
+                            <span class="font-bold text-slate-800">M. Nizam Hasbi F</span>
+                            <span class="text-xs font-bold px-3 py-1 bg-yellow-200 text-yellow-800 rounded-full uppercase">Juara 1</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 hover:bg-white rounded-lg transition-colors border-b border-yellow-200/50">
+                            <span class="font-bold text-slate-800">Ramlan</span>
+                            <span class="text-xs font-bold px-3 py-1 bg-yellow-200 text-yellow-800 rounded-full uppercase">Juara 1</span>
+                        </div>
+                         <div class="flex justify-between items-center p-3 hover:bg-white rounded-lg transition-colors border-b border-yellow-200/50">
+                            <span class="font-bold text-slate-800">Dinda Ayuni</span>
+                            <span class="text-xs font-bold px-3 py-1 bg-slate-200 text-slate-700 rounded-full uppercase">Juara 2</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 hover:bg-white rounded-lg transition-colors border-b border-yellow-200/50">
+                            <span class="font-bold text-slate-800">Dede Ahmad Fauzan</span>
+                            <span class="text-xs font-bold px-3 py-1 bg-slate-200 text-slate-700 rounded-full uppercase">Juara 2</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 hover:bg-white rounded-lg transition-colors border-b border-yellow-200/50">
+                            <span class="font-bold text-slate-800">Dwi Nur Aini</span>
+                            <span class="text-xs font-bold px-3 py-1 bg-slate-200 text-slate-700 rounded-full uppercase">Juara 2</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 hover:bg-white rounded-lg transition-colors border-b border-yellow-200/50">
+                            <span class="font-bold text-slate-800">Hoirul Sambudi</span>
+                            <span class="text-xs font-bold px-3 py-1 bg-slate-200 text-slate-700 rounded-full uppercase">Juara 2</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 hover:bg-white rounded-lg transition-colors border-b border-yellow-200/50">
+                            <span class="font-bold text-slate-800">M. Ibnu Mundzir</span>
+                            <span class="text-xs font-bold px-3 py-1 bg-slate-200 text-slate-700 rounded-full uppercase">Juara 2</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 hover:bg-white rounded-lg transition-colors">
+                            <span class="font-bold text-slate-800">Khairun Anwar</span>
+                            <span class="text-xs font-bold px-3 py-1 bg-orange-100 text-orange-700 rounded-full uppercase">Juara 3</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="bg-gray-50 p-5 rounded-xl shadow-inner border-l-4 border-slate-400">
-                <h3 class="font-bold text-lg text-slate-800 mb-2 flex items-center">
-                    <span class="mr-2">🎙️</span> Pesan dari Pelatih
+            <div class="reveal reveal-up bg-slate-900 p-8 rounded-2xl shadow-xl text-white relative overflow-hidden">
+                <i class="fas fa-quote-right absolute top-4 right-6 text-6xl text-white/10"></i>
+                <h3 class="font-bold text-lg mb-4 flex items-center text-yellow-500">
+                    <span class="w-1.5 h-6 bg-yellow-500 mr-3 rounded-full"></span> Pesan Pelatih
                 </h3>
-                <p class="text-sm italic text-slate-600 mb-3">
-                    Pendampingan oleh Misbahul Muniruddin (Alumni Unusia PAI 2025)
-                </p>
-                <blockquote class="text-slate-700 border-l-2 pl-4 ml-2 italic">
-                    "Bukan hanya medali yang membuat saya bangga, tapi melihat mereka bertanding dengan baik dan aman. Itu sudah membuat saya sangat bersyukur. Teruslah berlatih dan jangan mudah menyerah. Kesuksesan itu hasil dari proses panjang, jadi tetap fokus dan percaya bahwa usaha tidak akan mengkhianati hasil.”
+                <blockquote class="text-slate-300 italic text-lg leading-relaxed mb-6">
+                    "Bukan hanya medali yang membuat saya bangga, tapi melihat mereka bertanding dengan baik dan aman. Teruslah berlatih dan jangan mudah menyerah. Kesuksesan itu hasil dari proses panjang, jadi tetap fokus dan percaya bahwa usaha tidak akan mengkhianati hasil.”
                 </blockquote>
+                <p class="text-sm font-bold text-white">— Misbahul Muniruddin</p>
+                <p class="text-[10px] text-slate-400 uppercase tracking-widest">Alumni Unusia PAI 2025</p>
             </div>
 
-            <p class="mt-6 text-sm text-slate-600">
-                Prestasi kontingen Unusia di UIKA Championship 2 2025 diharapkan dapat menjadi pemantik semangat bagi mahasiswa untuk terus berkiprah dan membawa nama baik kampus di berbagai ajang kompetisi lainnya.
-            </p>
-
-            <a href="#hero-section" class="mt-6 inline-block text-primary hover:text-primaryDark text-sm underline">Kembali ke atas</a>
+            <div class="mt-12 flex justify-between items-center">
+                <p class="text-xs text-slate-400">© 2025 Seputar Informasi</p>
+                <a href="#" class="text-primary hover:text-primaryDark font-bold text-sm flex items-center transition-colors">
+                    Kembali ke Atas <i class="fas fa-arrow-up ml-2"></i>
+                </a>
+            </div>
         </section>
 
     </main>
 
-    <footer class="bg-primary text-white text-center py-3 mt-auto">
-        <p class="text-xs opacity-90">© 2025 PAGARNUSA UNUSIA. Semua hak cipta dilindungi.</p>
+    <footer class="bg-primary text-white text-center py-6 mt-12">
+        <div class="container mx-auto px-4">
+            <p class="text-xs opacity-80 font-medium tracking-wide">© 2025 PAGARNUSA UNUSIA. Semua hak cipta dilindungi.</p>
+        </div>
     </footer>
+
+    <div id="access-modal" class="fixed inset-0 z-[999] hidden items-center justify-center bg-slate-900/80 backdrop-blur-md transition-all duration-300 opacity-0">
+        <div class="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-sm mx-4 transform scale-95 transition-all duration-300 border border-slate-100">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 text-primary rounded-2xl mb-4 rotate-3">
+                    <i class="fas fa-shield-halved text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-extrabold text-slate-800">Akses Terbatas</h3>
+                <p class="text-xs text-slate-500 mt-2 px-4">Masukkan kode keamanan untuk mengunduh dokumen SK Panitia UKT IV</p>
+            </div>
+
+            <div class="relative mb-6">
+                <input type="password" id="modal-code" placeholder="••••••••" 
+                    class="w-full px-4 py-4 bg-slate-50 border-2 border-slate-100 rounded-xl focus:outline-none focus:border-primary transition-all text-center tracking-[0.5em] font-bold text-lg">
+                <p id="modal-error" class="absolute -bottom-6 left-0 right-0 text-red-500 text-[10px] font-bold text-center hidden uppercase tracking-wider">Kode akses salah!</p>
+            </div>
+            
+            <div class="flex flex-col gap-3 mt-8">
+                <button onclick="verifyAndDownload()" 
+                    class="w-full bg-primary hover:bg-primaryDark text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-emerald-900/20 active:scale-95">
+                    Konfirmasi & Unduh
+                </button>
+                <button onclick="closeAccessModal()" 
+                    class="w-full bg-transparent hover:bg-slate-50 text-slate-400 py-2 rounded-xl text-xs font-bold transition-colors">
+                    BATALKAN
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script>
         const modal = document.getElementById('access-modal');
-    const input = document.getElementById('modal-code');
-    const errorMsg = document.getElementById('modal-error');
+        const input = document.getElementById('modal-code');
+        const errorMsg = document.getElementById('modal-error');
 
-    // Membuka Popup
-    function openAccessModal() {
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-        input.focus();
-    }
-
-    // Menutup Popup
-    function closeAccessModal() {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-        input.value = "";
-        errorMsg.classList.add('hidden');
-    }
-
-    // Verifikasi dan Download
-    function verifyAndDownload() {
-        const secretCode = "adminpn";
-        const fileUrl = "014 SK Panitia UKT.pdf";
-
-        if (input.value === secretCode) {
-            // Jika Benar: Download File
-            const link = document.createElement('a');
-            link.href = fileUrl;
-            link.download = "SK_Panitia_UKT_PagarNusa_UNUSIA.pdf"; 
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            // Tutup Modal
-            closeAccessModal();
-        } else {
-            // Jika Salah: Tampilkan Error
-            errorMsg.classList.remove('hidden');
-            input.classList.add('border-red-500', 'animate-shake');
+        function openAccessModal() {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
             setTimeout(() => {
-                input.classList.remove('border-red-500', 'animate-shake');
-            }, 500);
+                modal.classList.add('opacity-100');
+                modal.firstElementChild.classList.remove('scale-95');
+                modal.firstElementChild.classList.add('scale-100');
+            }, 10);
+            input.focus();
         }
-    }
 
-    // Menutup modal jika klik di luar area box
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            closeAccessModal();
+        function closeAccessModal() {
+            modal.classList.remove('opacity-100');
+            modal.firstElementChild.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                input.value = "";
+                errorMsg.classList.add('hidden');
+            }, 300);
         }
-    }
-        // Elemen Navigasi Mobile
+
+        function verifyAndDownload() {
+            const secretCode = "adminpn";
+            if (input.value === secretCode) {
+                const link = document.createElement('a');
+                link.href = "014 SK Panitia UKT.pdf";
+                link.download = "SK_Panitia_UKT_PagarNusa_UNUSIA.pdf"; 
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                closeAccessModal();
+            } else {
+                errorMsg.classList.remove('hidden');
+                input.classList.add('animate-shake', 'border-red-500', 'bg-red-50');
+                setTimeout(() => {
+                    input.classList.remove('animate-shake', 'border-red-500', 'bg-red-50');
+                }, 400);
+            }
+        }
+
+        // Toggle Nav
         const navToggle = document.getElementById('nav-toggle');
         const navMobile = document.getElementById('nav-mobile');
-        const navLinks = document.querySelectorAll('.nav-link'); 
-        
-        // Fungsi Toggle Navigasi Mobile
         navToggle.addEventListener('click', () => {
             navMobile.classList.toggle('hidden');
-            // Mengubah icon burger menjadi close
             const icon = navToggle.querySelector('i');
             icon.classList.toggle('fa-bars');
             icon.classList.toggle('fa-times');
         });
 
-        // Tutup menu mobile saat link diklik
-        navMobile.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                // Hanya tutup jika link mengarah ke hash section
-                if (link.getAttribute('href').startsWith('#')) {
-                    navMobile.classList.add('hidden');
-                    // Mengembalikan icon burger
-                    const icon = navToggle.querySelector('i');
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            });
-        });
-
-        // Fungsi untuk mengatur menu aktif berdasarkan hash/URL
-        function setActiveLink(hash) {
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                // Hanya aktifkan link Beranda, Informasi, dan Prestasi
-                if (link.getAttribute('href') !== 'daftar.html' && link.getAttribute('href') !== 'login.html' && link.getAttribute('href') === hash) {
-                    link.classList.add('active');
+        // --- Improved Reveal Animation on Scroll ---
+        function reveal() {
+            const reveals = document.querySelectorAll(".reveal");
+            const windowHeight = window.innerHeight;
+            
+            reveals.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 100; // Trigger threshold
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add("active");
                 }
             });
         }
         
-        // Observasi scroll untuk menentukan menu aktif saat pengguna menggulir
-        const sections = document.querySelectorAll('main section');
-        const header = document.getElementById('main-header');
-        
-        // IntersectionObserver akan menangani penyesuaian scroll
-        const observer = new IntersectionObserver((entries) => {
-            let activeHash = '#hero-section'; // Default
+        // Listeners for scroll and load
+        window.addEventListener("scroll", reveal);
+        window.addEventListener("load", reveal);
 
-            // Temukan section yang paling dekat dengan bagian atas viewport (termasuk offset header)
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    // Cek jika bagian atas section sudah melewati titik interaksi (di bawah header)
-                    if (entry.boundingClientRect.top <= header.offsetHeight) {
-                        activeHash = '#' + entry.target.id;
-                    }
+        // Active Link Sync
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
                 }
             });
-            setActiveLink(activeHash);
 
-        }, { 
-            // rootMargin: sesuaikan dengan tinggi header. Misalnya, jika header 64px, gunakan -64px
-            // Ini akan memicu intersection saat section menyentuh bagian bawah header.
-            rootMargin: `-64px 0px -50% 0px`, 
-        }); 
-
-        sections.forEach(section => {
-            observer.observe(section);
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
         });
-
-        // Setel link aktif awal dan scroll (jika ada hash di URL)
-        window.onload = function() {
-            const initialHash = window.location.hash || '#hero-section';
-            setActiveLink(initialHash);
-            
-            // Karena sudah ada CSS :target::before, kita tidak perlu JS scroll offset lagi.
-            // Biarkan browser menangani scroll.
-        };
-
     </script>
-
 </body>
 </html>
-
-

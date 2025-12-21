@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profil Peserta | PAGARNUSA UNUSIA</title>
-    <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ ">
+    <link rel="icon" href="logopn.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -19,188 +19,214 @@
             }
         }
     </script>
-
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        body { font-family: 'Poppins', sans-serif; }
+        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
+        .glass-card { background: white; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; }
+        .status-badge { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col bg-gradient-to-b from-emerald-50 to-slate-50 text-slate-800">
+<body class="min-h-screen flex flex-col">
 
-    <header id="main-header" class="sticky top-0 z-50 bg-primary text-white shadow-lg">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
+    <header class="sticky top-0 z-50 bg-primary text-white shadow-md">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
                 <img src="logopn.png" alt="Logo" class="h-10">
-                <h1 class="text-sm font-bold tracking-wide leading-tight uppercase">
-                    PAGARNUSA<br>UNUSIA
-                </h1>
+                <div class="leading-tight">
+                    <h1 class="text-sm font-bold uppercase tracking-wider">PAGARNUSA</h1>
+                    <p class="text-[10px] opacity-80 uppercase tracking-widest">Unusia Jakarta</p>
+                </div>
             </div>
-            <button id="logout-button" class="bg-white/20 hover:bg-white/30 px-4 py-1.5 rounded-lg text-xs font-semibold transition">
-                <i class="fas fa-sign-out-alt mr-1"></i> Logout
+            <button id="logout-button" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2">
+                <i class="fas fa-power-off"></i> <span>KELUAR</span>
             </button>
         </div>
     </header>
 
-    <main class="flex-1 container mx-auto max-w-4xl px-4 py-8">
-        
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <main class="flex-1 container mx-auto max-w-5xl px-4 py-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
-            <div class="lg:col-span-1 space-y-6">
-                <div class="bg-white rounded-2xl shadow-xl p-6 text-center border border-emerald-100">
-<div class="w-24 h-24 bg-emerald-100 text-primary rounded-full mx-auto flex items-center justify-center overflow-hidden mb-4 border-2 border-primary">
-    <img id="display-foto" src="" alt="Foto Profil" class="w-full h-full object-cover hidden">
-    <i id="foto-icon-placeholder" class="fas fa-user text-3xl font-bold"></i>
-</div>
-                    <h2 id="display-nama" class="text-xl font-bold text-slate-800">Nama Peserta</h2>
-                    <p id="display-email" class="text-sm text-slate-500 mb-4 italic">email@peserta.com</p>
+            <div class="lg:col-span-4 space-y-6">
+                <div class="glass-card p-8 text-center">
+                    <div class="relative w-32 h-32 mx-auto mb-6">
+                        <div class="w-full h-full bg-emerald-50 rounded-full flex items-center justify-center border-4 border-white shadow-inner overflow-hidden">
+                            <img id="display-foto" src="" alt="Foto" class="w-full h-full object-cover hidden">
+                            <i id="foto-placeholder" class="fas fa-user-circle text-6xl text-emerald-200"></i>
+                        </div>
+                        <div class="absolute bottom-1 right-1 w-8 h-8 bg-primary rounded-full border-4 border-white flex items-center justify-center">
+                            <i class="fas fa-check text-[10px] text-white"></i>
+                        </div>
+                    </div>
                     
-                    <div id="status-box" class="py-3 px-4 rounded-xl border-2 transition-all duration-500">
-                        <p class="text-[10px] uppercase font-bold tracking-widest mb-1 opacity-70">Status Pendaftaran</p>
-                        <p id="status-text" class="text-xl font-black italic uppercase italic tracking-tighter">Memuat...</p>
+                    <h2 id="display-nama" class="text-xl font-bold text-slate-800 leading-tight">Memuat Nama...</h2>
+                    <p id="display-email" class="text-xs text-slate-400 mb-6 font-medium tracking-wide">email@peserta.com</p>
+                    
+                    <div id="status-box" class="status-badge py-4 px-2 rounded-2xl border-2 bg-slate-50 border-slate-100">
+                        <p class="text-[9px] uppercase font-black tracking-[0.2em] mb-1 text-slate-400">Status Peserta</p>
+                        <p id="status-text" class="text-lg font-bold uppercase tracking-tight">Meninjau...</p>
                     </div>
                 </div>
 
-                <div class="space-y-3">
+                <div class="glass-card p-4">
+
                     <a href="pembayaran.html" class="flex items-center justify-between w-full bg-white p-4 rounded-xl shadow-sm border border-slate-200 hover:border-primary transition group">
+
                         <span class="text-sm font-semibold"><i class="fas fa-wallet mr-2 text-primary"></i> Konfirmasi Pembayaran</span>
-                        <i class="fas fa-chevron-right text-xs text-slate-300 group-hover:text-primary transition"></i>
+                        <i class="fas fa-external-link-alt text-xs opacity-50 group-hover:opacity-100"></i>
                     </a>
                 </div>
             </div>
 
-            <div class="lg:col-span-2 space-y-6">
-                <div class="bg-white rounded-2xl shadow-xl p-8 border border-emerald-100">
-                    <h3 class="text-lg font-bold text-primary border-b pb-4 mb-6 flex items-center">
-                        <i class="fas fa-id-card mr-3"></i> Detail Profil Peserta
-                    </h3>
+            <div class="lg:col-span-8 space-y-8">
+                <div class="glass-card p-8 lg:p-10">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-6 mb-8">
+                        <h3 class="text-lg font-bold text-slate-800 flex items-center gap-3">
+                            <span class="w-2 h-6 bg-primary rounded-full"></span>
+                            Biodata Lengkap
+                        </h3>
+                        <i class="fas fa-id-card text-slate-200 text-2xl"></i>
+                    </div>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <p class="text-xs text-slate-400 font-bold uppercase mb-1">Tempat, Tanggal Lahir</p>
-                            <p id="display-ttl" class="text-sm font-medium text-slate-700">-</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-12 text-sm">
+                        <div class="space-y-1">
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Tempat, Tanggal Lahir</p>
+                            <p id="display-ttl" class="font-semibold text-slate-700">-</p>
                         </div>
-                        <div>
-                            <p class="text-xs text-slate-400 font-bold uppercase mb-1">Angkatan</p>
-                            <p id="display-angkatan" class="text-sm font-medium text-slate-700">-</p>
+                        <div class="space-y-1">
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Angkatan</p>
+                            <p id="display-angkatan" class="font-semibold text-slate-700">-</p>
                         </div>
-                        <div class="md:col-span-2">
-                            <p class="text-xs text-slate-400 font-bold uppercase mb-1">Alamat Lengkap</p>
-                            <p id="display-alamat" class="text-sm font-medium text-slate-700">-</p>
+                        <div class="md:col-span-2 space-y-1">
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Alamat Lengkap</p>
+                            <p id="display-alamat" class="font-semibold text-slate-700 leading-relaxed">-</p>
                         </div>
-                        <div>
-                            <p class="text-xs text-slate-400 font-bold uppercase mb-1">WhatsApp</p>
-                            <p id="display-whatsapp" class="text-sm font-medium text-slate-700">-</p>
+                        <div class="space-y-1">
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">No. WhatsApp</p>
+                            <p id="display-whatsapp" class="font-semibold text-slate-700">-</p>
                         </div>
-                        <div>
-                            <p class="text-xs text-slate-400 font-bold uppercase mb-1">Kategori Ujian</p>
-                            <p id="display-ujian" class="text-sm font-medium text-slate-700">-</p>
+                        <div class="space-y-1">
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Kategori Ujian</p>
+                            <p id="display-ujian" class="font-semibold text-slate-700">-</p>
                         </div>
                     </div>
                 </div>
 
-                <div id="sertifikat-section" class="bg-white rounded-2xl shadow-xl p-8 border border-emerald-100">
-                    <h3 class="text-lg font-bold text-primary border-b pb-4 mb-6 flex items-center">
-                        <i class="fas fa-certificate mr-3"></i> Sertifikat Kelulusan
-                    </h3>
-                    <div id="sertifikat-container" class="hidden text-center py-6">
-                        <i class="fas fa-file-pdf text-5xl text-red-500 mb-4"></i>
-                        <p class="text-sm mb-4">Sertifikat Anda telah tersedia dan dapat diunduh.</p>
-                        <a id="download-sertifikat" href="#" target="_blank" class="inline-block bg-primary hover:bg-primaryDark text-white px-8 py-3 rounded-xl font-bold transition shadow-lg">
-                            <i class="fas fa-download mr-2"></i> Unduh Sertifikat
-                        </a>
+                <div id="sertifikat-section" class="glass-card p-8 lg:p-10 overflow-hidden relative">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-6 mb-8">
+                        <h3 class="text-lg font-bold text-slate-800 flex items-center gap-3">
+                            <span class="w-2 h-6 bg-primary rounded-full"></span>
+                            E-Sertifikat
+                        </h3>
+                        <i class="fas fa-certificate text-slate-200 text-2xl"></i>
                     </div>
-                    <div id="sertifikat-placeholder" class="text-center py-10 bg-slate-50 rounded-xl border-2 border-dashed border-slate-200">
-                        <p id="placeholder-text" class="text-slate-400 text-sm italic">Status pendaftaran belum disetujui.</p>
+
+                    <div id="sertifikat-container" class="hidden animate-pulse">
+                        <div class="flex flex-col md:flex-row items-center gap-8 bg-slate-50 p-6 rounded-3xl border border-slate-100">
+                            <div class="w-20 h-20 bg-white rounded-2xl flex items-center justify-center shadow-sm">
+                                <i class="fas fa-file-pdf text-4xl text-red-500"></i>
+                            </div>
+                            <div class="flex-1 text-center md:text-left">
+                                <h4 class="font-bold text-slate-800">Sertifikat Kelulusan.pdf</h4>
+                                <p class="text-xs text-slate-400">Sertifikat resmi UKT Pagar Nusa Unusia</p>
+                            </div>
+                            <a id="download-sertifikat" href="#" target="_blank" class="w-full md:w-auto bg-primary hover:bg-primaryDark text-white px-8 py-4 rounded-2xl font-bold transition-all shadow-lg shadow-emerald-900/20 text-center">
+                                <i class="fas fa-download mr-2"></i> DOWNLOAD
+                            </a>
+                        </div>
+                    </div>
+
+                    <div id="sertifikat-placeholder" class="text-center py-12 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200">
+                        <i class="fas fa-lock text-slate-200 text-4xl mb-4"></i>
+                        <p id="placeholder-text" class="text-slate-400 text-xs font-medium italic">Status pendaftaran belum disetujui untuk akses sertifikat.</p>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <footer class="bg-primary text-white text-center py-4 mt-8">
-        <p class="text-xs opacity-80">© 2025 PAGARNUSA UNUSIA. Semua hak cipta dilindungi.</p>
+    <footer class="bg-white border-t border-slate-100 py-6 text-center">
+        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.3em]">Pagar Nusa UNUSIA • Sistem Informasi Peserta</p>
     </footer>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // 1. Ambil Data Sesi Login
+        // 1. Ambil Data Sesi Login dari LocalStorage
         const currentUser = JSON.parse(localStorage.getItem('currentUserProfile'));
         
-        // Proteksi Halaman: Jika tidak login, tendang balik ke login.html
-        if (!currentUser || currentUser.is_admin) {
+        // Proteksi: Jika tidak ada data login, lempar kembali ke login.html
+        if (!currentUser) {
             window.location.href = 'login.html';
             return;
         }
 
-        // 2. Sinkronisasi Data Terbaru dari "Database" (localStorage)
-        const allData = JSON.parse(localStorage.getItem('allStudentsData')) || [];
-        const latestProfile = allData.find(s => s.email === currentUser.email) || currentUser;
+        // 2. Mapping Data ke UI (Mendukung Case Sensitive dari Excel)
+        document.getElementById('display-nama').textContent = currentUser.nama || currentUser.Nama || "-";
+        document.getElementById('display-email').textContent = currentUser.email || currentUser.Email || "-";
+        document.getElementById('display-ttl').textContent = currentUser.ttl || currentUser.TTL || "-";
+        document.getElementById('display-alamat').textContent = currentUser.alamat || currentUser.Alamat || "-";
+        document.getElementById('display-whatsapp').textContent = currentUser.whatsapp || currentUser.Whatsapp || "-";
+        document.getElementById('display-angkatan').textContent = currentUser.angkatan || currentUser.Angkatan || "-";
+        document.getElementById('display-ujian').textContent = currentUser.ujian || currentUser.Ujian || "-";
 
-        // 3. Isi Tampilan Profil (Teks)
-        document.getElementById('display-nama').textContent = latestProfile.nama;
-        document.getElementById('display-email').textContent = latestProfile.email;
-        document.getElementById('display-ttl').textContent = latestProfile.ttl;
-        document.getElementById('display-alamat').textContent = latestProfile.alamat;
-        document.getElementById('display-whatsapp').textContent = latestProfile.whatsapp;
-        document.getElementById('display-angkatan').textContent = latestProfile.angkatan;
-        document.getElementById('display-ujian').textContent = latestProfile.ujian;
+        // 3. Logika Tampilan Foto (Sesuai kolom fotoUrl di Excel Anda)
+        const imgEl = document.getElementById('display-foto');
+        const placeholderEl = document.getElementById('foto-placeholder');
+        const fotoUrl = currentUser.fotoUrl || currentUser.fotourl || "";
 
-        // --- LOGIKA TAMPILAN FOTO ---
-        const fotoElement = document.getElementById('display-foto');
-        const iconPlaceholder = document.getElementById('foto-icon-placeholder');
-
-        if (latestProfile.fotoUrl && latestProfile.fotoUrl.trim() !== "") {
-            // Jika ada link foto, tampilkan img dan sembunyikan icon
-            fotoElement.src = latestProfile.fotoUrl;
-            fotoElement.classList.remove('hidden');
-            iconPlaceholder.classList.add('hidden');
+        // Jika fotoUrl berisi link asli (bukan kata 'default' atau kosong)
+        if (fotoUrl && fotoUrl !== "default" && fotoUrl.length > 10) {
+            imgEl.src = fotoUrl;
+            imgEl.classList.remove('hidden');
+            placeholderEl.classList.add('hidden');
         } else {
-            // Jika tidak ada foto, tampilkan icon default
-            fotoElement.classList.add('hidden');
-            iconPlaceholder.classList.remove('hidden');
+            // Jika foto kosong/default, buat avatar otomatis dari Nama
+            const namaUser = currentUser.nama || "User";
+            imgEl.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(namaUser)}&background=1B7548&color=fff&size=128`;
+            imgEl.classList.remove('hidden');
+            placeholderEl.classList.add('hidden');
         }
 
-        // 4. Logika Tampilan Status & Sertifikat
+        // 4. Logika Status & Sertifikat (Mengatasi typo 'Panding' di Excel)
         const statusBox = document.getElementById('status-box');
         const statusText = document.getElementById('status-text');
+        const certContainer = document.getElementById('sertifikat-container');
+        const certPlaceholder = document.getElementById('sertifikat-placeholder');
         const placeholderText = document.getElementById('placeholder-text');
-        const sertifikatContainer = document.getElementById('sertifikat-container');
-        const sertifikatPlaceholder = document.getElementById('sertifikat-placeholder');
 
-        const currentStatus = latestProfile.status;
+        const rawStatus = (currentUser.status || "Pending").toLowerCase();
 
-        if (currentStatus === 'Kualifikasi') {
+        if (rawStatus.includes('kualifikasi') || rawStatus.includes('lulus')) {
             statusText.textContent = "Kualifikasi ✅";
-            statusBox.className = "py-3 px-4 rounded-xl border-2 transition-all duration-500 bg-green-50 border-green-500 text-green-700";
+            statusBox.className = "status-badge py-4 px-2 rounded-2xl border-2 bg-emerald-50 border-emerald-500 text-emerald-700";
             
-            // Logika Link Sertifikat
-            if (latestProfile.sertifikatUrl) {
-                sertifikatContainer.classList.remove('hidden');
-                sertifikatPlaceholder.classList.add('hidden');
-                document.getElementById('download-sertifikat').href = latestProfile.sertifikatUrl;
+            // Cek Link Sertifikat
+            const sLink = currentUser.sertifikatUrl || currentUser.sertifikaturl;
+            if (sLink && sLink.includes('http')) {
+                certContainer.classList.remove('hidden');
+                certPlaceholder.classList.add('hidden');
+                document.getElementById('download-sertifikat').href = sLink;
             } else {
-                placeholderText.textContent = "Sertifikat sedang dalam proses pembuatan.";
+                placeholderText.textContent = "Sertifikat sedang dalam proses digitalisasi.";
             }
-        } else if (currentStatus === 'Diskualifikasi') {
+        } else if (rawStatus.includes('diskualifikasi') || rawStatus.includes('gagal')) {
             statusText.textContent = "Diskualifikasi ❌";
-            statusBox.className = "py-3 px-4 rounded-xl border-2 transition-all duration-500 bg-red-50 border-red-500 text-red-700";
-            placeholderText.textContent = "Mohon maaf, Anda tidak memenuhi kualifikasi.";
+            statusBox.className = "status-badge py-4 px-2 rounded-2xl border-2 bg-red-50 border-red-500 text-red-700";
+            placeholderText.textContent = "Mohon maaf, Anda tidak lolos tahap kualifikasi.";
         } else {
-            // Default: Pending
-            statusText.textContent = "Pending ⏳";
-            statusBox.className = "py-3 px-4 rounded-xl border-2 transition-all duration-500 bg-yellow-50 border-yellow-500 text-yellow-700";
-            placeholderText.textContent = "Status Anda sedang ditinjau oleh Admin.";
+            // Untuk status 'Panding' atau 'Pending'
+            statusText.textContent = "Sedang Ditinjau ⏳";
+            statusBox.className = "status-badge py-4 px-2 rounded-2xl border-2 bg-yellow-50 border-yellow-500 text-yellow-700";
+            placeholderText.textContent = "Berkas Anda sedang dalam pengecekan oleh admin.";
         }
 
         // 5. Fungsi Logout
-        document.getElementById('logout-button').addEventListener('click', () => {
+        document.getElementById('logout-button').onclick = () => {
             localStorage.removeItem('currentUserProfile');
             window.location.href = 'login.html';
-        });
+        };
     });
 </script>
 </body>
 </html>
-

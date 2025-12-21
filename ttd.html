@@ -175,29 +175,44 @@
         // 1. Ambil Parameter dari URL
         const urlParams = new URLSearchParams(window.location.search);
         
-        // 2. Ambil data (Nama, Jabatan, Tanggal, Pukul) 
-        // n, j, t, p harus sama persis dengan yang ada di Apps Script (finalUrl)
-        const nama = urlParams.get('n');
-        const jabatan = urlParams.get('j');
-        const tanggal = urlParams.get('t');
-        const pukul = urlParams.get('p');
+        // 2. Fungsi Helper untuk membersihkan teks dari URL
+        const getCleanData = (param) => {
+            const data = urlParams.get(param);
+            return data ? decodeURIComponent(data).replace(/\+/g, ' ') : null;
+        };
+
+        const nama = getCleanData('n');
+        const jabatan = getCleanData('j');
+        const tanggal = getCleanData('t'); // Format yang diharapkan: 21 Des 2025
+        const pukul = getCleanData('p');   // Format yang diharapkan: 15.53
 
         // 3. Masukkan ke Elemen HTML
-        // Kami tambahkan proteksi: Jika data kosong, tampilkan teks peringatan
-        document.getElementById('v-nama').innerText = nama ? decodeURIComponent(nama) : "Data Tidak Ditemukan";
-        document.getElementById('v-jabatan').innerText = jabatan ? decodeURIComponent(jabatan) : "Jabatan Tidak Terdaftar";
-        document.getElementById('v-tanggal').innerText = tanggal ? decodeURIComponent(tanggal) : "--/--/--";
-        document.getElementById('v-pukul').innerText = pukul ? decodeURIComponent(pukul) : "--:-- WIB";
+        document.getElementById('v-nama').innerText = nama || "Data Tidak Ditemukan";
+        document.getElementById('v-jabatan').innerText = jabatan || "Jabatan Tidak Terdaftar";
+        
+        // Menampilkan Tanggal
+        document.getElementById('v-tanggal').innerText = tanggal || "--/--/--";
+        
+        // Menampilkan Pukul dengan tambahan "WIB" otomatis jika belum ada
+        if (pukul) {
+            const formatJam = pukul.includes('WIB') ? pukul : `${pukul} WIB`;
+            document.getElementById('v-pukul').innerText = formatJam;
+        } else {
+            document.getElementById('v-pukul').innerText = "--:-- WIB";
+        }
 
-        // 4. Logika Preloader (Menghilangkan layar loading setelah data siap)
+        // 4. Logika Preloader
         setTimeout(() => {
             const preloader = document.getElementById('preloader');
-            preloader.style.opacity = '0';
-            setTimeout(() => {
-                preloader.style.display = 'none';
-            }, 500);
-        }, 2000); // Memberikan waktu 2 detik agar kesan "Validasi" terasa nyata
+            if (preloader) {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 500);
+            }
+        }, 2000);
     };
 </script>
 </body>
 </html>
+

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
@@ -180,14 +181,25 @@ document.querySelectorAll('.sidebar-link').forEach(link => {
 // --- CORE: LOAD EXCEL DATA ---
 async function loadExcelData() {
     try {
-        // Cache busting agar data selalu terbaru
         const response = await fetch('db_login.xlsx?update=' + new Date().getTime());
-        if (!response.ok) throw new Error('File db_login.xlsx tidak terbaca atau tidak ada.');
+        if (!response.ok) throw new Error('File db_login.xlsx tidak terbaca.');
         
         const arrayBuffer = await response.arrayBuffer();
         const workbook = XLSX.read(new Uint8Array(arrayBuffer), { type: 'array' });
         const sheet = workbook.Sheets[workbook.SheetNames[0]];
-        globalData = XLSX.utils.sheet_to_json(sheet);
+        const rawData = XLSX.utils.sheet_to_json(sheet);
+        
+        // LOGIKA BARU: Filter data yang lengkap saja
+        globalData = rawData.filter(row => {
+            // Pastikan kolom-kolom utama tidak kosong/undefined
+            const nama = row.nama || row.Nama;
+            const angkatan = row.angkatan || row.Angkatan;
+            const ujian = row.ujian || row.Ujian;
+            const status = row.status || row.Status;
+
+            // Baris hanya diambil jika semua kolom ini memiliki nilai
+            return nama && angkatan && ujian && status;
+        });
         
         refreshUI();
     } catch (err) {
@@ -195,7 +207,7 @@ async function loadExcelData() {
         document.getElementById('pesertaBody').innerHTML = `
             <tr><td colspan="5" class="p-10 text-center">
                 <p class="text-red-500 font-bold"><i class="fas fa-exclamation-circle mr-2"></i>Gagal Memuat Database</p>
-                <p class="text-[10px] text-slate-400 mt-1">Pastikan file 'db_login.xlsx' ada dan Anda menggunakan Live Server.</p>
+                <p class="text-[10px] text-slate-400 mt-1">Pastikan file 'db_login.xlsx' ada dan data terisi lengkap.</p>
             </td></tr>`;
     }
 }

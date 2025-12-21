@@ -1,744 +1,304 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard Admin | PAGARNUSA UNUSIA</title>
-    <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ ">
+    <link rel="icon" href="logopn.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#1B7548',
-                        primaryDark: '#145c38'
-                    }
-                }
-            }
-        }
-    </script>
-
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <style>
-        body { 
-            font-family: 'Poppins', sans-serif;
-        }
-        /* Style tambahan untuk sidebar */
-        .sidebar-link.active {
-            background-color: #145c38; /* primaryDark */
-            color: white !important; /* Memastikan teks putih */
-        }
-        /* Style untuk modal */
-        .modal-overlay {
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-        .modal-content {
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-    </style>
-</head>
-<body class="min-h-screen flex flex-col bg-gradient-to-b from-emerald-50 to-slate-50 text-slate-80um">
 
-    <header id="main-header" class="sticky top-0 z-50 bg-primary text-white shadow-lg">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            
-            <div class="flex items-center space-x-3">
-                <img src="logopn.png" alt="Logo PAGARNUSA" class="h-10">
-                <h1 class="text-sm font-bold tracking-wide leading-tight uppercase">
-                    DASHBOARD<br>ADMIN
-                </h1>
-            </div>
-            
-            <div class="flex items-center space-x-4">
-                <span id="admin-name-display" class="text-sm hidden sm:inline">Selamat Datang, Admin!</span>
-                <a href="login.html" id="logout-button" class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded-lg text-sm transition">
-                    <i class="fas fa-sign-out-alt mr-1"></i> Logout
-                </a>
-            </div>
-        </div>
-    </header>
-
-    <main class="flex-1 container mx-auto px-4 py-8">
-        <div class="flex flex-col md:flex-row gap-6">
-
-            <nav id="sidebar" class="w-full md:w-64 bg-white rounded-xl shadow-lg p-4 md:sticky md:top-20 h-fit">
-                <h3 class="text-lg font-bold text-primary mb-4 border-b pb-2">Menu</h3>
-                <ul class="space-y-2">
-                    <li>
-                        <a href="#ringkasan" class="sidebar-link active block px-3 py-2 rounded-lg text-sm text-white transition hover:bg-primaryDark/80" data-content-id="content-ringkasan">
-                            <i class="fas fa-chart-line w-5 mr-2"></i> Ringkasan
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#kelola-peserta" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-emerald-50 transition" data-content-id="content-kelola-peserta">
-                            <i class="fas fa-users w-5 mr-2"></i> Kelola Peserta
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#pengumuman" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-emerald-50 transition" data-content-id="content-pengumuman">
-                            <i class="fas fa-bell w-5 mr-2"></i> Pengumuman
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#pengaturan" class="sidebar-link block px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-emerald-50 transition" data-content-id="content-pengaturan">
-                            <i class="fas fa-cog w-5 mr-2"></i> Pengaturan
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://uktpagarnusa.my.id/penilaian/menu_penilaian" target="_blank" class="block px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-emerald-50 transition flex items-center justify-between">
-                            <span><i class="fas fa-pen-to-square w-5 mr-2"></i> Portal Penilaian</span>
-                            <i class="fas fa-external-link-alt text-[10px] opacity-50"></i>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
-            <section id="dashboard-content" class="flex-1">
-                <div id="content-ringkasan">
-                    <h2 class="text-3xl font-extrabold text-primary mb-6">Ringkasan Dashboard</h2>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                        <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-primary">
-                            <p class="text-sm text-slate-500 font-medium">Total Pendaftar</p>
-                            <p id="total-pendaftar" class="text-3xl font-bold text-slate-800 mt-1">...</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-yellow-500">
-                            <p class="text-sm text-slate-500 font-medium">Status Panding</p>
-                            <p id="pending-verifikasi" class="text-3xl font-bold text-slate-800 mt-1">...</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-green-500">
-                            <p class="text-sm text-slate-500 font-medium">Peserta Kualifikasi</p>
-                            <p id="peserta-diverifikasi" class="text-3xl font-bold text-slate-800 mt-1">...</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-xl shadow-lg p-6">
-                        <h3 class="text-xl font-bold text-primaryDark mb-4">Data Peserta Terdaftar</h3>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-slate-200">
-                                <thead class="bg-slate-50">
-                                    <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Nama</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Angkatan</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Tingkat Ujian</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="latest-applicants-body" class="bg-white divide-y divide-slate-200 text-sm">
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="mt-4 text-right">
-                            <a href="#" id="download-data-link" class="text-sm text-primary hover:underline font-medium transition hover:text-primaryDark">
-                                <i class="fas fa-download mr-1"></i> Data Lengkap
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="content-kelola-peserta" class="hidden">
-                    <h2 class="text-3xl font-extrabold text-primary mb-6">Kelola Peserta</h2>
-                    <div class="bg-white p-6 rounded-xl shadow-lg">
-                        
-                        <div class="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-3 sm:space-y-0 sm:space-x-4">
-                            <input type="text" id="participant-search" placeholder="Cari Nama atau Angkatan..."
-                                class="w-full sm:w-1/2 p-2 border rounded-lg focus:ring-primary focus:border-primary">
-                            <select id="status-filter" class="w-full sm:w-1/4 p-2 border rounded-lg focus:ring-primary focus:border-primary">
-                                <option value="all">Semua Status</option>
-                                <option value="Kualifikasi">Kualifikasi</option>
-                                <option value="Panding">Panding</option>
-                                <option value="Diskualifikasi">Diskualifikasi</option>
-                            </select>
-                        </div>
-
-                        <div class="overflow-x-auto mt-6">
-                            <table class="min-w-full divide-y divide-slate-200">
-                                <thead class="bg-primary/10">
-                                    <tr>
-                                        <th class="px-4 py-2 text-left text-xs font-semibold text-primary uppercase tracking-wider">Nama</th>
-                                        <th class="px-4 py-2 text-left text-xs font-semibold text-primary uppercase tracking-wider hidden sm:table-cell">Angkatan</th>
-                                        <th class="px-4 py-2 text-left text-xs font-semibold text-primary uppercase tracking-wider hidden md:table-cell">Ujian</th>
-                                        <th class="px-4 py-2 text-left text-xs font-semibold text-primary uppercase tracking-wider">Status</th>
-                                        <th class="px-4 py-2 text-center text-xs font-semibold text-primary uppercase tracking-wider">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="participants-table-body" class="bg-white divide-y divide-slate-200 text-sm">
-                                    </tbody>
-                            </table>
-                        </div>
-                        
-                        <p id="no-data-message" class="text-center text-slate-500 mt-4 hidden">Tidak ada data yang cocok ditemukan.</p>
-                    </div>
-                </div>
-
-                <div id="content-pengumuman" class="hidden">
-                    <h2 class="text-3xl font-extrabold text-primary mb-6">Pengumuman & Notifikasi</h2>
-                    <div class="bg-white p-6 rounded-xl shadow-lg">
-                        <h4 class="text-xl font-bold mb-3 text-primaryDark">Buat Pengumuman Baru</h4>
-                        <textarea rows="4" class="w-full p-3 border rounded-lg focus:ring-primary focus:border-primary" placeholder="Tulis pengumuman penting di sini..."></textarea>
-                        <button class="mt-3 bg-primary hover:bg-primaryDark text-white font-semibold py-2 px-4 rounded-lg transition">
-                            <i class="fas fa-paper-plane mr-2"></i> Publikasikan
-                        </button>
-                    </div>
-                </div>
-                
-                <div id="content-pengaturan" class="hidden">
-                    <h2 class="text-3xl font-extrabold text-primary mb-6">Pengaturan Umum</h2>
-                    <div class="bg-white p-6 rounded-xl shadow-lg">
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-semibold mb-1">Status Pendaftaran</label>
-                                <select class="w-full p-2 border rounded-lg">
-                                    <option>Buka</option>
-                                    <option>Tutup</option>
-                                </select>
-                            </div>
-                            <p class="text-sm text-slate-500">Kelola pengaturan sistem dasar.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <div id="modal-container">
-            </div>
-
-    </main>
-
-    <footer class="bg-primary text-white text-center py-3 mt-auto">
-        <p class="text-xs opacity-90">© 2025 PAGARNUSA UNUSIA. Semua hak cipta dilindungi.</p>
-    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <script>
-        const twoDigits = (num) => String(num).padStart(2, '0');
-        let students = []; // Variabel global untuk data siswa (mutable, hasil filter/search)
-        let originalStudents = []; // Salinan data asli (sumber kebenaran)
-
-        // --- FUNGSI UTILITY & MODAL ---
-        
-        // Fungsi untuk menyimpan perubahan ke localStorage (PENTING untuk sinkronisasi siswa)
-        function saveStudentsData() {
-            const dataToSave = originalStudents.map(user => {
-                const { is_admin, role, ...rest } = user;
-                return rest;
-            }).filter(user => user.nama); 
-            
-            localStorage.setItem('allStudentsData', JSON.stringify(dataToSave));
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { colors: { primary: '#1B7548', primaryDark: '#145c38' } } }
         }
-
-        function getStatusBadge(status) {
-            let badgeClass = '';
-            let statusText = '';
-
-            if (status.includes('Kualifikasi') || status.includes('Diverifikasi')) {
-                badgeClass = 'bg-green-100 text-green-800';
-                statusText = 'Kualifikasi';
-            } else if (status.includes('Panding') || status.includes('Menunggu Verifikasi')) {
-                badgeClass = 'bg-yellow-100 text-yellow-800';
-                statusText = 'Panding';
-            } else if (status.includes('Diskualifikasi') || status.includes('Ditolak')) {
-                badgeClass = 'bg-red-100 text-red-800';
-                statusText = 'Diskualifikasi';
-            } else {
-                badgeClass = 'bg-slate-100 text-slate-800';
-                statusText = 'Tidak Diketahui';
-            }
-            
-            return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${badgeClass}">${statusText}</span>`;
-        }
-
-
-        // ----------------------------------------------------
-        // ------------------ CRUD FUNCTIONS ------------------
-        // ----------------------------------------------------
-
-        // U (Update): Fungsi Kualifikasi Peserta
-        window.verifyParticipant = function(index) {
-            const student = students[index];
-            if (confirm(`Kualifikasi peserta ${student.nama}?`)) {
-                const originalIndex = originalStudents.findIndex(s => s.email === student.email); 
-
-                if (originalIndex !== -1) {
-                    originalStudents[originalIndex].status = 'Kualifikasi✅️';
-                    saveStudentsData(); // Simpan perubahan
-                    renderParticipantsTable(); // Render ulang tabel Kelola Peserta
-                    renderRingkasan(); // Render ulang ringkasan
-                    alert(`Peserta ${student.nama} berhasil di Kualifikasi.`);
-                }
-            }
-        }
-        
-        // U (Update): Fungsi Tolak/Diskualifikasi Peserta
-        window.rejectParticipant = function(index) {
-            const student = students[index];
-            if (confirm(`Diskualifikasi pendaftaran peserta ${student.nama}? Tindakan ini akan mengubah statusnya menjadi Diskualifikasi.`)) {
-                const originalIndex = originalStudents.findIndex(s => s.email === student.email); 
-
-                if (originalIndex !== -1) {
-                    originalStudents[originalIndex].status = 'Diskualifikasi❌️';
-                    saveStudentsData(); // Simpan perubahan
-                    renderParticipantsTable(); 
-                    renderRingkasan(); 
-                    alert(`Pendaftaran ${student.nama} berhasil di Diskualifikasi.`);
-                }
-            }
-        }
-        
-        // U (Update): Fungsi Ubah ke Panding (untuk status yang sudah final)
-        window.setPanding = function(index) {
-            const student = students[index];
-            if (confirm(`Ubah status peserta ${student.nama} kembali ke Panding (Menunggu Verifikasi)?`)) {
-                const originalIndex = originalStudents.findIndex(s => s.email === student.email); 
-
-                if (originalIndex !== -1) {
-                    originalStudents[originalIndex].status = 'Panding⏳️';
-                    saveStudentsData(); // Simpan perubahan
-                    renderParticipantsTable(); 
-                    renderRingkasan(); 
-                    alert(`Status ${student.nama} berhasil diubah menjadi Panding.`);
-                }
-            }
-        }
-
-
-        // U (Update) / D (Delete): Membuka Modal (SAMA)
-        window.openModal = function(action, index) {
-            const modalContainer = document.getElementById('modal-container');
-            const student = students[index];
-            modalContainer.innerHTML = '';
-            
-            if (action === 'edit') {
-                modalContainer.innerHTML = createEditModal(student);
-                document.getElementById('editForm').addEventListener('submit', handleEditSubmit);
-            } else if (action === 'delete') {
-                modalContainer.innerHTML = createDeleteModal(student);
-                document.getElementById('delete-confirm-button').addEventListener('click', handleDeleteConfirm);
-            }
-            document.getElementById('modal-overlay').classList.remove('hidden');
-        }
-
-        window.closeModal = function() {
-            document.getElementById('modal-overlay').classList.add('hidden');
-            document.getElementById('modal-container').innerHTML = '';
-        }
-
-        // U (Update): Membuat Modal Edit
-        function createEditModal(student) {
-            const currentStatus = student.status.includes('Kualifikasi') || student.status.includes('Diverifikasi') ? 'Kualifikasi' :
-                                student.status.includes('Panding') || student.status.includes('Menunggu Verifikasi') ? 'Panding' :
-                                'Diskualifikasi';
-
-            return `
-                <div id="modal-overlay" class="fixed inset-0 z-50 flex items-center justify-center transition-opacity modal-overlay">
-                    <div class="absolute inset-0 bg-black opacity-50" onclick="closeModal()"></div>
-                    <div class="bg-white rounded-xl shadow-2xl p-6 w-11/12 max-w-lg z-50 modal-content">
-                        <h3 class="text-xl font-bold text-primary border-b pb-2 mb-4">Edit Data Peserta: ${student.nama}</h3>
-                        <form id="editForm" data-student-email="${student.email}" class="space-y-4">
-                            <input type="hidden" name="oldEmail" value="${student.email}">
-                            
-                            <div>
-                                <label for="edit_nama" class="block text-sm font-semibold mb-1">Nama</label>
-                                <input type="text" id="edit_nama" name="nama" value="${student.nama}" required
-                                    class="w-full p-2 border rounded-lg focus:ring-primary focus:border-primary">
-                            </div>
-                            <div>
-                                <label for="edit_email" class="block text-sm font-semibold mb-1">Email</label>
-                                <input type="email" id="edit_email" name="email" value="${student.email}" required
-                                    class="w-full p-2 border rounded-lg focus:ring-primary focus:border-primary">
-                            </div>
-                            <div>
-                                <label for="edit_angkatan" class="block text-sm font-semibold mb-1">Angkatan</label>
-                                <input type="number" id="edit_angkatan" name="angkatan" value="${student.angkatan}" required
-                                    class="w-full p-2 border rounded-lg focus:ring-primary focus:border-primary">
-                            </div>
-                            <div>
-                                <label for="edit_ujian" class="block text-sm font-semibold mb-1">Tingkat Ujian</label>
-                                <input type="text" id="edit_ujian" name="ujian" value="${student.ujian}" required
-                                    class="w-full p-2 border rounded-lg focus:ring-primary focus:border-primary">
-                            </div>
-                            <div>
-                                <label for="edit_status" class="block text-sm font-semibold mb-1">Status Verifikasi</label>
-                                <select id="edit_status" name="status" class="w-full p-2 border rounded-lg focus:ring-primary focus:border-primary">
-                                    <option value="Kualifikasi✅️" ${currentStatus === 'Kualifikasi' ? 'selected' : ''}>Kualifikasi</option>
-                                    <option value="Panding⏳️" ${currentStatus === 'Panding' ? 'selected' : ''}>Panding</option>
-                                    <option value="Diskualifikasi❌️" ${currentStatus === 'Diskualifikasi' ? 'selected' : ''}>Diskualifikasi</option>
-                                </select>
-                            </div>
-                            
-                            <div class="flex justify-end space-x-3 mt-6">
-                                <button type="button" onclick="closeModal()" class="bg-slate-300 hover:bg-slate-400 text-slate-800 font-semibold py-2 px-4 rounded-lg transition">Batal</button>
-                                <button type="submit" class="bg-primary hover:bg-primaryDark text-white font-semibold py-2 px-4 rounded-lg transition">Simpan Perubahan</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            `;
-        }
-
-        // U (Update): Menangani Submit Form Edit
-        function handleEditSubmit(e) {
-            e.preventDefault();
-            const form = e.target;
-            const oldEmail = form.elements['oldEmail'].value;
-            
-            const formData = {
-                nama: form.elements['nama'].value,
-                email: form.elements['email'].value,
-                angkatan: form.elements['angkatan'].value,
-                ujian: form.elements['ujian'].value,
-                status: form.elements['status'].value,
-            };
-
-            const studentIndex = students.findIndex(s => s.email === oldEmail);
-            if (studentIndex !== -1) {
-                Object.assign(students[studentIndex], formData);
-            }
-
-            const originalIndex = originalStudents.findIndex(s => s.email === oldEmail);
-            if (originalIndex !== -1) {
-                Object.assign(originalStudents[originalIndex], formData);
-            }
-            
-            saveStudentsData(); // PENTING: Update localStorage
-            renderParticipantsTable();
-            renderRingkasan();
-            closeModal();
-            alert(`Data ${formData.nama} berhasil diperbarui.`);
-        }
-
-        // D (Delete): Membuat Modal Delete (SAMA)
-        function createDeleteModal(student) {
-            return `
-                <div id="modal-overlay" class="fixed inset-0 z-50 flex items-center justify-center transition-opacity modal-overlay">
-                    <div class="absolute inset-0 bg-black opacity-50" onclick="closeModal()"></div>
-                    <div class="bg-white rounded-xl shadow-2xl p-6 w-11/12 max-w-sm z-50">
-                        <h3 class="text-xl font-bold text-red-600 border-b pb-2 mb-4">Hapus Peserta</h3>
-                        <p class="text-slate-700">Apakah Anda yakin ingin menghapus data peserta <strong>${student.nama}</strong> secara permanen?</p>
-                        <p class="text-sm text-red-500 mt-2">Tindakan ini tidak dapat dibatalkan!</p>
-                        
-                        <div class="flex justify-end space-x-3 mt-6">
-                            <button type="button" onclick="closeModal()" class="bg-slate-300 hover:bg-slate-400 text-slate-800 font-semibold py-2 px-4 rounded-lg transition">Batal</button>
-                            <button type="button" id="delete-confirm-button" data-student-email="${student.email}" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition">Hapus</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // D (Delete): Menangani Konfirmasi Hapus
-        function handleDeleteConfirm(e) {
-            const emailToDelete = e.target.getAttribute('data-student-email');
-
-            const originalIndex = originalStudents.findIndex(s => s.email === emailToDelete);
-            if (originalIndex !== -1) {
-                originalStudents.splice(originalIndex, 1);
-            }
-            
-            const studentIndex = students.findIndex(s => s.email === emailToDelete);
-            if (studentIndex !== -1) {
-                students.splice(studentIndex, 1);
-            }
-
-            saveStudentsData(); // PENTING: Update localStorage
-            renderParticipantsTable();
-            renderRingkasan();
-            closeModal();
-            alert(`Peserta berhasil dihapus.`);
-        }
-
-
-        // ----------------------------------------------------
-        // ------------------ RENDER FUNCTIONS ----------------
-        // ----------------------------------------------------
-
-        // R (Read): Render Tabel Kelola Peserta
-        function renderParticipantsTable() {
-            const tableBody = document.getElementById('participants-table-body');
-            const searchKeyword = document.getElementById('participant-search').value.toLowerCase();
-            const filterStatus = document.getElementById('status-filter').value;
-            const noDataMessage = document.getElementById('no-data-message');
-            
-            students = originalStudents.filter(student => {
-                const nameMatch = student.nama.toLowerCase().includes(searchKeyword);
-                const angkatanMatch = student.angkatan.toString().includes(searchKeyword);
-                
-                let normalizedStatus = student.status.includes('Kualifikasi') ? 'Kualifikasi' :
-                                    student.status.includes('Panding') ? 'Panding' :
-                                    student.status.includes('Diskualifikasi') ? 'Diskualifikasi' : '';
-
-                const statusMatch = filterStatus === 'all' || normalizedStatus.includes(filterStatus);
-                
-                return (nameMatch || angkatanMatch) && statusMatch;
-            });
-
-            tableBody.innerHTML = '';
-            
-            if (students.length === 0) {
-                noDataMessage.classList.remove('hidden');
-                return;
-            } else {
-                noDataMessage.classList.add('hidden');
-            }
-
-            students.forEach((student, index) => {
-                const statusBadge = getStatusBadge(student.status);
-                
-                let actionButtons;
-                let currentStatus = student.status.includes('Kualifikasi') ? 'Kualifikasi' :
-                                    student.status.includes('Panding') ? 'Panding' :
-                                    'Diskualifikasi';
-
-                if (currentStatus === 'Panding') {
-                    actionButtons = `
-                        <button onclick="verifyParticipant(${index})" class="text-green-600 hover:text-green-800 transition p-1" title="Kualifikasi"><i class="fas fa-check"></i></button>
-                        <button onclick="rejectParticipant(${index})" class="text-red-600 hover:text-red-800 transition p-1" title="Diskualifikasi"><i class="fas fa-times"></i></button>
-                    `;
-                } else {
-                    // Jika sudah Kualifikasi atau Diskualifikasi, sediakan tombol untuk reset ke Panding
-                    actionButtons = `
-                        <button onclick="setPanding(${index})" class="text-yellow-600 hover:text-yellow-800 transition p-1" title="Ubah ke Panding"><i class="fas fa-undo"></i></button>
-                    `;
-                }
-                
-                const row = `
-                    <tr>
-                        <td class="px-4 py-3 whitespace-nowrap font-medium">${student.nama}</td>
-                        <td class="px-4 py-3 whitespace-nowrap hidden sm:table-cell">${student.angkatan}</td>
-                        <td class="px-4 py-3 whitespace-nowrap hidden md:table-cell">${student.ujian}</td>
-                        <td class="px-4 py-3 whitespace-nowrap">${statusBadge}</td>
-                        <td class="px-4 py-3 whitespace-nowrap text-center space-x-2">
-                            ${actionButtons}
-                            <button onclick="openModal('edit', ${index})" class="text-blue-600 hover:text-blue-800 transition p-1" title="Edit"><i class="fas fa-edit"></i></button>
-                            <button onclick="openModal('delete', ${index})" class="text-red-600 hover:text-red-800 transition p-1" title="Hapus"><i class="fas fa-trash-alt"></i></button>
-                        </td>
-                    </tr>
-                `;
-                tableBody.innerHTML += row;
-            });
-        }
-        
-        // R (Read): Render Tabel Ringkasan (untuk data 5 teratas)
-        function renderRingkasan() {
-            const applicantsBody = document.getElementById('latest-applicants-body');
-            
-            if (originalStudents.length === 0) {
-                document.getElementById('total-pendaftar').textContent = 0;
-                document.getElementById('pending-verifikasi').textContent = 0;
-                document.getElementById('peserta-diverifikasi').textContent = 0;
-                applicantsBody.innerHTML = '<tr><td colspan="4" class="px-6 py-4 text-center text-slate-500">Tidak ada data peserta ditemukan.</td></tr>';
-                return;
-            }
-
-            const total = originalStudents.length;
-            const pending = originalStudents.filter(s => s.status.includes('Panding')).length;
-            const verified = originalStudents.filter(s => s.status.includes('Kualifikasi')).length; 
-            const recentStudents = originalStudents.slice(0, 5); // Tampilkan 5 teratas
-
-            document.getElementById('total-pendaftar').textContent = total;
-            document.getElementById('pending-verifikasi').textContent = pending;
-            document.getElementById('peserta-diverifikasi').textContent = verified; 
-
-            applicantsBody.innerHTML = ''; // Bersihkan tabel
-
-            if (recentStudents.length === 0) {
-                applicantsBody.innerHTML = '<tr><td colspan="4" class="px-6 py-4 text-center text-slate-500">Tidak ada data peserta ditemukan.</td></tr>';
-                return;
-            }
-            
-            recentStudents.forEach(student => {
-                const statusBadge = getStatusBadge(student.status);
-                
-                const row = `
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap font-medium">${student.nama}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${student.angkatan}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${student.ujian}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${statusBadge}</td>
-                    </tr>
-                `;
-                applicantsBody.innerHTML += row;
-            });
-        }
-
-
-        // ----------------------------------------------------
-        // ------------------ MAIN LOGIC (DOM LOAD) -----------
-        // ----------------------------------------------------
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const adminNameDisplay = document.getElementById('admin-name-display');
-            const logoutButton = document.getElementById('logout-button');
-            const downloadLink = document.getElementById('download-data-link');
-            const sidebarLinks = document.querySelectorAll('.sidebar-link');
-            const contentSections = document.querySelectorAll('#dashboard-content > div');
-
-            // Kontrol Kelola Peserta
-            const participantSearch = document.getElementById('participant-search');
-            const statusFilter = document.getElementById('status-filter');
-
-            // 1. Cek Sesi Keamanan Dasar & Ambil Profil Admin
-            const profileDataString = localStorage.getItem('currentUserProfile');
-            
-            if (!profileDataString) {
-                alert("Sesi berakhir atau tidak valid. Silakan login kembali.");
-                window.location.href = 'login.html';
-                return;
-            }
-            
-            let adminName = 'Admin'; 
-            try {
-                const profile = JSON.parse(profileDataString);
-                if (profile.role !== 'Admin') {
-                    alert("Akses ditolak. Anda bukan Admin.");
-                    localStorage.removeItem('currentUserProfile');
-                    window.location.href = 'login.html';
-                    return;
-                }
-                adminName = profile.nama ? profile.nama.split(' ')[0] : 'Admin';
-            } catch (e) {
-                console.error("Gagal parsing LocalStorage:", e);
-            }
-            adminNameDisplay.textContent = `Selamat Datang, ${adminName}!`;
-
-
-            // 2. Ambil & Siapkan Data Semua Siswa (Data yang akan diubah Admin)
-            const studentsDataString = localStorage.getItem('allStudentsData');
-            if (studentsDataString) {
-                try {
-                    originalStudents = JSON.parse(studentsDataString);
-                    students = [...originalStudents]; 
-                } catch (e) {
-                    console.error("Gagal parsing data siswa:", e);
-                }
-            } else {
-                 // Jika allStudentsData kosong (error atau login pertama), arahkan ke login
-                alert("Data peserta tidak ditemukan. Silakan login ulang.");
-                window.location.href = 'login.html';
-                return;
-            }
-
-            // Panggil renderRingkasan saat halaman dimuat (untuk menu default)
-            renderRingkasan(); 
-
-
-            // 3. Setup Event Listeners Kelola Peserta
-            participantSearch.addEventListener('input', renderParticipantsTable);
-            statusFilter.addEventListener('change', renderParticipantsTable);
-
-            // 4. Fungsi Sidebar & Navigasi Dinamis
-            sidebarLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    
-                    sidebarLinks.forEach(l => l.classList.remove('active', 'text-white'));
-                    sidebarLinks.forEach(l => l.classList.add('text-slate-700', 'hover:bg-emerald-50'));
-                    
-                    link.classList.add('active');
-                    link.classList.remove('text-slate-700', 'hover:bg-emerald-50');
-                    link.classList.add('text-white');
-
-                    contentSections.forEach(content => content.classList.add('hidden'));
-
-                    const contentId = link.getAttribute('data-content-id');
-                    const targetContent = document.getElementById(contentId);
-                    if (targetContent) {
-                        targetContent.classList.remove('hidden');
-                        
-                        if (contentId === 'content-kelola-peserta') {
-                            renderParticipantsTable();
-                        }
-                        if (contentId === 'content-ringkasan') {
-                            renderRingkasan();
-                        }
-                    }
-                });
-            });
-
-
-            // 5. Fungsi Konversi & Download ke CSV
-            function convertToCSV(data) {
-                if (data.length === 0) return '';
-                const downloadData = originalStudents.map(user => {
-                    let statusClean = user.status;
-                    statusClean = statusClean.includes('Panding') ? 'Panding' : statusClean;
-                    statusClean = statusClean.includes('Kualifikasi') ? 'Kualifikasi' : statusClean;
-                    statusClean = statusClean.includes('Diskualifikasi') ? 'Diskualifikasi' : statusClean;
-
-
-                    return {
-                        nama: user.nama,
-                        angkatan: user.angkatan,
-                        ujian: user.ujian,
-                        email: user.email,
-                        ttl: user.ttl,
-                        alamat: user.alamat,
-                        whatsapp: user.whatsapp,
-                        status: statusClean.replace(/[^\w\s]/gi, '').trim() 
-                    };
-                });
-                
-                const keys = Object.keys(downloadData[0]);
-                const header = keys.map(key => key.toUpperCase()).join(';');
-                const rows = downloadData.map(obj => {
-                    return keys.map(key => `"${obj[key] || ''}"`).join(';');
-                });
-                return [header, ...rows].join('\n');
-            }
-
-            downloadLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                if (originalStudents.length === 0) {
-                    alert("Tidak ada data peserta untuk diunduh.");
-                    return;
-                }
-                const now = new Date();
-                const dd = twoDigits(now.getDate());
-                const mm = twoDigits(now.getMonth() + 1);
-                const yyyy = now.getFullYear();
-                const h = twoDigits(now.getHours());
-                const min = twoDigits(now.getMinutes());
-                const timestamp = `${dd}-${mm}-${yyyy}_${h}-${min}`;
-                const filename = `Data_Peserta_${timestamp}.csv`;
-
-                const csvContent = convertToCSV(originalStudents);
-                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                const url = URL.createObjectURL(blob);
-                
-                const tempLink = document.createElement('a');
-                tempLink.href = url;
-                tempLink.setAttribute('download', filename);
-                
-                document.body.appendChild(tempLink);
-                tempLink.click();
-                document.body.removeChild(tempLink);
-                URL.revokeObjectURL(url);
-                
-                alert(`Data ${originalStudents.length} peserta telah diunduh sebagai file:\n${filename}`);
-            });
-
-
-            // 6. Fungsikan Logout 
-            logoutButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                localStorage.removeItem('currentUserProfile'); 
-                // Biarkan allStudentsData tetap ada, tapi hapus sesi admin
-                logoutButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-1"></i> Keluar...';
-
-                setTimeout(() => {
-                    window.location.href = 'login.html';
-                }, 300); 
-            });
-        });
     </script>
+
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .sidebar-link.active { background: #145c38; color: white; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .modal-active { display: flex !important; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade { animation: fadeInUp 0.4s ease-out; }
+    </style>
+</head>
+
+<body class="min-h-screen bg-slate-50 dark:bg-slate-900 dark:text-slate-100">
+
+<header class="sticky top-0 z-50 bg-primary text-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <img src="logopn.png" class="h-10" alt="Logo">
+            <div class="leading-tight">
+                <p class="text-[10px] uppercase tracking-widest opacity-80">Sistem Database</p>
+                <p class="font-bold">ADMIN PAGARNUSA</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-3">
+            <button id="darkToggle" class="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all">🌙</button>
+            <a href="login.html" class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-sm font-bold transition-all">Logout</a>
+        </div>
+    </div>
+</header>
+
+<div class="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row gap-6">
+    <aside class="md:w-64 space-y-4">
+        <nav class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-4 border border-slate-200 dark:border-slate-700">
+            <p class="text-[10px] font-bold text-slate-400 uppercase mb-4 px-3">Menu Utama</p>
+            <ul class="space-y-2">
+                <li><a class="sidebar-link active block px-4 py-3 rounded-xl cursor-pointer transition-all" data-target="ringkasan"><i class="fas fa-th-large mr-3 text-sm"></i>Ringkasan</a></li>
+                <li><a class="sidebar-link block px-4 py-3 rounded-xl hover:bg-emerald-50 dark:hover:bg-slate-700 cursor-pointer transition-all" data-target="peserta"><i class="fas fa-users mr-3 text-sm"></i>Kelola Peserta</a></li>
+                <li><a class="sidebar-link block px-4 py-3 rounded-xl hover:bg-emerald-50 dark:hover:bg-slate-700 cursor-pointer transition-all" data-target="statistik"><i class="fas fa-chart-line mr-3 text-sm"></i>Statistik</a></li>
+            </ul>
+        </nav>
+
+        <div class="bg-emerald-900 text-white p-5 rounded-2xl shadow-lg relative overflow-hidden group">
+            <div class="relative z-10">
+                <p class="text-[10px] uppercase opacity-70 font-bold mb-1">Status Database</p>
+                <p class="text-xs font-mono break-all" id="db_login.xlsx">db_login.xlsx</p>
+                <div class="mt-3 flex items-center gap-2">
+                    <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                    <span class="text-[10px] font-bold uppercase tracking-wider">Terhubung</span>
+                </div>
+            </div>
+            <i class="fas fa-database absolute -bottom-4 -right-4 text-6xl opacity-10 group-hover:scale-110 transition-transform"></i>
+        </div>
+    </aside>
+
+    <main class="flex-1 space-y-6">
+        <section id="ringkasan" class="animate-fade">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border-b-4 border-blue-500">
+                    <p class="text-xs text-slate-500 uppercase font-bold">Total Peserta</p>
+                    <p id="total" class="text-4xl font-bold mt-1">0</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border-b-4 border-yellow-500">
+                    <p class="text-xs text-slate-500 uppercase font-bold">Pending</p>
+                    <p id="panding" class="text-4xl font-bold mt-1 text-yellow-600">0</p>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border-b-4 border-emerald-500">
+                    <p class="text-xs text-slate-500 uppercase font-bold">Kualifikasi</p>
+                    <p id="lulus" class="text-4xl font-bold mt-1 text-emerald-600">0</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="peserta" class="hidden animate-fade">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <div class="p-4 border-b dark:border-slate-700 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50">
+                    <h2 class="font-bold text-slate-700 dark:text-slate-200">Database Peserta</h2>
+                    <span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-1 rounded-md font-bold uppercase">Live Excel Data</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-slate-50 dark:bg-slate-900 text-slate-500 uppercase text-[11px] font-bold">
+                            <tr>
+                                <th class="p-4">Nama Lengkap</th>
+                                <th class="p-4 text-center">Angkatan</th>
+                                <th class="p-4 text-center">Ujian</th>
+                                <th class="p-4 text-center">Status</th>
+                                <th class="p-4 text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pesertaBody" class="divide-y dark:divide-slate-700">
+                            <tr><td colspan="5" class="p-10 text-center text-slate-400 italic">Sedang menyelaraskan data dengan db_login.xlsx...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="statistik" class="hidden animate-fade">
+            <div class="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
+                <h2 class="text-center font-bold text-slate-700 dark:text-slate-200 mb-6">Persentase Status Kelulusan</h2>
+                <div class="max-w-xs mx-auto">
+                    <canvas id="chartPeserta"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<div id="modalEdit" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-800 w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden animate-fade">
+        <div class="p-6 text-center">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-user-check text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-1">Update Status</h3>
+            <p id="editNama" class="text-sm text-slate-500 mb-6 font-medium"></p>
+            
+            <select id="selectStatus" class="w-full p-4 rounded-2xl border-2 border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 font-bold text-slate-700 dark:text-slate-200 focus:border-primary outline-none transition-all mb-6">
+                <option value="Pending">🕒 Pending</option>
+                <option value="Kualifikasi">✅ Kualifikasi</option>
+                <option value="Diskualifikasi">❌ Diskualifikasi</option>
+            </select>
+            
+            <div class="flex gap-3">
+                <button onclick="closeModal()" class="flex-1 py-4 text-sm font-bold text-slate-400 hover:text-slate-600 transition-all">Batal</button>
+                <button onclick="saveStatus()" class="flex-1 py-4 bg-primary hover:bg-primaryDark text-white rounded-2xl text-sm font-bold shadow-lg shadow-emerald-900/20 transition-all">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="text-center py-6 text-slate-400 text-[10px] tracking-widest font-bold">
+    © 2025 PAGARNUSA UNUSIA • Hak Cipta Dilindungi
+</footer>
+
+<script>
+let globalData = [];
+let myChart = null;
+let currentEditIndex = null;
+
+// --- DARK MODE ---
+const html = document.documentElement;
+if (localStorage.getItem('theme') === 'dark') html.classList.add('dark');
+document.getElementById('darkToggle').onclick = () => {
+    html.classList.toggle('dark');
+    localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+};
+
+// --- NAVIGATION ---
+document.querySelectorAll('.sidebar-link').forEach(link => {
+    link.onclick = () => {
+        document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        document.querySelectorAll('main section').forEach(s => s.classList.add('hidden'));
+        const target = link.dataset.target;
+        document.getElementById(target).classList.remove('hidden');
+        if (target === 'statistik') renderChart();
+    };
+});
+
+// --- CORE: LOAD EXCEL DATA ---
+async function loadExcelData() {
+    try {
+        // Cache busting agar data selalu terbaru
+        const response = await fetch('db_login.xlsx?update=' + new Date().getTime());
+        if (!response.ok) throw new Error('File db_login.xlsx tidak terbaca atau tidak ada.');
+        
+        const arrayBuffer = await response.arrayBuffer();
+        const workbook = XLSX.read(new Uint8Array(arrayBuffer), { type: 'array' });
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        globalData = XLSX.utils.sheet_to_json(sheet);
+        
+        refreshUI();
+    } catch (err) {
+        console.error(err);
+        document.getElementById('pesertaBody').innerHTML = `
+            <tr><td colspan="5" class="p-10 text-center">
+                <p class="text-red-500 font-bold"><i class="fas fa-exclamation-circle mr-2"></i>Gagal Memuat Database</p>
+                <p class="text-[10px] text-slate-400 mt-1">Pastikan file 'db_login.xlsx' ada dan Anda menggunakan Live Server.</p>
+            </td></tr>`;
+    }
+}
+
+// --- REFRESH TABLE & COUNTERS ---
+function refreshUI() {
+    const tbody = document.getElementById('pesertaBody');
+    let cPending = 0, cLulus = 0;
+    
+    tbody.innerHTML = '';
+    globalData.forEach((p, idx) => {
+        // Deteksi kolom dinamis (lowercase/uppercase)
+        const nama = p.nama || p.Nama || "-";
+        const angkatan = p.angkatan || p.Angkatan || "-";
+        const ujian = p.ujian || p.Ujian || "-";
+        const sRaw = p.status || p.Status || "Pending";
+        const sLow = sRaw.toLowerCase();
+
+        if (sLow.includes('pand')) cPending++;
+        else if (sLow.includes('kualifikasi') || sLow.includes('lulus')) cLulus++;
+
+        tbody.innerHTML += `
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-all group">
+                <td class="p-4 font-bold text-slate-700 dark:text-slate-200">${nama}</td>
+                <td class="p-4 text-center text-slate-500">${angkatan}</td>
+                <td class="p-4 text-center">
+                    <span class="px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded-md text-[10px] font-bold border dark:border-slate-700">${ujian}</span>
+                </td>
+                <td class="p-4 text-center">
+                    <span class="px-3 py-1 rounded-full text-[9px] font-bold border ${getStatusStyle(sLow)}">${sRaw}</span>
+                </td>
+                <td class="p-4 text-center">
+                    <button onclick="openEditModal(${idx})" class="opacity-0 group-hover:opacity-100 bg-primary/10 text-primary px-3 py-1 rounded-lg text-xs font-bold hover:bg-primary hover:text-white transition-all">
+                        <i class="fas fa-edit mr-1"></i>Edit
+                    </button>
+                </td>
+            </tr>`;
+    });
+
+    document.getElementById('total').textContent = globalData.length;
+    document.getElementById('panding').textContent = cPending;
+    document.getElementById('lulus').textContent = cLulus;
+}
+
+function getStatusStyle(s) {
+    if (s.includes('pand')) return 'bg-yellow-50 text-yellow-600 border-yellow-200';
+    if (s.includes('kualifikasi') || s.includes('lulus')) return 'bg-emerald-50 text-emerald-600 border-emerald-200';
+    return 'bg-red-50 text-red-600 border-red-200';
+}
+
+// --- MODAL & EDIT ACTIONS ---
+function openEditModal(idx) {
+    currentEditIndex = idx;
+    const p = globalData[idx];
+    document.getElementById('editNama').textContent = p.nama || p.Nama;
+    document.getElementById('selectStatus').value = p.status || p.Status || "Pending";
+    document.getElementById('modalEdit').classList.add('modal-active');
+}
+
+function closeModal() { document.getElementById('modalEdit').classList.remove('modal-active'); }
+
+function saveStatus() {
+    const val = document.getElementById('selectStatus').value;
+    // Update data di memory
+    if (globalData[currentEditIndex].status) globalData[currentEditIndex].status = val;
+    if (globalData[currentEditIndex].Status) globalData[currentEditIndex].Status = val;
+    
+    closeModal();
+    refreshUI();
+    if (!document.getElementById('statistik').classList.contains('hidden')) renderChart();
+}
+
+// --- CHART ---
+function renderChart() {
+    let l = 0, p = 0, d = 0;
+    globalData.forEach(i => {
+        const s = (i.status || i.Status || "").toLowerCase();
+        if (s.includes('pand')) p++;
+        else if (s.includes('kualifikasi') || s.includes('lulus')) l++;
+        else d++;
+    });
+
+    const ctx = document.getElementById('chartPeserta').getContext('2d');
+    if (myChart) myChart.destroy();
+    myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Kualifikasi', 'Pending', 'Diskualifikasi'],
+            datasets: [{
+                data: [l, p, d],
+                backgroundColor: ['#1B7548', '#EAB308', '#EF4444'],
+                borderWidth: 0,
+                hoverOffset: 20
+            }]
+        },
+        options: {
+            plugins: { legend: { position: 'bottom', labels: { color: html.classList.contains('dark') ? '#cbd5e1' : '#334155', font: { family: 'Poppins', size: 10 } } } }
+        }
+    });
+}
+
+window.onload = loadExcelData;
+</script>
+
 </body>
 </html>
-
-
-
-
-

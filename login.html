@@ -26,7 +26,6 @@
         body { font-family: 'Poppins', sans-serif; background-color: #f0fdf4; }
         .login-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
     </style>
-    
 </head>
 
 <body class="min-h-screen flex flex-col items-center justify-center p-4">
@@ -40,15 +39,15 @@
 
     <div class="text-center mb-8">
         <img src="logopn.png" alt="Logo" class="h-20 mx-auto mb-4 drop-shadow-lg">
-        <h1 class="text-2xl font-bold text-primary">PAGARNUSA UNUSIA</h1>
-        <p class="text-slate-500 text-sm">Sistem Digital</p>
+        <h1 class="text-2xl font-bold text-primary uppercase tracking-wider">Pagar Nusa UNUSIA</h1>
+        <p class="text-slate-500 text-sm italic">Sistem Informasi Digital</p>
     </div>
 
-    <div class="w-full max-w-md login-card p-8 rounded-[2rem] shadow-2xl shadow-emerald-900/10 border border-white">
+    <div class="w-full max-w-md login-card p-8 rounded-[2.5rem] shadow-2xl shadow-emerald-900/10 border border-white">
         <form id="loginForm" class="space-y-6">
             
             <div>
-                <label class="block text-xs font-bold text-slate-400  tracking-widest mb-2 ml-1">Username</label>
+                <label class="block text-xs font-bold text-slate-400 tracking-widest mb-2 ml-1">USERNAME / NIM</label>
                 <div class="relative group">
                     <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-primary transition-colors"></i>
                     <input type="text" id="username" required placeholder="Masukkan username"
@@ -57,7 +56,7 @@
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-slate-400  tracking-widest mb-2 ml-1">Password</label>
+                <label class="block text-xs font-bold text-slate-400 tracking-widest mb-2 ml-1">KATA SANDI</label>
                 <div class="relative group">
                     <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-primary transition-colors"></i>
                     <input type="password" id="password" required placeholder="••••••••"
@@ -70,7 +69,7 @@
 
             <div id="error-message" class="hidden flex items-center gap-2 text-red-600 bg-red-50 p-4 rounded-xl text-xs font-bold border border-red-100">
                 <i class="fas fa-circle-exclamation"></i>
-                <span>Username atau Password tidak ditemukan!</span>
+                <span id="error-text">Username atau Password salah!</span>
             </div>
 
             <button type="submit" id="btnSubmit" class="w-full bg-primary hover:bg-primaryDark text-white font-bold py-4 rounded-2xl shadow-lg shadow-emerald-900/20 transition-all transform active:scale-[0.98] flex items-center justify-center gap-3">
@@ -80,10 +79,10 @@
         </form>
     </div>
 
-    <p class="mt-8 text-[10px] text-slate-400 font-bold tracking-[0.2em]">Pagar Nusa UNUSIA • Halaman Login</p>
+    <p class="mt-8 text-[10px] text-slate-400 font-bold tracking-[0.2em] uppercase">Pagar Nusa UNUSIA • Security System</p>
 
 <script>
-    // 1. Fungsi Sembunyi/Tampil Password
+    // 1. Fungsi Toggle Password
     const toggleBtn = document.getElementById('togglePassword');
     const passInput = document.getElementById('password');
     toggleBtn.onclick = () => {
@@ -92,60 +91,65 @@
         toggleBtn.innerHTML = isPass ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
     };
 
-    // 2. Logika Login Multi-User (Siswa, Admin, Penguji)
+    // 2. Logika Login
     document.getElementById('loginForm').onsubmit = async (e) => {
         e.preventDefault();
         const btn = document.getElementById('btnSubmit');
-        const error = document.getElementById('error-message');
+        const errorDiv = document.getElementById('error-message');
         const userInp = document.getElementById('username').value.trim();
-        const passInp = document.getElementById('password').value;
+        const passInp = document.getElementById('password').value.trim();
 
         // Efek Loading
         btn.disabled = true;
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> MEMVERIFIKASI...';
-        error.classList.add('hidden');
+        errorDiv.classList.add('hidden');
 
         try {
-            // Mengambil file excel terbaru
-            const response = await fetch('db_login.xlsx?t=' + new Date().getTime());
-            if (!response.ok) throw new Error("File database tidak ditemukan");
+            // Fetch file Excel dengan anti-cache
+            const response = await fetch('db_login.xlsx?v=' + new Date().getTime());
+            if (!response.ok) throw new Error("File database tidak terdeteksi di server.");
             
             const arrayBuffer = await response.arrayBuffer();
             const workbook = XLSX.read(new Uint8Array(arrayBuffer), { type: 'array' });
-            const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-            const dataJSON = XLSX.utils.sheet_to_json(firstSheet);
+            
+            // Ambil sheet pertama
+            const sheetName = workbook.SheetNames[0];
+            const dataJSON = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
 
-            // Cari data yang sesuai username & password
+            // Pencarian User
             const userMatch = dataJSON.find(u => {
-                const dbUser = (u.username || u.Username || "").toString();
-                const dbPass = (u.password || u.Password || "").toString();
+                // Menangani kemungkinan perbedaan huruf besar/kecil pada header kolom Excel
+                const dbUser = (u.username || u.Username || u.USERNAME || "").toString().trim();
+                const dbPass = (u.password || u.Password || u.PASSWORD || "").toString().trim();
                 return dbUser === userInp && dbPass === passInp;
             });
 
             if (userMatch) {
-                // SIMPAN DATA KE LOCALSTORAGE
-                // Ini penting agar halaman tujuan tahu siapa yang login
+                // Simpan data ke session agar bisa dipanggil di halaman tujuan
                 localStorage.setItem('currentUserProfile', JSON.stringify(userMatch));
                 
-                // LOGIKA REDIRECT OTOMATIS
-                // Mengambil link dari kolom 'redirectUrl' di Excel Anda
-                const targetPage = userMatch.redirectUrl || userMatch.redirecturl;
+                // Ambil URL redirect dari kolom 'redirectUrl'
+                const targetPage = userMatch.redirectUrl || userMatch.redirectURL || userMatch.redirecturl;
                 
                 if (targetPage) {
+                    // Redirect ke halaman yang tertulis di Excel
                     window.location.href = targetPage;
                 } else {
-                    // Jika kolom redirectUrl di excel kosong, default ke profil_siswa.html
-                    window.location.href = 'profil_siswa.html';
+                    // Fallback jika kolom redirect kosong
+                    alert("Akses diizinkan, namun halaman tujuan tidak diatur di database.");
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>MASUK</span>';
                 }
             } else {
-                throw new Error("User tidak ditemukan");
+                throw new Error("Username atau Password tidak sesuai.");
             }
 
         } catch (err) {
-            console.error(err);
-            error.classList.remove('hidden');
+            console.error("Login Error:", err);
+            errorDiv.classList.remove('hidden');
+            document.getElementById('error-text').innerText = err.message;
             btn.disabled = false;
-            btn.innerHTML = '<span>MASUK SEKARANG</span><i class="fas fa-sign-in-alt text-sm"></i>';
+            btn.innerHTML = '<span>MASUK</span><i class="fas fa-sign-in-alt text-sm"></i>';
         }
     };
 </script>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tanda Tangan Digital | PAGARNUSA UNUSIA</title>
+    <title>Verifikasi TTE | PAGARNUSA UNUSIA</title>
     <link rel="icon" href="logopn.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -81,24 +81,21 @@
 
     <div id="preloader">
         <div class="spinning-loader"></div>
-        <p class="mt-4 text-primary font-bold animate-pulse text-sm uppercase tracking-widest">Memvalidasi TTE...</p>
+        <p class="mt-4 text-primary font-bold animate-pulse text-sm uppercase tracking-widest">Memvalidasi Keaslian TTE...</p>
     </div>
 
     <header id="main-header" class="sticky top-0 z-50 bg-primary text-white shadow-lg">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            
             <div class="flex items-center space-x-3">
                 <img src="logopn.png" alt="Logo PAGARNUSA" class="h-10 drop-shadow-md">
                 <h1 class="text-sm font-bold tracking-wide leading-tight uppercase">
                     PAGARNUSA<br>UNUSIA
                 </h1>
             </div>
-            
             <a href="index.html" class="flex items-center space-x-2 bg-primaryDark/50 hover:bg-primaryDark px-4 py-2 rounded-xl transition-all duration-300 border border-white/10 group">
                 <i class="fas fa-arrow-left text-xs group-hover:-translate-x-1 transition-transform"></i>
                 <span class="text-sm font-medium">Menu Utama</span>
             </a>
-            
         </div>
     </header>
 
@@ -110,15 +107,15 @@
                 <div class="w-20 h-20 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg ring-8 ring-emerald-100">
                     <i class="fas fa-check-double text-3xl"></i>
                 </div>
-                <h2 class="text-xl font-bold text-slate-800">Tanda Tangan Digital</h2>
-                <p class="text-xs text-primary font-semibold uppercase tracking-widest mt-1">Dokumen Ditanda Tangani</p>
+                <h2 class="text-xl font-bold text-slate-800">Verifikasi Berhasil</h2>
+                <p class="text-xs text-primary font-semibold uppercase tracking-widest mt-1">Dokumen Terverifikasi Digital</p>
             </div>
 
-            <div class="p-8 space-y-6">
+            <div class="p-8 space-y-5">
                 <div class="space-y-4">
                     <div class="flex items-start space-x-4 group animate-slide-in" style="animation-delay: 0.1s;">
                         <div class="bg-emerald-100 p-3 rounded-2xl text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                            <i class="fas fa-user-shield"></i>
+                            <i class="fas fa-user-shield w-5 text-center"></i>
                         </div>
                         <div>
                             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Penandatangan</p>
@@ -128,7 +125,7 @@
 
                     <div class="flex items-start space-x-4 group animate-slide-in" style="animation-delay: 0.2s;">
                         <div class="bg-emerald-100 p-3 rounded-2xl text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                            <i class="fas fa-id-badge"></i>
+                            <i class="fas fa-id-badge w-5 text-center"></i>
                         </div>
                         <div>
                             <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Jabatan</p>
@@ -139,14 +136,14 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 animate-slide-in" style="animation-delay: 0.3s;">
                             <p class="text-[9px] font-bold text-slate-400 uppercase mb-1">Tanggal</p>
-                            <div class="flex items-center text-slate-700 font-bold text-sm">
+                            <div class="flex items-center text-slate-700 font-bold text-xs sm:text-sm">
                                 <i class="far fa-calendar-check mr-2 text-primary"></i>
                                 <span id="v-tanggal">--/--/--</span>
                             </div>
                         </div>
                         <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 animate-slide-in" style="animation-delay: 0.4s;">
                             <p class="text-[9px] font-bold text-slate-400 uppercase mb-1">Pukul</p>
-                            <div class="flex items-center text-slate-700 font-bold text-sm">
+                            <div class="flex items-center text-slate-700 font-bold text-xs sm:text-sm">
                                 <i class="far fa-clock mr-2 text-primary"></i>
                                 <span id="v-pukul">00:00 WIB</span>
                             </div>
@@ -154,11 +151,21 @@
                     </div>
                 </div>
 
-                <div class="pt-4">
-                    <div class="bg-slate-800 rounded-2xl p-4 text-white flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
-                            <div class="text-emerald-400"><i class="fas fa-info-circle"></i></div>
-                            <span class="text-[10px] leading-tight opacity-90 italic">Data ini sesuai dengan catatan resmi organisasi.</span>
+                <div id="signature-container" class="hidden space-y-2 animate-slide-in" style="animation-delay: 0.5s;">
+                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">Spesimen Tanda Tangan Digital</p>
+                    <div class="bg-white border-2 border-dashed border-emerald-100 rounded-2xl p-4 flex justify-center items-center h-32 relative group overflow-hidden">
+                        <img id="v-signature" src="" alt="Tanda Tangan Digital" class="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <div class="bg-slate-800 rounded-2xl p-4 text-white flex items-center space-x-3 shadow-lg">
+                        <div class="bg-emerald-500/20 p-2 rounded-lg text-emerald-400 text-lg">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] leading-tight opacity-90 italic">Data ini tervalidasi secara sistem oleh Pusdatin PAGARNUSA UNUSIA.</p>
                         </div>
                     </div>
                 </div>
@@ -171,69 +178,68 @@
         <p class="text-xs text-slate-600 font-bold">© 2025 PAGARNUSA UNUSIA. Semua hak cipta dilindungi.</p>
     </footer>
 
-<script>
-    window.onload = function() {
-        // 1. Ambil Parameter dari URL
-        const urlParams = new URLSearchParams(window.location.search);
-        
-        // 2. Fungsi Helper untuk membersihkan teks dari URL
-        const getCleanData = (param) => {
-            const data = urlParams.get(param);
-            return data ? decodeURIComponent(data).replace(/\+/g, ' ') : null;
-        };
-
-        const nama = getCleanData('n');
-        const jabatan = getCleanData('j');
-        const tanggalRaw = getCleanData('t'); // Input dasar: YYYY-MM-DD atau format tanggal valid
-        const pukulRaw = getCleanData('p');   // Input dasar: HH:mm atau HH:mm:ss
-
-        // 3. Fungsi Format Tanggal (dddd mmmm yyyy)
-        const formatTanggalIndo = (dateStr) => {
-            if (!dateStr) return "--/--/--";
-            const date = new Date(dateStr);
-            if (isNaN(date)) return dateStr; // Kembalikan teks asli jika bukan format date valid
-
-            const opsi = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-            return date.toLocaleDateString('id-ID', opsi);
-        };
-
-        // 4. Fungsi Format Pukul (hh:mm:ss)
-        const formatPukulLengkap = (pukulStr) => {
-            if (!pukulStr) return "--:--:--";
-            // Jika format masih H:m, tambahkan detik default :00
-            let cleanTime = pukulStr.replace('.', ':');
-            const parts = cleanTime.split(':');
+    <script>
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
             
-            let hh = parts[0].padStart(2, '0');
-            let mm = (parts[1] || '00').padStart(2, '0');
-            let ss = (parts[2] || '00').padStart(2, '0');
-            
-            return `${hh}:${mm}:${ss}`;
-        };
+            const getCleanData = (param) => {
+                const data = urlParams.get(param);
+                // Handle base64 khusus untuk tanda tangan (parameter 's')
+                if(param === 's' && data) return decodeURIComponent(data);
+                return data ? decodeURIComponent(data).replace(/\+/g, ' ') : null;
+            };
 
-        // 5. Masukkan ke Elemen HTML
-        document.getElementById('v-nama').innerText = nama || "Data Tidak Ditemukan";
-        document.getElementById('v-jabatan').innerText = jabatan || "Jabatan Tidak Terdaftar";
-        
-        // Update Tanggal (Format: Senin 22 Desember 2025)
-        document.getElementById('v-tanggal').innerText = formatTanggalIndo(tanggalRaw);
-        
-        // Update Pukul (Format: 15:53:00)
-        document.getElementById('v-pukul').innerText = formatPukulLengkap(pukulRaw);
+            const nama = getCleanData('n');
+            const jabatan = getCleanData('j');
+            const tanggalRaw = getCleanData('t');
+            const pukulRaw = getCleanData('p');
+            const signatureRaw = getCleanData('s');
 
-        // 6. Logika Preloader
-        setTimeout(() => {
-            const preloader = document.getElementById('preloader');
-            if (preloader) {
-                preloader.style.opacity = '0';
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                }, 500);
+            // Format Tanggal
+            const formatTanggalIndo = (dateStr) => {
+                if (!dateStr) return "--/--/--";
+                const date = new Date(dateStr);
+                if (isNaN(date)) return dateStr;
+                const opsi = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+                return date.toLocaleDateString('id-ID', opsi);
+            };
+
+            // Format Pukul
+            const formatPukulLengkap = (pukulStr) => {
+                if (!pukulStr) return "--:--:--";
+                let cleanTime = pukulStr.replace('.', ':');
+                const parts = cleanTime.split(':');
+                let hh = parts[0].padStart(2, '0');
+                let mm = (parts[1] || '00').padStart(2, '0');
+                let ss = (parts[2] || '00').padStart(2, '0');
+                return `${hh}:${mm}:${ss} WIB`;
+            };
+
+            // Render Data
+            document.getElementById('v-nama').innerText = nama || "Data Tidak Ditemukan";
+            document.getElementById('v-jabatan').innerText = jabatan || "Jabatan Tidak Terdaftar";
+            document.getElementById('v-tanggal').innerText = formatTanggalIndo(tanggalRaw);
+            document.getElementById('v-pukul').innerText = formatPukulLengkap(pukulRaw);
+
+            // Render Tanda Tangan jika ada
+            if (signatureRaw) {
+                const sigImg = document.getElementById('v-signature');
+                const sigContainer = document.getElementById('signature-container');
+                
+                // Pastikan format base64 benar
+                sigImg.src = signatureRaw.startsWith('data:image') ? signatureRaw : `data:image/png;base64,${signatureRaw}`;
+                sigContainer.classList.remove('hidden');
             }
-        }, 2000);
-    };
-</script>
+
+            // Loader Logic
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                if (preloader) {
+                    preloader.style.opacity = '0';
+                    setTimeout(() => preloader.style.display = 'none', 500);
+                }
+            }, 1800);
+        };
+    </script>
 </body>
 </html>
-
-

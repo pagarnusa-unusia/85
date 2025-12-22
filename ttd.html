@@ -75,6 +75,10 @@
             animation: spin 1s linear infinite;
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        /* Modal Style */
+        .modal-active { display: flex !important; animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body class="bg-gradient-to-br from-emerald-50 via-white to-emerald-100 min-h-screen flex flex-col">
@@ -151,12 +155,11 @@
                     </div>
                 </div>
 
-                <div id="signature-container" class="hidden space-y-2 animate-slide-in" style="animation-delay: 0.5s;">
-                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">Spesimen Tanda Tangan Digital</p>
-                    <div class="bg-white border-2 border-dashed border-emerald-100 rounded-2xl p-4 flex justify-center items-center h-32 relative group overflow-hidden">
-                        <img id="v-signature" src="" alt="Tanda Tangan Digital" class="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-                    </div>
+                <div id="btn-signature-wrapper" class="hidden pt-2 animate-slide-in" style="animation-delay: 0.5s;">
+                    <button onclick="toggleModal(true)" class="w-full bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold py-3 rounded-2xl transition-all flex items-center justify-center space-x-2">
+                        <i class="fas fa-signature"></i>
+                        <span>Lihat Tanda Tangan</span>
+                    </button>
                 </div>
 
                 <div class="pt-2">
@@ -173,18 +176,43 @@
         </div>
     </main>
 
+    <div id="sig-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-sm rounded-[2rem] shadow-2xl overflow-hidden relative animate-fade-in-up">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-slate-800">Spesimen Tanda Tangan</h3>
+                    <button onclick="toggleModal(false)" class="text-slate-400 hover:text-red-500 transition-colors">
+                        <i class="fas fa-times-circle text-xl"></i>
+                    </button>
+                </div>
+                <div class="bg-slate-50 border-2 border-dashed border-emerald-100 rounded-2xl p-4 flex justify-center items-center h-48">
+                    <img id="v-signature" src="" alt="Tanda Tangan Digital" class="max-h-full max-w-full object-contain">
+                </div>
+                <p class="text-[10px] text-center text-slate-400 mt-4 italic">Tanda tangan ini dibuat secara digital dan sah secara organisasi.</p>
+            </div>
+        </div>
+    </div>
+
     <footer class="bg-white border-t border-emerald-100 py-6 text-center">
         <p class="text-[10px] text-slate-400 font-semibold tracking-widest uppercase mb-1">Official Verification System</p>
         <p class="text-xs text-slate-600 font-bold">© 2025 PAGARNUSA UNUSIA. Semua hak cipta dilindungi.</p>
     </footer>
 
     <script>
+        function toggleModal(show) {
+            const modal = document.getElementById('sig-modal');
+            if(show) {
+                modal.classList.add('modal-active');
+            } else {
+                modal.classList.remove('modal-active');
+            }
+        }
+
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             
             const getCleanData = (param) => {
                 const data = urlParams.get(param);
-                // Handle base64 khusus untuk tanda tangan (parameter 's')
                 if(param === 's' && data) return decodeURIComponent(data);
                 return data ? decodeURIComponent(data).replace(/\+/g, ' ') : null;
             };
@@ -195,7 +223,9 @@
             const pukulRaw = getCleanData('p');
             const signatureRaw = getCleanData('s');
 
-            // Format Tanggal
+            document.getElementById('v-nama').innerText = nama || "Data Tidak Ditemukan";
+            document.getElementById('v-jabatan').innerText = jabatan || "Jabatan Tidak Terdaftar";
+            
             const formatTanggalIndo = (dateStr) => {
                 if (!dateStr) return "--/--/--";
                 const date = new Date(dateStr);
@@ -204,7 +234,6 @@
                 return date.toLocaleDateString('id-ID', opsi);
             };
 
-            // Format Pukul
             const formatPukulLengkap = (pukulStr) => {
                 if (!pukulStr) return "--:--:--";
                 let cleanTime = pukulStr.replace('.', ':');
@@ -215,23 +244,21 @@
                 return `${hh}:${mm}:${ss} WIB`;
             };
 
-            // Render Data
-            document.getElementById('v-nama').innerText = nama || "Data Tidak Ditemukan";
-            document.getElementById('v-jabatan').innerText = jabatan || "Jabatan Tidak Terdaftar";
             document.getElementById('v-tanggal').innerText = formatTanggalIndo(tanggalRaw);
             document.getElementById('v-pukul').innerText = formatPukulLengkap(pukulRaw);
 
-            // Render Tanda Tangan jika ada
+            // Logic Tanda Tangan
             if (signatureRaw) {
                 const sigImg = document.getElementById('v-signature');
-                const sigContainer = document.getElementById('signature-container');
+                const btnWrapper = document.getElementById('btn-signature-wrapper');
                 
-                // Pastikan format base64 benar
+                // Masukkan data base64 ke source gambar
                 sigImg.src = signatureRaw.startsWith('data:image') ? signatureRaw : `data:image/png;base64,${signatureRaw}`;
-                sigContainer.classList.remove('hidden');
+                
+                // Tampilkan tombol lihat tanda tangan
+                btnWrapper.classList.remove('hidden');
             }
 
-            // Loader Logic
             setTimeout(() => {
                 const preloader = document.getElementById('preloader');
                 if (preloader) {

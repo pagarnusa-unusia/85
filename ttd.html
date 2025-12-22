@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Verifikasi Tanda Tangan Digital | PAGARNUSA</title>
+    <title>Tanda Tangan Digital | PAGARNUSA UNUSIA</title>
+    <link rel="icon" href="logopn.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -109,8 +110,8 @@
                 <div class="w-20 h-20 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg ring-8 ring-emerald-100">
                     <i class="fas fa-check-double text-3xl"></i>
                 </div>
-                <h2 class="text-xl font-bold text-slate-800">Verifikasi Berhasil</h2>
-                <p class="text-xs text-primary font-semibold uppercase tracking-widest mt-1">Dokumen Terverifikasi Digital</p>
+                <h2 class="text-xl font-bold text-slate-800">Tanda Tangan Digital</h2>
+                <p class="text-xs text-primary font-semibold uppercase tracking-widest mt-1">Dokumen Ditanda Tangani</p>
             </div>
 
             <div class="p-8 space-y-6">
@@ -183,25 +184,44 @@
 
         const nama = getCleanData('n');
         const jabatan = getCleanData('j');
-        const tanggal = getCleanData('t'); // Format yang diharapkan: 21 Des 2025
-        const pukul = getCleanData('p');   // Format yang diharapkan: 15.53
+        const tanggalRaw = getCleanData('t'); // Input dasar: YYYY-MM-DD atau format tanggal valid
+        const pukulRaw = getCleanData('p');   // Input dasar: HH:mm atau HH:mm:ss
 
-        // 3. Masukkan ke Elemen HTML
+        // 3. Fungsi Format Tanggal (dddd mmmm yyyy)
+        const formatTanggalIndo = (dateStr) => {
+            if (!dateStr) return "--/--/--";
+            const date = new Date(dateStr);
+            if (isNaN(date)) return dateStr; // Kembalikan teks asli jika bukan format date valid
+
+            const opsi = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+            return date.toLocaleDateString('id-ID', opsi);
+        };
+
+        // 4. Fungsi Format Pukul (hh:mm:ss)
+        const formatPukulLengkap = (pukulStr) => {
+            if (!pukulStr) return "--:--:--";
+            // Jika format masih H:m, tambahkan detik default :00
+            let cleanTime = pukulStr.replace('.', ':');
+            const parts = cleanTime.split(':');
+            
+            let hh = parts[0].padStart(2, '0');
+            let mm = (parts[1] || '00').padStart(2, '0');
+            let ss = (parts[2] || '00').padStart(2, '0');
+            
+            return `${hh}:${mm}:${ss}`;
+        };
+
+        // 5. Masukkan ke Elemen HTML
         document.getElementById('v-nama').innerText = nama || "Data Tidak Ditemukan";
         document.getElementById('v-jabatan').innerText = jabatan || "Jabatan Tidak Terdaftar";
         
-        // Menampilkan Tanggal
-        document.getElementById('v-tanggal').innerText = tanggal || "--/--/--";
+        // Update Tanggal (Format: Senin 22 Desember 2025)
+        document.getElementById('v-tanggal').innerText = formatTanggalIndo(tanggalRaw);
         
-        // Menampilkan Pukul dengan tambahan "WIB" otomatis jika belum ada
-        if (pukul) {
-            const formatJam = pukul.includes('WIB') ? pukul : `${pukul} WIB`;
-            document.getElementById('v-pukul').innerText = formatJam;
-        } else {
-            document.getElementById('v-pukul').innerText = "--:-- WIB";
-        }
+        // Update Pukul (Format: 15:53:00)
+        document.getElementById('v-pukul').innerText = formatPukulLengkap(pukulRaw);
 
-        // 4. Logika Preloader
+        // 6. Logika Preloader
         setTimeout(() => {
             const preloader = document.getElementById('preloader');
             if (preloader) {
@@ -215,4 +235,5 @@
 </script>
 </body>
 </html>
+
 

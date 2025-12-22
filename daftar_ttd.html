@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar TTD - Pagar Nusa</title>
+    <link rel="icon" href="logopn.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1B7548',
+                        primaryDark: '#145c38'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeInUp { animation: fadeInUp 0.8s ease-out forwards; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-gradient-to-b from-emerald-50 to-slate-50 text-slate-800">
+
+    <header class="sticky top-0 z-50 bg-primary text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3 group cursor-pointer">
+                <img src="logopn.png" alt="Logo" class="h-10 transition-transform duration-500 group-hover:rotate-[360deg]">
+                <h1 class="text-sm font-bold tracking-wide leading-tight uppercase">
+                    PAGARNUSA<br>UNUSIA
+                </h1>
+            </div>
+            <nav class="hidden md:flex space-x-8">
+                <a href="index.html" class="flex items-center gap-2 text-sm font-medium hover:text-emerald-200 transition-colors">
+                    <i class="fas fa-arrow-left"></i> Beranda
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-1 w-full max-w-xl mx-auto px-4 py-10">
+        <section id="main-card" class="bg-white rounded-3xl shadow-2xl p-8 border border-emerald-50 animate-fadeInUp">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl font-extrabold text-primary mb-1">Tanda Tangan Digital</h2>
+                <p class="text-xs font-bold text-slate-400 tracking-widest uppercase">PSNU PAGARNUSA UNUSIA</p>
+                <div class="w-12 h-1 bg-emerald-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <form id="formData" action="https://docs.google.com/forms/u/0/d/e/XXXXX-ID-ANDA/formResponse" method="POST" target="hidden_iframe" onsubmit="handleFormSubmit()">
+                
+                <div class="group mb-5">
+                    <label class="block text-sm font-bold text-slate-700 mb-2 group-focus-within:text-primary">Nama Lengkap *</label>
+                    <input type="text" id="nama" name="entry.111111" required placeholder="Masukkan Nama Lengkap"
+                        class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white transition-all">
+                </div>
+
+                <div class="group mb-5">
+                    <label class="block text-sm font-bold text-slate-700 mb-2 group-focus-within:text-primary">Jabatan *</label>
+                    <input type="text" id="jabatan" name="entry.222222" required placeholder="Contoh: Sekretaris Pelaksana"
+                        class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white transition-all">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mb-5">
+                    <div class="group">
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Tanggal *</label>
+                        <input type="date" id="tanggal" name="entry.333333" required
+                            class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-primary transition-all">
+                    </div>
+                    <div class="group">
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Pukul *</label>
+                        <input type="time" id="pukul" name="entry.444444" required
+                            class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-primary transition-all">
+                    </div>
+                </div>
+
+                <input type="hidden" id="qr_hidden" name="entry.555555">
+
+                <button type="submit"
+                    class="w-full bg-primary hover:bg-primaryDark text-white font-bold py-4 rounded-2xl transition-all transform hover:-translate-y-1 active:scale-95 shadow-lg flex items-center justify-center space-x-3 group">
+                    <span>Daftar & Buat QR</span>
+                    <i class="fas fa-qrcode group-hover:rotate-12 transition-transform"></i>
+                </button>
+            </form>
+        </section>
+
+        <section id="download-section" class="hidden bg-white rounded-3xl shadow-2xl p-8 border border-emerald-50 text-center animate-fadeInUp">
+            <h2 class="text-xl font-bold text-primary mb-4">QR Tanda Tangan Berhasil Dibuat!</h2>
+            <div id="qr-container" class="mb-6 flex justify-center">
+                </div>
+            <p class="text-sm text-slate-500 mb-6 px-4">QR ini berisi data Nama, Jabatan, Tanggal, dan Pukul yang Anda masukkan.</p>
+            <div class="flex flex-col gap-3">
+                <a id="download-btn" href="#" download="QR_TTD_PagarNusa.png" class="bg-primary text-white font-bold py-3 rounded-xl hover:bg-primaryDark transition-all">
+                    <i class="fas fa-download mr-2"></i> Unduh Gambar QR (.png)
+                </a>
+                <button onclick="window.location.reload()" class="text-sm text-slate-400 hover:text-primary underline">Buat Baru</button>
+            </div>
+        </section>
+    </main>
+
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+    <script>
+        function handleFormSubmit() {
+            const n = document.getElementById('nama').value;
+            const j = document.getElementById('jabatan').value;
+            const t = document.getElementById('tanggal').value;
+            const p = document.getElementById('pukul').value;
+
+            // 1. Membuat URL konten QR
+            // Kita gunakan format yang Anda minta (URL lengkap dengan parameter)
+            const contentUrl = `https://uktpagarnusa.my.id/ttd.html?n=${encodeURIComponent(n)}&j=${encodeURIComponent(j)}&t=${encodeURIComponent(t)}&p=${encodeURIComponent(p)}`;
+
+            // 2. Membuat Rumus Google Sheet IMAGE
+            const qrFormula = `=IMAGE("https://quickchart.io/qr?text=${encodeURIComponent(contentUrl)}&size=200")`;
+            document.getElementById('qr_hidden').value = qrFormula;
+
+            // 3. Membuat URL Gambar QR (QuickChart) untuk diunduh langsung
+            const quickChartUrl = `https://quickchart.io/qr?text=${encodeURIComponent(contentUrl)}&size=500&margin=2`;
+
+            // 4. Update UI: Sembunyikan Form, Tampilkan Area Download
+            setTimeout(() => {
+                document.getElementById('main-card').classList.add('hidden');
+                document.getElementById('download-section').classList.remove('hidden');
+                
+                // Tampilkan gambar di preview
+                const qrImg = document.createElement('img');
+                qrImg.src = quickChartUrl;
+                qrImg.className = "w-48 h-48 border-4 border-emerald-100 rounded-lg shadow-sm";
+                document.getElementById('qr-container').appendChild(qrImg);
+
+                // Atur link download
+                document.getElementById('download-btn').href = quickChartUrl;
+            }, 500); // delay sebentar agar data terkirim dulu
+        }
+    </script>
+</body>
+</html>

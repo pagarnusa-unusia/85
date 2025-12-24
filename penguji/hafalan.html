@@ -131,6 +131,7 @@
                                 <th class="p-4 font-bold text-slate-600 text-center">Kel</th>
                                 <th class="p-4 font-bold text-slate-600 text-center">Skor</th>
                                 <th class="p-4 font-bold text-slate-600 text-right">Waktu</th>
+                                <th class="p-4 font-bold text-slate-600 text-center">Kriteria</th>
                                 <th class="p-4 font-bold text-slate-600 text-center no-export">Aksi</th>
                             </tr>
                         </thead>
@@ -217,8 +218,8 @@
             const data = {
                 nama: selectNama.value,
                 kel: selectKel.value,
-                // Ganti baris skor: document.getElementById('skor').value menjadi ini:
                 skor: selectSkor.value === 'custom' ? customSkorInput.value : selectSkor.value,
+                kriteria: document.getElementById('kriteria').value,
                 waktu: new Date().toLocaleString('id-ID', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'})
             };
             let storage = JSON.parse(localStorage.getItem('rekapNilaiPagarNusa')) || [];
@@ -248,6 +249,7 @@
                             <td class="p-4 text-center">${item.kel}</td>
                             <td class="p-4 text-center"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded-md font-bold">${item.skor}</span></td>
                             <td class="p-4 text-right text-xs text-slate-400">${item.waktu}</td>
+                            <td class="p-4 text-center text-xs font-semibold text-slate-500">${item.kriteria || 'Hafalan'}</td>
                             <td class="p-4 text-center no-export">
                                 <div class="flex justify-center gap-3">
                                     <button onclick="ubahSkor(${realIndex})" class="text-blue-500 font-bold text-xs">UBAH</button>
@@ -281,7 +283,8 @@
                 'Nama Lengkap': item.nama,
                 'Kelompok': item.kel,
                 'Skor Nilai': item.skor,
-                'Waktu Input': item.waktu
+                'Waktu Input': item.waktu,
+                'Kriteria': item.kriteria || 'Hafalan'
             }));
             const worksheet = XLSX.utils.json_to_sheet(dataPilihan);
             const workbook = XLSX.utils.book_new();

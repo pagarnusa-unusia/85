@@ -4,73 +4,92 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Verifikasi Sertifikat | PAGARNUSA UNUSIA</title>
+    <link rel="icon" href="logopn.png">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
         body { font-family: 'Poppins', sans-serif; background: #f0fdf4; }
-        .main-card { background: white; border-radius: 2rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); border-top: 8px solid #1B7548; }
+        .main-card { 
+            background: white; 
+            border-radius: 2.5rem; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); 
+            border-top: 10px solid #1B7548; 
+            animation: fadeInUp 0.8s ease-out;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
 
-    <div class="main-card w-full max-w-md overflow-hidden animate-fade-in">
-        <div class="bg-emerald-50 p-6 text-center border-b border-emerald-100">
-            <div class="w-16 h-16 bg-primary bg-[#1B7548] text-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg">
-                <i class="fas fa-medal text-2xl text-yellow-400"></i>
+    <div class="main-card w-full max-w-md overflow-hidden relative">
+        <div class="bg-emerald-50 p-8 text-center border-b border-emerald-100">
+            <div class="w-20 h-20 bg-[#1B7548] text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg ring-8 ring-emerald-100/50">
+                <i class="fas fa-medal text-3xl text-yellow-400"></i>
             </div>
-            <h2 class="text-xl font-bold text-gray-800">Verifikasi Sertifikat</h2>
-            <p class="text-xs text-emerald-700 font-semibold uppercase tracking-wider">Lolos Ujian Kenaikan Tingkat</p>
+            <h2 class="text-2xl font-bold text-gray-800">Verifikasi Sertifikat</h2>
+            <p class="text-xs text-emerald-700 font-bold uppercase tracking-widest mt-1">Lolos Ujian Kenaikan Tingkat</p>
         </div>
 
-        <div class="p-6 space-y-5">
+        <div class="p-8 space-y-6">
             <div class="flex items-start space-x-4">
-                <div class="text-emerald-600 bg-emerald-100 p-3 rounded-xl"><i class="fas fa-user"></i></div>
+                <div class="text-emerald-600 bg-emerald-100 p-3 rounded-2xl"><i class="fas fa-user-circle text-xl"></i></div>
                 <div>
-                    <p class="text-[10px] font-bold text-gray-400 uppercase">Nama Lengkap</p>
-                    <p id="display-nama" class="font-bold text-gray-800 text-lg">---</p>
-                </div>
-            </div>
-
-            <div class="flex items-start space-x-4">
-                <div class="text-emerald-600 bg-emerald-100 p-3 rounded-xl"><i class="fas fa-calendar-alt"></i></div>
-                <div>
-                    <p class="text-[10px] font-bold text-gray-400 uppercase">Tempat, Tanggal Lahir</p>
-                    <p id="display-ttl" class="font-semibold text-gray-700">---</p>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">Nama Lengkap</p>
+                    <p id="display-nama" class="font-bold text-gray-800 text-lg leading-tight">Memuat...</p>
                 </div>
             </div>
 
             <div class="flex items-start space-x-4">
-                <div class="text-emerald-600 bg-emerald-100 p-3 rounded-xl"><i class="fas fa-map-marker-alt"></i></div>
+                <div class="text-emerald-600 bg-emerald-100 p-3 rounded-2xl"><i class="fas fa-calendar-check text-xl"></i></div>
                 <div>
-                    <p class="text-[10px] font-bold text-gray-400 uppercase">Alamat</p>
-                    <p id="display-alamat" class="font-semibold text-gray-700">---</p>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">Tempat, Tanggal Lahir</p>
+                    <p id="display-ttl" class="font-semibold text-gray-700">Memuat...</p>
                 </div>
             </div>
 
-            <div class="bg-emerald-600 p-4 rounded-2xl text-white shadow-md">
-                <p class="text-[9px] font-bold opacity-80 uppercase mb-1">Tingkatan Sabuk Sekarang</p>
-                <div class="flex justify-between items-center">
-                    <p id="display-tingkatan" class="text-xl font-bold tracking-wide">---</p>
-                    <i class="fas fa-trophy text-yellow-300"></i>
+            <div class="flex items-start space-x-4">
+                <div class="text-emerald-600 bg-emerald-100 p-3 rounded-2xl"><i class="fas fa-map-marked-alt text-xl"></i></div>
+                <div>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">Alamat / Cabang</p>
+                    <p id="display-alamat" class="font-semibold text-gray-700">Memuat...</p>
                 </div>
             </div>
 
-            <div class="bg-gray-800 p-3 rounded-xl text-center">
-                <p class="text-[10px] text-emerald-400 italic">Data terverifikasi secara sistem pusat PAGARNUSA UNUSIA</p>
+            <div class="bg-emerald-700 p-5 rounded-[1.5rem] text-white shadow-xl flex items-center justify-between">
+                <div>
+                    <p class="text-[9px] font-bold opacity-80 uppercase tracking-widest">Sabuk Sekarang</p>
+                    <p id="display-tingkatan" class="text-xl font-bold">Memuat...</p>
+                </div>
+                <div class="bg-white/20 p-3 rounded-full">
+                    <i class="fas fa-trophy text-2xl text-yellow-300"></i>
+                </div>
+            </div>
+
+            <div class="bg-slate-800 p-4 rounded-2xl text-center shadow-inner">
+                <p class="text-[10px] text-emerald-400 font-medium italic">
+                    <i class="fas fa-shield-alt mr-1"></i> Data terverifikasi oleh Sistem Pusat PAGARNUSA UNUSIA
+                </p>
             </div>
         </div>
     </div>
 
+    <footer class="mt-8 text-center">
+        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-[0.3em]">© 2025 PAGARNUSA UNUSIA</p>
+    </footer>
+
     <script>
         const params = new URLSearchParams(window.location.search);
         
-        // Fungsi untuk ambil data dari URL
         function getVal(key) {
             return params.get(key) ? decodeURIComponent(params.get(key)).replace(/\+/g, ' ') : "Data Tidak Ditemukan";
         }
 
-        // Tampilkan ke ID HTML
         document.getElementById('display-nama').innerText = getVal('n');
         document.getElementById('display-ttl').innerText = getVal('ttl');
         document.getElementById('display-alamat').innerText = getVal('a');

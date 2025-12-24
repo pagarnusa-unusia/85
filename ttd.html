@@ -66,25 +66,28 @@
 window.onload = function() {
     const urlParams = new URLSearchParams(window.location.search);
     
-    // Set Teks
-    document.getElementById('v-nama').innerText = urlParams.get('n') || "Data Tidak Ditemukan";
-    document.getElementById('v-jabatan').innerText = urlParams.get('j') || "Jabatan Tidak Terdaftar";
+    // Baca parameter singkat
+    const nama = urlParams.get('n');
+    const jabatan = urlParams.get('j');
+    const tanggal = urlParams.get('t');
+    const pukul = urlParams.get('p');
+    const imgData = urlParams.get('s');
 
-    // Ambil Link Gambar dari Parameter 's'
-    const sigLink = urlParams.get('s');
-    const sigImg = document.getElementById('v-signature');
+    document.getElementById('v-nama').innerText = nama || "Data Kosong";
+    document.getElementById('v-jabatan').innerText = jabatan || "Data Kosong";
+    
+    // Jika Anda punya elemen tanggal/pukul di ttd.html:
+    if(document.getElementById('v-waktu')) {
+        document.getElementById('v-waktu').innerText = `${tanggal} | ${pukul}`;
+    }
 
-    if (sigLink) {
-        // Karena ini link langsung dari Cloud (ImgBB), pasti muncul!
-        sigImg.src = decodeURIComponent(sigLink);
+    if (imgData) {
+        const sigImg = document.getElementById('v-signature');
+        sigImg.src = imgData;
         document.getElementById('signature-container').classList.remove('hidden');
     }
 
-    // Hilangkan Preloader
-    setTimeout(() => {
-        const preloader = document.getElementById('preloader');
-        if(preloader) preloader.style.display = 'none';
-    }, 1000);
+    setTimeout(() => { document.getElementById('preloader').style.display = 'none'; }, 800);
 };
     </script>
 </body>

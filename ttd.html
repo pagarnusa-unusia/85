@@ -1,244 +1,84 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verifikasi TTE | PAGARNUSA UNUSIA</title>
-    <link rel="icon" href="logopn.png">
-    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#1B7548',
-                        primaryDark: '#145c38',
-                        verified: '#057a55',
-                    },
-                    animation: {
-                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
-                        'slide-in': 'slideIn 0.5s ease-out forwards',
-                    },
-                    keyframes: {
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        },
-                        slideIn: {
-                            '0%': { opacity: '0', transform: 'translateX(-10px)' },
-                            '100%': { opacity: '1', transform: 'translateX(0)' },
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
     <style>
-        body { font-family: 'Poppins', sans-serif; }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(27, 117, 72, 0.1);
-        }
-        .scan-line {
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #1B7548, transparent);
-            width: 100%;
-            position: absolute;
-            animation: scan 3s linear infinite;
-        }
-        @keyframes scan {
-            0% { top: 0; }
-            100% { top: 100%; }
-        }
-        #preloader {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #ffffff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-        .spinning-loader {
-            width: 50px; height: 50px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #1B7548;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .glass-card { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); border: 1px solid rgba(27, 117, 72, 0.1); }
+        .scan-line { height: 2px; background: linear-gradient(90deg, transparent, #1B7548, transparent); width: 100%; position: absolute; animation: scan 3s linear infinite; }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
     </style>
 </head>
-<body class="bg-gradient-to-br from-emerald-50 via-white to-emerald-100 min-h-screen flex flex-col">
+<body class="bg-gradient-to-br from-emerald-50 via-white to-emerald-100 min-h-screen flex flex-col font-['Poppins']">
 
-    <div id="preloader">
-        <div class="spinning-loader"></div>
-        <p class="mt-4 text-primary font-bold animate-pulse text-sm uppercase tracking-widest">Memvalidasi Keaslian TTE...</p>
-    </div>
-
-    <header id="main-header" class="sticky top-0 z-50 bg-primary text-white shadow-lg">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+    <header class="bg-primary text-white p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <img src="logopn.png" alt="Logo PAGARNUSA" class="h-10 drop-shadow-md">
-                <h1 class="text-sm font-bold tracking-wide leading-tight uppercase">
-                    PAGARNUSA<br>UNUSIA
-                </h1>
+                <img src="logopn.png" class="h-10">
+                <h1 class="text-xs font-bold uppercase leading-tight">PAGARNUSA<br>UNUSIA</h1>
             </div>
-            <a href="index.html" class="flex items-center space-x-2 bg-primaryDark/50 hover:bg-primaryDark px-4 py-2 rounded-xl transition-all duration-300 border border-white/10 group">
-                <i class="fas fa-arrow-left text-xs group-hover:-translate-x-1 transition-transform"></i>
-                <span class="text-sm font-medium">Menu Utama</span>
-            </a>
+            <a href="https://googleusercontent.com/profile/picture/0" class="text-[10px] bg-white/20 px-3 py-1 rounded-full">Bantuan</a>
         </div>
     </header>
 
     <main class="flex-1 flex items-center justify-center p-6">
-        <div class="glass-card w-full max-w-md rounded-[2.5rem] shadow-2xl overflow-hidden animate-fade-in-up relative">
+        <div class="glass-card w-full max-w-md rounded-[2.5rem] shadow-2xl overflow-hidden relative">
             <div class="scan-line"></div>
             
             <div class="bg-emerald-50 p-8 text-center border-b border-emerald-100">
-                <div class="w-20 h-20 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg ring-8 ring-emerald-100">
-                    <i class="fas fa-check-double text-3xl"></i>
+                <div class="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <i class="fas fa-check-double text-2xl"></i>
                 </div>
-                <h2 class="text-xl font-bold text-slate-800">Verifikasi Berhasil</h2>
-                <p class="text-xs text-primary font-semibold uppercase tracking-widest mt-1">Dokumen Terverifikasi Digital</p>
+                <h2 class="text-lg font-bold text-slate-800">Dokumen Terverifikasi</h2>
             </div>
 
             <div class="p-8 space-y-5">
                 <div class="space-y-4">
-                    <div class="flex items-start space-x-4 group animate-slide-in" style="animation-delay: 0.1s;">
-                        <div class="bg-emerald-100 p-3 rounded-2xl text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                            <i class="fas fa-user-shield w-5 text-center"></i>
-                        </div>
-                        <div>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Penandatangan</p>
-                            <p id="v-nama" class="font-bold text-slate-800 text-lg leading-tight">Memuat...</p>
-                        </div>
+                    <div>
+                        <p class="text-[9px] font-bold text-slate-400 uppercase">Penandatangan</p>
+                        <p id="v-nama" class="font-bold text-slate-800 text-lg">---</p>
                     </div>
-
-                    <div class="flex items-start space-x-4 group animate-slide-in" style="animation-delay: 0.2s;">
-                        <div class="bg-emerald-100 p-3 rounded-2xl text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                            <i class="fas fa-id-badge w-5 text-center"></i>
-                        </div>
-                        <div>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Jabatan</p>
-                            <p id="v-jabatan" class="font-semibold text-slate-700">Memuat...</p>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 animate-slide-in" style="animation-delay: 0.3s;">
-                            <p class="text-[9px] font-bold text-slate-400 uppercase mb-1">Tanggal</p>
-                            <div class="flex items-center text-slate-700 font-bold text-xs sm:text-sm">
-                                <i class="far fa-calendar-check mr-2 text-primary"></i>
-                                <span id="v-tanggal">--/--/--</span>
-                            </div>
-                        </div>
-                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 animate-slide-in" style="animation-delay: 0.4s;">
-                            <p class="text-[9px] font-bold text-slate-400 uppercase mb-1">Pukul</p>
-                            <div class="flex items-center text-slate-700 font-bold text-xs sm:text-sm">
-                                <i class="far fa-clock mr-2 text-primary"></i>
-                                <span id="v-pukul">00:00 WIB</span>
-                            </div>
-                        </div>
+                    <div>
+                        <p class="text-[9px] font-bold text-slate-400 uppercase">Jabatan</p>
+                        <p id="v-jabatan" class="font-semibold text-slate-700">---</p>
                     </div>
                 </div>
 
-                <div id="signature-container" class="hidden space-y-2 animate-slide-in" style="animation-delay: 0.5s;">
-                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">Spesimen Tanda Tangan Digital</p>
-                    <div class="bg-white border-2 border-dashed border-emerald-100 rounded-2xl p-4 flex justify-center items-center h-32 relative group overflow-hidden">
-                        <img id="v-signature" src="" alt="Tanda Tangan Digital" class="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-110">
-                        <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                <div id="signature-container" class="space-y-2">
+                    <p class="text-[9px] font-bold text-slate-400 uppercase">Spesimen Tanda Tangan Digital</p>
+                    <div class="bg-white border-2 border-dashed border-emerald-100 rounded-2xl p-4 flex justify-center items-center h-32">
+                        <img id="v-signature" src="" alt="TTE" class="max-h-full max-w-full object-contain">
                     </div>
                 </div>
 
-                <div class="pt-2">
-                    <div class="bg-slate-800 rounded-2xl p-4 text-white flex items-center space-x-3 shadow-lg">
-                        <div class="bg-emerald-500/20 p-2 rounded-lg text-emerald-400 text-lg">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <div>
-                            <p class="text-[10px] leading-tight opacity-90 italic">Data ini tervalidasi secara sistem oleh Pusdatin PAGARNUSA UNUSIA.</p>
-                        </div>
-                    </div>
+                <div class="bg-slate-800 rounded-2xl p-4 text-white text-[10px] italic flex items-center space-x-3">
+                    <i class="fas fa-shield-alt text-emerald-400 text-lg"></i>
+                    <p>Data tervalidasi oleh Pusdatin PAGARNUSA UNUSIA.</p>
                 </div>
             </div>
         </div>
     </main>
 
-    <footer class="bg-white border-t border-emerald-100 py-6 text-center">
-        <p class="text-[10px] text-slate-400 font-semibold tracking-widest uppercase mb-1">Official Verification System</p>
-        <p class="text-xs text-slate-600 font-bold">© 2025 PAGARNUSA UNUSIA. Semua hak cipta dilindungi.</p>
-    </footer>
-
     <script>
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             
-            const getCleanData = (param) => {
-                const data = urlParams.get(param);
-                // Handle base64 khusus untuk tanda tangan (parameter 's')
-                if(param === 's' && data) return decodeURIComponent(data);
-                return data ? decodeURIComponent(data).replace(/\+/g, ' ') : null;
-            };
+            document.getElementById('v-nama').innerText = urlParams.get('n') || "Data Tidak Ditemukan";
+            document.getElementById('v-jabatan').innerText = urlParams.get('j') || "Jabatan Tidak Ditemukan";
 
-            const nama = getCleanData('n');
-            const jabatan = getCleanData('j');
-            const tanggalRaw = getCleanData('t');
-            const pukulRaw = getCleanData('p');
-            const signatureRaw = getCleanData('s');
+            const sid = urlParams.get('sid');
+            const sigImg = document.getElementById('v-signature');
 
-            // Format Tanggal
-            const formatTanggalIndo = (dateStr) => {
-                if (!dateStr) return "--/--/--";
-                const date = new Date(dateStr);
-                if (isNaN(date)) return dateStr;
-                const opsi = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-                return date.toLocaleDateString('id-ID', opsi);
-            };
-
-            // Format Pukul
-            const formatPukulLengkap = (pukulStr) => {
-                if (!pukulStr) return "--:--:--";
-                let cleanTime = pukulStr.replace('.', ':');
-                const parts = cleanTime.split(':');
-                let hh = parts[0].padStart(2, '0');
-                let mm = (parts[1] || '00').padStart(2, '0');
-                let ss = (parts[2] || '00').padStart(2, '0');
-                return `${hh}:${mm}:${ss} WIB`;
-            };
-
-            // Render Data
-            document.getElementById('v-nama').innerText = nama || "Data Tidak Ditemukan";
-            document.getElementById('v-jabatan').innerText = jabatan || "Jabatan Tidak Terdaftar";
-            document.getElementById('v-tanggal').innerText = formatTanggalIndo(tanggalRaw);
-            document.getElementById('v-pukul').innerText = formatPukulLengkap(pukulRaw);
-
-            // Render Tanda Tangan jika ada
-            if (signatureRaw) {
-                const sigImg = document.getElementById('v-signature');
-                const sigContainer = document.getElementById('signature-container');
-                
-                // Pastikan format base64 benar
-                sigImg.src = signatureRaw.startsWith('data:image') ? signatureRaw : `data:image/png;base64,${signatureRaw}`;
-                sigContainer.classList.remove('hidden');
+            if (sid) {
+                // Akal-akalan link baru: Mengubah ID Drive menjadi link gambar langsung
+                sigImg.src = `https://lh3.googleusercontent.com/d/${sid}`;
+            } else {
+                // Jika tidak ada ID, pakai gambar default dari folder Drive Anda
+                sigImg.src = "ttd_default.png";
             }
-
-            // Loader Logic
-            setTimeout(() => {
-                const preloader = document.getElementById('preloader');
-                if (preloader) {
-                    preloader.style.opacity = '0';
-                    setTimeout(() => preloader.style.display = 'none', 500);
-                }
-            }, 1800);
         };
     </script>
 </body>

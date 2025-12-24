@@ -63,23 +63,31 @@
     </main>
 
     <script>
-        window.onload = function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            
-            document.getElementById('v-nama').innerText = urlParams.get('n') || "Data Tidak Ditemukan";
-            document.getElementById('v-jabatan').innerText = urlParams.get('j') || "Jabatan Tidak Ditemukan";
+window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // Ambil Nama dan Jabatan
+    document.getElementById('v-nama').innerText = urlParams.get('n') || "Data Tidak Ditemukan";
+    document.getElementById('v-jabatan').innerText = urlParams.get('j') || "Jabatan Tidak Ditemukan";
 
-            const sid = urlParams.get('sid');
-            const sigImg = document.getElementById('v-signature');
+    const sigImg = document.getElementById('v-signature');
+    const sid = urlParams.get('sid'); // Jika menggunakan ID Drive
+    const s = urlParams.get('s');     // Jika menggunakan Base64/Link Langsung
 
-            if (sid) {
-                // Akal-akalan link baru: Mengubah ID Drive menjadi link gambar langsung
-                sigImg.src = `https://lh3.googleusercontent.com/d/${sid}`;
-            } else {
-                // Jika tidak ada ID, pakai gambar default dari folder Drive Anda
-                sigImg.src = "ttd_default.png";
-            }
-        };
+    if (sid) {
+        // Jika dari Google Drive, gunakan Proxy lh3 agar gambar muncul
+        sigImg.src = `https://lh3.googleusercontent.com/u/0/d/${sid}`;
+    } else if (s) {
+        // Jika data dikirim langsung sebagai teks/base64
+        sigImg.src = decodeURIComponent(s);
+    }
+
+    // Penanganan jika gambar gagal dimuat
+    sigImg.onerror = function() {
+        console.error("Gagal memuat gambar tanda tangan.");
+        this.src = "https://via.placeholder.com/150?text=TTD+Tidak+Ditemukan"; // Gambar cadangan
+    };
+};
     </script>
 </body>
 </html>

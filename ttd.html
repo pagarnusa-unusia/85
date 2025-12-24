@@ -66,27 +66,25 @@
 window.onload = function() {
     const urlParams = new URLSearchParams(window.location.search);
     
-    // Ambil Nama dan Jabatan
+    // Set Teks
     document.getElementById('v-nama').innerText = urlParams.get('n') || "Data Tidak Ditemukan";
-    document.getElementById('v-jabatan').innerText = urlParams.get('j') || "Jabatan Tidak Ditemukan";
+    document.getElementById('v-jabatan').innerText = urlParams.get('j') || "Jabatan Tidak Terdaftar";
 
+    // Ambil Link Gambar dari Parameter 's'
+    const sigLink = urlParams.get('s');
     const sigImg = document.getElementById('v-signature');
-    const sid = urlParams.get('sid'); // Jika menggunakan ID Drive
-    const s = urlParams.get('s');     // Jika menggunakan Base64/Link Langsung
 
-    if (sid) {
-        // Jika dari Google Drive, gunakan Proxy lh3 agar gambar muncul
-        sigImg.src = `https://lh3.googleusercontent.com/u/0/d/${sid}`;
-    } else if (s) {
-        // Jika data dikirim langsung sebagai teks/base64
-        sigImg.src = decodeURIComponent(s);
+    if (sigLink) {
+        // Karena ini link langsung dari Cloud (ImgBB), pasti muncul!
+        sigImg.src = decodeURIComponent(sigLink);
+        document.getElementById('signature-container').classList.remove('hidden');
     }
 
-    // Penanganan jika gambar gagal dimuat
-    sigImg.onerror = function() {
-        console.error("Gagal memuat gambar tanda tangan.");
-        this.src = "https://via.placeholder.com/150?text=TTD+Tidak+Ditemukan"; // Gambar cadangan
-    };
+    // Hilangkan Preloader
+    setTimeout(() => {
+        const preloader = document.getElementById('preloader');
+        if(preloader) preloader.style.display = 'none';
+    }, 1000);
 };
     </script>
 </body>

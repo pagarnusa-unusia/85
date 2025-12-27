@@ -233,15 +233,17 @@
             window.location.href = 'login.html';
         };
     });
-    function bukaMateri() {
+function bukaMateri() {
     const currentUser = JSON.parse(localStorage.getItem('currentUserProfile'));
     if (!currentUser) {
         window.location.href = 'login.html';
         return;
     }
 
-    // Ambil data sabuk/kategori (pastikan field 'sabuk' atau 'kategori' tersedia di localStorage)
-    const tingkatan = currentUser.kategori; // Contoh: "Putih", "Kuning", "Merah", "Biru"
+    // Ambil data dari properti 'ujian' atau 'Ujian' atau 'kategori'
+    // Menggunakan .toLowerCase() agar "putih" atau "Putih" tetap terbaca sama
+    const rawTingkatan = currentUser.ujian || currentUser.Ujian || currentUser.kategori || "";
+    const tingkatan = rawTingkatan.trim();
 
     if (tingkatan === "Putih") {
         window.location.href = 'materi_putih.html';
@@ -252,9 +254,11 @@
     } else if (tingkatan === "Biru") {
         window.location.href = 'materi_biru.html';
     } else {
-        alert("Data tingkatan tidak ditemukan.");
+        // Jika masih error, tampilkan isi datanya di alert untuk debug
+        alert("Data tingkatan tidak ditemukan. Isi data: " + tingkatan);
     }
 }
 </script>
 </body>
 </html>
+

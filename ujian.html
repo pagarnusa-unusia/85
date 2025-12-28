@@ -268,7 +268,6 @@
             const u = document.getElementById('username').value;
             const p = document.getElementById('password').value;
 
-            // Fitur: Cek jika email sudah pernah menyelesaikan ujian
             const usedEmails = JSON.parse(localStorage.getItem('used_emails') || '[]');
             if (usedEmails.includes(u)) {
                 alert("Email ini sudah digunakan dan tidak dapat mengerjakan ulang.");
@@ -446,13 +445,11 @@
             try {
                 await fetch(CONFIG.API, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
                 
-                // Simpan email ke daftar 'sudah digunakan' di browser
                 const usedEmails = JSON.parse(localStorage.getItem('used_emails') || '[]');
                 usedEmails.push(state.user.username);
                 localStorage.setItem('used_emails', JSON.stringify(usedEmails));
 
                 localStorage.removeItem('exam_session');
-                // Fitur: Langsung kembali ke login tanpa alert skor
                 location.reload();
             } catch (e) {
                 alert("Gagal kirim. Sistem akan mencoba lagi.");
@@ -460,11 +457,13 @@
             }
         }
 
-        // Perbaikan: Saat tekan Batal, posisi soal tidak berubah (tidak ke No. 1)
-        function tryFinish() {
+        // PERBAIKAN: Fungsi dicegah agar tidak memicu reload/reset posisi saat Batal
+        function tryFinish(event) {
+            if (event) event.preventDefault(); // Mencegah aksi default tombol
             if (confirm("Kirim jawaban sekarang?")) {
                 forceSubmit();
             }
+            return false; // Memastikan tidak ada pengiriman form atau navigasi tambahan
         }
 
         function togglePasswordVisibility() {

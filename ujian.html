@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CBT PROFESSIONAL | PAGARNUSA UNUSIA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1B7548;
+            --primary-dark: #145a38;
+            --accent: #fbbf24;
+        }
+                /* Animasi tambahan */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-fade-up { animation: fadeInUp 0.8s ease-out forwards; }
+        .animate-float { animation: float 4s ease-in-out infinite; }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: radial-gradient(circle at top right, #f0fdf4, #f8fafc);
+            user-select: none; 
+            color: #1e293b;
+        }
+        .glass { 
+            background: rgba(255, 255, 255, 0.8); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255,255,255,0.5); 
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.05);
+        }
+        .hidden { display: none !important; }
+        
+        /* Checkbox & Radio Professional Look */
+        .opt-btn {
+            position: relative;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid #e2e8f0;
+        }
+        .opt-btn:hover:not(.active) { 
+            background-color: #f8fafc; 
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+        .opt-btn.active { 
+            background: linear-gradient(to right, var(--primary), var(--primary-dark)); 
+            color: white; 
+            border-color: var(--primary);
+            box-shadow: 0 10px 15px -3px rgba(27,117,72,0.3);
+        }
+        .opt-btn.active span { background: rgba(255,255,255,0.2); border-color: white; }
+
+        /* Progress Bar */
+        .progress-bar {
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 100%;
+        }
+        #progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), #4ade80);
+            transition: width 0.5s ease;
+        }
+
+        /* Nav Grid Animation */
+        .nav-item { transition: all 0.2s; }
+        .nav-item:hover { transform: translateY(-3px); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div id="fs-overlay" class="hidden fixed inset-0 bg-slate-900/95 z-[100] flex flex-col items-center justify-center text-white p-6 text-center backdrop-blur-md">
+        <div class="w-24 h-24 bg-emerald-500/20 rounded-full flex items-center justify-center mb-6 animate-pulse">
+            <i class="fas fa-shield-halved text-5xl text-emerald-400"></i>
+        </div>
+        <h2 class="text-3xl font-extrabold mb-2 tracking-tight">System Integrity Check</h2>
+        <p class="mb-8 opacity-70 max-w-md mx-auto leading-relaxed">Pastikan koneksi stabil. Ujian akan berjalan dalam mode layar penuh (Proctored Mode).</p>
+        <button onclick="enterFullscreen()" class="group relative px-10 py-4 bg-emerald-600 rounded-2xl font-bold overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-emerald-500/20">
+            <span class="relative z-10 flex items-center gap-2">MULAI SESI UJIAN <i class="fas fa-arrow-right text-sm"></i></span>
+            <div class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        </button>
+    </div>
+
+<div id="page-login" class="w-full max-w-md transition-all duration-700 transform">
+    <div class="text-center mb-10 animate-fade-up">
+        <div class="flex flex-col items-center justify-center mb-6">
+            <div class="relative group animate-float"> <div class="absolute inset-0 bg-emerald-400/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <img src="logopn.png" alt="Logo PN" class="relative w-24 h-24 object-contain transition-transform duration-500 group-hover:scale-110">
+            </div>
+        </div>
+        <h1 class="text-4xl font-extrabold text-slate-800 tracking-tight">E-<span class="text-emerald-600">Learning</span></h1>
+        <p class="text-slate-500 font-medium mt-2">PAGARNUSA UNUSIA</p>
+    </div>
+    
+    <div class="glass p-10 rounded-[2.5rem] border border-white/50 relative overflow-hidden animate-fade-up delay-200">
+        <div class="absolute top-0 left-0 w-full h-2 bg-emerald-600"></div>
+        <form id="loginForm" class="space-y-6">
+            <div class="space-y-2">
+                <label class="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Email</label>
+                <div class="relative">
+                    <i class="fas fa-user absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="username" required placeholder="Email Address" class="w-full pl-12 pr-6 py-4 bg-slate-100/50 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:bg-white outline-none transition-all border border-transparent focus:border-emerald-500">
+                </div>
+            </div>
+            <div class="space-y-2">
+                <label class="text-xs font-bold text-slate-500 uppercase tracking-widest ml-1">Credential</label>
+                <div class="relative">
+                    <i class="fas fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="password" id="password" required placeholder="••••••••" 
+                        class="w-full pl-12 pr-12 py-4 bg-slate-100/50 rounded-2xl focus:ring-4 focus:ring-emerald-500/10 focus:bg-white outline-none transition-all border border-transparent focus:border-emerald-500">
+                    
+                    <button type="button" onclick="togglePasswordVisibility()" class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-600 transition-colors focus:outline-none">
+                        <i id="password-icon" class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="login-error" class="hidden animate-bounce text-red-600 text-xs font-bold bg-red-50 p-4 rounded-xl border border-red-200 flex items-center gap-2">
+                <i class="fas fa-circle-exclamation"></i> Identitas tidak ditemukan dalam database.
+            </div>
+            <button type="submit" id="btn-login" class="w-full bg-slate-900 hover:bg-emerald-800 text-white font-bold py-5 rounded-2xl shadow-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2 group">
+                Masuk dan Mulai<i class="fas fa-key text-xs opacity-50 group-hover:opacity-100 transition-opacity"></i>
+            </button>
+        </form>
+    </div>
+</div>
+    <div id="page-exam" class="hidden w-full max-w-7xl grid grid-cols-12 gap-6 relative animate-in fade-in zoom-in duration-500">
+        
+        <header class="col-span-12 glass p-5 rounded-3xl flex flex-wrap justify-between items-center px-10 border-b-2 border-emerald-100 sticky top-0 z-50">
+            <div class="flex items-center gap-5">
+                <div class="p-0.5 bg-gradient-to-br from-emerald-500 to-emerald-800 rounded-xl">
+                    <div class="bg-white px-3 py-1 rounded-[10px] font-black text-emerald-800 text-lg">PN</div>
+                </div>
+                <div class="h-10 w-[1px] bg-slate-200 hidden md:block"></div>
+                <div>
+                    <p id="display-name" class="font-extrabold text-slate-800 tracking-tight text-lg leading-none">User</p>
+                    <span class="flex items-center gap-2 text-[10px] text-emerald-600 font-bold uppercase tracking-widest mt-1">
+                        <span class="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></span> Live Session
+                    </span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="hidden md:block text-right">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Sisa Waktu</p>
+                    <div id="timer" class="text-2xl font-black text-slate-800 font-mono tracking-tight">30:00</div>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-slate-100 flex md:hidden items-center justify-center">
+                    <i class="fas fa-clock text-emerald-600"></i>
+                </div>
+            </div>
+        </header>
+
+        <main class="col-span-12 lg:col-span-8 space-y-6">
+            <div class="progress-bar">
+                <div id="progress-fill" style="width: 0%"></div>
+            </div>
+
+            <div class="glass p-8 md:p-12 rounded-[3rem] shadow-2xl min-h-[500px] flex flex-col relative overflow-hidden">
+                <div class="absolute -top-24 -right-24 w-64 h-64 bg-emerald-50 rounded-full opacity-50 blur-3xl"></div>
+                
+                <div class="mb-10 flex items-center justify-between relative z-10">
+                    <div class="flex items-center gap-3">
+                        <span id="q-label" class="bg-emerald-100 text-emerald-700 px-5 py-1.5 rounded-2xl text-xs font-extrabold tracking-widest uppercase">Soal 1</span>
+                        <div class="h-2 w-2 rounded-full bg-slate-300"></div>
+                        <span class="text-xs font-bold text-slate-400">Pilihan Ganda</span>
+                    </div>
+                    <button onclick="toggleDoubt()" id="btn-doubt" class="group flex items-center gap-2 text-[11px] font-bold px-5 py-2 rounded-xl border-2 border-amber-200 text-amber-600 transition-all hover:bg-amber-50">
+                        <i class="fas fa-flag group-hover:scale-110 transition-transform"></i> RAGU-RAGU
+                    </button>
+                </div>
+                
+                <h2 id="q-text" class="text-2xl font-bold text-slate-800 mb-10 leading-snug relative z-10">Loading questions...</h2>
+                
+                <div id="options-container" class="grid grid-cols-1 gap-4 relative z-10 flex-grow"></div>
+
+                <div class="mt-12 flex items-center justify-between gap-4 pt-10 border-t border-slate-100 relative z-10">
+                    <button id="btn-prev" onclick="move(-1)" class="group flex items-center gap-3 px-8 py-4 bg-white text-slate-600 rounded-2xl font-bold border-2 border-slate-100 hover:border-slate-300 transition-all active:scale-95 disabled:opacity-30 disabled:pointer-events-none">
+                        <i class="fas fa-chevron-left text-xs group-hover:-translate-x-1 transition-transform"></i> KEMBALI
+                    </button>
+                    
+                    <button id="btn-next" onclick="move(1)" class="group flex items-center gap-3 px-10 py-4 bg-emerald-700 text-white rounded-2xl font-bold hover:bg-emerald-800 shadow-xl shadow-emerald-700/20 transition-all active:scale-95">
+                        LANJUT <i class="fas fa-chevron-right text-xs group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+
+                    <button id="btn-finish" onclick="tryFinish()" class="hidden flex items-center gap-3 px-10 py-4 bg-red-600 text-white rounded-2xl font-bold hover:bg-red-700 shadow-xl shadow-red-600/20 animate-pulse transition-all active:scale-95">
+                        SELESAI UJIAN <i class="fas fa-check-double"></i>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <aside class="col-span-12 lg:col-span-4 space-y-6">
+            <div class="glass p-8 rounded-[2.5rem] sticky top-32">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">Peta Navigasi</h3>
+                    <div class="px-2 py-1 bg-slate-100 rounded-lg text-[10px] font-bold text-slate-500"><span id="ans-count">0</span> / <span id="total-count">0</span></div>
+                </div>
+
+                <div id="nav-grid" class="grid grid-cols-5 gap-3 max-h-[400px] overflow-y-auto pr-2"></div>
+                
+                <div class="mt-10 grid grid-cols-2 gap-3 pt-6 border-t border-slate-100">
+                    <div class="flex items-center gap-3 p-3 bg-emerald-50 rounded-2xl">
+                        <span class="w-3 h-3 bg-emerald-600 rounded-full"></span>
+                        <span class="text-[10px] font-bold text-slate-600 uppercase">Terjawab</span>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 bg-amber-50 rounded-2xl">
+                        <span class="w-3 h-3 bg-amber-400 rounded-full"></span>
+                        <span class="text-[10px] font-bold text-slate-600 uppercase">Ragu-Ragu</span>
+                    </div>
+                </div>
+
+                <div class="mt-6 p-5 bg-slate-900 rounded-2xl text-white">
+                    <div class="flex items-center gap-3 mb-2">
+                        <i class="fas fa-triangle-exclamation text-amber-400 text-sm"></i>
+                        <span class="text-[10px] font-bold uppercase tracking-widest opacity-60">Status Security</span>
+                    </div>
+                    <p class="text-xs font-medium leading-relaxed">System monitoring aktif. Dilarang berpindah jendela atau menutup layar penuh.</p>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // TETAP MENJAGA STRUKTUR ASLI DAN FUNGSI (Sesuai Permintaan)
+        const CONFIG = {
+            API: "https://script.google.com/macros/s/AKfycbyCrP0iYfrjSY_PpKfyLExdMUgjeZWrvCbjQhv1qfZXigtaCYNVr7AuwLm7cRaPR5YjrQ/exec",
+            TIME: 30 * 60,
+            MAX_VIOLATIONS: 3
+        };
+
+        let state = {
+            user: null,
+            questions: [],
+            answers: {},
+            doubts: {},
+            currentIdx: 0,
+            timeLeft: CONFIG.TIME,
+            violations: 0,
+            startTime: null,
+            isFinished: false 
+        };
+
+        window.onload = () => {
+            disableInspect();
+            checkSession();
+        };
+
+        function disableInspect() {
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.onkeydown = (e) => {
+                if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) {
+                    return false;
+                }
+            };
+        }
+
+        function checkSession() {
+            const saved = localStorage.getItem('exam_session');
+            if (saved) {
+                state = JSON.parse(saved);
+                if (state.user && !state.isFinished) {
+                    startExam();
+                }
+            }
+        }
+
+        function saveSession() {
+            localStorage.setItem('exam_session', JSON.stringify(state));
+        }
+
+        document.getElementById('loginForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btn-login');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> VERIFIKASI...`;
+
+            try {
+                const res = await fetch(CONFIG.API);
+                const db = await res.json();
+                const u = document.getElementById('username').value;
+                const p = document.getElementById('password').value;
+
+                const found = db.users.find(x => x.username === u && x.password === p);
+                if (found) {
+                    state.user = found;
+                    state.questions = shuffle(db.questions);
+                    state.startTime = new Date().toISOString();
+                    saveSession();
+                    startExam();
+                } else {
+                    document.getElementById('login-error').classList.remove('hidden');
+                    btn.disabled = false;
+                    btn.innerText = "VERIFIKASI AKSES";
+                }
+            } catch (err) {
+                alert("Gagal koneksi ke server.");
+                btn.disabled = false;
+            }
+        };
+
+        function startExam() {
+            document.getElementById('page-login').classList.add('hidden');
+            document.getElementById('fs-overlay').classList.remove('hidden');
+        }
+
+        function enterFullscreen() {
+            const doc = document.documentElement;
+            if (doc.requestFullscreen) doc.requestFullscreen();
+            else if (doc.webkitRequestFullscreen) doc.webkitRequestFullscreen();
+            
+            document.getElementById('fs-overlay').classList.add('hidden');
+            document.getElementById('page-exam').classList.remove('hidden');
+            document.getElementById('display-name').innerText = state.user.nama;
+            
+            renderQuestion();
+            renderNav();
+            startTimer();
+            monitorCheating();
+        }
+
+        function startTimer() {
+            const timerObj = setInterval(() => {
+                if(state.isFinished) { clearInterval(timerObj); return; }
+                state.timeLeft--;
+                saveSession();
+                
+                const m = Math.floor(state.timeLeft / 60);
+                const s = state.timeLeft % 60;
+                document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+
+                if (state.timeLeft <= 0) {
+                    clearInterval(timerObj);
+                    alert("Waktu habis! Jawaban Anda akan terkirim otomatis.");
+                    forceSubmit();
+                }
+            }, 1000);
+        }
+
+        function monitorCheating() {
+            window.onblur = () => {
+                if(state.isFinished) return; 
+
+                state.violations++;
+                saveSession();
+                if (state.violations >= CONFIG.MAX_VIOLATIONS) {
+                    state.isFinished = true; 
+                    alert("PELANGGARAN KRITIS: Anda terlalu sering meninggalkan halaman. Ujian dihentikan.");
+                    forceSubmit();
+                } else {
+                    alert(`PERINGATAN [${state.violations}/${CONFIG.MAX_VIOLATIONS}]: Jangan tinggalkan halaman ujian!`);
+                }
+            };
+        }
+
+        function renderQuestion() {
+            const q = state.questions[state.currentIdx];
+            document.getElementById('q-label').innerText = `Soal ${state.currentIdx + 1}`;
+            document.getElementById('q-text').innerText = q.q;
+            
+            // Progress Bar Update
+            const prog = ((state.currentIdx + 1) / state.questions.length) * 100;
+            document.getElementById('progress-fill').style.width = prog + '%';
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            q.a.forEach((opt, i) => {
+                const active = state.answers[state.currentIdx] === i ? 'active' : '';
+                container.innerHTML += `
+                    <button onclick="pick(${i})" class="opt-btn w-full text-left p-6 bg-white rounded-[1.5rem] font-semibold transition-all flex items-center gap-5 ${active}">
+                        <span class="w-10 h-10 rounded-xl border-2 border-slate-200 flex items-center justify-center text-sm font-black transition-colors">${String.fromCharCode(65+i)}</span>
+                        <span class="flex-grow">${opt}</span>
+                    </button>
+                `;
+            });
+
+            document.getElementById('btn-prev').disabled = state.currentIdx === 0;
+            const isLast = state.currentIdx === state.questions.length - 1;
+            document.getElementById('btn-next').classList.toggle('hidden', isLast);
+            document.getElementById('btn-finish').classList.toggle('hidden', !isLast);
+            
+            const btnDoubt = document.getElementById('btn-doubt');
+            if (state.doubts[state.currentIdx]) {
+                btnDoubt.classList.replace('text-amber-600', 'bg-amber-400');
+                btnDoubt.classList.replace('border-amber-200', 'border-amber-400');
+                btnDoubt.classList.add('text-white');
+            } else {
+                btnDoubt.classList.replace('bg-amber-400', 'text-amber-600');
+                btnDoubt.classList.replace('border-amber-400', 'border-amber-200');
+                btnDoubt.classList.remove('text-white');
+            }
+        }
+
+        function renderNav() {
+            const grid = document.getElementById('nav-grid');
+            grid.innerHTML = '';
+            let answeredCount = 0;
+
+            state.questions.forEach((_, i) => {
+                let color = 'bg-white text-slate-400 border-2 border-slate-100';
+                if (state.answers[i] !== undefined) {
+                    color = 'bg-emerald-600 text-white border-emerald-600 shadow-lg shadow-emerald-500/20';
+                    answeredCount++;
+                }
+                if (state.doubts[i]) color = 'bg-amber-400 text-white border-amber-400 shadow-lg shadow-amber-500/20';
+                if (state.currentIdx === i) color += ' ring-4 ring-emerald-500/20 scale-110 z-10';
+
+                grid.innerHTML += `
+                    <button onclick="jump(${i})" class="nav-item h-12 w-full rounded-xl font-extrabold text-sm transition-all ${color}">
+                        ${i + 1}
+                    </button>
+                `;
+            });
+
+            document.getElementById('ans-count').innerText = answeredCount;
+            document.getElementById('total-count').innerText = state.questions.length;
+        }
+
+        function pick(i) { state.answers[state.currentIdx] = i; renderQuestion(); renderNav(); saveSession(); }
+        function move(dir) { state.currentIdx += dir; renderQuestion(); renderNav(); }
+        function jump(i) { state.currentIdx = i; renderQuestion(); renderNav(); }
+        function toggleDoubt() { state.doubts[state.currentIdx] = !state.doubts[state.currentIdx]; renderQuestion(); renderNav(); saveSession(); }
+
+        async function forceSubmit() {
+            state.isFinished = true;
+            let correct = 0;
+            state.questions.forEach((q, i) => {
+                if (state.answers[i] === q.c) correct++;
+            });
+            
+            const score = Math.round((correct / state.questions.length) * 100);
+            const payload = {
+                nama: state.user.nama,
+                skor: score,
+                pelanggaran: state.violations,
+                durasi: `${Math.floor((CONFIG.TIME - state.timeLeft)/60)} Menit`,
+                detail_jawaban: state.answers
+            };
+
+            const finishBtn = document.getElementById('btn-finish');
+            finishBtn.innerHTML = `<i class="fas fa-circle-notch fa-spin"></i> SYNCING...`;
+            finishBtn.disabled = true;
+
+            try {
+                await fetch(CONFIG.API, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+                localStorage.removeItem('exam_session');
+                alert(`Ujian Selesai!\nSkor Anda: ${score}`);
+                location.reload();
+            } catch (e) {
+                alert("Koneksi terputus. Sistem mencoba mengirim ulang...");
+                forceSubmit();
+            }
+        }
+
+        function tryFinish() {
+            const unanswered = [];
+            state.questions.forEach((_, i) => {
+                if (state.answers[i] === undefined) unanswered.push(i + 1);
+            });
+
+            if (unanswered.length > 0) {
+                if (confirm(`Ada ${unanswered.length} soal belum dijawab. Periksa kembali?`)) {
+                    jump(unanswered[0] - 1);
+                    return;
+                }
+            }
+
+            if (confirm("Kirim seluruh jawaban sekarang? Data tidak bisa diubah setelah dikirim.")) {
+                forceSubmit();
+            }
+        }
+
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+        function togglePasswordVisibility() {
+    const passwordInput = document.getElementById('password');
+    const passwordIcon = document.getElementById('password-icon');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        passwordIcon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        passwordIcon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+}
+    </script>
+</body>
+</html>

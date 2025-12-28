@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ujian Daring | PAGARNUSA UNUSIA</title>
+    <title>CBT UKT | PAGARNUSA UNUSIA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -212,7 +212,7 @@
         </aside>
     </div>
 
-    <script>
+<script>
         const CONFIG = {
             API: "https://script.google.com/macros/s/AKfycbyCrP0iYfrjSY_PpKfyLExdMUgjeZWrvCbjQhv1qfZXigtaCYNVr7AuwLm7cRaPR5YjrQ/exec",
             DURATION: 30 * 60,
@@ -250,7 +250,6 @@
                 const parsed = JSON.parse(saved);
                 if (parsed.user && !parsed.isFinished) {
                     state = parsed;
-                    // Pastikan timeLeft valid, jika tidak reset ke default
                     if (isNaN(state.timeLeft) || state.timeLeft <= 0) state.timeLeft = CONFIG.DURATION;
                     
                     document.getElementById('page-login').classList.add('hidden');
@@ -266,14 +265,22 @@
         document.getElementById('loginForm').onsubmit = async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btn-login');
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+
+            // Fitur: Cek jika email sudah pernah menyelesaikan ujian
+            const usedEmails = JSON.parse(localStorage.getItem('used_emails') || '[]');
+            if (usedEmails.includes(u)) {
+                alert("Email ini sudah digunakan dan tidak dapat mengerjakan ulang.");
+                return;
+            }
+
             btn.disabled = true;
             btn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> VERIFIKASI...`;
 
             try {
                 const res = await fetch(CONFIG.API);
                 const db = await res.json();
-                const u = document.getElementById('username').value;
-                const p = document.getElementById('password').value;
 
                 const found = db.users.find(x => x.username === u && x.password === p);
                 if (found) {
@@ -290,6 +297,7 @@
             } catch (err) {
                 alert("Gagal koneksi ke server.");
                 btn.disabled = false;
+                btn.innerHTML = `Masuk dan Mulai <i class="fas fa-key text-xs"></i>`;
             }
         };
 
@@ -315,18 +323,17 @@
         function startTimer() {
             if(timerInterval) clearInterval(timerInterval);
             
-            // Fungsi update tampilan
             const updateUI = () => {
                 const m = Math.floor(state.timeLeft / 60);
                 const s = state.timeLeft % 60;
                 document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
                 
-                if (state.timeLeft <= 60) { // Berubah warna jika < 1 menit
+                if (state.timeLeft <= 60) {
                     document.getElementById('timer').classList.replace('text-emerald-700', 'text-red-600');
                 }
             };
 
-            updateUI(); // Jalankan sekali di awal
+            updateUI();
 
             timerInterval = setInterval(() => {
                 if(state.isFinished) { clearInterval(timerInterval); return; }
@@ -438,8 +445,14 @@
 
             try {
                 await fetch(CONFIG.API, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+                
+                // Simpan email ke daftar 'sudah digunakan' di browser
+                const usedEmails = JSON.parse(localStorage.getItem('used_emails') || '[]');
+                usedEmails.push(state.user.username);
+                localStorage.setItem('used_emails', JSON.stringify(usedEmails));
+
                 localStorage.removeItem('exam_session');
-                alert(`Ujian Selesai! Skor: ${score}`);
+                // Fitur: Langsung kembali ke login tanpa alert skor
                 location.reload();
             } catch (e) {
                 alert("Gagal kirim. Sistem akan mencoba lagi.");
@@ -447,8 +460,11 @@
             }
         }
 
+        // Perbaikan: Saat tekan Batal, posisi soal tidak berubah (tidak ke No. 1)
         function tryFinish() {
-            if (confirm("Kirim jawaban sekarang?")) forceSubmit();
+            if (confirm("Kirim jawaban sekarang?")) {
+                forceSubmit();
+            }
         }
 
         function togglePasswordVisibility() {

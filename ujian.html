@@ -2,9 +2,11 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CBT UKT Pagarnusa UNUSIA</title>
-    <link rel="icon" href="logopn.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>CBT UKT | PAGARNUSA UNUSIA</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -32,6 +34,7 @@
             background: radial-gradient(circle at top right, #f0fdf4, #f8fafc);
             user-select: none; 
             color: #1e293b;
+            -webkit-tap-highlight-color: transparent;
         }
         .glass { 
             background: rgba(255, 255, 255, 0.8); 
@@ -213,7 +216,22 @@
         </aside>
     </div>
 
-<script>
+    <div id="violation-modal" class="hidden fixed inset-0 bg-slate-900/90 z-[200] flex items-center justify-center p-6 backdrop-blur-sm">
+        <div class="glass max-w-sm w-full p-8 rounded-[2.5rem] text-center border-2 border-red-100 shadow-2xl">
+            <div class="w-20 h-20 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-triangle-exclamation text-4xl"></i>
+            </div>
+            <h3 class="text-xl font-black text-slate-800 mb-2">Peringatan Pelanggaran!</h3>
+            <p class="text-slate-500 font-medium mb-8 leading-relaxed">
+                Pelanggaran anda dapat mengurangi <span class="text-red-600 font-bold">5 poin</span> dari soal yang dikerjakan.
+            </p>
+            <button onclick="closeViolationModal()" class="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold hover:bg-emerald-800 transition-all shadow-xl">
+                DIMENGERTI
+            </button>
+        </div>
+    </div>
+
+    <script>
         const CONFIG = {
             API: "https://script.google.com/macros/s/AKfycbyCrP0iYfrjSY_PpKfyLExdMUgjeZWrvCbjQhv1qfZXigtaCYNVr7AuwLm7cRaPR5YjrQ/exec",
             DURATION: 30 * 60,
@@ -245,6 +263,14 @@
             };
         }
 
+        function formatDate(text) {
+            if (typeof text === 'string' && text.includes('T') && text.endsWith('Z')) {
+                const d = new Date(text);
+                return !isNaN(d) ? d.toLocaleDateString('id-ID', {day:'2-digit', month:'2-digit', year:'numeric'}) : text;
+            }
+            return text;
+        }
+
         function checkSession() {
             const saved = localStorage.getItem('exam_session');
             if (saved) {
@@ -252,7 +278,6 @@
                 if (parsed.user && !parsed.isFinished) {
                     state = parsed;
                     if (isNaN(state.timeLeft) || state.timeLeft <= 0) state.timeLeft = CONFIG.DURATION;
-                    
                     document.getElementById('page-login').classList.add('hidden');
                     document.getElementById('fs-overlay').classList.remove('hidden');
                 }
@@ -269,16 +294,14 @@
             const u = document.getElementById('username').value;
             const p = document.getElementById('password').value;
 
-            // BAGIAN CEK EMAIL DIHAPUS AGAR EMAIL TERBLOKIR BISA LOGIN LAGI
-
             btn.disabled = true;
             btn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> VERIFIKASI...`;
 
             try {
                 const res = await fetch(CONFIG.API);
                 const db = await res.json();
-
                 const found = db.users.find(x => x.username === u && x.password === p);
+                
                 if (found) {
                     state.user = found;
                     state.questions = db.questions.sort(() => Math.random() - 0.5);
@@ -304,7 +327,14 @@
 
         function enterFullscreen() {
             const doc = document.documentElement;
-            if (doc.requestFullscreen) doc.requestFullscreen();
+            // Perbaikan untuk Android & iPhone (iPhone sering menolak Fullscreen API)
+            try {
+                if (doc.requestFullscreen) {
+                    doc.requestFullscreen().catch(() => {});
+                } else if (doc.webkitRequestFullscreen) {
+                    doc.webkitRequestFullscreen().catch(() => {});
+                }
+            } catch (e) {}
             
             document.getElementById('fs-overlay').classList.add('hidden');
             document.getElementById('page-exam').classList.remove('hidden');
@@ -316,28 +346,42 @@
             monitorCheating();
         }
 
+        function monitorCheating() {
+            window.onblur = () => {
+                if (!state.isFinished && state.user) {
+                    state.violations++;
+                    saveSession();
+                    document.getElementById('violation-modal').classList.remove('hidden');
+                }
+            };
+        }
+
+        function closeViolationModal() {
+            document.getElementById('violation-modal').classList.add('hidden');
+            const doc = document.documentElement;
+            try {
+                if (!document.fullscreenElement && doc.requestFullscreen) {
+                    doc.requestFullscreen().catch(() => {});
+                }
+            } catch (e) {}
+        }
+
         function startTimer() {
             if(timerInterval) clearInterval(timerInterval);
-            
             const updateUI = () => {
                 const m = Math.floor(state.timeLeft / 60);
                 const s = state.timeLeft % 60;
                 document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-                
                 if (state.timeLeft <= 60) {
                     document.getElementById('timer').classList.replace('text-emerald-700', 'text-red-600');
                 }
             };
-
             updateUI();
-
             timerInterval = setInterval(() => {
                 if(state.isFinished) { clearInterval(timerInterval); return; }
-                
                 state.timeLeft--;
                 saveSession();
                 updateUI();
-
                 if (state.timeLeft <= 0) {
                     clearInterval(timerInterval);
                     alert("Waktu habis!");
@@ -346,34 +390,27 @@
             }, 1000);
         }
 
-
-
         function renderQuestion() {
             const q = state.questions[state.currentIdx];
             document.getElementById('q-label').innerText = `Soal ${state.currentIdx + 1}`;
             document.getElementById('q-text').innerText = q.q;
-            
             const prog = ((state.currentIdx + 1) / state.questions.length) * 100;
             document.getElementById('progress-fill').style.width = prog + '%';
-
             const container = document.getElementById('options-container');
             container.innerHTML = '';
-
             q.a.forEach((opt, i) => {
                 const active = state.answers[state.currentIdx] === i ? 'active' : '';
                 container.innerHTML += `
                     <button onclick="pick(${i})" class="opt-btn w-full text-left p-5 bg-white rounded-2xl font-semibold flex items-center gap-4 ${active}">
                         <span class="w-10 h-10 rounded-xl border-2 border-slate-200 flex items-center justify-center text-sm font-black">${String.fromCharCode(65+i)}</span>
-                        <span class="flex-grow">${opt}</span>
+                        <span class="flex-grow">${formatDate(opt)}</span>
                     </button>
                 `;
             });
-
             document.getElementById('btn-prev').disabled = state.currentIdx === 0;
             const isLast = state.currentIdx === state.questions.length - 1;
             document.getElementById('btn-next').classList.toggle('hidden', isLast);
             document.getElementById('btn-finish').classList.toggle('hidden', !isLast);
-            
             const btnDoubt = document.getElementById('btn-doubt');
             btnDoubt.className = state.doubts[state.currentIdx] 
                 ? "flex items-center gap-2 text-[11px] font-bold px-5 py-2 rounded-xl bg-amber-400 text-white border-2 border-amber-400"
@@ -384,7 +421,6 @@
             const grid = document.getElementById('nav-grid');
             grid.innerHTML = '';
             let answeredCount = 0;
-
             state.questions.forEach((_, i) => {
                 let color = 'bg-white text-slate-400 border-2 border-slate-100';
                 if (state.answers[i] !== undefined) {
@@ -393,7 +429,6 @@
                 }
                 if (state.doubts[i]) color = 'bg-amber-400 text-white border-amber-400';
                 if (state.currentIdx === i) color += ' ring-4 ring-emerald-500/20 scale-105';
-
                 grid.innerHTML += `
                     <button onclick="jump(${i})" class="h-10 w-full rounded-lg font-bold text-xs transition-all ${color}">
                         ${i + 1}
@@ -412,27 +447,22 @@
             state.isFinished = true;
             let correct = 0;
             state.questions.forEach((q, i) => { if (state.answers[i] === q.c) correct++; });
-            
             const score = Math.round((correct / state.questions.length) * 100);
             const payload = {
                 nama: state.user.nama,
                 skor: score,
                 pelanggaran: state.violations,
                 durasi: `${Math.floor((CONFIG.DURATION - state.timeLeft)/60)} Menit`,
-                detail: state.answers
+                detail_jawaban: state.answers
             };
-
             const finishBtn = document.getElementById('btn-finish');
             finishBtn.innerHTML = `<i class="fas fa-sync fa-spin"></i> MENGIRIM...`;
             finishBtn.disabled = true;
-
             try {
                 await fetch(CONFIG.API, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-                
                 const usedEmails = JSON.parse(localStorage.getItem('used_emails') || '[]');
                 usedEmails.push(state.user.username);
                 localStorage.setItem('used_emails', JSON.stringify(usedEmails));
-
                 localStorage.removeItem('exam_session');
                 location.reload();
             } catch (e) {
@@ -441,14 +471,11 @@
             }
         }
 
-function tryFinish(event) {
+        function tryFinish(event) {
             if (event) event.preventDefault(); 
-            
             if (confirm("Kirim jawaban sekarang?")) {
-                // Jika tekan OK, kirim jawaban
                 forceSubmit();
             } else {
-                // Jika tekan Batal, kembali ke soal nomor 1 (index 0)
                 jump(0);
             }
             return false;
@@ -464,5 +491,3 @@ function tryFinish(event) {
     </script>
 </body>
 </html>
-
-

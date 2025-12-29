@@ -7,6 +7,8 @@
     <link rel="icon" href="logopn.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    
     <script>
         tailwind.config = {
             theme: {
@@ -26,6 +28,14 @@
         body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
         .glass-card { background: white; border-radius: 24px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; }
         .status-badge { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        /* Animasi tambahan untuk card jika lulus */
+        @keyframes subtle-glow {
+            0% { box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
+            50% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.2); }
+            100% { box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
+        }
+        .lulus-glow { animation: subtle-glow 3s infinite; border-color: #10b981 !important; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -49,7 +59,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             
             <div class="lg:col-span-4 space-y-6">
-                <div class="glass-card p-8 text-center">
+                <div id="main-profile-card" class="glass-card p-8 text-center">
                     <div class="relative w-32 h-32 mx-auto mb-6">
                         <div class="w-full h-full bg-emerald-50 rounded-full flex items-center justify-center border-4 border-white shadow-inner overflow-hidden">
                             <img id="display-foto" src="" alt="Foto" class="w-full h-full object-cover hidden">
@@ -70,9 +80,7 @@
                 </div>
 
                 <div class="glass-card p-4">
-
                     <a href="pembayaran.html" class="flex items-center justify-between w-full bg-white p-4 rounded-xl shadow-sm border border-slate-200 hover:border-primary transition group">
-
                         <span class="text-sm font-semibold"><i class="fas fa-wallet mr-2 text-primary"></i>Konfirmasi Pembayaran</span>
                         <i class="fas fa-external-link-alt text-xs opacity-50 group-hover:opacity-100"></i>
                     </a>
@@ -157,17 +165,39 @@
     </footer>
 
 <script>
+    // FUNGSI ANIMASI PETASAN (Confetti)
+    function rilisPetasan() {
+        var duration = 5 * 1000;
+        var animationEnd = Date.now() + duration;
+        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+        function randomInRange(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        var interval = setInterval(function() {
+            var timeLeft = animationEnd - Date.now();
+
+            if (timeLeft <= 0) {
+                return clearInterval(interval);
+            }
+
+            var particleCount = 50 * (timeLeft / duration);
+            // Kiri
+            confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+            // Kanan
+            confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+        }, 250);
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
-        // 1. Ambil Data Sesi Login dari LocalStorage
         const currentUser = JSON.parse(localStorage.getItem('currentUserProfile'));
         
-        // Proteksi: Jika tidak ada data login, lempar kembali ke login.html
         if (!currentUser) {
             window.location.href = 'login.html';
             return;
         }
 
-        // 2. Mapping Data ke UI (Mendukung Case Sensitive dari Excel)
         document.getElementById('display-nama').textContent = currentUser.nama || currentUser.Nama || "-";
         document.getElementById('display-email').textContent = currentUser.email || currentUser.Email || "-";
         document.getElementById('display-ttl').textContent = currentUser.ttl || currentUser.TTL || "-";
@@ -176,30 +206,27 @@
         document.getElementById('display-angkatan').textContent = currentUser.angkatan || currentUser.Angkatan || "-";
         document.getElementById('display-ujian').textContent = currentUser.ujian || currentUser.Ujian || "-";
 
-        // 3. Logika Tampilan Foto (Sesuai kolom fotoUrl di Excel Anda)
         const imgEl = document.getElementById('display-foto');
         const placeholderEl = document.getElementById('foto-placeholder');
         const fotoUrl = currentUser.fotoUrl || currentUser.fotourl || "";
 
-        // Jika fotoUrl berisi link asli (bukan kata 'default' atau kosong)
         if (fotoUrl && fotoUrl !== "default" && fotoUrl.length > 10) {
             imgEl.src = fotoUrl;
             imgEl.classList.remove('hidden');
             placeholderEl.classList.add('hidden');
         } else {
-            // Jika foto kosong/default, buat avatar otomatis dari Nama
             const namaUser = currentUser.nama || "User";
             imgEl.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(namaUser)}&background=1B7548&color=fff&size=128`;
             imgEl.classList.remove('hidden');
             placeholderEl.classList.add('hidden');
         }
 
-        // 4. Logika Status & Sertifikat (Mengatasi typo 'Panding' di Excel)
         const statusBox = document.getElementById('status-box');
         const statusText = document.getElementById('status-text');
         const certContainer = document.getElementById('sertifikat-container');
         const certPlaceholder = document.getElementById('sertifikat-placeholder');
         const placeholderText = document.getElementById('placeholder-text');
+        const profileCard = document.getElementById('main-profile-card');
 
         const rawStatus = (currentUser.status || "Pending").toLowerCase();
 
@@ -207,7 +234,12 @@
             statusText.textContent = "Kualifikasi ✅";
             statusBox.className = "status-badge py-4 px-2 rounded-2xl border-2 bg-emerald-50 border-emerald-500 text-emerald-700";
             
-            // Cek Link Sertifikat
+            // Tambahkan efek glow pada card profil
+            profileCard.classList.add('lulus-glow');
+
+            // --- JALANKAN EFEK MERIAH ---
+            rilisPetasan();
+
             const sLink = currentUser.sertifikatUrl || currentUser.sertifikaturl;
             if (sLink && sLink.includes('http')) {
                 certContainer.classList.remove('hidden');
@@ -221,44 +253,39 @@
             statusBox.className = "status-badge py-4 px-2 rounded-2xl border-2 bg-red-50 border-red-500 text-red-700";
             placeholderText.textContent = "Mohon maaf, Anda tidak lolos tahap kualifikasi.";
         } else {
-            // Untuk status 'Panding' atau 'Pending'
             statusText.textContent = "Sedang Ditinjau ⏳";
             statusBox.className = "status-badge py-4 px-2 rounded-2xl border-2 bg-yellow-50 border-yellow-500 text-yellow-700";
             placeholderText.textContent = "Berkas Anda sedang dalam pengecekan oleh admin.";
         }
 
-        // 5. Fungsi Logout
         document.getElementById('logout-button').onclick = () => {
             localStorage.removeItem('currentUserProfile');
             window.location.href = 'login.html';
         };
     });
-function bukaMateri() {
-    const currentUser = JSON.parse(localStorage.getItem('currentUserProfile'));
-    if (!currentUser) {
-        window.location.href = 'login.html';
-        return;
-    }
 
-    // Ambil data dari properti 'ujian' atau 'Ujian' atau 'kategori'
-    // Menggunakan .toLowerCase() agar "putih" atau "Putih" tetap terbaca sama
-    const rawTingkatan = currentUser.ujian || currentUser.Ujian || currentUser.kategori || "";
-    const tingkatan = rawTingkatan.trim();
+    function bukaMateri() {
+        const currentUser = JSON.parse(localStorage.getItem('currentUserProfile'));
+        if (!currentUser) {
+            window.location.href = 'login.html';
+            return;
+        }
 
-    if (tingkatan === "Putih") {
-        window.location.href = '/materi/materi_putih.html';
-    } else if (tingkatan === "Kuning") {
-        window.location.href = '/materi/materi_kuning.html';
-    } else if (tingkatan === "Merah") {
-        window.location.href = '/materi/materi_merah.html';
-    } else if (tingkatan === "Biru") {
-        window.location.href = '/materi/materi_biru.html';
-    } else {
-        // Jika masih error, tampilkan isi datanya di alert untuk debug
-        alert("Data tingkatan tidak ditemukan. Isi data: " + tingkatan);
+        const rawTingkatan = currentUser.ujian || currentUser.Ujian || currentUser.kategori || "";
+        const tingkatan = rawTingkatan.trim();
+
+        if (tingkatan === "Putih") {
+            window.location.href = 'materi/materi_putih.html';
+        } else if (tingkatan === "Kuning") {
+            window.location.href = 'materi/materi_kuning.html';
+        } else if (tingkatan === "Merah") {
+            window.location.href = 'materi/materi_merah.html';
+        } else if (tingkatan === "Biru") {
+            window.location.href = 'materi/materi_biru.html';
+        } else {
+            alert("Data tingkatan tidak ditemukan. Isi data: " + tingkatan);
+        }
     }
-}
 </script>
 </body>
 </html>
-

@@ -266,7 +266,7 @@
                 certPlaceholder.classList.add('hidden');
                 document.getElementById('download-sertifikat').href = sLink;
             } else {
-                placeholderText.textContent = "Sertifikat sedang dalam proses digitalisasi.";
+                placeholderText.textContent = "Sertifikat dapat diunduh setelah ujian.";
             }
         } else if (rawStatus.includes('diskualifikasi') || rawStatus.includes('gagal')) {
             statusText.textContent = "Diskualifikasi ❌";
@@ -299,4 +299,5 @@
 </script>
 </body>
 </html>
+
 

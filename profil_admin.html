@@ -298,30 +298,25 @@ document.querySelectorAll('.sidebar-link').forEach(link => {
 // --- CORE: LOAD DATA FROM GOOGLE SHEETS (SHEET: LOGIN) ---
 async function loadExcelData() {
     try {
-        // Tambahkan mode: 'cors' secara eksplisit
-        const response = await fetch(`${SCRIPT_URL}?type=admin&_=${new Date().getTime()}`, {
-            method: 'GET',
-            redirect: 'follow'
-        });
+        // Tambahkan mode cors dan cache breaker
+        const response = await fetch(`${SCRIPT_URL}?type=admin&nocache=${new Date().getTime()}`);
         
-        if (!response.ok) throw new Error('Gagal terhubung ke server.');
+        if (!response.ok) throw new Error('Network response was not ok');
         
         const data = await response.json();
-        
-        // Log untuk pengecekan di console (F12)
-        console.log("Data diterima:", data);
+        console.log("Data dari Server:", data); // Lihat di F12 Console
 
-        if (data.error) {
-            alert("Error dari Script: " + data.error);
-            return;
+        if (Array.isArray(data)) {
+            globalData = data;
+            document.getElementById('db_filename').textContent = "Google Sheets Terhubung";
+            refreshUI();
+        } else {
+            console.error("Data bukan Array:", data);
         }
-
-        globalData = data.filter(row => (row.nama || row.Nama));
-        document.getElementById('db_filename').textContent = "Sheet: login (Live)";
-        refreshUI();
     } catch (err) {
-        console.error("Detail Error:", err);
-        document.getElementById('pesertaBody').innerHTML = `<tr><td colspan="5" class="p-10 text-center text-red-500">Gagal Sinkronisasi: ${err.message}</td></tr>`;
+        console.error("Fetch Error:", err);
+        document.getElementById('pesertaBody').innerHTML = 
+            `<tr><td colspan="5" class="p-10 text-center text-red-500">Gagal Sinkron: ${err.message}</td></tr>`;
     }
 }
 

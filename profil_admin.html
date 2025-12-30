@@ -145,60 +145,92 @@
                 </div>
             </section>
 
-            <section id="statistik" class="hidden animate-fade">
-                <div class="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
-                    <h2 class="text-center font-bold text-slate-700 dark:text-slate-200 mb-6">Persentase Status Kelulusan</h2>
-                    <div class="max-w-xs mx-auto">
-                        <canvas id="chartPeserta"></canvas>
+        <section id="buat_ttd" class="hidden animate-fade">
+            <div class="max-w-xl mx-auto">
+                <div id="main-card-ttd" class="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 animate-fadeInUp">
+                    <div class="text-center mb-8">
+                        <h2 class="text-2xl font-extrabold text-primary mb-1">Tanda Tangan Digital</h2>
+                        <p class="text-xs font-bold text-slate-400 tracking-widest uppercase">PSNU PAGARNUSA UNUSIA</p>
+                        <div class="w-12 h-1 bg-emerald-500 mx-auto mt-4 rounded-full"></div>
                     </div>
-                </div>
-            </section>
 
-            <section id="buat_ttd" class="hidden animate-fade">
-                <div class="max-w-xl mx-auto">
-                    <div id="main-card-ttd" class="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
-                        <div class="text-center mb-8">
-                            <h2 class="text-2xl font-extrabold text-primary mb-1">Tanda Tangan Digital</h2>
-                            <p class="text-xs font-bold text-slate-400 tracking-widest uppercase">PSNU PAGARNUSA UNUSIA</p>
+                    <form id="formData" onsubmit="handleFormSubmit(event)">
+                        <div class="group mb-4">
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-200 mb-2 group-focus-within:text-primary">Nama Lengkap *</label>
+                            <input type="text" id="nama" required placeholder="Masukkan Nama Lengkap"
+                                class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary dark:text-white transition-all">
                         </div>
-                        <form id="formData" onsubmit="handleFormSubmit(event)">
-                            <div class="mb-4">
-                                <label class="block text-sm font-bold text-slate-700 dark:text-slate-200 mb-2">Nama Lengkap *</label>
-                                <input type="text" id="nama" required class="w-full rounded-xl border border-slate-200 dark:bg-slate-700 px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 outline-none">
-                            </div>
-                            <div class="mb-4">
-                                <label class="block text-sm font-bold text-slate-700 dark:text-slate-200 mb-2">Jabatan *</label>
-                                <input type="text" id="jabatan" required class="w-full rounded-xl border border-slate-200 dark:bg-slate-700 px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 outline-none">
-                            </div>
-                            <div class="mb-6">
-                                <label class="block text-sm font-bold text-slate-700 dark:text-slate-200 mb-2">Goreskan Tanda Tangan *</label>
-                                <div class="relative bg-slate-50 dark:bg-slate-900 border-2 border-dashed border-slate-200 dark:border-slate-600 rounded-xl overflow-hidden">
-                                    <canvas id="signature-pad" class="w-full h-40"></canvas>
-                                    <button type="button" onclick="clearSignature()" class="absolute top-2 right-2 bg-red-100 text-red-600 text-[10px] px-2 py-1 rounded-md">Hapus</button>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-4 mb-6">
-                                <div>
-                                    <label class="block text-sm font-bold text-slate-700 dark:text-slate-200 mb-2">Tanggal *</label>
-                                    <input type="date" id="tanggal" required class="w-full rounded-xl border border-slate-200 dark:bg-slate-700 px-4 py-3 text-sm outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold text-slate-700 dark:text-slate-200 mb-2">Pukul *</label>
-                                    <input type="time" id="pukul" required class="w-full rounded-xl border border-slate-200 dark:bg-slate-700 px-4 py-3 text-sm outline-none">
-                                </div>
-                            </div>
-                            <button type="submit" class="w-full bg-primary text-white font-bold py-4 rounded-2xl shadow-lg hover:bg-primaryDark transition-all">Daftar & Buat QR</button>
-                        </form>
-                    </div>
 
-                    <div id="download-section" class="hidden bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-8 border border-slate-200 text-center">
-                        <h2 class="text-xl font-bold text-primary mb-4">QR Tanda Tangan Berhasil!</h2>
-                        <div id="qr-container" class="mb-6 flex justify-center"></div>
-                        <button onclick="downloadQR()" class="w-full bg-primary text-white font-bold py-3 rounded-xl hover:bg-primaryDark transition-all">Unduh QR</button>
-                        <button onclick="location.reload()" class="mt-4 text-xs text-slate-400 underline">Buat Baru</button>
+                        <div class="group mb-4">
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-200 mb-2 group-focus-within:text-primary">Jabatan *</label>
+                            <input type="text" id="jabatan" required placeholder="Contoh: Sekretaris Pelaksana"
+                                class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-4 py-3 text-sm focus:ring-4 focus:ring-primary/10 focus:border-primary dark:text-white transition-all">
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-200 mb-2">Goreskan Tanda Tangan *</label>
+                            
+                            <div id="signature-container" class="relative bg-slate-50 dark:bg-slate-900 border-2 border-dashed border-slate-200 dark:border-slate-600 rounded-xl overflow-hidden">
+                                <canvas id="signature-pad" class="w-full h-40"></canvas>
+                                <button type="button" onclick="clearSignature()" 
+                                    class="absolute top-2 right-2 bg-red-100 text-red-600 text-[10px] px-2 py-1 rounded-md hover:bg-red-200 transition-colors">
+                                    <i class="fas fa-eraser mr-1"></i> Hapus
+                                </button>
+                                <div id="canvas-overlay" class="hidden absolute inset-0 bg-slate-100/50 dark:bg-slate-800/50 flex items-center justify-center backdrop-blur-[1px]">
+                                    <span class="text-xs font-medium italic text-slate-500">ttd sudah diupload</span>
+                                </div>
+                            </div>
+
+                            <div class="relative flex py-4 items-center">
+                                <div class="flex-grow border-t border-slate-200 dark:border-slate-700"></div>
+                                <span class="flex-shrink mx-4 text-slate-400 text-[10px] uppercase font-bold tracking-wider">Atau</span>
+                                <div class="flex-grow border-t border-slate-200 dark:border-slate-700"></div>
+                            </div>
+
+                            <div class="flex flex-col gap-2">
+                                <label class="text-[11px] font-semibold text-slate-500 uppercase">Upload Gambar Tanda Tangan</label>
+                                <input type="file" id="signature-upload" accept="image/*" 
+                                    class="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all cursor-pointer"
+                                    onchange="handleSignatureUpload(this)">
+                            </div>
+
+                            <p class="text-[10px] text-slate-400 mt-2 italic">* Gunakan jari/mouse pada kotak atau upload file gambar</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="group">
+                                <label class="block text-sm font-bold text-slate-700 dark:text-slate-200 mb-2">Tanggal *</label>
+                                <input type="date" id="tanggal" required
+                                    class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-4 py-3 text-sm dark:text-white transition-all">
+                            </div>
+                            <div class="group">
+                                <label class="block text-sm font-bold text-slate-700 dark:text-slate-200 mb-2">Pukul *</label>
+                                <input type="time" id="pukul" required
+                                    class="w-full rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 px-4 py-3 text-sm dark:text-white transition-all">
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-primary hover:bg-primaryDark text-white font-bold py-4 rounded-2xl transition-all transform hover:-translate-y-1 active:scale-95 shadow-lg flex items-center justify-center space-x-3 group">
+                            <span>Daftar & Buat QR</span>
+                            <i class="fas fa-qrcode group-hover:rotate-12 transition-transform"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <div id="download-section" class="hidden bg-white dark:bg-slate-800 rounded-2xl shadow-sm p-8 border border-slate-200 dark:border-slate-700 text-center animate-fadeInUp">
+                    <h2 class="text-xl font-bold text-primary mb-4">QR Tanda Tangan Berhasil Dibuat!</h2>
+                    <div id="qr-container" class="mb-6 flex justify-center"></div>
+                    <p class="text-sm text-slate-500 mb-6 px-4">QR ini memvalidasi identitas digital Anda secara resmi.</p>
+                    <div class="flex flex-col gap-3">
+                        <a id="download-btn" href="javascript:void(0)" onclick="downloadQR()" class="bg-primary text-white font-bold py-3 rounded-xl hover:bg-primaryDark transition-all">
+                            <i class="fas fa-download mr-2"></i> Unduh QR
+                        </a>
+                        <button onclick="window.location.reload()" class="text-sm text-slate-400 hover:text-primary underline">Buat Baru</button>
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
         </main>
     </div>
 
@@ -248,263 +280,266 @@
         © 2025 PAGARNUSA UNUSIA • Hak Cipta Dilindungi
     </footer>
 
-    <script>
-        let globalData = [];
-        let myChart = null;
-        let currentEditIndex = null;
+<script>
+    let globalData = [];
+    let myChart = null;
+    let currentEditIndex = null;
 
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzwb2gN0-XLj1qvHb5YVSM2b8CO_4EUSSQG1g4a5oC9j6WqZp9SRSKzIjb_BKR6AT8-uQ/exec";
+    // PASTIKAN URL INI ADALAH URL DEPLOYMENT TERBARU ANDA
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzANuqANDVmZYYD8v6sEBT5uzWpG5vcHpw5YXgRIllwZ-ZeIrclNTSma3pcg-bVZQ9nvQ/exec";
 
-        const html = document.documentElement;
-        if (localStorage.getItem('theme') === 'dark') html.classList.add('dark');
-        document.getElementById('darkToggle').onclick = () => {
-            html.classList.toggle('dark');
-            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-            if (myChart) renderChart(); 
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'dark') html.classList.add('dark');
+    document.getElementById('darkToggle').onclick = () => {
+        html.classList.toggle('dark');
+        localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        if (myChart) renderChart(); 
+    };
+
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+        link.onclick = () => {
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            document.querySelectorAll('main section').forEach(s => s.classList.add('hidden'));
+            const target = link.dataset.target;
+            document.getElementById(target).classList.remove('hidden');
+            if (target === 'statistik') renderChart();
+            if (target === 'buat_ttd') setTimeout(resizeCanvas, 100);
         };
+    });
 
-        document.querySelectorAll('.sidebar-link').forEach(link => {
-            link.onclick = () => {
-                document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-                link.classList.add('active');
-                document.querySelectorAll('main section').forEach(s => s.classList.add('hidden'));
-                const target = link.dataset.target;
-                document.getElementById(target).classList.remove('hidden');
-                if (target === 'statistik') renderChart();
-                if (target === 'buat_ttd') setTimeout(resizeCanvas, 100);
-            };
+    async function loadExcelData() {
+        try {
+            const response = await fetch(`${SCRIPT_URL}?type=admin&nocache=${new Date().getTime()}`);
+            const data = await response.json();
+            if (Array.isArray(data)) {
+                globalData = data;
+                document.getElementById('db_filename').textContent = "Database Terhubung";
+                refreshUI();
+            }
+        } catch (err) {
+            document.getElementById('pesertaBody').innerHTML = `<tr><td colspan="5" class="p-10 text-center text-red-500 italic">Gagal Sinkron Data.</td></tr>`;
+        }
+    }
+
+    function refreshUI() {
+        searchData();
+        let cPending = 0, cLulus = 0;
+        globalData.forEach(p => {
+            // Apps Script mengirim header kecil: nama, status, email, angkatan, ujian
+            const sRaw = (p.status || "").toString().toLowerCase();
+            if (sRaw.includes('pend')) cPending++;
+            else if (sRaw.includes('kuali') || sRaw.includes('lulus')) cLulus++;
+        });
+        document.getElementById('total').textContent = globalData.length;
+        document.getElementById('panding').textContent = cPending;
+        document.getElementById('lulus').textContent = cLulus;
+    }
+
+    function searchData() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const filterStatus = document.getElementById('filterStatus').value.toLowerCase();
+        const tbody = document.getElementById('pesertaBody');
+        tbody.innerHTML = '';
+
+        const filtered = globalData.filter(p => {
+            const nama = (p.nama || "").toLowerCase();
+            const status = (p.status || "").toLowerCase();
+            return nama.includes(searchTerm) && (filterStatus === "" || status.includes(filterStatus));
         });
 
-        async function loadExcelData() {
-            try {
-                const response = await fetch(`${SCRIPT_URL}?type=admin&nocache=${new Date().getTime()}`);
-                const data = await response.json();
-                if (Array.isArray(data)) {
-                    globalData = data;
-                    document.getElementById('db_filename').textContent = "Database Terhubung";
-                    refreshUI();
-                }
-            } catch (err) {
-                document.getElementById('pesertaBody').innerHTML = `<tr><td colspan="5" class="p-10 text-center text-red-500 italic">Gagal Sinkron Data. Periksa koneksi atau URL Script.</td></tr>`;
-            }
+        if (filtered.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" class="p-10 text-center text-slate-400 italic">Data tidak ditemukan</td></tr>`;
+            return;
         }
 
-        function refreshUI() {
-            searchData();
-            let cPending = 0, cLulus = 0;
-            globalData.forEach(p => {
-                const sRaw = (p.status || p.Status || "Pending").toString().toLowerCase();
-                if (sRaw.includes('pend')) cPending++;
-                else if (sRaw.includes('kuali') || sRaw.includes('lulus')) cLulus++;
+        filtered.forEach((p) => {
+            const sRaw = p.status || "Pending";
+            const sLow = sRaw.toString().toLowerCase();
+            const originalIdx = globalData.indexOf(p);
+
+            tbody.innerHTML += `
+                <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30">
+                    <td class="p-4 font-bold">${p.nama || "-"}</td>
+                    <td class="p-4 text-center text-slate-500">${p.angkatan || "-"}</td>
+                    <td class="p-4 text-center"><span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-md text-[10px] uppercase font-bold text-slate-600 dark:text-slate-300">${p.ujian || "-"}</span></td>
+                    <td class="p-4 text-center"><span class="px-3 py-1 rounded-full text-[9px] font-bold border ${getStatusStyle(sLow)}">${sRaw}</span></td>
+                    <td class="p-4 text-center flex justify-center gap-2">
+                        <button onclick="openEditModal(${originalIdx})" class="bg-primary/10 text-primary px-3 py-1 rounded-md text-xs font-bold hover:bg-primary hover:text-white transition-all">Edit</button>
+                        <button onclick="hapusPeserta(${originalIdx})" class="bg-red-50 text-red-600 px-3 py-1 rounded-md text-xs font-bold hover:bg-red-600 hover:text-white transition-all"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>`;
+        });
+    }
+
+    function getStatusStyle(s) {
+        if (s.includes('pend')) return 'bg-yellow-50 text-yellow-600 border-yellow-200';
+        if (s.includes('kuali') || s.includes('lulus')) return 'bg-emerald-50 text-emerald-600 border-emerald-200';
+        return 'bg-red-50 text-red-600 border-red-200';
+    }
+
+    async function hapusPeserta(idx) {
+        const p = globalData[idx];
+        if (!confirm(`Hapus "${p.nama}"?`)) return;
+
+        try {
+            // Mode 'cors' agar bisa membaca respon sukses jika perlu
+            await fetch(SCRIPT_URL, { 
+                method: "POST", 
+                body: JSON.stringify({ hapusPeserta: true, nama: p.nama }) 
             });
-            document.getElementById('total').textContent = globalData.length;
-            document.getElementById('panding').textContent = cPending;
-            document.getElementById('lulus').textContent = cLulus;
-        }
+            alert("Berhasil dihapus.");
+            loadExcelData();
+        } catch (e) { alert("Gagal menghapus."); }
+    }
 
-        function searchData() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const filterStatus = document.getElementById('filterStatus').value.toLowerCase();
-            const tbody = document.getElementById('pesertaBody');
-            tbody.innerHTML = '';
-
-            const filtered = globalData.filter(p => {
-                const nama = (p.nama || p.Nama || "").toLowerCase();
-                const status = (p.status || p.Status || "").toLowerCase();
-                return nama.includes(searchTerm) && (filterStatus === "" || status.includes(filterStatus));
-            });
-
-            if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-10 text-center text-slate-400 italic">Data tidak ditemukan</td></tr>`;
-                return;
-            }
-
-            filtered.forEach((p) => {
-                const sRaw = p.status || p.Status || "Pending";
-                const sLow = sRaw.toString().toLowerCase();
-                const originalIdx = globalData.indexOf(p);
-
-                tbody.innerHTML += `
-                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30">
-                        <td class="p-4 font-bold">${p.nama || p.Nama}</td>
-                        <td class="p-4 text-center text-slate-500">${p.angkatan || p.Angkatan || "-"}</td>
-                        <td class="p-4 text-center"><span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-md text-[10px] uppercase font-bold text-slate-600 dark:text-slate-300">${p.ujian || p.Ujian || "-"}</span></td>
-                        <td class="p-4 text-center"><span class="px-3 py-1 rounded-full text-[9px] font-bold border ${getStatusStyle(sLow)}">${sRaw}</span></td>
-                        <td class="p-4 text-center flex justify-center gap-2">
-                            <button onclick="openEditModal(${originalIdx})" class="bg-primary/10 text-primary px-3 py-1 rounded-md text-xs font-bold hover:bg-primary hover:text-white transition-all">Edit</button>
-                            <button onclick="hapusPeserta(${originalIdx})" class="bg-red-50 text-red-600 px-3 py-1 rounded-md text-xs font-bold hover:bg-red-600 hover:text-white transition-all"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>`;
-            });
-        }
-
-        function getStatusStyle(s) {
-            if (s.includes('pend')) return 'bg-yellow-50 text-yellow-600 border-yellow-200';
-            if (s.includes('kuali') || s.includes('lulus')) return 'bg-emerald-50 text-emerald-600 border-emerald-200';
-            return 'bg-red-50 text-red-600 border-red-200';
-        }
-
-        async function hapusPeserta(idx) {
-            const p = globalData[idx];
-            if (!confirm(`Apakah Anda yakin ingin menghapus "${p.nama || p.Nama}" dari database selamanya?`)) return;
-
-            const btn = event.currentTarget;
-            btn.innerHTML = '<i class="fas fa-spinner animate-spin"></i>';
-            btn.disabled = true;
-
-            try {
-                await fetch(SCRIPT_URL, { 
-                    method: "POST", 
-                    mode: "no-cors", 
-                    body: JSON.stringify({ 
-                        hapusPeserta: true, 
-                        nama: p.nama || p.Nama 
-                    }) 
-                });
-                alert("Peserta berhasil dihapus.");
-                location.reload();
-            } catch (e) {
-                alert("Gagal menghapus data.");
-                btn.innerHTML = '<i class="fas fa-trash"></i>';
-                btn.disabled = false;
-            }
-        }
-
-        function openTambahModal() { document.getElementById('modalTambah').classList.remove('hidden'); }
-        
-        async function submitTambahPeserta() {
-            const btn = document.getElementById('btnSimpanPeserta');
-            const data = {
-                tambahPeserta: true,
-                nama: document.getElementById('addNama').value,
-                angkatan: document.getElementById('addAngkatan').value,
-                ujian: document.getElementById('addUjian').value,
-                email: document.getElementById('addEmail').value
-            };
-
-            if(!data.nama || !data.email) return alert("Wajib isi Nama dan Email!");
-            
-            btn.innerText = "Memproses..."; btn.disabled = true;
-            try {
-                await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(data) });
-                alert("Peserta berhasil ditambahkan!");
-                location.reload();
-            } catch (e) { alert("Terjadi gangguan koneksi."); btn.disabled = false; btn.innerText = "Simpan"; }
-        }
-
-        function openEditModal(idx) {
-            currentEditIndex = idx;
-            const p = globalData[idx];
-            document.getElementById('editNama').textContent = p.nama || p.Nama;
-            document.getElementById('selectStatus').value = p.status || p.Status || "Pending";
-            document.getElementById('modalEdit').classList.add('modal-active');
-        }
-        function closeModal() { document.getElementById('modalEdit').classList.remove('modal-active'); }
-
-        async function saveStatus() {
-            const btn = document.getElementById('btnSaveStatus');
-            const newVal = document.getElementById('selectStatus').value;
-            const p = globalData[currentEditIndex];
-            
-            btn.innerText = "Menyimpan..."; btn.disabled = true;
-            try {
-                await fetch(SCRIPT_URL, { 
-                    method: "POST", 
-                    mode: "no-cors", 
-                    body: JSON.stringify({ 
-                        updateStatus: true, 
-                        nama: p.nama || p.Nama, 
-                        newStatus: newVal 
-                    }) 
-                });
-                alert(`Status diperbarui ke ${newVal}.`);
-                location.reload();
-            } catch (e) { 
-                alert("Gagal memperbarui status."); 
-                btn.disabled = false; 
-                btn.innerText = "Simpan"; 
-            }
-        }
-
-        function exportToExcel() {
-            const ws = XLSX.utils.json_to_sheet(globalData);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Data_Peserta");
-            XLSX.writeFile(wb, "Data_PagarNusa_Unusia.xlsx");
-        }
-
-        function renderChart() {
-            let l = 0, p = 0, d = 0;
-            globalData.forEach(i => {
-                const s = (i.status || i.Status || "").toString().toLowerCase();
-                if (s.includes('pend')) p++; else if (s.includes('kuali') || s.includes('lulus')) l++; else d++;
-            });
-            const ctx = document.getElementById('chartPeserta').getContext('2d');
-            if (myChart) myChart.destroy();
-            myChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Kualifikasi', 'Pending', 'Diskualifikasi'],
-                    datasets: [{ data: [l, p, d], backgroundColor: ['#1B7548', '#EAB308', '#EF4444'] }]
-                },
-                options: { plugins: { legend: { labels: { color: html.classList.contains('dark') ? '#fff' : '#333' } } } }
-            });
-        }
-
-        const canvas = document.getElementById('signature-pad');
-        const ctx = canvas.getContext('2d');
-        let writingMode = false;
-
-        function resizeCanvas() {
-            const ratio = Math.max(window.devicePixelRatio || 1, 1);
-            const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width * ratio; canvas.height = rect.height * ratio;
-            ctx.scale(ratio, ratio);
-            ctx.lineWidth = 3; ctx.strokeStyle = "#1B7548"; ctx.lineCap = "round";
-        }
-
-        const getCursorPosition = (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            return [clientX - rect.left, clientY - rect.top];
+    function openTambahModal() { document.getElementById('modalTambah').classList.remove('hidden'); }
+    
+    async function submitTambahPeserta() {
+        const btn = document.getElementById('btnSimpanPeserta');
+        const payload = {
+            tambahPeserta: true,
+            nama: document.getElementById('addNama').value,
+            angkatan: document.getElementById('addAngkatan').value,
+            ujian: document.getElementById('addUjian').value,
+            email: document.getElementById('addEmail').value
         };
-        const startDrawing = (e) => { writingMode = true; ctx.beginPath(); const [x,y] = getCursorPosition(e); ctx.moveTo(x,y); };
-        const draw = (e) => { if(!writingMode) return; e.preventDefault(); const [x,y] = getCursorPosition(e); ctx.lineTo(x,y); ctx.stroke(); };
-        const stopDrawing = () => writingMode = false;
 
-        canvas.addEventListener('mousedown', startDrawing); canvas.addEventListener('mousemove', draw); window.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('touchstart', startDrawing, {passive: false}); canvas.addEventListener('touchmove', draw, {passive: false}); canvas.addEventListener('touchend', stopDrawing);
+        if(!payload.nama || !payload.email) return alert("Nama dan Email wajib!");
+        
+        btn.innerText = "Memproses..."; btn.disabled = true;
+        try {
+            await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+            alert("Peserta ditambahkan!");
+            document.getElementById('modalTambah').classList.add('hidden');
+            loadExcelData();
+        } catch (e) { alert("Gagal."); } finally { btn.disabled = false; btn.innerText = "Simpan"; }
+    }
 
-        function clearSignature() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+    function openEditModal(idx) {
+        currentEditIndex = idx;
+        const p = globalData[idx];
+        document.getElementById('editNama').textContent = p.nama;
+        document.getElementById('selectStatus').value = p.status || "Pending";
+        document.getElementById('modalEdit').classList.add('modal-active');
+    }
+    function closeModal() { document.getElementById('modalEdit').classList.remove('modal-active'); }
 
-        async function handleFormSubmit(e) {
-            e.preventDefault();
-            const btn = e.target.querySelector('button[type="submit"]');
-            btn.innerHTML = "Mengirim..."; btn.disabled = true;
-            const data = {
-                nama: document.getElementById('nama').value,
-                jabatan: document.getElementById('jabatan').value,
-                tanggal: document.getElementById('tanggal').value,
-                pukul: document.getElementById('pukul').value,
-                image: canvas.toDataURL("image/png")
-            };
-            try {
-                await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(data) });
+    async function saveStatus() {
+        const btn = document.getElementById('btnSaveStatus');
+        const newVal = document.getElementById('selectStatus').value;
+        const p = globalData[currentEditIndex];
+        
+        btn.innerText = "Menyimpan..."; btn.disabled = true;
+        try {
+            await fetch(SCRIPT_URL, { 
+                method: "POST", 
+                body: JSON.stringify({ updateStatus: true, nama: p.nama, newStatus: newVal }) 
+            });
+            alert("Status diperbarui.");
+            closeModal();
+            loadExcelData();
+        } catch (e) { alert("Gagal."); } finally { btn.disabled = false; btn.innerText = "Simpan"; }
+    }
+
+    // --- FUNGSI TANDA TANGAN (TTD) ---
+    const canvas = document.getElementById('signature-pad');
+    const ctx = canvas.getContext('2d');
+    let writingMode = false;
+
+    function resizeCanvas() {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width * ratio; canvas.height = rect.height * ratio;
+        ctx.scale(ratio, ratio);
+        ctx.lineWidth = 3; ctx.strokeStyle = "#1B7548"; ctx.lineCap = "round";
+    }
+
+    const getCursorPosition = (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return [clientX - rect.left, clientY - rect.top];
+    };
+    const startDrawing = (e) => { writingMode = true; ctx.beginPath(); const [x,y] = getCursorPosition(e); ctx.moveTo(x,y); };
+    const draw = (e) => { if(!writingMode) return; e.preventDefault(); const [x,y] = getCursorPosition(e); ctx.lineTo(x,y); ctx.stroke(); };
+    const stopDrawing = () => writingMode = false;
+
+    canvas.addEventListener('mousedown', startDrawing); canvas.addEventListener('mousemove', draw); window.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('touchstart', startDrawing, {passive: false}); canvas.addEventListener('touchmove', draw, {passive: false}); canvas.addEventListener('touchend', stopDrawing);
+
+    function clearSignature() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+
+    async function handleFormSubmit(e) {
+        e.preventDefault();
+        const btn = e.target.querySelector('button[type="submit"]');
+        
+        // Cek apakah canvas kosong
+        const blank = document.createElement('canvas');
+        blank.width = canvas.width; blank.height = canvas.height;
+        if (canvas.toDataURL() === blank.toDataURL()) return alert("Tanda tangan belum diisi!");
+
+        btn.innerHTML = "Mengirim..."; btn.disabled = true;
+        const payload = {
+            nama: document.getElementById('nama').value,
+            jabatan: document.getElementById('jabatan').value,
+            tanggal: document.getElementById('tanggal').value,
+            pukul: document.getElementById('pukul').value,
+            image: canvas.toDataURL("image/png")
+        };
+
+        try {
+            // Kita butuh ID dari respon untuk QR Code, maka jangan gunakan no-cors jika memungkinkan
+            // atau arahkan ke link verifikasi ID
+            const response = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+            const result = await response.json();
+            
+            if(result.status === "success" || result.id) {
+                const qrVal = `https://uktpagarnusa.my.id/ttd.html?id=${result.id}`;
+                const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(qrVal)}&size=400`;
+                
                 document.getElementById('main-card-ttd').classList.add('hidden');
                 document.getElementById('download-section').classList.remove('hidden');
-                const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent('VERIFIKASI_TTD_'+data.nama)}&size=400`;
                 document.getElementById('qr-container').innerHTML = `<img src="${qrUrl}" class="w-48 mx-auto shadow-md rounded-lg">`;
-            } catch (err) { alert("Terjadi kesalahan sistem."); }
-            finally { btn.disabled = false; btn.innerHTML = "Daftar & Buat QR"; }
-        }
+            }
+        } catch (err) { 
+            alert("Data tersimpan (Cek Spreadsheet). Jika QR tidak muncul, refresh halaman."); 
+        } finally { btn.disabled = false; btn.innerHTML = "Daftar & Buat QR"; }
+    }
 
-        function downloadQR() {
-            const qrImg = document.querySelector('#qr-container img');
-            const a = document.createElement('a'); a.href = qrImg.src; a.download = `QR_Signature_PN.png`; a.click();
-        }
+    function downloadQR() {
+        const qrImg = document.querySelector('#qr-container img');
+        const a = document.createElement('a'); a.href = qrImg.src; a.download = `QR_Signature_${document.getElementById('nama').value}.png`; a.click();
+    }
 
-        window.onload = loadExcelData;
-    </script>
+    function exportToExcel() {
+        const ws = XLSX.utils.json_to_sheet(globalData);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Data_Peserta");
+        XLSX.writeFile(wb, "Data_PagarNusa_Unusia.xlsx");
+    }
+
+    function renderChart() {
+        let l = 0, p = 0, d = 0;
+        globalData.forEach(i => {
+            const s = (i.status || "").toString().toLowerCase();
+            if (s.includes('pend')) p++; 
+            else if (s.includes('kuali') || s.includes('lulus')) l++; 
+            else d++;
+        });
+        const ctxChart = document.getElementById('chartPeserta').getContext('2d');
+        if (myChart) myChart.destroy();
+        myChart = new Chart(ctxChart, {
+            type: 'doughnut',
+            data: {
+                labels: ['Kualifikasi', 'Pending', 'Diskualifikasi'],
+                datasets: [{ data: [l, p, d], backgroundColor: ['#1B7548', '#EAB308', '#EF4444'] }]
+            },
+            options: { plugins: { legend: { labels: { color: html.classList.contains('dark') ? '#fff' : '#333' } } } }
+        });
+    }
+
+    window.onload = loadExcelData;
+</script>
 </body>
 </html>

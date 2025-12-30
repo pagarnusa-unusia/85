@@ -253,10 +253,8 @@
         let myChart = null;
         let currentEditIndex = null;
 
-        // URL Web App hasil deploy App Script
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby1kF8k3uY2_YF1SR7KYeoOxjfPh4zOK0vl6w5aKfYctQmnmUQkt1jTIIqGYkRh1XDNeQ/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzwb2gN0-XLj1qvHb5YVSM2b8CO_4EUSSQG1g4a5oC9j6WqZp9SRSKzIjb_BKR6AT8-uQ/exec";
 
-        // Dark Mode Controller
         const html = document.documentElement;
         if (localStorage.getItem('theme') === 'dark') html.classList.add('dark');
         document.getElementById('darkToggle').onclick = () => {
@@ -265,7 +263,6 @@
             if (myChart) renderChart(); 
         };
 
-        // Navigation System
         document.querySelectorAll('.sidebar-link').forEach(link => {
             link.onclick = () => {
                 document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
@@ -278,7 +275,6 @@
             };
         });
 
-        // Data Loader
         async function loadExcelData() {
             try {
                 const response = await fetch(`${SCRIPT_URL}?type=admin&nocache=${new Date().getTime()}`);
@@ -334,7 +330,10 @@
                         <td class="p-4 text-center text-slate-500">${p.angkatan || p.Angkatan || "-"}</td>
                         <td class="p-4 text-center"><span class="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-md text-[10px] uppercase font-bold text-slate-600 dark:text-slate-300">${p.ujian || p.Ujian || "-"}</span></td>
                         <td class="p-4 text-center"><span class="px-3 py-1 rounded-full text-[9px] font-bold border ${getStatusStyle(sLow)}">${sRaw}</span></td>
-                        <td class="p-4 text-center"><button onclick="openEditModal(${originalIdx})" class="bg-primary/10 text-primary px-3 py-1 rounded-md text-xs font-bold hover:bg-primary hover:text-white transition-all">Edit</button></td>
+                        <td class="p-4 text-center flex justify-center gap-2">
+                            <button onclick="openEditModal(${originalIdx})" class="bg-primary/10 text-primary px-3 py-1 rounded-md text-xs font-bold hover:bg-primary hover:text-white transition-all">Edit</button>
+                            <button onclick="hapusPeserta(${originalIdx})" class="bg-red-50 text-red-600 px-3 py-1 rounded-md text-xs font-bold hover:bg-red-600 hover:text-white transition-all"><i class="fas fa-trash"></i></button>
+                        </td>
                     </tr>`;
             });
         }
@@ -343,6 +342,32 @@
             if (s.includes('pend')) return 'bg-yellow-50 text-yellow-600 border-yellow-200';
             if (s.includes('kuali') || s.includes('lulus')) return 'bg-emerald-50 text-emerald-600 border-emerald-200';
             return 'bg-red-50 text-red-600 border-red-200';
+        }
+
+        async function hapusPeserta(idx) {
+            const p = globalData[idx];
+            if (!confirm(`Apakah Anda yakin ingin menghapus "${p.nama || p.Nama}" dari database selamanya?`)) return;
+
+            const btn = event.currentTarget;
+            btn.innerHTML = '<i class="fas fa-spinner animate-spin"></i>';
+            btn.disabled = true;
+
+            try {
+                await fetch(SCRIPT_URL, { 
+                    method: "POST", 
+                    mode: "no-cors", 
+                    body: JSON.stringify({ 
+                        hapusPeserta: true, 
+                        nama: p.nama || p.Nama 
+                    }) 
+                });
+                alert("Peserta berhasil dihapus.");
+                location.reload();
+            } catch (e) {
+                alert("Gagal menghapus data.");
+                btn.innerHTML = '<i class="fas fa-trash"></i>';
+                btn.disabled = false;
+            }
         }
 
         function openTambahModal() { document.getElementById('modalTambah').classList.remove('hidden'); }
@@ -362,7 +387,7 @@
             btn.innerText = "Memproses..."; btn.disabled = true;
             try {
                 await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(data) });
-                alert("Peserta berhasil ditambahkan ke database!");
+                alert("Peserta berhasil ditambahkan!");
                 location.reload();
             } catch (e) { alert("Terjadi gangguan koneksi."); btn.disabled = false; btn.innerText = "Simpan"; }
         }
@@ -392,10 +417,10 @@
                         newStatus: newVal 
                     }) 
                 });
-                alert(`Status ${p.nama || p.Nama} diperbarui ke ${newVal}. Email akan terkirim jika Kualifikasi.`);
+                alert(`Status diperbarui ke ${newVal}.`);
                 location.reload();
             } catch (e) { 
-                alert("Gagal memperbarui status. Silakan coba lagi."); 
+                alert("Gagal memperbarui status."); 
                 btn.disabled = false; 
                 btn.innerText = "Simpan"; 
             }
@@ -426,7 +451,6 @@
             });
         }
 
-        // Signature Pad Core
         const canvas = document.getElementById('signature-pad');
         const ctx = canvas.getContext('2d');
         let writingMode = false;

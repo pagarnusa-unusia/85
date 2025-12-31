@@ -221,7 +221,7 @@
     const closedSection = document.getElementById('closed-section');
     
     // URL Apps Script
-    const formActionURL = "https://script.google.com/macros/s/AKfycbyTVXlmbcWIU2oEfoDLFRgzD9qUyBIduxUAJ8EEgKiXJvb_8dQYDFH2IoPmGfZwUlWayA/exec";
+    const formActionURL = "https://script.google.com/macros/s/AKfycbysIrp1df99QqoEYHhXEuiQOkJ2CCAwVqTRJU6xCk1Qj1nBOns3oyQHc7ddUyZwQM7V-w/exec";
 
     function checkDeadline() {
         const deadline = new Date('2025-12-31T23:59:59').getTime();
@@ -260,9 +260,9 @@
             tambahPeserta: true,
             nama: formData.get('nama'),
             email: formData.get('email'),
-            ttl: formData.get('ttl'),
-            alamat: formData.get('alamat'),
-            whatsapp: formData.get('whatsapp'),
+            ttl: formData.get('ttl'), // Akan masuk ke 'tempat, tanggal lahir'
+            alamat: formData.get('alamat'), // Akan masuk ke 'alamat lengkap'
+            whatsapp: formData.get('whatsapp'), // Akan masuk ke 'no. whatsapp'
             angkatan: formData.get('angkatan'),
             ujian: formData.get('ujian'),
             sertifikaturl: formData.get('link_sertifikat')
@@ -321,3 +321,4 @@
 </script>
 </body>
 </html>
+

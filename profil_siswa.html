@@ -65,7 +65,7 @@
                 <div id="main-profile-card" class="glass-card p-8 text-center">
                     <div class="relative w-32 h-32 mx-auto mb-6">
                         <div class="w-full h-full bg-emerald-50 rounded-full flex items-center justify-center border-4 border-white shadow-inner overflow-hidden">
-                            <img id="display-foto" src="" alt="Foto" class="w-full h-full object-cover hidden">
+                            <img id="display-foto" src="" alt="Foto" class="w-full h-full object-cover hidden" onerror="this.src='https://ui-avatars.com/api/?name=User&background=1B7548&color=fff'">
                             <i id="foto-placeholder" class="fas fa-user-circle text-6xl text-emerald-200"></i>
                         </div>
                         <div class="absolute bottom-1 right-1 w-8 h-8 bg-primary rounded-full border-4 border-white flex items-center justify-center">
@@ -186,7 +186,7 @@
     document.addEventListener('DOMContentLoaded', async () => {
         const currentUser = JSON.parse(localStorage.getItem('currentUserProfile'));
         if (!currentUser) {
-            window.location.href = 'login.html';
+            window.location.href = 'login.html'; 
             return;
         }
 
@@ -196,28 +196,34 @@
         document.getElementById('logout-button').onclick = () => {
             localStorage.removeItem('currentUserProfile');
             sessionStorage.removeItem('swalShown');
-            window.location.href = 'login.html';
+            window.location.href = 'login.html'; 
         };
     });
 
-    async function syncDataFromSpreadsheet(userSession) {
-        try {
-            const resp = await fetch(`${SCRIPT_URL}?type=admin`);
-            const allData = await resp.json();
-            
-            const updatedUser = allData.find(u => 
-                (u.email || "").toLowerCase().trim() === (userSession.email || "").toLowerCase().trim()
-            );
+async function syncDataFromSpreadsheet(userSession) {
+    try {
+        const resp = await fetch(`${SCRIPT_URL}?type=admin`, {
+            method: 'GET',
+            mode: 'cors' 
+        });
+        
+        if (!resp.ok) throw new Error("Respon server tidak ok");
+        
+        const allData = await resp.json();
+        
+        const updatedUser = allData.find(u => 
+            (u.email || "").toLowerCase().trim() === (userSession.email || "").toLowerCase().trim()
+        );
 
-            if (updatedUser) {
-                localStorage.setItem('currentUserProfile', JSON.stringify(updatedUser));
-                renderUI(updatedUser);
-            }
-        } catch (e) {
-            console.error("Sinkronisasi Gagal:", e);
+        if (updatedUser) {
+            localStorage.setItem('currentUserProfile', JSON.stringify(updatedUser));
+            renderUI(updatedUser);
         }
+    } catch (e) {
+        console.error("Sinkronisasi Gagal. Penyebab kemungkinan: CORS atau URL salah.", e);
+        renderUI(userSession); 
     }
-
+}
     function renderUI(data) {
         // 1. Mapping Biodata
         document.getElementById('display-nama').textContent = data.nama || "-";
@@ -254,8 +260,26 @@
         certContainer.classList.add('hidden');
         certPlaceholder.classList.remove('hidden');
 
-        // 3. LOGIKA STATUS & POPUP MULTI-KONDISI
-        if (currentStatus.includes("kualifikasi") || currentStatus.includes("lulus")) {
+// 3. LOGIKA STATUS & POPUP MULTI-KONDISI
+        // CEK DISKUALIFIKASI TERLEBIH DAHULU agar tidak tertukar dengan kata "kualifikasi"
+        if (currentStatus.includes("diskualifikasi") || currentStatus.includes("gagal") || currentStatus.includes("tidak lulus")) {
+            statusText.textContent = "Diskualifikasi ❌";
+            statusBox.className = "status-badge py-4 px-2 rounded-2xl border-2 bg-red-50 border-red-500 text-red-700";
+            document.getElementById('placeholder-text').textContent = "Mohon maaf, Anda dinyatakan tidak lulus kualifikasi.";
+
+            if (!sessionStorage.getItem('swalShown')) {
+                Swal.fire({
+                    title: 'MOHON MAAF',
+                    text: 'Anda dinyatakan tidak memenuhi Kualifikasi Ujian Kenaikan Tingkat IV. Tetap semangat dan coba lagi di kesempatan berikutnya.',
+                    icon: 'error',
+                    confirmButtonColor: '#ef4444',
+                    confirmButtonText: 'Siap, Terima Kasih'
+                });
+                sessionStorage.setItem('swalShown', 'true');
+            }
+        } 
+        // BARU CEK KUALIFIKASI / LULUS
+        else if (currentStatus.includes("kualifikasi") || currentStatus.includes("lulus")) {
             statusText.textContent = "Kualifikasi ✅";
             statusBox.className = "status-badge py-4 px-2 rounded-2xl border-2 bg-emerald-50 border-emerald-500 text-emerald-700";
             profileCard.classList.add('lulus-glow');
@@ -269,22 +293,6 @@
                     confirmButtonText: 'Alhamdulillah'
                 });
                 rilisPetasanMeriah();
-                sessionStorage.setItem('swalShown', 'true');
-            }
-        } 
-        else if (currentStatus.includes("diskualifikasi") || currentStatus.includes("gagal")) {
-            statusText.textContent = "Diskualifikasi ❌";
-            statusBox.className = "status-badge py-4 px-2 rounded-2xl border-2 bg-red-50 border-red-500 text-red-700";
-            document.getElementById('placeholder-text').textContent = "Mohon maaf, Anda dinyatakan tidak lulus kualifikasi.";
-
-            if (!sessionStorage.getItem('swalShown')) {
-                Swal.fire({
-                    title: 'MOHON MAAF',
-                    text: 'Anda dinyatakan tidak memenuhi Kualifikasi Ujian Kenaikan Tingkat IV. Tetap semangat dan coba lagi di kesempatan berikutnya.',
-                    icon: 'error',
-                    confirmButtonColor: '#ef4444',
-                    confirmButtonText: 'Siap, Terima Kasih'
-                });
                 sessionStorage.setItem('swalShown', 'true');
             }
         } 

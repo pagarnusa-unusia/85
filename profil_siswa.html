@@ -171,7 +171,6 @@
     // URL Web App dari Apps Script Anda
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwZAuWq2BLMx5N84EYxGZ6UDPB3EglstTdz1r-wka1ibqSH2ZTipgRdlbqoXXPYW6y-UA/exec";
 
-    // Fungsi untuk efek kembang api/confetti
     function rilisPetasanMeriah() {
         const duration = 5 * 1000;
         const animationEnd = Date.now() + duration;
@@ -184,7 +183,6 @@
         }());
     }
 
-    // Inisialisasi saat halaman dimuat
     document.addEventListener('DOMContentLoaded', async () => {
         const currentUser = JSON.parse(localStorage.getItem('currentUserProfile'));
         if (!currentUser) {
@@ -192,13 +190,9 @@
             return;
         }
 
-        // Tampilkan data awal dari cache agar tidak blank (user experience lebih halus)
         renderUI(currentUser);
-
-        // Ambil data terbaru secara background dari Google Sheets
         await syncDataFromSpreadsheet(currentUser);
 
-        // Logika Logout
         document.getElementById('logout-button').onclick = () => {
             localStorage.removeItem('currentUserProfile');
             sessionStorage.removeItem('swalShown');
@@ -206,7 +200,6 @@
         };
     });
 
-    // Fungsi sinkronisasi data terbaru
     async function syncDataFromSpreadsheet(userSession) {
         try {
             const resp = await fetch(`${SCRIPT_URL}?type=admin`);
@@ -225,7 +218,6 @@
         }
     }
 
-    // Fungsi utama untuk menampilkan data ke elemen HTML (UI)
     function renderUI(data) {
         // 1. Mapping Biodata
         document.getElementById('display-nama').textContent = data.nama || "-";
@@ -249,7 +241,6 @@
             placeholderEl.classList.add('hidden');
         }
 
-        // 3. Target elemen status dan sertifikat
         const statusBox = document.getElementById('status-box');
         const statusText = document.getElementById('status-text');
         const profileCard = document.getElementById('main-profile-card');
@@ -258,18 +249,17 @@
         
         const currentStatus = (data.status || "Pending").toLowerCase();
 
-        // RESET STATE (Penting agar transisi UI terlihat bersih saat data diupdate)
+        // RESET STATE
         profileCard.classList.remove('lulus-glow');
         certContainer.classList.add('hidden');
         certPlaceholder.classList.remove('hidden');
 
-        // 4. LOGIKA STATUS & POP UP
-        if (currentStatus.includes("kualifikasi")) {
+        // 3. LOGIKA STATUS & POPUP MULTI-KONDISI
+        if (currentStatus.includes("kualifikasi") || currentStatus.includes("lulus")) {
             statusText.textContent = "Kualifikasi ✅";
             statusBox.className = "status-badge py-4 px-2 rounded-2xl border-2 bg-emerald-50 border-emerald-500 text-emerald-700";
             profileCard.classList.add('lulus-glow');
 
-            // POP UP KHUSUS KUALIFIKASI (Hanya muncul 1x per sesi)
             if (!sessionStorage.getItem('swalShown')) {
                 Swal.fire({
                     title: 'SELAMAT!',
@@ -281,20 +271,41 @@
                 rilisPetasanMeriah();
                 sessionStorage.setItem('swalShown', 'true');
             }
-        } else if (currentStatus.includes("lulus")) {
-            statusText.textContent = "Lulus ✅";
-            statusBox.className = "status-badge py-4 px-2 rounded-2xl border-2 bg-emerald-50 border-emerald-500 text-emerald-700";
-            profileCard.classList.add('lulus-glow');
-        } else if (currentStatus.includes("diskualifikasi") || currentStatus.includes("gagal")) {
+        } 
+        else if (currentStatus.includes("diskualifikasi") || currentStatus.includes("gagal")) {
             statusText.textContent = "Diskualifikasi ❌";
             statusBox.className = "status-badge py-4 px-2 rounded-2xl border-2 bg-red-50 border-red-500 text-red-700";
             document.getElementById('placeholder-text').textContent = "Mohon maaf, Anda dinyatakan tidak lulus kualifikasi.";
-        } else {
+
+            if (!sessionStorage.getItem('swalShown')) {
+                Swal.fire({
+                    title: 'MOHON MAAF',
+                    text: 'Anda dinyatakan tidak memenuhi Kualifikasi Ujian Kenaikan Tingkat IV. Tetap semangat dan coba lagi di kesempatan berikutnya.',
+                    icon: 'error',
+                    confirmButtonColor: '#ef4444',
+                    confirmButtonText: 'Siap, Terima Kasih'
+                });
+                sessionStorage.setItem('swalShown', 'true');
+            }
+        } 
+        else {
+            // Default: Pending / Sedang Ditinjau
             statusText.textContent = "Sedang Ditinjau ⏳";
             statusBox.className = "status-badge py-4 px-2 rounded-2xl border-2 bg-yellow-50 border-yellow-500 text-yellow-700";
+
+            if (!sessionStorage.getItem('swalShown')) {
+                Swal.fire({
+                    title: 'DALAM PROSES',
+                    text: 'Data Anda sedang dalam tahap peninjauan oleh tim admin. Silakan cek berkala secara mandiri.',
+                    icon: 'info',
+                    confirmButtonColor: '#eab308',
+                    confirmButtonText: 'Baik, Saya Mengerti'
+                });
+                sessionStorage.setItem('swalShown', 'true');
+            }
         }
 
-        // 5. Logic Akses Sertifikat (Terbuka jika Kualifikasi atau Lulus)
+        // 4. Logic Akses Sertifikat
         if ((currentStatus.includes("kualifikasi") || currentStatus.includes("lulus")) && data.sertifikaturl && data.sertifikaturl.includes("http")) {
             certContainer.classList.remove('hidden');
             certPlaceholder.classList.add('hidden');
@@ -302,7 +313,6 @@
         }
     }
 
-    // Fungsi Navigasi Materi
     function bukaMateri() {
         const user = JSON.parse(localStorage.getItem('currentUserProfile'));
         const tingkatan = (user.ujian || "").trim();

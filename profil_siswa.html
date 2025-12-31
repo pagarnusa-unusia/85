@@ -37,7 +37,6 @@
         }
         .lulus-glow { animation: subtle-glow 3s infinite; border: 2px solid #1B7548 !important; }
 
-        /* Custom SweetAlert Style */
         .swal2-popup { border-radius: 32px !important; padding: 2rem !important; }
         .swal2-title { color: #1B7548 !important; font-weight: 800 !important; }
     </style>
@@ -140,7 +139,7 @@
                         <i class="fas fa-certificate text-slate-200 text-2xl"></i>
                     </div>
 
-                    <div id="sertifikat-container" class="hidden animate-pulse">
+                    <div id="sertifikat-container" class="hidden">
                         <div class="flex flex-col md:flex-row items-center gap-8 bg-slate-50 p-6 rounded-3xl border border-slate-100">
                             <div class="w-20 h-20 bg-white rounded-2xl flex items-center justify-center shadow-sm">
                                 <i class="fas fa-file-pdf text-4xl text-red-500"></i>
@@ -169,135 +168,162 @@
     </footer>
 
 <script>
-    // FUNGSI ANIMASI PETASAN (Confetti) - Slow Motion Version
+    // 1. KONFIGURASI
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwZAuWq2BLMx5N84EYxGZ6UDPB3EglstTdz1r-wka1ibqSH2ZTipgRdlbqoXXPYW6y-UA/exec";
+
+    // 2. FUNGSI ANIMASI (CONFETTI)
     function rilisPetasanMeriah() {
         const duration = 5 * 1000;
         const animationEnd = Date.now() + duration;
         const colors = ['#1B7548', '#FFD700', '#ffffff', '#22c55e'];
 
         (function frame() {
-            confetti({
-                particleCount: 2,
-                angle: 60,
-                spread: 55,
-                origin: { x: 0, y: 0.6 },
-                colors: colors,
-                ticks: 300 // Membuat jatuh lebih lambat
-            });
-            confetti({
-                particleCount: 2,
-                angle: 120,
-                spread: 55,
-                origin: { x: 1, y: 0.6 },
-                colors: colors,
-                ticks: 300
-            });
-
-            if (Date.now() < animationEnd) {
-                requestAnimationFrame(frame);
-            }
+            confetti({ particleCount: 2, angle: 60, spread: 55, origin: { x: 0, y: 0.6 }, colors: colors, ticks: 300 });
+            confetti({ particleCount: 2, angle: 120, spread: 55, origin: { x: 1, y: 0.6 }, colors: colors, ticks: 300 });
+            if (Date.now() < animationEnd) { requestAnimationFrame(frame); }
         }());
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const currentUser = JSON.parse(localStorage.getItem('currentUserProfile'));
+    // 3. LOGIKA UTAMA SAAT HALAMAN DIBUKA
+    document.addEventListener('DOMContentLoaded', async () => {
+        let currentUser = JSON.parse(localStorage.getItem('currentUserProfile'));
         
+        // Proteksi Halaman
         if (!currentUser) {
             window.location.href = 'login.html';
             return;
         }
 
-        // Data Mapping
-        document.getElementById('display-nama').textContent = currentUser.nama || currentUser.Nama || "-";
-        document.getElementById('display-email').textContent = currentUser.email || currentUser.Email || "-";
-        document.getElementById('display-ttl').textContent = currentUser.ttl || currentUser.TTL || "-";
-        document.getElementById('display-alamat').textContent = currentUser.alamat || currentUser.Alamat || "-";
-        document.getElementById('display-whatsapp').textContent = currentUser.whatsapp || currentUser.Whatsapp || "-";
-        document.getElementById('display-angkatan').textContent = currentUser.angkatan || currentUser.Angkatan || "-";
-        document.getElementById('display-ujian').textContent = currentUser.ujian || currentUser.Ujian || "-";
+        // Langkah A: Tampilkan data lokal dulu (biar cepat/tidak blank)
+        renderUI(currentUser);
 
+        // Langkah B: Ambil data terbaru dari Spreadsheet (Sync)
+        await syncData(currentUser);
+
+        // Event Logout
+        document.getElementById('logout-button').onclick = () => {
+            localStorage.removeItem('currentUserProfile');
+            sessionStorage.removeItem('swalShown');
+            window.location.href = 'login.html';
+        };
+    });
+
+    // 4. FUNGSI SINKRONISASI (Solusi agar status berubah otomatis)
+    async function syncData(userSession) {
+        try {
+            // Tambahkan parameter timestamp agar data selalu fresh (anti-cache)
+            const resp = await fetch(`${SCRIPT_URL}?type=login&_=${new Date().getTime()}`);
+            const allData = await resp.json();
+            
+            // Cari data terbaru berdasarkan Nama atau Username (sesuaikan dengan key di sheet login)
+            // Menggunakan Nama sebagai identifier unik jika username tidak tersedia
+            const updatedUser = allData.find(u => 
+                (u.nama || "").toLowerCase().trim() === (userSession.nama || "").toLowerCase().trim()
+            );
+
+            if (updatedUser) {
+                console.log("Sync Success: Data diperbarui dari server");
+                localStorage.setItem('currentUserProfile', JSON.stringify(updatedUser));
+                renderUI(updatedUser); // Update tampilan dengan data baru
+            }
+        } catch (e) {
+            console.error("Sync Error:", e);
+        }
+    }
+
+    // 5. FUNGSI RENDER TAMPILAN
+    function renderUI(data) {
+        // Mapping elemen dasar
+        document.getElementById('display-nama').textContent = data.nama || "-";
+        document.getElementById('display-email').textContent = data.email || "-";
+        document.getElementById('display-angkatan').textContent = data.angkatan || "-";
+        document.getElementById('display-ujian').textContent = data.ujian || "-";
+        
+        // Mapping kolom dengan nama spesifik (Pastikan sesuai header di Sheet login)
+        document.getElementById('display-ttl').textContent = data["tempat, tanggal lahir"] || "-";
+        document.getElementById('display-alamat').textContent = data["alamat lengkap"] || "-";
+        document.getElementById('display-whatsapp').textContent = data["no. whatsapp"] || "-";
+
+        // Logic Foto Profil
         const imgEl = document.getElementById('display-foto');
         const placeholderEl = document.getElementById('foto-placeholder');
-        const fotoUrl = currentUser.fotoUrl || currentUser.fotourl || "";
+        const fotoUrl = data.fotourl || "";
 
-        if (fotoUrl && fotoUrl !== "default" && fotoUrl.length > 10) {
+        if (fotoUrl.length > 10) {
             imgEl.src = fotoUrl;
             imgEl.classList.remove('hidden');
             placeholderEl.classList.add('hidden');
         } else {
-            const namaUser = currentUser.nama || "User";
-            imgEl.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(namaUser)}&background=1B7548&color=fff&size=128`;
+            imgEl.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(data.nama)}&background=1B7548&color=fff&size=128`;
             imgEl.classList.remove('hidden');
             placeholderEl.classList.add('hidden');
         }
 
+        // Logic Status & Kelulusan
         const statusBox = document.getElementById('status-box');
         const statusText = document.getElementById('status-text');
         const profileCard = document.getElementById('main-profile-card');
         const certContainer = document.getElementById('sertifikat-container');
         const certPlaceholder = document.getElementById('sertifikat-placeholder');
-        const placeholderText = document.getElementById('placeholder-text');
+        
+        const currentStatus = (data.status || "Pending").toLowerCase();
 
-        const rawStatus = (currentUser.status || "Pending").toLowerCase();
-
-        // LOGIKA STATUS KUALIFIKASI / LULUS
-        if (rawStatus.includes('kualifikasi') || rawStatus.includes('lulus')) {
+        if (currentStatus.includes("kualifikasi") || currentStatus.includes("lulus")) {
             statusText.textContent = "Kualifikasi ✅";
             statusBox.className = "status-badge py-4 px-2 rounded-2xl border-2 bg-emerald-50 border-emerald-500 text-emerald-700";
             profileCard.classList.add('lulus-glow');
 
-            // --- POP UP VERSI FINAL ---
-            Swal.fire({
-                title: 'SELAMAT!',
-                html: 'Selamat anda memenuhi <br><b>Kualifikasi Ujian Kenaikan Tingkat IV</b>',
-                icon: 'success',
-                iconColor: '#1B7548',
-                confirmButtonText: 'Alhamdulillah',
-                confirmButtonColor: '#1B7548',
-                showClass: { popup: 'animate__animated animate__fadeInDown' },
-                hideClass: { popup: 'animate__animated animate__fadeOutUp' }
-            });
+            // Munculkan Pop-up hanya 1x per sesi
+            if (!sessionStorage.getItem('swalShown')) {
+                Swal.fire({
+                    title: 'SELAMAT!',
+                    html: 'Selamat anda memenuhi <br><b>Kualifikasi Ujian Kenaikan Tingkat IV</b>',
+                    icon: 'success',
+                    iconColor: '#1B7548',
+                    confirmButtonColor: '#1B7548'
+                });
+                rilisPetasanMeriah();
+                sessionStorage.setItem('swalShown', 'true');
+            }
 
-            rilisPetasanMeriah();
-
-            const sLink = currentUser.sertifikatUrl || currentUser.sertifikaturl;
-            if (sLink && sLink.includes('http')) {
+            // Tampilkan Link Sertifikat
+            if (data.sertifikaturl && data.sertifikaturl.includes("http")) {
                 certContainer.classList.remove('hidden');
                 certPlaceholder.classList.add('hidden');
-                document.getElementById('download-sertifikat').href = sLink;
-            } else {
-                placeholderText.textContent = "Sertifikat dapat diunduh setelah ujian.";
+                document.getElementById('download-sertifikat').href = data.sertifikaturl;
             }
-        } else if (rawStatus.includes('diskualifikasi') || rawStatus.includes('gagal')) {
+        } else if (currentStatus.includes("diskualifikasi") || currentStatus.includes("gagal")) {
             statusText.textContent = "Diskualifikasi ❌";
             statusBox.className = "status-badge py-4 px-2 rounded-2xl border-2 bg-red-50 border-red-500 text-red-700";
-            placeholderText.textContent = "Mohon maaf, Anda tidak lolos tahap kualifikasi.";
+            document.getElementById('placeholder-text').textContent = "Mohon maaf, Anda tidak lolos tahap kualifikasi.";
+            profileCard.classList.remove('lulus-glow');
         } else {
+            // Status Pending / Meninjau
             statusText.textContent = "Sedang Ditinjau ⏳";
             statusBox.className = "status-badge py-4 px-2 rounded-2xl border-2 bg-yellow-50 border-yellow-500 text-yellow-700";
-            placeholderText.textContent = "Berkas Anda sedang dalam pengecekan oleh admin.";
+            profileCard.classList.remove('lulus-glow');
         }
+    }
 
-        document.getElementById('logout-button').onclick = () => {
-            localStorage.removeItem('currentUserProfile');
-            window.location.href = 'login.html';
-        };
-    });
-
+    // 6. FUNGSI MATERI
     function bukaMateri() {
-        const currentUser = JSON.parse(localStorage.getItem('currentUserProfile'));
-        if (!currentUser) return;
-        const rawTingkatan = currentUser.ujian || currentUser.Ujian || currentUser.kategori || "";
-        const tingkatan = rawTingkatan.trim();
-        const materiMap = { "Putih": "putih", "Kuning": "kuning", "Merah": "merah", "Biru": "biru" };
-        if (materiMap[tingkatan]) {
-            window.location.href = `materi/materi_${materiMap[tingkatan]}.html`;
+        const user = JSON.parse(localStorage.getItem('currentUserProfile'));
+        if (!user) return;
+        
+        const tingkatan = (user.ujian || "").trim();
+        const map = { "Putih": "putih", "Kuning": "kuning", "Merah": "merah", "Biru": "biru" };
+        
+        if (map[tingkatan]) {
+            window.location.href = `materi/materi_${map[tingkatan]}.html`;
         } else {
-            alert("Data tingkatan tidak ditemukan: " + tingkatan);
+            Swal.fire({
+                title: 'Informasi',
+                text: "Materi untuk tingkatan " + tingkatan + " belum tersedia.",
+                icon: 'info',
+                confirmButtonColor: '#1B7548'
+            });
         }
     }
 </script>
 </body>
 </html>
-
-

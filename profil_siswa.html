@@ -239,12 +239,17 @@
             renderUI(currentUser);
             await syncDataFromSpreadsheet(currentUser);
 
-            document.getElementById('logout-button').onclick = () => {
-                localStorage.removeItem('currentUserProfile');
-                sessionStorage.removeItem('swalShown');
-                window.location.href = 'login.html'; 
-            };
-        });
+            // Logika Tombol Keluar
+document.getElementById('logout-button').onclick = () => {
+    if (confirm('Apakah Anda yakin ingin keluar?')) {
+        // Hapus data sesi jika ada (opsional)
+        // localStorage.clear(); 
+        // sessionStorage.clear();
+
+        // Arahkan ke halaman login atau beranda
+        window.location.href = "login.html"; // Ubah sesuai nama file login Anda
+    }
+};
 
         async function syncDataFromSpreadsheet(userSession) {
             try {
@@ -383,5 +388,6 @@
     </script>
 </body>
 </html>
+
 
 

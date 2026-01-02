@@ -421,7 +421,26 @@
             alert("Gagal menghapus berita di Cloud");
         }
     }
-
+// --- FUNGSI MOBILE MENU ---
+function toggleMobileMenu() {
+    const sidebar = document.getElementById('mainSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    
+    // Mengecek apakah sidebar sedang tertutup
+    if (sidebar.classList.contains('sidebar-closed')) {
+        // Buka Sidebar
+        sidebar.classList.remove('sidebar-closed');
+        sidebar.classList.add('sidebar-open');
+        overlay.classList.remove('hidden');
+        setTimeout(() => overlay.classList.add('opacity-100'), 10);
+    } else {
+        // Tutup Sidebar
+        sidebar.classList.remove('sidebar-open');
+        sidebar.classList.add('sidebar-closed');
+        overlay.classList.remove('opacity-100');
+        setTimeout(() => overlay.classList.add('hidden'), 300);
+    }
+}
     // --- E. FUNGSI PEMBANTU (UI & INIT) ---
 
     function renderChart(l, p, g) {

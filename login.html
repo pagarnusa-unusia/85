@@ -105,80 +105,70 @@
     <p class="mt-8 text-[10px] text-emerald-100/70 font-bold tracking-[0.2em] uppercase relative z-10">Pagar Nusa UNUSIA • Security System</p>
 
 <script>
-// 1. URL Apps Script Anda (Ganti dengan URL Deployment Anda yang terbaru)
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxwf-nOiuigRQi5gLBglkrxqMEYm2F-zRCP4Dc_meDnFqmCodjMgeIYyQHC_tx6rHxJ6w/exec";
+// 1. URL Apps Script Anda
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxwf-nOiuigRQi5gLBglkrxqMEYm2F-zRCP4Dc_meDnFqmCodjMgeIYyQHC_tx6rHxJ6w/exec";
 
-    // 2. Fungsi Toggle Password (Tetap sama)
-    const toggleBtn = document.getElementById('togglePassword');
-    const passInput = document.getElementById('password');
-    toggleBtn.onclick = () => {
-        const isPass = passInput.type === 'password';
-        passInput.type = isPass ? 'text' : 'password';
-        toggleBtn.innerHTML = isPass ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
-    };
+// 2. Fungsi Toggle Password (VERSI YANG DIPERBAIKI)
+const toggleBtn = document.getElementById('togglePassword');
+const passInput = document.getElementById('password');
 
-    // 3. Logika Login Versi Spreadsheet
-    document.getElementById('loginForm').onsubmit = async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById('btnSubmit');
-        const errorDiv = document.getElementById('error-message');
-        const userInp = document.getElementById('username').value.trim();
-        const passInp = document.getElementById('password').value.trim();
+toggleBtn.onclick = function() {
+    const isPass = passInput.type === 'password';
+    passInput.type = isPass ? 'text' : 'password';
+    
+    // Mengganti icon
+    const icon = this.querySelector('i');
+    if (isPass) {
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    } else {
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    }
+};
 
-        // Efek Loading
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> MEMVERIFIKASI...';
-        errorDiv.classList.add('hidden');
+// 3. Logika Login
+document.getElementById('loginForm').onsubmit = async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('btnSubmit');
+    const errorDiv = document.getElementById('error-message');
+    const userInp = document.getElementById('username').value.trim();
+    const passInp = document.getElementById('password').value.trim();
 
-        try {
-            // Memanggil data dari Apps Script (Sheet "login")
-            const response = await fetch(`${SCRIPT_URL}?type=login&nocache=${new Date().getTime()}`);
-            
-            if (!response.ok) throw new Error("Gagal terhubung ke server database.");
-            
-            const dataJSON = await response.json();
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> MEMVERIFIKASI...';
+    errorDiv.classList.add('hidden');
 
-            // Pencarian User di dalam Array JSON
-            const userMatch = dataJSON.find(u => {
-                // Mencocokkan input dengan kolom 'username' dan 'password' di Spreadsheet
-                const dbUser = (u.username || "").toString().trim();
-                const dbPass = (u.password || "").toString().trim();
-                return dbUser === userInp && dbPass === passInp;
-            });
+    try {
+        const response = await fetch(`${SCRIPT_URL}?type=login&nocache=${new Date().getTime()}`);
+        if (!response.ok) throw new Error("Gagal terhubung ke server database.");
+        
+        const dataJSON = await response.json();
 
-            if (userMatch) {
-                // Simpan profil user ke localStorage agar bisa dipakai di halaman berikutnya
-                localStorage.setItem('currentUserProfile', JSON.stringify(userMatch));
-                
-                // Ambil URL tujuan dari kolom 'redirecturl'
-                const targetPage = userMatch.redirecturl || "profil_siswa.html";
-                
-                // Beri jeda sedikit agar efek loading terlihat
-                setTimeout(() => {
-                    window.location.href = targetPage;
-                }, 800);
-            } else {
-                throw new Error("Username atau Password salah.");
-            }
-
-        } catch (err) {
-            console.error("Login Error:", err);
-            errorDiv.classList.remove('hidden');
-            document.getElementById('error-text').innerText = err.message;
-            btn.disabled = false;
-            btn.innerHTML = '<span>MASUK</span><i class="fas fa-sign-in-alt text-sm"></i>';
-        }
-    };
-    // Script untuk Toggle Password
-        const togglePassword = document.querySelector('#togglePassword');
-        const password = document.querySelector('#password');
-
-        togglePassword.addEventListener('click', function (e) {
-            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-            password.setAttribute('type', type);
-            this.querySelector('i').classList.toggle('fa-eye');
-            this.querySelector('i').classList.toggle('fa-eye-slash');
+        const userMatch = dataJSON.find(u => {
+            const dbUser = (u.username || "").toString().trim();
+            const dbPass = (u.password || "").toString().trim();
+            return dbUser === userInp && dbPass === passInp;
         });
+
+        if (userMatch) {
+            localStorage.setItem('currentUserProfile', JSON.stringify(userMatch));
+            const targetPage = userMatch.redirecturl || "profil_siswa.html";
+            setTimeout(() => {
+                window.location.href = targetPage;
+            }, 800);
+        } else {
+            throw new Error("Username atau Password salah.");
+        }
+
+    } catch (err) {
+        console.error("Login Error:", err);
+        errorDiv.classList.remove('hidden');
+        document.getElementById('error-text').innerText = err.message;
+        btn.disabled = false;
+        btn.innerHTML = '<span>MASUK</span><i class="fas fa-sign-in-alt text-sm"></i>';
+    }
+};
 </script>
 </body>
 </html>

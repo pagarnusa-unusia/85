@@ -4,11 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Detail Berita - Pagar Nusa UNUSIA</title>
+    
     <meta property="og:type" content="article">
-<meta id="og-title" property="og:title" content="Detail Berita - Pagar Nusa UNUSIA">
-<meta id="og-image" property="og:image" content="logopn.png">
-<meta id="og-url" property="og:url" content="">
-<meta property="og:description" content="Portal Berita Resmi Pagar Nusa UNUSIA Jakarta">
+    <meta id="og-title" property="og:title" content="Detail Berita - Pagar Nusa UNUSIA">
+    <meta id="og-image" property="og:image" content="logopn.png">
+    <meta id="og-url" property="og:url" content="">
+    <meta id="og-description" property="og:description" content="Portal Berita Resmi Pagar Nusa UNUSIA Jakarta">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -42,7 +43,7 @@
 
     <header class="sticky top-0 z-[100] bg-primary/95 backdrop-blur-md text-white shadow-2xl transition-all duration-300">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="flex items-center space-x-3 group">
+            <a href="index.html" class="flex items-center space-x-3 group">
                 <div class="bg-white p-1 rounded-lg transform group-hover:rotate-12 transition shrink-0">
                     <img src="logopn.png" alt="Logo" class="h-10 md:h-12">
                 </div>
@@ -55,8 +56,8 @@
             <nav id="main-nav" class="hidden lg:flex items-center space-x-2 font-bold text-[11px] tracking-widest">
                 <a href="index.html" class="px-4 py-2 hover:text-accent transition border-b-2 border-transparent hover:border-accent">BERANDA</a>
                 <a href="index.html" class="px-4 py-2 hover:text-accent transition border-b-2 border-transparent hover:border-accent uppercase">Profil</a>
-                <a href="#informasi" class="px-4 py-2 hover:text-accent transition border-b-2 border-transparent hover:border-accent uppercase">Berita</a>
-                <a href="#galeri" class="px-4 py-2 hover:text-accent transition border-b-2 border-transparent hover:border-accent uppercase">Gallery</a>
+                <a href="berita.html" class="px-4 py-2 hover:text-accent transition border-b-2 border-transparent hover:border-accent uppercase">Berita</a>
+                <a href="index.html#galeri" class="px-4 py-2 hover:text-accent transition border-b-2 border-transparent hover:border-accent uppercase">Gallery</a>
                 <a href="login.html" class="lg:ml-6 bg-accent text-slate-900 px-7 py-3 rounded-full font-black hover:bg-white hover:scale-105 transition-all shadow-xl shadow-black/20 text-center">Login</a>
             </nav>
 
@@ -73,7 +74,7 @@
                 <nav class="flex items-center space-x-2 text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8">
                     <a href="index.html" class="hover:text-primary transition">Beranda</a>
                     <i class="fas fa-chevron-right text-[8px]"></i>
-                    <a href="index.html#informasi" class="hover:text-primary transition">Berita</a>
+                    <a href="berita.html" class="hover:text-primary transition">Berita</a>
                     <i class="fas fa-chevron-right text-[8px]"></i>
                     <span class="text-slate-900" id="breadcrumb-title">Detail Artikel</span>
                 </nav>
@@ -108,16 +109,16 @@
                 </header>
 
                 <div class="rounded-[2.5rem] overflow-hidden shadow-2xl mb-12 border-4 border-white">
-                    <img id="detail-image" src="" alt="Thumbnail" class="w-full h-auto min-h-[300px] object-cover">
+                    <img id="detail-image" src="logopn.png" alt="Thumbnail" class="w-full h-auto min-h-[300px] object-cover">
                 </div>
 
                 <div id="detail-content" class="content-area text-lg text-slate-600 leading-relaxed font-medium mb-16">
-                    </div>
+                </div>
 
                 <div class="bg-slate-100 p-8 rounded-3xl flex flex-col md:flex-row justify-between items-center gap-6">
                     <p class="font-black text-xs uppercase tracking-widest text-slate-500">Bagikan Informasi Ini:</p>
                     <div class="flex gap-4">
-                        <button onclick="window.open('https://wa.me/?text='+encodeURIComponent(window.location.href))" class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-emerald-500 hover:bg-emerald-500 hover:text-white transition shadow-sm"><i class="fab fa-whatsapp text-xl"></i></button>
+                        <button onclick="shareToWA()" class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-emerald-500 hover:bg-emerald-500 hover:text-white transition shadow-sm"><i class="fab fa-whatsapp text-xl"></i></button>
                         <button onclick="navigator.clipboard.writeText(window.location.href); alert('Link disalin!')" class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-slate-900 hover:bg-slate-900 hover:text-white transition shadow-sm"><i class="fas fa-link text-xl"></i></button>
                     </div>
                 </div>
@@ -136,10 +137,9 @@
                         <span class="w-2 h-6 bg-accent mr-3 rounded-full"></span> Warta Terkait
                     </h4>
                     <div id="other-news-list" class="space-y-6">
-                        </div>
+                    </div>
                 </div>
             </aside>
-
         </div>
     </main>
 
@@ -161,11 +161,11 @@
             </div>
             
             <div>
-                <h5 class="text-lg font-black mb-6 md:mb-10 flex items-center uppercase tracking-widest"><span class="w-2 h-6 bg-accent mr-3 rounded-full"></span> Pencarian</h5>
+                <h5 class="text-lg font-black mb-6 md:mb-10 flex items-center uppercase tracking-widest"><span class="w-2 h-6 bg-accent mr-3 rounded-full"></span> Navigasi</h5>
                 <ul class="space-y-4 text-sm text-slate-400 font-bold uppercase tracking-tighter">
-                    <li><a href="#" class="hover:text-accent transition">Beranda Utama</a></li>
-                    <li><a href="#profil" class="hover:text-accent transition">Profil Organisasi</a></li>
-                    <li><a href="#informasi" class="hover:text-accent transition">Berita Terkini</a></li>
+                    <li><a href="index.html" class="hover:text-accent transition">Beranda Utama</a></li>
+                    <li><a href="index.html#profil" class="hover:text-accent transition">Profil Organisasi</a></li>
+                    <li><a href="berita.html" class="hover:text-accent transition">Berita Terkini</a></li>
                     <li><a href="daftar.html" class="hover:text-accent transition">Pendaftaran UKT</a></li>
                 </ul>
             </div>
@@ -179,8 +179,8 @@
                 </p>
             </div>
 
-            <div class="bg-white/5 p-6 md:p-8 rounded-[2rem] border border-white/5">
-                <h5 class="text-xs font-black mb-6 uppercase tracking-widest text-accent text-center">Supported By</h5>
+            <div class="bg-white/5 p-6 md:p-8 rounded-[2rem] border border-white/5 text-center">
+                <h5 class="text-xs font-black mb-6 uppercase tracking-widest text-accent">Supported By</h5>
                 <div class="grid grid-cols-2 gap-4 opacity-50 grayscale hover:grayscale-0 transition duration-700">
                     <div class="h-10 md:h-12 bg-white/10 rounded-xl flex items-center justify-center font-black text-[10px]">Mundzir</div>
                     <div class="h-10 md:h-12 bg-white/10 rounded-xl flex items-center justify-center font-black text-[10px]">Fauzan</div>
@@ -198,121 +198,114 @@
     </footer>
 
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-<script>
-    // Inisialisasi AOS jika ada
-    if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true });
+    <script>
+        if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true });
 
-    // Fungsi Pembantu: Membuat Slug
-    function createSlug(text) {
-        return text.toString().toLowerCase()
-            .replace(/\s+/g, '-')
-            .replace(/[^\w\-]+/g, '')
-            .replace(/\-\-+/g, '-')
-            .replace(/^-+/, '')
-            .replace(/-+$/, '');
-    }
+        function createSlug(text) {
+            return text.toString().toLowerCase()
+                .replace(/\s+/g, '-')
+                .replace(/[^\w\-]+/g, '')
+                .replace(/\-\-+/g, '-')
+                .replace(/^-+/, '')
+                .replace(/-+$/, '');
+        }
 
-    async function loadDetail() {
-        const params = new URLSearchParams(window.location.search);
-        const idFromUrl = params.get('id'); 
-        if (!idFromUrl) { window.location.href = 'index.html'; return; }
+        async function loadDetail() {
+            const params = new URLSearchParams(window.location.search);
+            const idFromUrl = params.get('id'); 
+            if (!idFromUrl) { window.location.href = 'index.html'; return; }
 
-        let newsData = JSON.parse(localStorage.getItem('pagarnusa_news')) || [];
-        
-        // --- LOGIKA FETCH JIKA DATA LOKAL KOSONG ---
-        if (newsData.length === 0) {
-            try {
-                const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9D5CY0eB7vfHJPW-_jxPboZUSPM82q7cjjjOBH10Uf5a8NeO4QVWlmB2EE2pTp4tX1A/exec";
-                document.getElementById('detail-title').innerText = "Menghubungkan ke Pusat Komando...";
-                
-                const response = await fetch(`${SCRIPT_URL}?type=getAllData`);
-                const data = await response.json();
-                
-                if (data.berita && data.berita.length > 0) {
-                    newsData = data.berita;
-                    localStorage.setItem('pagarnusa_news', JSON.stringify(data.berita));
+            let newsData = JSON.parse(localStorage.getItem('pagarnusa_news')) || [];
+            
+            if (newsData.length === 0) {
+                try {
+                    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9D5CY0eB7vfHJPW-_jxPboZUSPM82q7cjjjOBH10Uf5a8NeO4QVWlmB2EE2pTp4tX1A/exec";
+                    document.getElementById('detail-title').innerText = "Menghubungkan ke Pusat Komando...";
+                    
+                    const response = await fetch(`${SCRIPT_URL}?type=getAllData`);
+                    const data = await response.json();
+                    
+                    if (data.berita && data.berita.length > 0) {
+                        newsData = data.berita;
+                        localStorage.setItem('pagarnusa_news', JSON.stringify(data.berita));
+                    }
+                } catch (err) {
+                    console.error("Gagal mengambil data:", err);
                 }
-            } catch (err) {
-                console.error("Gagal mengambil data:", err);
+            }
+
+            const postIndex = parseInt(idFromUrl) - 1;
+            const post = newsData[postIndex];
+
+            if (post) {
+                // SINKRONISASI GAMBAR KOLOM F (Spreadsheet)
+                const finalImage = post.image || 'logopn.png';
+
+                // 1. Update Konten Visual Halaman
+                document.getElementById('detail-title').innerText = post.title;
+                document.getElementById('breadcrumb-title').innerText = post.title;
+                document.getElementById('detail-category').innerText = post.category || 'Warta Pendekar';
+                document.getElementById('detail-date').innerText = post.date;
+                document.getElementById('detail-image').src = finalImage;
+                
+                const contentContainer = document.getElementById('detail-content');
+                if (contentContainer) {
+                    contentContainer.innerHTML = post.content
+                        .split('\n')
+                        .map(p => p.trim() ? `<p class="mb-4 text-slate-600 leading-relaxed italic text-sm md:text-base">"${p}"</p>` : '')
+                        .join('');
+                }
+
+                // 2. Update Browser Title
+                document.title = post.title + " - Pagar Nusa UNUSIA";
+
+                // 3. LOGIKA UPDATE META UNTUK PREVIEW LINK (WhatsApp/Sosmed)
+                try {
+                    if(document.getElementById('og-title')) document.getElementById('og-title').setAttribute('content', post.title);
+                    if(document.getElementById('og-image')) document.getElementById('og-image').setAttribute('content', finalImage);
+                    if(document.getElementById('og-url')) document.getElementById('og-url').setAttribute('content', window.location.href);
+                    
+                    // Update Deskripsi (ambil 120 huruf pertama)
+                    const shortDesc = post.content.substring(0, 120).replace(/[#*]/g, '') + "...";
+                    if(document.getElementById('og-description')) document.getElementById('og-description').setAttribute('content', shortDesc);
+                } catch (e) {
+                    console.warn("Meta tags gagal diperbarui.");
+                }
+
+                loadOtherNews(postIndex, newsData);
+            } else {
+                window.location.href = 'index.html';
             }
         }
 
-        const postIndex = parseInt(idFromUrl) - 1;
-        const post = newsData[postIndex];
-
-        if (post) {
-            // 1. Update Konten Visual Halaman
-            document.getElementById('detail-title').innerText = post.title;
-            document.getElementById('breadcrumb-title').innerText = post.title;
-            document.getElementById('detail-category').innerText = post.category || 'Warta Pendekar';
-            document.getElementById('detail-date').innerText = post.date;
+        function loadOtherNews(currentIndex, allData) {
+            const container = document.getElementById('other-news-list');
+            if (!container) return;
             
-            const mainImg = document.getElementById('detail-image');
-            const finalImage = post.image || 'logopn.png';
-            mainImg.src = finalImage;
+            const others = allData.filter((_, idx) => idx !== currentIndex).slice(0, 3);
             
-            const contentContainer = document.getElementById('detail-content');
-            if (contentContainer) {
-                contentContainer.innerHTML = post.content
-                    .split('\n')
-                    .map(p => p.trim() ? `<p class="mb-4 text-slate-600 leading-relaxed italic text-sm md:text-base">"${p}"</p>` : '')
-                    .join('');
-            }
-
-            // 2. Update Browser Title
-            document.title = post.title + " - Pagar Nusa UNUSIA";
-
-            // 3. LOGIKA UPDATE META UNTUK PREVIEW WHATSAPP
-            try {
-                // Update Meta Title
-                document.getElementById('og-title').setAttribute('content', post.title);
-                // Update Meta Image (Foto Berita)
-                document.getElementById('og-image').setAttribute('content', finalImage);
-                // Update Meta URL
-                document.getElementById('og-url').setAttribute('content', window.location.href);
-                // Update Meta Description (Potongan konten)
-                const shortDesc = post.content.substring(0, 100) + "...";
-                document.getElementById('og-description').setAttribute('content', shortDesc);
-            } catch (e) {
-                console.warn("Meta tags tidak ditemukan, mengabaikan update preview.");
-            }
-
-            // Load Berita Lainnya
-            loadOtherNews(postIndex, newsData);
-        } else {
-            window.location.href = 'index.html';
+            container.innerHTML = others.map((post) => {
+                // Mencari ID asli dari data mentah agar link tidak salah buka
+                const originalId = allData.findIndex(item => item.title === post.title) + 1; 
+                const slug = createSlug(post.title);
+                return `
+                    <a href="detail_berita.html?id=${originalId}&title=${slug}" class="flex items-center gap-4 group transition-all">
+                        <img src="${post.image || 'logopn.png'}" class="w-16 h-16 rounded-xl object-cover shrink-0 grayscale group-hover:grayscale-0 transition duration-500 shadow-sm">
+                        <div class="min-w-0">
+                            <h5 class="text-xs font-black text-slate-900 line-clamp-2 uppercase tracking-tighter group-hover:text-primary transition">${post.title}</h5>
+                            <p class="text-[9px] text-slate-400 font-bold mt-1 uppercase tracking-widest">${post.date}</p>
+                        </div>
+                    </a>`;
+            }).join('');
         }
-    }
 
-    function loadOtherNews(currentIndex, allData) {
-        const container = document.getElementById('other-news-list');
-        if (!container) return;
-        
-        // Mengambil berita selain yang sedang dibuka
-        const others = allData.filter((_, idx) => idx !== currentIndex).slice(0, 3);
-        
-        container.innerHTML = others.map((post) => {
-            const originalId = allData.indexOf(post) + 1; 
-            const slug = createSlug(post.title);
-            return `
-                <a href="detail_berita.html?id=${originalId}&title=${slug}" class="flex items-center gap-4 group transition-all">
-                    <img src="${post.image || 'logopn.png'}" class="w-16 h-16 rounded-xl object-cover shrink-0 grayscale group-hover:grayscale-0 transition duration-500 shadow-sm">
-                    <div class="min-w-0">
-                        <h5 class="text-xs font-black text-slate-900 line-clamp-2 uppercase tracking-tighter group-hover:text-primary transition">${post.title}</h5>
-                        <p class="text-[9px] text-slate-400 font-bold mt-1 uppercase tracking-widest">${post.date}</p>
-                    </div>
-                </a>`;
-        }).join('');
-    }
+        function shareToWA() {
+            const title = document.getElementById('detail-title').innerText;
+            const text = `*BERITA PAGAR NUSA UNUSIA*\n\n${title}\n\nBaca selengkapnya di sini:\n${window.location.href}`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        }
 
-    // Fungsi Share WhatsApp
-    function shareToWA() {
-        const title = document.getElementById('detail-title').innerText;
-        const text = `*BERITA PAGAR NUSA UNUSIA*\n\n${title}\n\nBaca selengkapnya di sini:\n${window.location.href}`;
-        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-    }
-
-    document.addEventListener('DOMContentLoaded', loadDetail);
-</script>
+        document.addEventListener('DOMContentLoaded', loadDetail);
+    </script>
 </body>
 </html>

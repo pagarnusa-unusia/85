@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Scanner Pagar Nusa Pro - Final Square</title>
+    <title>Scanner Pagar Nusa Pro - Final</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -11,20 +11,28 @@
         :root { --pn-green: #166534; }
         body { background-color: #f9fafb; font-family: 'Inter', sans-serif; }
         
-        /* Mengatur Container agar benar-benar persegi secara visual */
         #reader { 
             border: none !important; 
             border-radius: 1.5rem; 
             overflow: hidden;
             aspect-ratio: 1 / 1; 
             background: #000;
+            position: relative;
         }
 
-        /* Menghilangkan video landscape yang melebihi container persegi */
+        /* PERBAIKAN: Memaksa video menutupi seluruh area persegi tanpa kotak hitam */
         #reader video {
             object-fit: cover !important;
+            width: 100% !important;
+            height: 100% !important;
         }
 
+        /* Menyembunyikan elemen teks bawaan library */
+        #reader__dashboard_section_csr span, 
+        #reader__status_span {
+            display: none !important;
+        }
+        
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         .nav-item.active { color: #166534; border-top: 2px solid #166534; }
@@ -40,12 +48,11 @@
 
     <main id="scan-page" class="tab-content active p-6 flex flex-col items-center">
         <div class="w-full max-w-sm bg-white rounded-[2.5rem] shadow-xl p-4 mb-6 border border-gray-100 relative">
-            
-            <button onclick="switchCamera()" class="absolute top-8 right-8 z-20 bg-white/90 backdrop-blur-md p-3 rounded-full shadow-lg text-[#166534] rotate-btn hover:bg-white active:scale-90 transition-all border border-gray-100">
+            <button onclick="switchCamera()" class="absolute top-8 right-8 z-10 bg-white/90 backdrop-blur-md p-3 rounded-full shadow-lg text-[#166534] rotate-btn hover:bg-white active:scale-90 transition-all border border-gray-100">
                 <i class="fas fa-camera-rotate text-lg"></i>
             </button>
 
-            <div id="reader"></div>
+            <div id="reader" class="bg-black"></div>
             
             <div id="status-info" class="mt-4 text-center py-3 px-4 bg-gray-50 rounded-2xl text-[10px] font-black text-gray-400 uppercase tracking-widest transition-all">
                 Siap Memindai QR...
@@ -55,14 +62,14 @@
         <div class="bg-emerald-50 p-4 rounded-2xl w-full max-w-sm border border-emerald-100">
             <h3 class="text-[10px] font-bold text-emerald-800 uppercase mb-2">Sistem Validasi:</h3>
             <p class="text-[11px] text-emerald-700 leading-relaxed text-justify">
-                Scanner diatur dalam mode persegi (1:1). Aplikasi akan menolak otomatis jika ID yang sama dipindai dua kali.
+                Aplikasi akan menolak secara otomatis jika ID yang sama dipindai lebih dari satu kali dalam satu sesi.
             </p>
         </div>
     </main>
 
     <main id="history-page" class="tab-content p-6">
         <div class="flex justify-between items-center mb-6">
-            <h2 class="font-black text-gray-800 tracking-tight text-xl text-center uppercase">Riwayat Scan</h2>
+            <h2 class="font-black text-gray-800 tracking-tight text-xl text-center">RIWAYAT SCAN</h2>
             <div class="flex gap-2">
                 <button onclick="downloadCSV()" class="p-2 bg-blue-100 text-blue-700 rounded-lg text-xs font-bold">
                     <i class="fas fa-file-export"></i> CSV
@@ -113,7 +120,7 @@
             </div>
             <div class="p-8 text-center">
                 <p class="text-gray-500 text-xs font-bold uppercase mb-2">Sistem Mendeteksi:</p>
-                <h3 class="text-lg font-black text-gray-800 leading-tight uppercase">Sudah Diabsen Sebelumnya</h3>
+                <h3 class="text-lg font-black text-gray-800 leading-tight">SUDAH DIABSEN SEBELUMNYA</h3>
             </div>
             <div class="px-6 pb-6">
                 <button onclick="closeWarning()" class="w-full bg-orange-500 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest active:scale-95 transition-all shadow-lg">
@@ -142,19 +149,16 @@
         let currentFacingMode = "environment";
 
         function startCamera() {
-            // Pengaturan Persegi Sempurna (1:1)
-            const qrBoxSize = window.innerWidth < 480 ? 250 : 300; 
-            
+            // PERBAIKAN: Menambahkan videoConstraints agar browser lebih patuh pada rasio 1:1
             const config = { 
                 fps: 20, 
-                qrbox: { width: qrBoxSize, height: qrBoxSize }, 
-                aspectRatio: 1.0, // Memaksa Viewport Kamera Persegi
+                qrbox: { width: 250, height: 250 }, 
+                aspectRatio: 1.0,
                 videoConstraints: {
-                    facingMode: currentFacingMode,
-                    aspectRatio: 1.0
+                    aspectRatio: 1.0,
+                    facingMode: currentFacingMode
                 }
             };
-
             html5QrCode.start({ facingMode: currentFacingMode }, config, onScanSuccess)
             .catch(() => html5QrCode.start({ facingMode: "any" }, config, onScanSuccess));
         }
@@ -177,9 +181,10 @@
             const parts = decodedText.split('|');
             const scId = parts[0] || 'N/A';
             
-            // Cek Duplikat di History Lokal
-            if (historyData.some(item => item.id === scId)) {
-                if (navigator.vibrate) navigator.vibrate([100, 50, 100]); 
+            const isExist = historyData.some(item => item.id === scId);
+            
+            if (isExist) {
+                if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
                 showWarning();
                 return;
             }
@@ -202,7 +207,7 @@
             }).then(() => {
                 saveToHistory(dataObj);
                 showModal(dataObj.nama, dataObj.strip, dataObj.waktu);
-            }).catch(() => {
+            }).catch(err => {
                 alert("Koneksi Error");
                 resetScanner();
             });
@@ -226,7 +231,7 @@
                         <h4 class="font-bold text-gray-800 text-sm uppercase">${item.nama}</h4>
                         <p class="text-[10px] text-gray-400 font-bold">ID: ${item.id} • ${item.waktu}</p>
                     </div>
-                    <button onclick="deleteHistoryItem(${index})" class="text-gray-300 hover:text-red-500 p-2 transition-colors">
+                    <button onclick="deleteHistoryItem(${index})" class="text-gray-300 hover:text-red-500 p-2">
                         <i class="fas fa-times-circle"></i>
                     </button>
                 </div>
@@ -255,7 +260,7 @@
             historyData.forEach(row => { csvContent += `${row.id},${row.nama},${row.strip},${row.waktu},${row.tanggal}\n`; });
             const link = document.createElement("a");
             link.setAttribute("href", encodeURI(csvContent));
-            link.setAttribute("download", "Absensi_PN_Final.csv");
+            link.setAttribute("download", "Absensi_PN.csv");
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);

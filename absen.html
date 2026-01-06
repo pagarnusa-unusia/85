@@ -2,133 +2,119 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Absensi Digital | Pagar Nusa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Scanner UKT | Pagarnusa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: { pn: '#166534' },
-                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                    colors: { pn: '#166534', darkPN: '#064e3b' }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #f8fafc; }
-        .official-card { background: white; border: 1px solid #e2e8f0; border-top: 4px solid #166534; }
-        #reader { border: none !important; border-radius: 12px; overflow: hidden; }
-        #reader__dashboard_section_csr button {
-            background-color: #166534 !important; color: white !important;
-            padding: 8px 16px !important; border-radius: 8px !important; font-size: 12px !important;
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #000; }
+        #reader { width: 100% !important; height: 100% !important; }
+        #reader video { object-fit: cover !important; }
+        
+        .scan-region {
+            position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
+            width: 240px; height: 240px; pointer-events: none; z-index: 10;
         }
-        .label-text { font-size: 0.65rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+        .scan-region::after {
+            content: ''; position: absolute; inset: 0;
+            border: 2px solid #166534; border-radius: 40px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(1.05); } 100% { opacity: 1; transform: scale(1); } }
+        
+        .log-item { animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased font-sans text-white">
 
-    <main class="min-h-screen flex flex-col items-center px-4 py-8">
-        
-        <div class="mb-6 text-center">
-            <h1 class="text-[10px] font-bold tracking-[0.2em] text-slate-400 uppercase leading-relaxed">
-                Sistem Absensi UKT Digital<br>
-                <span class="text-pn text-sm">Pagar Nusa UNUSIA</span>
-            </h1>
-        </div>
+    <div class="relative flex flex-col h-screen w-full">
+        <header class="absolute top-0 inset-x-0 z-20 pt-10 pb-10 bg-gradient-to-b from-black/80 to-transparent text-center">
+            <h1 class="text-[10px] font-bold tracking-[0.3em] text-slate-300 uppercase">Sistem Absensi Digital</h1>
+            <p class="text-pn font-bold text-sm tracking-widest uppercase">Pagarnusa UNUSIA</p>
+        </header>
 
-        <div class="official-card w-full max-w-md rounded-xl shadow-sm p-4 mb-4">
-            <div id="reader" class="bg-black"></div>
-            <div id="feedback" class="mt-4 text-center p-3 rounded-lg bg-slate-50 text-slate-500 font-bold text-xs uppercase tracking-widest">
-                Menunggu Pemindaian...
+        <div id="reader" class="flex-1"></div>
+        <div class="scan-region"></div>
+
+        <div class="absolute bottom-0 inset-x-0 z-30 bg-white rounded-t-[32px] p-6 shadow-2xl overflow-hidden">
+            <div id="feedback" class="w-full py-3 mb-4 rounded-xl text-center font-bold text-xs uppercase tracking-widest bg-slate-100 text-slate-400 transition-all duration-300">
+                Siap Memindai...
             </div>
-        </div>
 
-        <div id="result-card" class="hidden official-card w-full max-w-md rounded-xl shadow-sm overflow-hidden animate-in fade-in zoom-in duration-300">
-            <div class="px-6 py-6">
-                <div class="flex items-center gap-2 mb-6 text-emerald-700 bg-emerald-50 w-fit px-3 py-1 rounded-full border border-emerald-100">
-                    <i class="fas fa-check-circle text-[10px]"></i>
-                    <span class="text-[10px] font-bold uppercase tracking-wider">Verifikasi Berhasil</span>
-                </div>
-
-                <div class="space-y-4">
-                    <div>
-                        <p class="label-text mb-1">Nama Peserta</p>
-                        <h2 id="res-nama" class="text-lg font-bold text-slate-800">---</h2>
-                    </div>
-                    <div class="flex justify-between">
-                        <div>
-                            <p class="label-text mb-1">Tingkatan/Strip</p>
-                            <p id="res-strip" class="text-sm font-medium text-pn font-bold italic">---</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="label-text mb-1">Waktu Masuk</p>
-                            <p id="res-jam" class="text-sm font-medium text-slate-600">---</p>
-                        </div>
-                    </div>
-                </div>
+            <div id="logItems" class="space-y-3 min-h-[120px]">
+                <p class="text-center text-[10px] text-slate-300 mt-10">Belum ada riwayat absensi</p>
             </div>
-            <div class="bg-slate-50 px-6 py-3 border-t border-slate-100 flex justify-between items-center">
-                <p class="text-[9px] font-bold text-slate-400 uppercase">ID Referensi</p>
-                <p id="res-id" class="text-[10px] font-mono font-bold text-pn uppercase">---</p>
-            </div>
+            
+            <p class="text-[8px] text-center text-slate-300 mt-4 uppercase tracking-tighter">Official Database Pagarnusa</p>
         </div>
-
-        <p class="mt-6 text-[9px] text-slate-400 text-center max-w-xs leading-relaxed">
-            Data absensi tersinkronisasi otomatis dengan database pusat <strong>Pagar Nusa</strong>.
-        </p>
-
-    </main>
+    </div>
 
     <script>
-        let isProcessing = false;
+        let scanning = false;
 
         function onScanSuccess(decodedText) {
-            if (isProcessing) return;
-            isProcessing = true;
+            if (scanning) return;
+            scanning = true;
 
             const feedback = document.getElementById('feedback');
-            feedback.innerText = "⏳ MEMPROSES...";
-            feedback.className = "mt-4 text-center p-3 rounded-lg bg-pn text-white font-bold text-xs animate-pulse";
+            feedback.innerText = "⌛ Memproses...";
+            feedback.className = "w-full py-3 mb-4 rounded-xl text-center font-bold text-xs bg-pn text-white animate-pulse";
 
             if (navigator.vibrate) navigator.vibrate(100);
 
             google.script.run
                 .withSuccessHandler(function(res) {
                     if (res.status === "success") {
-                        showResult(res);
                         feedback.innerText = "✅ " + res.msg;
-                        feedback.className = "mt-4 text-center p-3 rounded-lg bg-emerald-100 text-emerald-700 font-bold text-xs";
+                        feedback.className = "w-full py-3 mb-4 rounded-xl text-center font-bold text-xs bg-emerald-100 text-emerald-700 border border-emerald-200";
+                        updateLog(res.nama, res.jam, res.strip);
                     } else {
                         feedback.innerText = res.msg;
-                        feedback.className = "mt-4 text-center p-3 rounded-lg bg-red-100 text-red-700 font-bold text-xs";
+                        feedback.className = "w-full py-3 mb-4 rounded-xl text-center font-bold text-xs bg-red-100 text-red-700";
                     }
                     
                     setTimeout(() => {
-                        feedback.innerText = "Menunggu Pemindaian...";
-                        feedback.className = "mt-4 text-center p-3 rounded-lg bg-slate-50 text-slate-500 font-bold text-xs uppercase tracking-widest";
-                        isProcessing = false;
-                    }, 4000);
+                        feedback.innerText = "Siap Memindai...";
+                        feedback.className = "w-full py-3 mb-4 rounded-xl text-center font-bold text-xs bg-slate-100 text-slate-400 uppercase tracking-widest";
+                        scanning = false;
+                    }, 3500);
                 })
                 .prosesAbsen(decodedText);
         }
 
-        function showResult(data) {
-            document.getElementById('result-card').classList.remove('hidden');
-            document.getElementById('res-nama').innerText = data.nama;
-            document.getElementById('res-strip').innerText = data.strip;
-            document.getElementById('res-jam').innerText = data.jam + " WIB";
-            document.getElementById('res-id').innerText = data.id;
+        function updateLog(nama, jam, strip) {
+            const list = document.getElementById('logItems');
+            if (list.querySelector('p')) list.innerHTML = ''; // Clear empty message
+
+            const item = document.createElement('div');
+            item.className = 'log-item flex justify-between items-center py-2 border-b border-slate-50';
+            item.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <span class="text-[10px] text-slate-400 font-mono">${jam}</span>
+                    <span class="text-xs font-bold text-slate-700 uppercase">${nama}</span>
+                </div>
+                <span class="text-[9px] font-bold text-pn bg-emerald-50 px-2 py-1 rounded border border-emerald-100 uppercase">${strip}</span>
+            `;
+            list.insertBefore(item, list.firstChild);
+            if (list.children.length > 4) list.lastChild.remove();
         }
 
         const html5QrCode = new Html5Qrcode("reader");
         Html5Qrcode.getCameras().then(cameras => {
             if (cameras && cameras.length > 0) {
-                let cameraId = cameras[cameras.length - 1].id;
-                html5QrCode.start(cameraId, { fps: 15, qrbox: 200 }, onScanSuccess);
+                let backCamera = cameras.find(cam => cam.label.toLowerCase().includes('back')) || cameras[cameras.length - 1];
+                html5QrCode.start(backCamera.id, { fps: 20, qrbox: 250 }, onScanSuccess);
             }
         });
     </script>

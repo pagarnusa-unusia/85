@@ -2,141 +2,264 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Scanner Pagar Nusa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>PN Scanner Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --pn-green: #166534; }
-        body { background-color: #f3f4f6; font-family: sans-serif; overflow-x: hidden; }
-        #reader { border: none !important; border-radius: 1.5rem; overflow: hidden; }
-        .modal-active { display: flex !important; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+        
+        :root { --primary: #166534; --bg: #f8fafc; }
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg);
+            color: #1e293b;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Scanner Styling */
+        #reader { 
+            border: none !important; 
+            border-radius: 2rem !important; 
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+
+        #reader__dashboard_section_csr button {
+            background: var(--primary) !important;
+            color: white !important;
+            border-radius: 12px !important;
+            padding: 8px 16px !important;
+            text-transform: uppercase !important;
+            font-weight: bold !important;
+            font-size: 12px !important;
+        }
+
+        /* Glassmorphism Navigation */
+        .nav-glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: slideUp 0.3s ease-out; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .active-nav { color: var(--primary); }
+        .active-nav i { transform: translateY(-4px); transition: transform 0.2s; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 0px; }
     </style>
 </head>
-<body class="flex flex-col min-h-screen">
+<body class="antialiased">
 
-    <header class="bg-[#166534] text-white p-6 text-center shadow-lg">
-        <h1 class="text-sm font-bold tracking-[0.2em] uppercase">Absensi UKT Digital</h1>
-        <p class="text-[10px] opacity-70 uppercase mt-1">Pagar Nusa UNUSIA</p>
-    </header>
-
-    <main class="flex-1 p-6 flex flex-col items-center justify-start">
-        <div class="w-full max-w-sm bg-white rounded-[2rem] shadow-xl p-4 mb-6">
-            <div id="reader" class="bg-black"></div>
-            <div id="status-info" class="mt-4 text-center py-3 px-4 bg-gray-50 rounded-2xl text-[10px] font-black text-gray-400 uppercase tracking-widest transition-all">
-                Siap Memindai...
+    <div class="fixed top-0 inset-x-0 z-50 p-4 flex justify-between items-center bg-white/50 backdrop-blur-md border-b border-gray-100">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-emerald-700 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-900/20">
+                <img src="https://upload.wikimedia.org/wikipedia/id/a/a2/Logo_Pagar_Nusa.png" class="h-5 w-5" alt="PN">
             </div>
+            <span class="font-extrabold text-sm tracking-tight text-emerald-900">PAGAR NUSA</span>
         </div>
-
-        <div class="text-center space-y-2">
-            <p class="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Arahkan kamera ke QR Code ID Card</p>
-            <div class="flex justify-center gap-1">
-                <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-            </div>
+        <div id="net-status" class="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-[10px] font-bold flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span> ONLINE
         </div>
-    </main>
+    </div>
 
-    <div id="modalAbsen" class="fixed inset-0 bg-black/90 z-50 hidden items-center justify-center p-6 backdrop-blur-md">
-        <div class="bg-white w-full max-w-xs rounded-[2.5rem] overflow-hidden shadow-2xl scale-95 animate-in zoom-in duration-300">
-            <div class="bg-emerald-50 py-8 text-center border-b border-emerald-100">
-                <div class="text-6xl mb-3">✅</div>
-                <h2 class="text-xl font-black text-emerald-900 tracking-tight">ABSEN BERHASIL</h2>
+    <main class="pt-20 pb-28 px-5 max-w-md mx-auto">
+        
+        <section id="page-scan" class="tab-content active">
+            <div class="mb-6">
+                <h2 class="text-2xl font-extrabold text-slate-800">Pemindaian QR</h2>
+                <p class="text-slate-400 text-sm font-medium">Arahkan kamera ke kartu tanda anggota</p>
             </div>
-            
-            <div class="p-8 space-y-5 text-sm">
+
+            <div class="relative group">
+                <div id="reader" class="bg-black aspect-square"></div>
+                <div class="absolute inset-0 border-[24px] border-black/10 pointer-events-none flex items-center justify-center">
+                    <div class="w-full h-full border-2 border-emerald-500/30 rounded-[1.5rem] relative">
+                        <div class="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-emerald-500 -mt-1 -ml-1 rounded-tl-lg"></div>
+                        <div class="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-emerald-500 -mt-1 -mr-1 rounded-tr-lg"></div>
+                        <div class="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-emerald-500 -mb-1 -ml-1 rounded-bl-lg"></div>
+                        <div class="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-emerald-500 -mb-1 -mr-1 rounded-br-lg"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="status-card" class="mt-8 bg-white p-5 rounded-3xl shadow-sm border border-slate-100 flex items-center gap-4">
+                <div class="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 text-xl">
+                    <i class="fa-solid fa-expand"></i>
+                </div>
                 <div>
-                    <label class="text-[10px] font-black text-gray-300 uppercase tracking-widest">Nama Peserta</label>
-                    <p id="pop-nama" class="font-bold text-gray-800 uppercase text-lg leading-tight">---</p>
-                </div>
-                <div class="flex justify-between items-end gap-4">
-                    <div class="flex-1">
-                        <label class="text-[10px] font-black text-gray-300 uppercase tracking-widest">Strip</label>
-                        <p id="pop-strip" class="font-bold text-emerald-700 uppercase italic">---</p>
-                    </div>
-                    <div class="text-right">
-                        <label class="text-[10px] font-black text-gray-300 uppercase tracking-widest">Waktu</label>
-                        <p id="pop-waktu" class="font-bold text-gray-500 italic">---</p>
-                    </div>
+                    <h4 id="status-text" class="font-bold text-slate-700">Menunggu scan...</h4>
+                    <p class="text-xs text-slate-400 font-medium leading-none mt-1">Sesi: UKT UNUSIA 2026</p>
                 </div>
             </div>
+        </section>
 
-            <div class="p-6 bg-gray-50">
-                <button onclick="closeModal()" class="w-full bg-[#166534] text-white py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-lg shadow-emerald-900/20 active:scale-95 transition-all">
-                    OK, LANJUT SCAN
+        <section id="page-history" class="tab-content">
+            <div class="flex justify-between items-end mb-6">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-slate-800">Riwayat</h2>
+                    <p id="count-text" class="text-slate-400 text-sm font-medium">0 entri tersimpan</p>
+                </div>
+                <button onclick="downloadCSV()" class="p-3 bg-white shadow-sm border border-slate-100 rounded-2xl text-emerald-600 active:scale-90 transition-transform">
+                    <i class="fa-solid fa-file-arrow-down"></i>
                 </button>
             </div>
+
+            <div id="history-list" class="space-y-4">
+                </div>
+        </section>
+    </main>
+
+    <nav class="fixed bottom-6 inset-x-6 h-20 nav-glass rounded-[2.5rem] shadow-2xl flex items-center justify-around px-10 z-50 border border-white">
+        <button onclick="switchTab('scan')" id="nav-scan" class="flex flex-col items-center gap-1 active-nav">
+            <i class="fa-solid fa-qrcode text-xl"></i>
+            <span class="text-[10px] font-bold uppercase tracking-wider">Scan</span>
+        </button>
+        <button onclick="switchTab('history')" id="nav-history" class="flex flex-col items-center gap-1 text-slate-300">
+            <i class="fa-solid fa-clock-rotate-left text-xl"></i>
+            <span class="text-[10px] font-bold uppercase tracking-wider">History</span>
+        </button>
+    </nav>
+
+    <div id="success-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-8 bg-slate-900/60 backdrop-blur-sm">
+        <div class="bg-white w-full rounded-[3rem] p-8 text-center animate-in fade-in zoom-in duration-300">
+            <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-6">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 class="text-xs font-extrabold text-emerald-600 uppercase tracking-widest mb-2">Presensi Berhasil</h3>
+            <h2 id="modal-nama" class="text-2xl font-extrabold text-slate-800 leading-tight uppercase mb-1">...</h2>
+            <p id="modal-info" class="text-sm font-medium text-slate-400 mb-8 uppercase">...</p>
+            <button onclick="closeModal()" class="w-full bg-slate-900 text-white py-5 rounded-[2rem] font-extrabold text-sm active:scale-95 transition-all shadow-xl shadow-slate-900/20">
+                LANJUTKAN
+            </button>
         </div>
     </div>
 
     <script>
-        // 1. MASUKKAN URL WEB APP ANDA DI SINI
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbypkLAOISZHAnGagYziGq_RmWKAdUZMe3qXzu4ebAUbzN4wptTHwJ2ei8jNQVSr3a89ig/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbypkLAOISZHAnGagYziGq_RmWKAdUZMe3qXzu4ebAUbzN4wptTHwJ2ei8jNQVSr3a89ig/exec"; 
+        let html5QrCode = new Html5Qrcode("reader");
+        let history = JSON.parse(localStorage.getItem('pn_absensi') || '[]');
+        let isScanning = false;
 
-        let isProcessing = false;
-        const html5QrCode = new Html5Qrcode("reader");
-
-        function onScanSuccess(decodedText) {
-            if (isProcessing) return;
-            isProcessing = true;
-
-            const statusInfo = document.getElementById('status-info');
-            statusInfo.innerText = "⌛ MENGIRIM DATA...";
-            statusInfo.className = "mt-4 text-center py-3 px-4 bg-emerald-50 rounded-2xl text-[10px] font-black text-emerald-600 uppercase tracking-widest";
-
-            if (navigator.vibrate) navigator.vibrate(100);
-
-            // Mengirim data ke doPost(e) di Google Script
-            fetch(SCRIPT_URL, {
-                method: "POST",
-                mode: "no-cors", 
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ data: decodedText })
-            })
-            .then(() => {
-                // Karena no-cors, kita pecah manual datanya untuk ditampilkan di Modal
-                const parts = decodedText.split('|');
-                const now = new Date();
-                const jam = now.getHours().toString().padStart(2, '0') + ":" + now.getMinutes().toString().padStart(2, '0');
-                
-                showModal(
-                    parts[1] || "Peserta", 
-                    parts[2] || "-", 
-                    jam + " WIB"
-                );
-            })
-            .catch(err => {
-                alert("GAGAL MENGIRIM: " + err);
-                resetScanner();
-            });
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(el => el.classList.replace('active-nav', 'text-slate-300'));
+            
+            document.getElementById(`page-${tab}`).classList.add('active');
+            document.getElementById(`nav-${tab}`).classList.replace('text-slate-300', 'active-nav');
+            
+            if(tab === 'history') {
+                renderHistory();
+                html5QrCode.stop();
+            } else {
+                startScanner();
+            }
         }
 
-        function showModal(nama, strip, waktu) {
-            document.getElementById('pop-nama').innerText = nama;
-            document.getElementById('pop-strip').innerText = strip;
-            document.getElementById('pop-waktu').innerText = waktu;
-            document.getElementById('modalAbsen').classList.add('modal-active');
+        function startScanner() {
+            Html5Qrcode.getCameras().then(cameras => {
+                if (cameras && cameras.length > 0) {
+                    html5QrCode.start({ facingMode: "environment" }, { fps: 24, qrbox: 250 }, onScanSuccess);
+                }
+            }).catch(err => alert("Kamera Error: " + err));
+        }
+
+        function onScanSuccess(decodedText) {
+            if (isScanning) return;
+            isScanning = true;
+
+            if (navigator.vibrate) navigator.vibrate(100);
+            
+            const parts = decodedText.split('|');
+            const data = {
+                id: parts[0] || 'N/A',
+                nama: parts[1] || 'Peserta',
+                strip: parts[2] || 'Polos',
+                jam: new Date().toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'})
+            };
+
+            // Simpan lokal
+            history.unshift(data);
+            localStorage.setItem('pn_absensi', JSON.stringify(history));
+
+            // UI feedback
+            document.getElementById('modal-nama').innerText = data.nama;
+            document.getElementById('modal-info').innerText = `${data.strip} • ${data.jam} WIB`;
+            document.getElementById('success-modal').style.display = 'flex';
+
+            // Kirim ke server (Background)
+            fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: decodedText });
+        }
+
+        function renderHistory() {
+            const list = document.getElementById('history-list');
+            document.getElementById('count-text').innerText = `${history.length} entri tersimpan`;
+
+            if(history.length === 0) {
+                list.innerHTML = `<div class="bg-white p-10 rounded-3xl text-center text-slate-300 font-bold uppercase text-xs tracking-widest border border-dashed border-slate-200">Belum ada data</div>`;
+                return;
+            }
+
+            list.innerHTML = history.map((item, idx) => `
+                <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-50 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-500 font-extrabold text-xs italic">PN</div>
+                        <div>
+                            <h4 class="font-extrabold text-slate-800 text-sm uppercase leading-tight">${item.nama}</h4>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase mt-0.5">${item.strip} • ${item.jam}</p>
+                        </div>
+                    </div>
+                    <button onclick="deleteItem(${idx})" class="text-slate-200 hover:text-red-400"><i class="fa-solid fa-circle-xmark"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function deleteItem(idx) {
+            history.splice(idx, 1);
+            localStorage.setItem('pn_absensi', JSON.stringify(history));
+            renderHistory();
+        }
+
+        function downloadCSV() {
+            if(history.length === 0) return;
+            let csv = "Nama,Kategori,Jam\n" + history.map(i => `${i.nama},${i.strip},${i.jam}`).join("\n");
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Absensi_PN_${new Date().toLocaleDateString()}.csv`;
+            a.click();
         }
 
         function closeModal() {
-            document.getElementById('modalAbsen').classList.remove('modal-active');
-            resetScanner();
+            document.getElementById('success-modal').style.display = 'none';
+            isScanning = false;
         }
 
-        function resetScanner() {
-            const statusInfo = document.getElementById('status-info');
-            statusInfo.innerText = "Siap Memindai...";
-            statusInfo.className = "mt-4 text-center py-3 px-4 bg-gray-50 rounded-2xl text-[10px] font-black text-gray-400 uppercase tracking-widest";
-            isProcessing = false;
-        }
+        // Monitoring Internet
+        window.addEventListener('online', () => {
+            const st = document.getElementById('net-status');
+            st.className = "px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-[10px] font-bold flex items-center gap-1.5";
+            st.innerHTML = `<span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span> ONLINE`;
+        });
+        window.addEventListener('offline', () => {
+            const st = document.getElementById('net-status');
+            st.className = "px-3 py-1 bg-red-100 text-red-700 rounded-full text-[10px] font-bold flex items-center gap-1.5";
+            st.innerHTML = `<span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span> OFFLINE`;
+        });
 
-        Html5Qrcode.getCameras().then(cameras => {
-            if (cameras && cameras.length > 0) {
-                const backCamera = cameras.find(cam => cam.label.toLowerCase().includes('back')) || cameras[cameras.length - 1];
-                html5QrCode.start(backCamera.id, { fps: 20, qrbox: { width: 250, height: 250 } }, onScanSuccess);
-            }
-        }).catch(err => { alert("Kamera bermasalah: " + err); });
+        startScanner();
     </script>
 </body>
 </html>

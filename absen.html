@@ -3,143 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Absensi Peserta</title>
-    <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ ">    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Sistem Registrasi PN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --pn-green: #166534; }
-        body { background-color: #f9fafb; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
         
-        /* Container Scanner Persegi */
+        :root { --pn-green: #166534; }
+        body { background-color: #f9fafb; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+
+        /* Scanner Styling */
         #reader { 
             border: none !important; 
-            border-radius: 2rem; 
+            border-radius: 2.5rem; 
             overflow: hidden;
             aspect-ratio: 1 / 1; 
             background: #000;
             position: relative;
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
         }
-
-        /* Menghilangkan Kotak Hitam: Memaksa video kamera menutupi seluruh area persegi */
         #reader video {
             object-fit: cover !important;
             width: 100% !important;
             height: 100% !important;
         }
 
-        /* Efek Flash saat Scan Berhasil */
-        @keyframes scan-flash {
-            0% { background-color: rgba(255, 255, 255, 0.9); }
-            100% { background-color: transparent; }
-        }
-        .flash-effect {
-            animation: scan-flash 0.4s ease-out;
-        }
+        /* Navigasi Styling */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .nav-item.active { color: var(--pn-green); background: #f0fdf4; border-top: 3px solid var(--pn-green); }
+
+        /* Registration Page System */
+        .reg-sub-page { display: none; }
+        .reg-sub-page.active { display: block; }
+
+        /* Custom Checkbox */
+        input[type="checkbox"] { width: 24px; height: 24px; accent-color: var(--pn-green); }
 
         /* Sembunyikan elemen sampah library */
-        #reader__dashboard_section_csr span, 
-        #reader__status_span,
-        #reader__dashboard_section_fsr {
-            display: none !important;
-        }
-        
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        .nav-item.active { color: #166534; border-top: 3px solid #166534; background: #f0fdf4; }
-        .rotate-btn:active i { transform: rotate(180deg); transition: 0.3s; }
+        #reader__dashboard_section_csr span, #reader__status_span, #reader__dashboard_section_fsr { display: none !important; }
     </style>
 </head>
-<body class="flex flex-col min-h-screen pb-24">
+<body class="flex flex-col min-h-screen pb-28">
 
-    <header class="bg-[#166534] text-white p-6 text-center shadow-lg sticky top-0 z-40">
-        <h1 class="text-xs font-black tracking-[0.3em]">Absensi Peserta</h1>
-        <p class="text-[9px] opacity-70 mt-1">Ujian Kenaikan Tingkat IV</p>
+    <header class="bg-[#166534] text-white p-5 text-center shadow-lg sticky top-0 z-50">
+        <h1 class="text-[10px] font-black tracking-[0.3em] uppercase">Sistem Absensi Terpadu</h1>
+        <p class="text-[9px] opacity-70 mt-1 uppercase font-bold">Pagar Nusa - UKT IV 2026</p>
     </header>
 
-    <main id="scan-page" class="tab-content active p-6 flex flex-col items-center">
-        <div class="w-full max-w-sm bg-white rounded-[3rem] p-4 mb-6 border border-gray-100 relative">
-            
-            <button onclick="switchCamera()" class="absolute top-8 right-8 z-30 bg-white/90 backdrop-blur-md p-4 rounded-full shadow-xl text-[#166534] rotate-btn hover:bg-white active:scale-90 transition-all">
+    <main id="scan-page" class="tab-content active p-6">
+        <div class="w-full max-w-sm mx-auto bg-white rounded-[3rem] p-3 mb-6 shadow-sm relative border border-gray-100">
+            <button onclick="switchCamera()" class="absolute top-6 right-6 z-30 bg-white/90 backdrop-blur-md p-4 rounded-full shadow-xl text-[#166534] active:scale-90 transition-all">
                 <i class="fas fa-camera-rotate text-xl"></i>
             </button>
-
-            <div id="reader" class="bg-black"></div>
-            
-            <div id="status-info" class="mt-6 text-center py-4 px-6 bg-gray-50 rounded-2xl text-[11px] font-black text-gray-400 uppercase tracking-widest transition-all">
+            <div id="reader"></div>
+            <div id="status-info" class="mt-4 text-center py-4 px-6 bg-gray-50 rounded-2xl text-[10px] font-black text-gray-400 uppercase tracking-widest transition-all">
                 Mencari Kode QR...
             </div>
         </div>
+
+        <div id="validation-alert" class="hidden bg-rose-50 p-4 rounded-2xl border border-rose-100 flex items-center gap-3 animate-pulse">
+            <i class="fas fa-exclamation-triangle text-rose-500"></i>
+            <p class="text-[10px] text-rose-700 font-black uppercase">Gagal: Peserta belum lengkap registrasi alat!</p>
+        </div>
+    </main>
+
+    <main id="reg-page" class="tab-content p-6">
         
-        <div class="bg-blue-50 p-4 rounded-2xl w-full max-w-sm border border-blue-100 flex items-start gap-3">
-            <i class="fas fa-info-circle mt-1 text-blue-600"></i>
-            <p class="text-[11px] text-blue-700 leading-relaxed font-medium">
-                <b>Mode Otomatis Aktif:</b> Cukup arahkan kamera ke QR. Sistem akan langsung mencatat tanpa perlu menekan tombol konfirmasi.
-            </p>
+        <div id="reg-sub-1" class="reg-sub-page active">
+            <div class="flex flex-col gap-4">
+                <h2 class="font-black text-gray-800 text-lg uppercase tracking-tight">Pilih Peserta</h2>
+                <div class="relative">
+                    <input type="text" id="searchName" onkeyup="renderNameList()" placeholder="Cari nama..." 
+                    class="w-full bg-white border border-gray-100 shadow-sm rounded-2xl py-4 pl-12 pr-4 text-sm focus:ring-2 focus:ring-green-500 outline-none">
+                    <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-gray-300"></i>
+                </div>
+                <div id="name-list" class="space-y-3">
+                    </div>
+            </div>
+        </div>
+
+        <div id="reg-sub-2" class="reg-sub-page">
+            <div class="bg-white rounded-[2.5rem] p-6 shadow-xl border border-gray-50">
+                <button onclick="goBackToNames()" class="mb-6 text-gray-400 text-[10px] font-black uppercase flex items-center gap-2">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Daftar
+                </button>
+                
+                <h3 id="current-peserta-name" class="text-xl font-black text-[#166534] uppercase leading-tight">Nama Peserta</h3>
+                <p class="text-[10px] text-gray-400 font-bold mb-6">VERIFIKASI PERALATAN WAJIB</p>
+
+                <div id="checklist-container" class="space-y-3 mb-8">
+                    </div>
+
+                <button onclick="finishRegistration()" class="w-full bg-[#166534] text-white py-5 rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-green-200 active:scale-95 transition-all">
+                    Simpan & Selesai
+                </button>
+            </div>
         </div>
     </main>
 
     <main id="history-page" class="tab-content p-6">
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="font-black text-gray-800 tracking-tight text-xl uppercase">Riwayat Scan</h2>
-            <div class="flex gap-2">
-                <button onclick="downloadCSV()" class="p-2 bg-emerald-100 text-emerald-700 rounded-xl text-xs font-bold shadow-sm">
-                    <i class="fas fa-file-export mr-1"></i> CSV
-                </button>
-                <button onclick="clearAllHistory()" class="p-2 bg-red-50 text-red-600 rounded-xl text-xs font-bold border border-red-100">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="font-black text-gray-800 text-lg uppercase tracking-tight">Riwayat Absensi</h2>
+            <button onclick="downloadCSV()" class="p-2 bg-emerald-50 text-emerald-700 rounded-xl text-[10px] font-black">
+                <i class="fas fa-download mr-1"></i> CSV
+            </button>
         </div>
-        <div id="history-list" class="space-y-4"></div>
+        <div id="history-list" class="space-y-3"></div>
     </main>
 
     <div id="modalWarning" class="fixed inset-0 bg-black/80 z-[60] hidden items-center justify-center p-6 backdrop-blur-md">
         <div class="bg-white w-full max-w-xs rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-orange-400">
-            <div class="bg-orange-50 py-10 text-center">
-                <div class="text-6xl mb-4 animate-bounce">⚠️</div>
-                <h2 class="text-lg font-black text-orange-700 tracking-widest uppercase">SUDAH ABSEN!</h2>
+            <div class="bg-orange-50 py-8 text-center">
+                <span class="text-5xl">⚠️</span>
+                <h2 class="text-lg font-black text-orange-700 mt-2 uppercase">SUDAH ABSEN</h2>
             </div>
-            <div class="p-8 text-center">
-                <p class="text-gray-500 text-[10px] font-bold uppercase mb-2">Sistem Mendeteksi:</p>
-                <h3 id="warn-name" class="text-lg font-black text-gray-800 leading-tight uppercase">DUPLIKAT DATA</h3>
+            <div class="p-6 text-center">
+                <h3 id="warn-name" class="text-md font-black text-gray-800 uppercase italic leading-tight">NAMA</h3>
             </div>
-            <div class="px-6 pb-6">
-                <button onclick="closeWarning()" class="w-full bg-orange-500 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest active:scale-95 transition-all shadow-lg">
-                    LANJUTKAN SCAN
-                </button>
+            <div class="p-4">
+                <button onclick="closeWarning()" class="w-full bg-orange-500 text-white py-4 rounded-xl font-black text-xs uppercase shadow-lg shadow-orange-100">Tutup</button>
             </div>
         </div>
     </div>
 
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-lg border-t border-gray-100 flex justify-around items-center h-20 z-40">
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-gray-100 flex justify-around items-center h-20 z-50">
         <button onclick="switchTab('scan')" id="nav-scan" class="nav-item active flex flex-col items-center justify-center w-full h-full text-gray-400 transition-all">
             <i class="fas fa-qrcode text-xl"></i>
-            <span class="text-[10px] font-bold mt-1 uppercase">Scanner</span>
+            <span class="text-[9px] font-black mt-1 uppercase">Scan</span>
+        </button>
+        <button onclick="switchTab('reg')" id="nav-reg" class="nav-item flex flex-col items-center justify-center w-full h-full text-gray-400 transition-all border-x border-gray-50">
+            <i class="fas fa-user-pen text-xl"></i>
+            <span class="text-[9px] font-black mt-1 uppercase">Daftar</span>
         </button>
         <button onclick="switchTab('history')" id="nav-history" class="nav-item flex flex-col items-center justify-center w-full h-full text-gray-400 transition-all">
             <i class="fas fa-history text-xl"></i>
-            <span class="text-[10px] font-bold mt-1 uppercase">Riwayat</span>
+            <span class="text-[9px] font-black mt-1 uppercase">Riwayat</span>
         </button>
     </nav>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbypkLAOISZHAnGagYziGq_RmWKAdUZMe3qXzu4ebAUbzN4wptTHwJ2ei8jNQVSr3a89ig/exec"; 
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbypkLAOISZHAnGagYziGq_RmWKAdUZMe3qXzu4ebAUbzN4wptTHwJ2ei8jNQVSr3a89ig/exec";
+        const pesertaList = ["Agung Prayuda", "Ardan Mizanul Khoiri", "Citra Hayatunnufus", "Dede Ahmad Fauzan", "Dinda Ayuni", "Dwi Nur Aini", "Fadli Al Masani", "Hoirul Sambudi", "Khairun Anwar", "Mochammad Wafi Nur Jihan", "Muhammad Maulana Naufal Widodo", "Nur Zalfa Sahiyah", "Nurul Hidayah Harahap", "Ramlan", "Rendi Imam Saputra", "Syahrul Mubarok", "Wilda Nazwatun Nisa"];
+
         let isProcessing = false;
         let html5QrCode = new Html5Qrcode("reader");
-        let historyData = JSON.parse(localStorage.getItem('attendance_history') || '[]');
+        let historyData = JSON.parse(localStorage.getItem('pn_history_v4') || '[]');
+        let regData = JSON.parse(localStorage.getItem('pn_reg_v4') || '{}');
         let currentFacingMode = "environment";
+        let selectedPeserta = "";
 
+        // --- CAMERA LOGIC ---
         function startCamera() {
             const config = { 
                 fps: 25, 
-                qrbox: { width: 250, height: 250 }, 
+                qrbox: { width: 250, height: 250 },
                 aspectRatio: 1.0,
-                videoConstraints: {
-                    aspectRatio: 1.0,
-                    facingMode: currentFacingMode
-                }
+                videoConstraints: { aspectRatio: 1.0, facingMode: currentFacingMode }
             };
             html5QrCode.start({ facingMode: currentFacingMode }, config, onScanSuccess)
             .catch(() => html5QrCode.start({ facingMode: "any" }, config, onScanSuccess));
@@ -148,153 +171,162 @@
         async function switchCamera() {
             if (isProcessing) return;
             currentFacingMode = (currentFacingMode === "environment") ? "user" : "environment";
-            updateStatus("MENGGANTI KAMERA...", "bg-blue-50 text-blue-600");
             try {
                 await html5QrCode.stop();
                 startCamera();
-                setTimeout(() => resetScanner(), 800);
-            } catch (err) { resetScanner(); }
+            } catch (err) { startCamera(); }
         }
 
         function onScanSuccess(decodedText) {
             if (isProcessing) return;
             isProcessing = true;
 
-            const parts = decodedText.split('|');
-            const scId = parts[0] || 'N/A';
-            const scNama = parts[1] || 'Peserta';
-            
-            // 1. Cek Duplikat
-            if (historyData.some(item => item.id === scId)) {
-                if (navigator.vibrate) navigator.vibrate([100, 50, 100]); 
-                document.getElementById('warn-name').innerText = scNama;
+            const [id, nama] = decodedText.split('|');
+            const checks = regData[nama] || {};
+            const doneCount = Object.values(checks).filter(Boolean).length;
+
+            // 1. Validasi Registrasi
+            if (doneCount < 5) {
+                showValidationAlert();
+                setTimeout(() => { isProcessing = false; hideValidationAlert(); }, 3000);
+                return;
+            }
+
+            // 2. Cek Duplikat
+            if (historyData.some(h => h.id === id)) {
+                document.getElementById('warn-name').innerText = nama;
                 showWarning();
                 return;
             }
 
-            // 2. Scan Berhasil (Otomatis)
+            // 3. Sukses
             if (navigator.vibrate) navigator.vibrate(100);
-            
-            // Efek Flash visual
-            const readerElem = document.getElementById('reader');
-            readerElem.classList.add('flash-effect');
-            setTimeout(() => readerElem.classList.remove('flash-effect'), 400);
+            updateStatus("✅ BERHASIL", "bg-emerald-600 text-white shadow-lg");
 
-            updateStatus("✅ BERHASIL DICATAT", "bg-emerald-500 text-white shadow-lg shadow-emerald-200");
-
-            const dataObj = {
-                id: scId,
-                nama: scNama,
-                strip: parts[2] || '-',
-                waktu: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + " WIB",
+            const entry = {
+                id, nama,
+                waktu: new Date().toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}),
                 tanggal: new Date().toLocaleDateString('id-ID')
             };
 
-            // Simpan Ke Riwayat Lokal
-            saveToHistory(dataObj);
-
-            // Kirim ke Server Google (No-Cors)
-            fetch(SCRIPT_URL, {
-                method: "POST",
-                mode: "no-cors",
-                body: JSON.stringify({ data: decodedText })
-            }).then(() => {
-                // Jeda 1.5 detik agar scanner tidak terlalu liar menangkap QR yang sama
-                setTimeout(() => resetScanner(), 1500); 
-            }).catch(() => {
-                updateStatus("⚠️ ERROR KONEKSI", "bg-red-500 text-white");
-                setTimeout(() => resetScanner(), 2000);
+            historyData.unshift(entry);
+            localStorage.setItem('pn_history_v4', JSON.stringify(historyData));
+            
+            fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify({ data: decodedText }) })
+            .finally(() => {
+                setTimeout(() => resetScanner(), 1500);
             });
         }
 
-        function saveToHistory(item) {
-            historyData.unshift(item); 
-            localStorage.setItem('attendance_history', JSON.stringify(historyData));
-            renderHistory();
+        // --- REGISTRATION LOGIC ---
+        function renderNameList() {
+            const q = document.getElementById('searchName').value.toLowerCase();
+            const container = document.getElementById('name-list');
+            
+            container.innerHTML = pesertaList.filter(n => n.toLowerCase().includes(q)).map(nama => {
+                const done = Object.values(regData[nama] || {}).filter(Boolean).length;
+                return `
+                    <div onclick="openChecklist('${nama}')" class="bg-white p-5 rounded-2xl flex items-center justify-between border border-gray-100 shadow-sm active:scale-95 transition-all">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-xl ${done === 5 ? 'bg-green-100 text-green-700' : 'bg-gray-50 text-gray-300'} flex items-center justify-center font-black text-xs">
+                                ${done === 5 ? '✓' : done + '/5'}
+                            </div>
+                            <span class="text-xs font-black text-gray-700 uppercase">${nama}</span>
+                        </div>
+                        <i class="fas fa-chevron-right text-gray-200 text-xs"></i>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openChecklist(nama) {
+            selectedPeserta = nama;
+            document.getElementById('current-peserta-name').innerText = nama;
+            document.getElementById('reg-sub-1').classList.remove('active');
+            document.getElementById('reg-sub-2').classList.add('active');
+            
+            const checks = regData[nama] || { c1:false, c2:false, c3:false, c4:false, c5:false };
+            const labels = ['Logistik (Madu/Kopi)', 'Seragam & Sabuk', 'Alat Tulis & Peci', 'Alat Ibadah & Mandi', 'HP (Kuota Aktif)'];
+            
+            document.getElementById('checklist-container').innerHTML = labels.map((label, i) => `
+                <label class="flex items-center gap-4 bg-gray-50 p-4 rounded-2xl border border-transparent has-[:checked]:border-green-200 has-[:checked]:bg-green-50 transition-all">
+                    <input type="checkbox" onchange="toggleReg('${nama}', 'c${i+1}')" ${checks['c'+(i+1)] ? 'checked' : ''}>
+                    <span class="text-[11px] font-black text-gray-600 uppercase">${label}</span>
+                </label>
+            `).join('');
+        }
+
+        function toggleReg(nama, key) {
+            if (!regData[nama]) regData[nama] = {};
+            regData[nama][key] = !regData[nama][key];
+            localStorage.setItem('pn_reg_v4', JSON.stringify(regData));
+        }
+
+        function finishRegistration() {
+            document.getElementById('reg-sub-2').classList.remove('active');
+            document.getElementById('reg-sub-1').classList.add('active');
+            renderNameList();
+        }
+
+        function goBackToNames() {
+            document.getElementById('reg-sub-2').classList.remove('active');
+            document.getElementById('reg-sub-1').classList.add('active');
+        }
+
+        // --- UI CORE ---
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('nav-' + tab).classList.add('active');
+            document.getElementById(tab + '-page').classList.add('active');
+
+            if (tab === 'scan') startCamera();
+            else {
+                html5QrCode.stop().catch(()=>{});
+                if (tab === 'reg') renderNameList();
+                if (tab === 'history') renderHistory();
+            }
         }
 
         function renderHistory() {
             const container = document.getElementById('history-list');
             if (historyData.length === 0) {
-                container.innerHTML = '<div class="text-center py-20 opacity-20 italic text-sm font-black tracking-widest uppercase">Kosong</div>';
+                container.innerHTML = '<div class="text-center py-20 text-gray-300 text-[10px] font-black uppercase tracking-widest leading-relaxed">Belum ada data<br>absen hari ini</div>';
                 return;
             }
-            container.innerHTML = historyData.map((item, index) => `
-                <div class="bg-white p-5 rounded-[1.5rem] shadow-sm border border-gray-100 flex items-center justify-between animate-fade-in">
-                    <div>
-                        <h4 class="font-black text-gray-800 text-[13px] uppercase tracking-tight">${item.nama}</h4>
-                        <p class="text-[10px] text-gray-400 font-bold mt-1">
-                            <span class="text-[#166534]">ID: ${item.id}</span> • ${item.waktu}
-                        </p>
+            container.innerHTML = historyData.map(h => `
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-1.5 h-10 bg-green-600 rounded-full"></div>
+                        <div>
+                            <h4 class="text-[11px] font-black text-gray-800 uppercase">${h.nama}</h4>
+                            <p class="text-[9px] text-gray-400 font-bold">${h.waktu} • SUCCESS</p>
+                        </div>
                     </div>
-                    <button onclick="deleteHistoryItem(${index})" class="text-gray-200 hover:text-red-400 p-2 transition-colors">
-                        <i class="fas fa-circle-xmark text-xl"></i>
-                    </button>
+                    <i class="fas fa-check-circle text-green-500 opacity-20 text-xl"></i>
                 </div>
             `).join('');
         }
 
-        function deleteHistoryItem(index) {
-            if(confirm('Hapus riwayat ini?')) {
-                historyData.splice(index, 1);
-                localStorage.setItem('attendance_history', JSON.stringify(historyData));
-                renderHistory();
-            }
+        function showValidationAlert() { document.getElementById('validation-alert').classList.remove('hidden'); }
+        function hideValidationAlert() { document.getElementById('validation-alert').classList.add('hidden'); }
+        function showWarning() { document.getElementById('modalWarning').style.display = 'flex'; }
+        function closeWarning() { document.getElementById('modalWarning').style.display = 'none'; resetScanner(); }
+        function updateStatus(t, c) {
+            const el = document.getElementById('status-info');
+            el.innerText = t;
+            el.className = `mt-4 text-center py-4 px-6 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${c}`;
         }
-
-        function clearAllHistory() {
-            if(confirm('Hapus SEMUA riwayat secara permanen?')) {
-                historyData = [];
-                localStorage.removeItem('attendance_history');
-                renderHistory();
-            }
-        }
-
+        function resetScanner() { isProcessing = false; updateStatus("Mencari Kode QR...", "bg-gray-50 text-gray-400"); }
         function downloadCSV() {
-            if (historyData.length === 0) return alert("Riwayat kosong.");
-            let csvContent = "data:text/csv;charset=utf-8,ID,Nama,Kategori,Waktu,Tanggal\n";
-            historyData.forEach(row => { csvContent += `${row.id},${row.nama},${row.strip},${row.waktu},${row.tanggal}\n`; });
-            const link = document.createElement("a");
-            link.setAttribute("href", encodeURI(csvContent));
-            link.setAttribute("download", "Absensi_PagarNusa_Otomatis.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            if (tab === 'scan') {
-                document.getElementById('scan-page').classList.add('active');
-                document.getElementById('nav-scan').classList.add('active');
-                startCamera();
-            } else {
-                document.getElementById('history-page').classList.add('active');
-                document.getElementById('nav-history').classList.add('active');
-                renderHistory();
-                html5QrCode.stop().catch(()=>{}); 
-            }
-        }
-
-        function showWarning() {
-            document.getElementById('modalWarning').style.display = 'flex';
-        }
-
-        function closeWarning() {
-            document.getElementById('modalWarning').style.display = 'none';
-            resetScanner();
-        }
-
-        function updateStatus(text, classes) {
-            const statusInfo = document.getElementById('status-info');
-            statusInfo.innerText = text;
-            statusInfo.className = `mt-6 text-center py-4 px-6 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all ${classes}`;
-        }
-
-        function resetScanner() {
-            updateStatus("Mencari Kode QR...", "bg-gray-50 text-gray-400");
-            isProcessing = false;
+            let csv = "ID,Nama,Waktu,Tanggal\n";
+            historyData.forEach(h => csv += `${h.id},${h.nama},${h.waktu},${h.tanggal}\n`);
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Absensi_PN_2026.csv`;
+            a.click();
         }
 
         window.onload = () => startCamera();

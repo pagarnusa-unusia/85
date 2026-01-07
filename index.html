@@ -283,7 +283,7 @@
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 <script>
     // 1. KONFIGURASI
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9D5CY0eB7vfHJPW-_jxPboZUSPM82q7cjjjOBH10Uf5a8NeO4QVWlmB2EE2pTp4tX1A/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyV0Y4P4HB82MHAjSvNxe4xp7BnpAAaNRumpghQebhVBoNJy6PHuh9LN5i9p6kDMaqBmA/exec";
 
     // Fungsi Pembantu: Membuat Slug dari Judul
     function createSlug(text) {
@@ -407,6 +407,23 @@ function updateVisualDOM(visualData) {
     window.addEventListener('storage', (e) => {
         if (e.key === 'pagarnusa_news' || e.key === 'pagarnusa_visual') syncFromLocalFallback();
     });
+    // Tambahkan fungsi ini di dalam script index.html Anda
+function showSkeleton() {
+    const grid = document.getElementById('news-grid');
+    const skeleton = `
+        <div class="animate-pulse bg-slate-200 rounded-[2rem] h-80 w-full"></div>
+    `.repeat(3);
+    grid.innerHTML = skeleton;
+}
+
+// Panggil showSkeleton() di awal fungsi loadLiveContent()
+async function loadLiveContent() {
+    showSkeleton(); // Jalankan loading state
+    try {
+        const res = await fetch(SCRIPT_URL + "?type=getBerita");
+        // ... sisa kode fetch Anda
+    } catch (e) { /* handle error */ }
+}
 </script>
 </body>
 

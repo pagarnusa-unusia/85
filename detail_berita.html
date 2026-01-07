@@ -4,14 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Detail Berita - Pagar Nusa UNUSIA</title>
-    
     <meta property="og:type" content="article">
-    <meta id="og-title" property="og:title" content="Detail Berita - Pagar Nusa UNUSIA">
-    <meta id="og-image" property="og:image" content="https://uktpagarnusa.my.id/logopn.png">
-    <meta id="og-url" property="og:url" content="">
-    <meta id="og-description" property="og:description" content="Portal Berita Resmi Pagar Nusa UNUSIA Jakarta">
+    <meta property="og:title" id="og-title" content="Detail Berita - Pagar Nusa UNUSIA">
+    <meta property="og:description" id="og-description" content="Portal Berita Resmi Pagar Nusa UNUSIA Jakarta">
+    <meta property="og:image" id="og-image" content="https://uktpagarnusa.my.id/logopn.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -69,81 +68,96 @@
         </div>
     </header>
 
-    <main class="container mx-auto px-6 py-12 md:py-20">
-        <div class="flex flex-col lg:flex-row gap-16">
-            
-            <article class="lg:w-2/3" data-aos="fade-up">
-                <nav class="flex items-center space-x-2 text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8">
-                    <a href="index.html" class="hover:text-primary transition">Beranda</a>
-                    <i class="fas fa-chevron-right text-[8px]"></i>
-                    <a href="berita.html" class="hover:text-primary transition">Berita</a>
-                    <i class="fas fa-chevron-right text-[8px]"></i>
-                    <span class="text-slate-900" id="breadcrumb-title">Detail Artikel</span>
-                </nav>
+    <main class="container mx-auto px-4 md:px-6 py-8 md:py-16">
+    <div class="flex flex-col lg:flex-row gap-12">
+        
+        <article class="lg:w-2/3">
+            <nav class="flex items-center space-x-2 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mb-6 bg-white w-fit px-4 py-2 rounded-full shadow-sm border border-slate-100">
+                <a href="index.html" class="hover:text-primary">Home</a>
+                <span class="opacity-30">/</span>
+                <a href="berita.html" class="hover:text-primary">Warta</a>
+                <span class="opacity-30">/</span>
+                <span class="text-primary" id="breadcrumb-title italic">Reading Now</span>
+            </nav>
 
-                <header class="mb-10">
-                    <span id="detail-category" class="inline-block bg-primary/10 text-primary text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-tighter mb-4">
-                        KATEGORI
-                    </span>
-                    <h1 id="detail-title" class="text-3xl md:text-5xl font-semibold text-slate-900 leading-tight tracking-tighter mb-6">
-                        Memuat Judul Berita...
-                    </h1>
-                    <div class="flex items-center space-x-6 py-6 border-y border-slate-100">
-                        <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center text-slate-500">
-                                <i class="fas fa-user-shield"></i>
-                            </div>
-                            <div>
-                                <p class="text-[10px] font-black text-slate-400 uppercase leading-none">Penulis</p>
-                                <p class="text-xs font-bold text-slate-900">Admin Pagar Nusa</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center text-slate-500">
-                                <i class="fas fa-calendar-alt"></i>
-                            </div>
-                            <div>
-                                <p class="text-[10px] font-black text-slate-400 uppercase leading-none">Diterbitkan</p>
-                                <p id="detail-date" class="text-xs font-bold text-slate-900">-- --- 202X</p>
-                            </div>
+            <header class="mb-8">
+                <div id="detail-category" class="inline-block bg-primary text-white text-[9px] font-black px-4 py-1 rounded-md uppercase tracking-[0.2em] mb-4 shadow-lg shadow-primary/20">
+                    MEMUAT...
+                </div>
+                <h1 id="detail-title" class="text-3xl md:text-5xl font-black text-slate-900 leading-[1.1] tracking-tighter mb-6">
+                    Menghubungkan ke Pusat Komando...
+                </h1>
+                
+                <div class="flex flex-wrap items-center justify-between gap-4 py-6 border-y border-slate-200">
+                    <div class="flex items-center space-x-3">
+                        <img src="logopn.png" class="w-12 h-12 rounded-full bg-slate-100 p-1 border border-slate-200">
+                        <div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Diterbitkan Oleh</p>
+                            <p class="text-xs font-bold text-slate-900 flex items-center">
+                                Admin Pusat PN <i class="fas fa-check-circle text-blue-500 ml-1"></i>
+                            </p>
                         </div>
                     </div>
-                </header>
-
-                <div class="rounded-[2.5rem] overflow-hidden shadow-2xl mb-12 border-4 border-white">
-                    <img id="detail-image" src="logopn.png" alt="Thumbnail" class="w-full h-auto min-h-[300px] object-cover">
-                </div>
-
-                <div id="detail-content" class="content-area text-lg text-slate-600 leading-relaxed font-medium mb-16">
-                </div>
-
-                <div class="bg-slate-100 p-8 rounded-3xl flex flex-col md:flex-row justify-between items-center gap-6">
-                    <p class="font-black text-xs uppercase tracking-widest text-slate-500">Bagikan Informasi Ini:</p>
-                    <div class="flex gap-4">
-                        <button onclick="shareToWA()" class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-emerald-500 hover:bg-emerald-500 hover:text-white transition shadow-sm"><i class="fab fa-whatsapp text-xl"></i></button>
-                        <button onclick="navigator.clipboard.writeText(window.location.href); alert('Link disalin!')" class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-slate-900 hover:bg-slate-900 hover:text-white transition shadow-sm"><i class="fas fa-link text-xl"></i></button>
+                    <div class="flex items-center gap-2">
+                        <p id="detail-date" class="text-[10px] font-black text-slate-500 bg-slate-100 px-3 py-2 rounded-lg uppercase tracking-widest italic">-- -- 202X</p>
                     </div>
                 </div>
-            </article>
+            </header>
 
-            <aside class="lg:w-1/3 space-y-10">
-                <div class="bg-primary p-10 rounded-[2.5rem] text-white relative overflow-hidden shadow-2xl shadow-primary/30" data-aos="fade-left">
-                    <i class="fas fa-fist-raised absolute -right-6 -bottom-6 text-9xl opacity-10 rotate-12"></i>
-                    <h4 class="text-2xl font-black mb-4 relative z-10 leading-tight">Gabung Menjadi <br><span class="text-accent">Santri PSNU Pagarnusa!</span></h4>
-                    <p class="text-xs text-emerald-100 mb-8 relative z-10 font-medium">Siapa yang mengurus NU, saya anggap santriku. Siapa yang menjadi santriku, saya doakan Khusnul Khatimah beserta keluarganya.</p>
-                    <a href="daftar.html" class="block w-full bg-white text-primary text-center py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-accent hover:text-slate-900 transition relative z-10 shadow-xl">Daftar Sekarang</a>
-                </div>
-
-                <div class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm" data-aos="fade-left" data-aos-delay="200">
-                    <h4 class="font-black text-slate-900 mb-8 uppercase tracking-tighter flex items-center">
-                        <span class="w-2 h-6 bg-accent mr-3 rounded-full"></span> Warta Terkait
-                    </h4>
-                    <div id="other-news-list" class="space-y-6">
+            <figure class="mb-12" data-aos="zoom-in">
+                <div class="rounded-[2rem] overflow-hidden shadow-2xl border-[6px] border-white ring-1 ring-slate-200 relative group">
+                    <img id="detail-image" src="logopn.png" alt="Thumbnail" class="w-full h-auto min-h-[300px] object-cover transition duration-700 group-hover:scale-105">
+                    <div class="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-md p-3 rounded-xl text-[10px] text-white/80 italic font-medium">
+                        <i class="fas fa-camera mr-2"></i> Dokumentasi Resmi Pagar Nusa UNUSIA Jakarta
                     </div>
                 </div>
-            </aside>
-        </div>
-    </main>
+            </figure>
+
+            <div id="detail-content" class="content-area text-lg text-slate-700 leading-relaxed font-medium mb-12 first-letter:text-5xl first-letter:font-black first-letter:text-primary first-letter:mr-3 first-letter:float-left">
+                </div>
+
+            <div class="border-t border-slate-200 pt-10">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-8">
+                    <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 italic">Topik Terkait:</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-slate-100 px-4 py-2 rounded-lg text-[10px] font-bold text-slate-600 hover:bg-primary hover:text-white transition cursor-pointer uppercase">#PagarNusa</span>
+                            <span class="bg-slate-100 px-4 py-2 rounded-lg text-[10px] font-bold text-slate-600 hover:bg-primary hover:text-white transition cursor-pointer uppercase">#UNUSIA</span>
+                            <span class="bg-slate-100 px-4 py-2 rounded-lg text-[10px] font-bold text-slate-600 hover:bg-primary hover:text-white transition cursor-pointer uppercase">#PencakSilat</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-4 rounded-3xl border border-slate-100 shadow-xl flex items-center gap-3">
+                        <p class="text-[10px] font-black px-2 uppercase text-slate-400">Share:</p>
+                        <button onclick="shareToWA()" class="w-10 h-10 bg-[#25D366] text-white rounded-xl flex items-center justify-center hover:scale-110 transition shadow-lg shadow-green-200">
+                            <i class="fab fa-whatsapp"></i>
+                        </button>
+                        <button onclick="copyToClipboard()" class="w-10 h-10 bg-slate-900 text-white rounded-xl flex items-center justify-center hover:scale-110 transition shadow-lg shadow-slate-300">
+                            <i class="fas fa-link"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <aside class="lg:w-1/3 space-y-8">
+            <div class="bg-gradient-to-br from-primary to-emerald-900 p-8 rounded-[2.5rem] text-white relative overflow-hidden shadow-2xl group" data-aos="fade-left">
+                <i class="fas fa-dragon absolute -right-4 -bottom-4 text-9xl opacity-10 -rotate-12 group-hover:rotate-0 transition duration-1000"></i>
+                <h4 class="text-2xl font-black mb-4 relative z-10 leading-tight italic">Ingin Menjadi <br><span class="text-accent uppercase">Pendekar?</span></h4>
+                <p class="text-[11px] text-emerald-100 mb-8 relative z-10 font-medium leading-relaxed">Bergabunglah bersama keluarga besar PSNU Pagar Nusa UNUSIA Jakarta. Jaga Ulama, Jaga Bangsa!</p>
+                <a href="daftar.html" class="block w-full bg-accent text-slate-900 text-center py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-white hover:scale-105 transition-all shadow-xl shadow-black/20 relative z-10">Daftar Sekarang</a>
+            </div>
+
+            <div class="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm sticky top-28" data-aos="fade-left">
+                <h4 class="font-black text-slate-900 mb-8 uppercase tracking-tighter flex items-center text-sm">
+                    <span class="w-1.5 h-5 bg-accent mr-3 rounded-full"></span> Warta Terpopuler
+                </h4>
+                <div id="other-news-list" class="space-y-6">
+                    </div>
+            </div>
+        </aside>
+    </div>
+</main>
 
     <footer class="bg-slate900 text-white pt-20 md:pt-32 pb-12 relative">
         <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-20">
@@ -201,113 +215,89 @@
 
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
+        // 1. Progress Bar Scroll Logic
+    window.onscroll = function() {
+        let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        let scrolled = (winScroll / height) * 100;
+        document.getElementById("scroll-progress").style.width = scrolled + "%";
+    };
+
+    // 2. Load Detail Data
+    async function loadDetail() {
+        const params = new URLSearchParams(window.location.search);
+        const idFromUrl = params.get('id'); 
+        if (!idFromUrl) { window.location.href = 'index.html'; return; }
+
+        let newsData = JSON.parse(localStorage.getItem('pagarnusa_news')) || [];
+        
+        if (newsData.length === 0) {
+            try {
+                const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyV0Y4P4HB82MHAjSvNxe4xp7BnpAAaNRumpghQebhVBoNJy6PHuh9LN5i9p6kDMaqBmA/exec";
+                const response = await fetch(`${SCRIPT_URL}?type=getAllData`);
+                const data = await response.json();
+                if (data.berita) {
+                    newsData = data.berita;
+                    localStorage.setItem('pagarnusa_news', JSON.stringify(data.berita));
+                }
+            } catch (err) { console.error(err); }
+        }
+
+        const postIndex = parseInt(idFromUrl) - 1;
+        const post = newsData[postIndex];
+
+        if (post) {
+            // Mapping Content
+            document.getElementById('detail-title').innerText = post.title;
+            document.getElementById('detail-category').innerText = post.category || 'WARTA';
+            document.getElementById('detail-date').innerText = post.date;
+            document.getElementById('detail-image').src = post.image || 'logopn.png';
+            
+            // Render Konten (Rapih)
+            const contentContainer = document.getElementById('detail-content');
+            contentContainer.innerHTML = post.content
+                .split('\n')
+                .filter(p => p.trim() !== "")
+                .map(p => `<p class="mb-6 leading-[1.8] text-slate-600 font-medium">${p.trim()}</p>`)
+                .join('');
+
+            document.title = post.title + " | Pagar Nusa UNUSIA";
+            loadOtherNews(postIndex, newsData);
+        }
+    }
+
+    function loadOtherNews(currentIndex, allData) {
+        const container = document.getElementById('other-news-list');
+        const others = allData.filter((_, idx) => idx !== currentIndex).sort(() => 0.5 - Math.random()).slice(0, 4);
+        
+        container.innerHTML = others.map(post => `
+            <a href="detail_berita.html?id=${allData.indexOf(post) + 1}" class="flex gap-4 group cursor-pointer">
+                <div class="w-20 h-20 shrink-0 rounded-2xl overflow-hidden border border-slate-100">
+                    <img src="${post.image || 'logopn.png'}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                </div>
+                <div class="flex flex-col justify-center">
+                    <h5 class="text-[11px] font-black text-slate-900 leading-snug group-hover:text-primary transition line-clamp-2 uppercase italic tracking-tighter">${post.title}</h5>
+                    <p class="text-[9px] text-slate-400 font-bold mt-1 uppercase tracking-widest">${post.date}</p>
+                </div>
+            </a>
+        `).join('');
+    }
+
+    function shareToWA() {
+        const title = document.getElementById('detail-title').innerText;
+        const url = window.location.href;
+        window.open(`https://wa.me/?text=*${encodeURIComponent(title)}*%0A%0ABaca selengkapnya di sini:%0A${url}`, '_blank');
+    }
+
+    function copyToClipboard() {
+        navigator.clipboard.writeText(window.location.href);
+        alert('Tautan berhasil disalin ke clipboard!');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadDetail();
         if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true });
-
-        function createSlug(text) {
-            return text.toString().toLowerCase()
-                .replace(/\s+/g, '-')
-                .replace(/[^\w\-]+/g, '')
-                .replace(/\-\-+/g, '-')
-                .replace(/^-+/, '')
-                .replace(/-+$/, '');
-        }
-
-        async function loadDetail() {
-            const params = new URLSearchParams(window.location.search);
-            const idFromUrl = params.get('id'); 
-            if (!idFromUrl) { window.location.href = 'index.html'; return; }
-
-            let newsData = JSON.parse(localStorage.getItem('pagarnusa_news')) || [];
-            
-            if (newsData.length === 0) {
-                try {
-                    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9D5CY0eB7vfHJPW-_jxPboZUSPM82q7cjjjOBH10Uf5a8NeO4QVWlmB2EE2pTp4tX1A/exec";
-                    document.getElementById('detail-title').innerText = "Menghubungkan ke Pusat Komando...";
-                    
-                    const response = await fetch(`${SCRIPT_URL}?type=getAllData`);
-                    const data = await response.json();
-                    
-                    if (data.berita && data.berita.length > 0) {
-                        newsData = data.berita;
-                        localStorage.setItem('pagarnusa_news', JSON.stringify(data.berita));
-                    }
-                } catch (err) {
-                    console.error("Gagal mengambil data:", err);
-                }
-            }
-
-            const postIndex = parseInt(idFromUrl) - 1;
-            const post = newsData[postIndex];
-
-            if (post) {
-                // SINKRONISASI GAMBAR KOLOM F (Spreadsheet)
-                const finalImage = post.image || 'logopn.png';
-
-                // 1. Update Konten Visual Halaman
-                document.getElementById('detail-title').innerText = post.title;
-                document.getElementById('breadcrumb-title').innerText = post.title;
-                document.getElementById('detail-category').innerText = post.category || 'Warta Pendekar';
-                document.getElementById('detail-date').innerText = post.date;
-                document.getElementById('detail-image').src = finalImage;
-                
-                const contentContainer = document.getElementById('detail-content');
-                if (contentContainer) {
-                    contentContainer.innerHTML = post.content
-                        .split('\n')
-                        .map(p => p.trim() ? `<p class="mb-4 text-slate-600 leading-relaxed italic text-sm md:text-base">"${p}"</p>` : '')
-                        .join('');
-                }
-
-                // 2. Update Browser Title
-                document.title = post.title + " - Pagar Nusa UNUSIA";
-
-                // 3. LOGIKA UPDATE META UNTUK PREVIEW LINK (WhatsApp/Sosmed)
-                try {
-                    if(document.getElementById('og-title')) document.getElementById('og-title').setAttribute('content', post.title);
-                    if(document.getElementById('og-image')) document.getElementById('og-image').setAttribute('content', finalImage);
-                    if(document.getElementById('og-url')) document.getElementById('og-url').setAttribute('content', window.location.href);
-                    
-                    // Update Deskripsi (ambil 120 huruf pertama)
-                    const shortDesc = post.content.substring(0, 120).replace(/[#*]/g, '') + "...";
-                    if(document.getElementById('og-description')) document.getElementById('og-description').setAttribute('content', shortDesc);
-                } catch (e) {
-                    console.warn("Meta tags gagal diperbarui.");
-                }
-
-                loadOtherNews(postIndex, newsData);
-            } else {
-                window.location.href = 'index.html';
-            }
-        }
-
-        function loadOtherNews(currentIndex, allData) {
-            const container = document.getElementById('other-news-list');
-            if (!container) return;
-            
-            const others = allData.filter((_, idx) => idx !== currentIndex).slice(0, 3);
-            
-            container.innerHTML = others.map((post) => {
-                // Mencari ID asli dari data mentah agar link tidak salah buka
-                const originalId = allData.findIndex(item => item.title === post.title) + 1; 
-                const slug = createSlug(post.title);
-                return `
-                    <a href="detail_berita.html?id=${originalId}&title=${slug}" class="flex items-center gap-4 group transition-all">
-                        <img src="${post.image || 'logopn.png'}" class="w-16 h-16 rounded-xl object-cover shrink-0 grayscale group-hover:grayscale-0 transition duration-500 shadow-sm">
-                        <div class="min-w-0">
-                            <h5 class="text-xs font-black text-slate-900 line-clamp-2 uppercase tracking-tighter group-hover:text-primary transition">${post.title}</h5>
-                            <p class="text-[9px] text-slate-400 font-bold mt-1 uppercase tracking-widest">${post.date}</p>
-                        </div>
-                    </a>`;
-            }).join('');
-        }
-
-        function shareToWA() {
-            const title = document.getElementById('detail-title').innerText;
-            const text = `*BERITA PAGAR NUSA UNUSIA*\n\n${title}\n\nBaca selengkapnya di sini:\n${window.location.href}`;
-            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-        }
-
-        document.addEventListener('DOMContentLoaded', loadDetail);
+    });
     </script>
 </body>
 </html>

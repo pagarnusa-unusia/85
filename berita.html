@@ -23,103 +23,203 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
         .hero-mini { background: linear-gradient(135deg, #1B7548 0%, #064e3b 100%); }
+        .category-btn.active { background-color: #FFB800; color: #0f172a; border-color: #FFB800; }
+        /* Skeleton Animation */
+        .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900">
+<body class="bg-slate-50 text-slate-900 overflow-x-hidden">
 
-    <header class="sticky top-0 z-[100] bg-primary text-white shadow-xl">
+    <header class="sticky top-0 z-[100] bg-primary/95 backdrop-blur-md text-white shadow-xl">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="index.html" class="flex items-center space-x-3">
-                <img src="logopn.png" alt="Logo" class="h-10 bg-white p-1 rounded-lg">
-                <span class="text-xl font-black tracking-tighter uppercase">PAGARNUSA</span>
+            <a href="index.html" class="flex items-center space-x-3 group">
+                <div class="bg-white p-1 rounded-lg group-hover:rotate-12 transition">
+                    <img src="logopn.png" alt="Logo" class="h-10">
+                </div>
+                <div class="leading-none">
+                    <span class="block text-xl font-black tracking-tighter uppercase">PAGARNUSA</span>
+                    <span class="block text-[8px] text-accent font-bold tracking-[0.2em]">UNUSIA JAKARTA</span>
+                </div>
             </a>
-            <a href="index.html" class="text-[11px] font-bold tracking-widest hover:text-accent transition">
-                <i class="fas fa-arrow-left mr-2"></i> KEMBALI KE BERANDA
+            <nav class="hidden md:flex space-x-6 text-[11px] font-bold tracking-widest uppercase">
+                <a href="index.html" class="hover:text-accent transition">Beranda</a>
+                <a href="index.html#profil" class="hover:text-accent transition">Profil</a>
+                <a href="berita.html" class="text-accent border-b-2 border-accent">Berita</a>
+            </nav>
+            <a href="index.html" class="text-[11px] font-bold tracking-widest hover:text-accent transition flex items-center">
+                <i class="fas fa-home mr-2"></i> HOME
             </a>
         </div>
     </header>
 
-    <section class="hero-mini py-16 md:py-24 text-white text-center">
-        <div class="container mx-auto px-6">
-            <h1 class="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-4" data-aos="fade-down">Warta Pendekar</h1>
-            <p class="text-emerald-100/80 max-w-2xl mx-auto italic font-medium" data-aos="fade-up">Kumpulan berita, kegiatan, dan prestasi terbaru Pagar Nusa UNUSIA Jakarta.</p>
+    <section class="hero-mini py-20 md:py-32 text-white text-center relative overflow-hidden">
+        <i class="fas fa-fist-raised absolute -right-10 -bottom-10 text-[20rem] opacity-5 rotate-12"></i>
+        <div class="container mx-auto px-6 relative z-10">
+            <h1 class="text-5xl md:text-7xl font-black tracking-tighter uppercase mb-6" data-aos="zoom-out">Warta <span class="text-accent italic text-4xl md:text-6xl">Pendekar</span></h1>
+            <p class="text-emerald-100/80 max-w-2xl mx-auto italic font-medium md:text-lg" data-aos="fade-up">Arsip digital kegiatan, prestasi, dan pengumuman resmi Pagar Nusa UNUSIA Jakarta.</p>
         </div>
     </section>
 
-    <section class="container mx-auto px-6 -mt-8 relative z-20">
-        <div class="bg-white p-4 rounded-2xl shadow-2xl border border-slate-100">
-            <div class="relative">
-                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                <input type="text" id="news-search" placeholder="Cari berita atau kategori..." 
-                    class="w-full pl-12 pr-4 py-4 rounded-xl border border-slate-100 focus:outline-none focus:ring-2 focus:ring-primary/20 transition font-medium">
+    <section class="container mx-auto px-6 -mt-12 relative z-20">
+        <div class="bg-white p-6 md:p-8 rounded-[2.5rem] shadow-2xl border border-slate-100">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="lg:w-1/3 relative">
+                    <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-300"></i>
+                    <input type="text" id="news-search" placeholder="Cari judul atau isi berita..." 
+                        class="w-full pl-14 pr-6 py-4 rounded-2xl border border-slate-100 focus:outline-none focus:ring-4 focus:ring-primary/5 transition font-semibold bg-slate-50">
+                </div>
+                <div class="lg:w-2/3 flex items-center gap-3 overflow-x-auto pb-2 no-scrollbar" id="category-list">
+                    <button onclick="filterCategory('semua')" class="category-btn active px-6 py-3.5 rounded-2xl border border-slate-100 text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap">Semua Warta</button>
+                    </div>
             </div>
         </div>
     </section>
 
-    <section class="py-16 md:py-24 min-h-[50vh]">
+    <section class="py-20 min-h-[60vh]">
         <div class="container mx-auto px-6">
-            <div id="all-news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <div id="all-news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                <div class="skeleton-item space-y-4">
+                    <div class="h-64 rounded-[2.5rem] skeleton"></div>
+                    <div class="h-6 w-3/4 skeleton rounded"></div>
+                    <div class="h-4 w-full skeleton rounded"></div>
                 </div>
+            </div>
         </div>
     </section>
 
-    <footer class="bg-slate900 text-white py-12 text-center">
-        <p class="text-[10px] font-black tracking-widest text-slate-500 uppercase">© 2026 PAGARNUSA UNUSIA Jakarta</p>
+    <footer class="bg-slate-900 text-white py-16 text-center border-t border-white/5">
+        <div class="container mx-auto px-6">
+            <img src="logopn.png" class="h-12 mx-auto mb-6 bg-white p-2 rounded-xl">
+            <p class="text-[10px] font-black tracking-[0.3em] text-slate-500 uppercase mb-4">Pencak Silat Nahdlatul Ulama</p>
+            <p class="text-[9px] text-slate-600 font-bold tracking-widest italic">&copy; 2026 PAGARNUSA UNUSIA JAKARTA. SATU KOMANDO, SATU BARISAN.</p>
+        </div>
     </footer>
 
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 800, once: true });
-
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyV0Y4P4HB82MHAjSvNxe4xp7BnpAAaNRumpghQebhVBoNJy6PHuh9LN5i9p6kDMaqBmA/exec";
         const newsGrid = document.getElementById('all-news-grid');
         const searchInput = document.getElementById('news-search');
+        const categoryList = document.getElementById('category-list');
+        
         let allNews = JSON.parse(localStorage.getItem('pagarnusa_news')) || [];
+        let currentFilter = 'semua';
 
+        // 1. Inisialisasi & Ambil Data Cloud
+        async function fetchLiveNews() {
+            try {
+                const response = await fetch(`${SCRIPT_URL}?type=getAllData`);
+                const data = await response.json();
+                if (data.berita) {
+                    allNews = data.berita;
+                    localStorage.setItem('pagarnusa_news', JSON.stringify(allNews));
+                    updateCategories();
+                    renderNews(allNews);
+                }
+            } catch (err) {
+                console.error("Gagal sinkronisasi data cloud:", err);
+                renderNews(allNews); // Tetap render dari local storage jika gagal
+            }
+        }
+
+        // 2. Generate Tombol Kategori Otomatis
+        function updateCategories() {
+            const categories = ['semua', ...new Set(allNews.map(n => n.category || 'Berita'))];
+            categoryList.innerHTML = categories.map(cat => `
+                <button onclick="filterCategory('${cat}')" 
+                    class="category-btn ${currentFilter === cat ? 'active' : ''} px-6 py-3.5 rounded-2xl border border-slate-100 text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap bg-white shadow-sm hover:border-accent">
+                    ${cat}
+                </button>
+            `).join('');
+        }
+
+        // 3. Render Berita
         function renderNews(data) {
             if (data.length === 0) {
                 newsGrid.innerHTML = `
-                    <div class="col-span-full py-20 text-center opacity-50">
-                        <i class="fas fa-search text-5xl mb-4"></i>
-                        <p class="font-bold uppercase tracking-widest">Berita tidak ditemukan</p>
+                    <div class="col-span-full py-32 text-center" data-aos="fade-up">
+                        <div class="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-ghost text-4xl text-slate-300"></i>
+                        </div>
+                        <p class="font-black uppercase tracking-[0.2em] text-slate-400">Warta Tidak Ditemukan</p>
+                        <button onclick="window.location.reload()" class="mt-4 text-primary font-bold text-xs uppercase underline">Reset Pencarian</button>
                     </div>`;
                 return;
             }
 
-            newsGrid.innerHTML = data.map((post, index) => `
-                <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-sm border border-slate-100 group hover:shadow-2xl transition-all duration-500" data-aos="fade-up">
-                    <div class="relative h-64 overflow-hidden">
-                        <img src="${post.image || 'logopn.png'}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                        <span class="absolute top-6 left-6 bg-accent text-slate-900 text-[9px] font-black px-4 py-1.5 rounded-full uppercase tracking-tighter">${post.category}</span>
+            newsGrid.innerHTML = data.map((post) => {
+                // Menemukan index asli dari array global untuk link ID
+                const originalId = allNews.findIndex(n => n.title === post.title) + 1;
+                
+                return `
+                <div class="bg-white rounded-[3rem] overflow-hidden shadow-sm border border-slate-100 group hover:shadow-2xl hover:-translate-y-2 transition-all duration-500" data-aos="fade-up">
+                    <div class="relative h-72 overflow-hidden">
+                        <img src="${post.image || 'logopn.png'}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex items-end p-8">
+                             <p class="text-white text-xs font-bold italic">Lihat Detail Artikel <i class="fas fa-arrow-right ml-2"></i></p>
+                        </div>
+                        <span class="absolute top-6 left-6 bg-primary text-white text-[9px] font-black px-4 py-2 rounded-xl uppercase tracking-widest shadow-xl">${post.category || 'WARTA'}</span>
                     </div>
-                    <div class="p-8">
-                        <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-3">${post.date}</p>
-                        <h4 class="font-black text-slate-900 mb-4 line-clamp-2 text-xl uppercase tracking-tighter italic group-hover:text-primary transition">${post.title}</h4>
-                        <p class="text-sm text-slate-500 line-clamp-3 mb-8 font-medium italic">"${post.content}"</p>
-                        <a href="detail_berita.html?id=${allNews.indexOf(post) + 1}" class="inline-flex items-center gap-3 text-slate-900 font-black text-xs uppercase tracking-widest group/btn">
-                            Baca Selengkapnya 
-                            <span class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover/btn:bg-primary group-hover/btn:text-white transition-all">
-                                <i class="fas fa-arrow-right"></i>
-                            </span>
+                    <div class="p-10">
+                        <div class="flex items-center gap-3 text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-4">
+                            <i class="fas fa-calendar-alt text-accent"></i>
+                            ${post.date}
+                        </div>
+                        <h4 class="font-black text-slate-900 mb-4 line-clamp-2 text-2xl uppercase tracking-tighter leading-tight group-hover:text-primary transition italic">${post.title}</h4>
+                        <p class="text-sm text-slate-500 line-clamp-3 mb-8 font-medium leading-relaxed italic opacity-80">"${post.content}"</p>
+                        
+                        <a href="detail_berita.html?id=${originalId}" class="flex items-center justify-between group/btn bg-slate-50 p-2 pl-6 rounded-2xl hover:bg-primary transition-all duration-500">
+                            <span class="text-slate-900 group-hover/btn:text-white font-black text-[10px] uppercase tracking-widest transition">Selengkapnya</span>
+                            <div class="w-12 h-12 rounded-xl bg-white flex items-center justify-center shadow-sm group-hover/btn:rotate-[360deg] transition-all duration-700">
+                                <i class="fas fa-chevron-right text-primary"></i>
+                            </div>
                         </a>
                     </div>
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
         }
 
-        // Fungsi Cari
-        searchInput.addEventListener('input', (e) => {
-            const val = e.target.value.toLowerCase();
-            const filtered = allNews.filter(post => 
-                post.title.toLowerCase().includes(val) || 
-                post.category.toLowerCase().includes(val)
-            );
-            renderNews(filtered);
-        });
+        // 4. Fitur Filter & Pencarian
+        function filterCategory(cat) {
+            currentFilter = cat;
+            updateCategories();
+            handleSearchAndFilter();
+        }
 
-        // Load awal
-        renderNews(allNews);
+        function handleSearchAndFilter() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filtered = allNews.filter(post => {
+                const matchesSearch = post.title.toLowerCase().includes(searchTerm) || 
+                                    post.content.toLowerCase().includes(searchTerm);
+                const matchesCategory = currentFilter === 'semua' || post.category === currentFilter;
+                return matchesSearch && matchesCategory;
+            });
+            renderNews(filtered);
+        }
+
+        // 5. Inisialisasi
+        document.addEventListener('DOMContentLoaded', () => {
+            AOS.init({ duration: 800, once: true });
+            
+            // Render awal dari local storage agar cepat
+            if(allNews.length > 0) {
+                updateCategories();
+                renderNews(allNews);
+            }
+            
+            // Tarik data terbaru dari Cloud
+            fetchLiveNews();
+            
+            // Debounce Search
+            let timeout;
+            searchInput.addEventListener('input', () => {
+                clearTimeout(timeout);
+                timeout = setTimeout(handleSearchAndFilter, 300);
+            });
+        });
     </script>
 </body>
 </html>

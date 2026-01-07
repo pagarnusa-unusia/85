@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Galeri Lensa Pendekar - PAGARNUSA UNUSIA</title>
+    <link rel="icon" href="logopn.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1B7548',
+                        accent: '#FFB800',
+                        dark: '#064e3b'
+                    },
+                    borderRadius: { '4xl': '2rem' }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+        .hero-galeri { background: radial-gradient(circle at top right, #1B7548, #064e3b); position: relative; overflow: hidden; }
+        .gallery-item { break-inside: avoid; margin-bottom: 2rem; transition: all 0.4s ease; }
+        .gallery-item:hover { transform: translateY(-8px); }
+        .img-wrapper { position: relative; overflow: hidden; border-radius: 2rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
+        .overlay-gradient { background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%); }
+        .filter-btn.active { background-color: #FFB800; color: #064e3b; border-color: #FFB800; }
+    </style>
+</head>
+<body class="text-slate-900">
+
+    <header class="sticky top-0 z-[100] bg-primary/90 backdrop-blur-md text-white shadow-xl">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="flex items-center space-x-3">
+                <img src="logopn.png" alt="Logo" class="h-10 bg-white p-1 rounded-xl">
+                <span class="text-xl font-extrabold tracking-tighter uppercase">PAGARNUSA</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="hidden md:block text-xs font-bold tracking-widest uppercase hover:text-accent transition">Beranda</a>
+                <a href="index.html" class="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full text-[10px] font-bold tracking-widest transition-all border border-white/20">
+                    <i class="fas fa-arrow-left mr-1"></i> KEMBALI
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero-galeri py-20 text-white text-center">
+        <div class="container mx-auto px-6 relative z-10">
+            <h1 class="text-5xl md:text-6xl font-black tracking-tighter uppercase mb-4" data-aos="zoom-out">Lensa Pendekar</h1>
+            <p class="text-emerald-100/70 max-w-xl mx-auto text-sm font-medium" data-aos="fade-up">Dokumentasi resmi perjuangan dan momen berharga Pagar Nusa UNUSIA Jakarta.</p>
+        </div>
+    </section>
+
+    <section class="py-12">
+        <div class="container mx-auto px-6">
+            <div id="filter-container" class="flex flex-wrap justify-center gap-3 mb-12" data-aos="fade-up">
+                <button onclick="filterGallery('all')" class="filter-btn active px-6 py-2 rounded-full border border-slate-300 text-xs font-bold uppercase tracking-widest transition-all">Semua</button>
+            </div>
+
+            <div id="gallery-container" class="columns-1 md:columns-2 lg:columns-3 gap-8">
+                <div class="h-64 bg-slate-200 animate-pulse rounded-4xl mb-8"></div>
+                <div class="h-80 bg-slate-200 animate-pulse rounded-4xl mb-8"></div>
+            </div>
+        </div>
+    </section>
+
+    <div id="lightbox" class="fixed inset-0 z-[1000] bg-black/95 hidden flex-col items-center justify-center p-6 backdrop-blur-md opacity-0 transition-opacity duration-300">
+        <button onclick="closeLightbox()" class="absolute top-8 right-8 text-white/70 hover:text-white text-3xl transition-transform hover:rotate-90">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="max-w-4xl w-full flex flex-col items-center">
+            <img id="lightbox-img" src="" class="max-w-full max-h-[65vh] rounded-3xl shadow-2xl object-contain mb-6 border border-white/10">
+            
+            <div class="w-full max-w-xl text-center text-white bg-white/5 p-6 rounded-[2rem] border border-white/10">
+                <h3 id="lightbox-title" class="font-bold text-xl uppercase tracking-tight italic text-accent mb-2"></h3>
+                <p id="lightbox-desc" class="text-slate-400 text-sm mb-6"></p>
+                
+                <div class="flex justify-center gap-4">
+                    <a id="btn-download" href="" download="PagarNusa_Gallery.png" class="bg-primary hover:bg-dark text-white px-6 py-3 rounded-full text-[10px] font-bold tracking-widest uppercase transition-all flex items-center gap-2">
+                        <i class="fas fa-download"></i> Download PNG
+                    </a>
+                    <button id="btn-share" class="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-full text-[10px] font-bold tracking-widest uppercase transition-all flex items-center gap-2 border border-white/20">
+                        <i class="fas fa-share-nodes"></i> Bagikan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyV0Y4P4HB82MHAjSvNxe4xp7BnpAAaNRumpghQebhVBoNJy6PHuh9LN5i9p6kDMaqBmA/exec";
+        let rawData = [];
+
+        async function loadGallery() {
+            try {
+                const response = await fetch(`${SCRIPT_URL}?type=getGallery`);
+                rawData = await response.json();
+                renderFilters(rawData);
+                renderGallery(rawData);
+            } catch (err) {
+                console.error("Error:", err);
+                document.getElementById('gallery-container').innerHTML = `<p class="text-center w-full py-10 font-bold text-red-500">Gagal sinkronisasi data cloud.</p>`;
+            }
+        }
+
+        function renderFilters(items) {
+            const categories = ['all', ...new Set(items.map(i => i.category).filter(Boolean))];
+            const container = document.getElementById('filter-container');
+            container.innerHTML = categories.map(cat => `
+                <button onclick="filterGallery('${cat}')" class="filter-btn ${cat==='all'?'active':''} px-6 py-2 rounded-full border border-slate-300 text-xs font-bold uppercase tracking-widest transition-all">
+                    ${cat === 'all' ? 'Semua' : cat}
+                </button>
+            `).join('');
+        }
+
+        function filterGallery(category) {
+            // Update UI Button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.innerText.toLowerCase() === category.toLowerCase() || (category === 'all' && btn.innerText.toLowerCase() === 'semua'));
+            });
+
+            const filtered = category === 'all' ? rawData : rawData.filter(i => i.category === category);
+            renderGallery(filtered);
+        }
+
+        function renderGallery(items) {
+            const container = document.getElementById('gallery-container');
+            container.innerHTML = items.map((item, idx) => `
+                <div class="gallery-item group cursor-pointer" data-aos="fade-up" data-aos-delay="${idx % 3 * 50}" onclick="openLightbox('${item.url}', '${item.title}', '${item.desc}', '${item.category}')">
+                    <div class="img-wrapper">
+                        <img src="${item.url}" class="w-full h-auto block transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 overlay-gradient opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-6">
+                            <span class="text-accent text-[8px] font-black tracking-widest uppercase mb-1">${item.category || 'Galeri'}</span>
+                            <h3 class="text-white font-bold text-sm uppercase tracking-tight">${item.title}</h3>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            AOS.refresh();
+        }
+
+        function openLightbox(url, title, desc, cat) {
+            const lb = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            const downloadBtn = document.getElementById('btn-download');
+            const shareBtn = document.getElementById('btn-share');
+
+            img.src = url;
+            document.getElementById('lightbox-title').innerText = title;
+            document.getElementById('lightbox-desc').innerText = desc || 'Dokumentasi Pagar Nusa UNUSIA Jakarta.';
+            
+            // Set Download URL
+            downloadBtn.href = url;
+            
+            // Set Share Action (WhatsApp)
+            shareBtn.onclick = () => {
+                const text = `Lihat foto "${title}" dari Galeri Pagar Nusa UNUSIA Jakarta: ${url}`;
+                window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+            };
+
+            lb.classList.replace('hidden', 'flex');
+            setTimeout(() => lb.style.opacity = '1', 50);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lb = document.getElementById('lightbox');
+            lb.style.opacity = '0';
+            setTimeout(() => {
+                lb.classList.replace('flex', 'hidden');
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            AOS.init({ duration: 800, once: true });
+            loadGallery();
+        });
+    </script>
+</body>
+</html>

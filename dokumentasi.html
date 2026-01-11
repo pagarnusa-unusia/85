@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOKUMENTASI - PAGARNUSA UNUSIA</title>
+    <link rel="icon" href="logopn.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1B7548',
+                        primaryDark: '#145c38',
+                        accent: '#FFB800',
+                        slate900: '#0f172a'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .hero-gradient { background: linear-gradient(135deg, #1B7548 0%, #064e3b 100%); }
+        .folder-card { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(0,0,0,0.05); }
+        .folder-card:hover { transform: translateY(-12px); box-shadow: 0 30px 60px -12px rgba(27, 117, 72, 0.25); }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-thumb { background: #1B7548; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 overflow-x-hidden">
+
+    <div class="bg-slate-900 text-white py-2.5 text-[10px] font-bold tracking-widest hidden md:block border-b border-white/5">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center space-x-6">
+                <span><i class="fas fa-envelope text-accent mr-2"></i> uktpagarnusa.my.id</span>
+                <span><i class="fas fa-cloud text-accent mr-2"></i> Cloud Storage Access</span>
+            </div>
+            <div class="flex items-center space-x-4 italic text-accent">Internal Dokumentasi UKT</div>
+        </div>
+    </div>
+
+    <header class="sticky top-0 z-[100] bg-primary/95 backdrop-blur-md text-white shadow-2xl transition-all duration-300">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="bg-white p-1 rounded-lg transform group-hover:rotate-12 transition shrink-0">
+                    <img src="logopn.png" alt="Logo" class="h-10 md:h-12">
+                </div>
+                <div class="leading-tight">
+                    <span class="block text-lg md:text-xl font-black tracking-tighter uppercase">PAGARNUSA</span>
+                    <span class="block text-[9px] uppercase tracking-[0.3em] text-accent font-bold">UNUSIA JAKARTA</span>
+                </div>
+            </a>
+            <nav class="hidden lg:flex items-center space-x-2 font-bold text-[11px] tracking-widest">
+                <a href="#" class="px-4 py-2 hover:text-accent transition border-b-2 border-transparent hover:border-accent uppercase">Beranda</a>
+                <a href="https://wa.me/6285715232441" class="lg:ml-6 bg-accent text-slate-900 px-7 py-3 rounded-full font-black hover:bg-white hover:scale-105 transition-all shadow-xl text-center uppercase">Hubungi Admin</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="bg-white border-b border-slate-200 py-3 relative z-10">
+        <div class="container mx-auto px-4 md:px-6 flex items-center">
+            <div class="bg-primary text-white text-[8px] md:text-[9px] font-black px-3 md:px-4 py-1.5 rounded-full mr-4 shrink-0 shadow-lg animate-pulse">PENTING</div>
+            <marquee class="text-[10px] md:text-xs font-bold italic text-slate-500 tracking-wide uppercase">
+                Akses Dokumentasi Berdasarkan Waktu Kegiatan • Silahkan pilih folder sesuai dengan jam dokumentasi yang ingin dilihat • Pastikan koneksi internet stabil untuk melihat file HD
+            </marquee>
+        </div>
+    </div>
+
+    <section class="hero-gradient text-white relative overflow-hidden pt-16 pb-24 md:pt-24 md:pb-32 flex items-center">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center space-y-6 md:space-y-10" data-aos="fade-up">
+                <div class="inline-flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full border border-white/20">
+                    <span class="w-2 h-2 bg-accent rounded-full animate-ping"></span>
+                    <span class="text-[10px] font-black tracking-widest uppercase">Pusat Arsip Digital</span>
+                </div>
+                <h2 class="text-4xl md:text-8xl font-black leading-tight tracking-tighter">
+                    PORTAL <span class="text-accent drop-shadow-2xl italic">DOKUMENTASI</span>
+                </h2>
+                <p class="text-base md:text-xl text-emerald-50/80 max-w-2xl mx-auto font-medium leading-relaxed italic border-l-4 border-accent pl-6 text-center">
+                    Akses mudah dokumentasi UKT Pagarnusa Unusia. Berkas tersimpan aman di Cloud Storage dan dapat diakses sesuai rentang waktu kegiatan.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-12 -mt-20 container mx-auto px-4 md:px-6 relative z-20">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+            
+            <div class="bg-white rounded-[2.5rem] p-8 md:p-10 folder-card group" data-aos="fade-up">
+                <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary text-3xl mb-8 group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-lg">
+                    <i class="fas fa-sun"></i>
+                </div>
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-1 h-4 bg-primary rounded-full"></div>
+                    <p class="text-[10px] text-primary font-black uppercase tracking-widest">Sesi 1</p>
+                </div>
+                <h4 class="font-black text-slate-900 mb-4 leading-tight text-xl md:text-2xl uppercase tracking-tighter italic">
+                    Jam 08.30 - 20.00
+                </h4>
+                <p class="text-sm text-slate-500 mb-8 font-medium italic leading-relaxed">
+                    Dokumentasi kegiatan siang hari hingga menjelang malam. Meliputi pembukaan dan sesi latihan utama.
+                </p>
+                <a href="https://drive.google.com/drive/folders/1UM_uFFHme0Od3klEmgAPKAPXDMe-A0gH?usp=drive_link" target="_blank" class="bg-slate-50 border border-slate-100 p-4 rounded-2xl flex items-center justify-between group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-sm">
+                    <span class="font-black text-[10px] uppercase tracking-widest">Buka Folder Drive</span>
+                    <i class="fas fa-arrow-right group-hover:translate-x-2 transition"></i>
+                </a>
+            </div>
+
+            <div class="bg-white rounded-[2.5rem] p-8 md:p-10 folder-card group border-t-8 border-t-accent" data-aos="fade-up" data-aos-delay="100">
+                <div class="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center text-accent text-3xl mb-8 group-hover:bg-accent group-hover:text-white transition-all duration-500 shadow-lg">
+                    <i class="fas fa-moon"></i>
+                </div>
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-1 h-4 bg-accent rounded-full"></div>
+                    <p class="text-[10px] text-accent font-black uppercase tracking-widest">Sesi 2</p>
+                </div>
+                <h4 class="font-black text-slate-900 mb-4 leading-tight text-xl md:text-2xl uppercase tracking-tighter italic">
+                    Jam 20.00 - 04.00
+                </h4>
+                <p class="text-sm text-slate-500 mb-8 font-medium italic leading-relaxed">
+                    Dokumentasi kegiatan malam hari hingga dini hari. Meliputi sesi spiritual, materi khusus, dan istirahat.
+                </p>
+                <a href="https://drive.google.com/drive/folders/110jdTra3imZLIjHcFeCJowd_sfyLeN5M?usp=drive_link" target="_blank" class="bg-slate-50 border border-slate-100 p-4 rounded-2xl flex items-center justify-between group-hover:bg-accent group-hover:text-slate-900 transition-all duration-300 shadow-sm">
+                    <span class="font-black text-[10px] uppercase tracking-widest">Buka Folder Drive</span>
+                    <i class="fas fa-arrow-right group-hover:translate-x-2 transition"></i>
+                </a>
+            </div>
+
+            <div class="bg-white rounded-[2.5rem] p-8 md:p-10 folder-card group" data-aos="fade-up" data-aos-delay="200">
+                <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary text-3xl mb-8 group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-lg">
+                    <i class="fas fa-cloud-sun"></i>
+                </div>
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-1 h-4 bg-primary rounded-full"></div>
+                    <p class="text-[10px] text-primary font-black uppercase tracking-widest">Sesi 3</p>
+                </div>
+                <h4 class="font-black text-slate-900 mb-4 leading-tight text-xl md:text-2xl uppercase tracking-tighter italic">
+                    Jam 05.00 - 12.00
+                </h4>
+                <p class="text-sm text-slate-500 mb-8 font-medium italic leading-relaxed">
+                    Dokumentasi kegiatan subuh hingga siang hari berikutnya. Meliputi penutupan dan sesi evaluasi.
+                </p>
+                <a href="https://drive.google.com/drive/folders/1c-GNq0cq2BcNvbdF4hemcapEYEURTWTP?usp=drive_link" target="_blank" class="bg-slate-50 border border-slate-100 p-4 rounded-2xl flex items-center justify-between group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-sm">
+                    <span class="font-black text-[10px] uppercase tracking-widest">Buka Folder Drive</span>
+                    <i class="fas fa-arrow-right group-hover:translate-x-2 transition"></i>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="bg-slate-900 text-white pt-20 pb-12 relative overflow-hidden">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+            <div class="lg:col-span-1 space-y-8">
+                <div class="flex items-center space-x-4">
+                    <img src="logopn.png" class="h-14 bg-white p-2 rounded-2xl shadow-xl shadow-black/50">
+                    <div class="leading-none">
+                        <span class="text-xl md:text-2xl font-black block tracking-tighter uppercase">PAGARNUSA</span>
+                        <span class="text-[9px] text-accent tracking-[0.3em] uppercase font-bold">UNUSIA JAKARTA</span>
+                    </div>
+                </div>
+                <p class="text-slate-400 text-sm leading-relaxed font-medium italic">"Bela Diri, Bela Bangsa, Bela Agama. Satu Komando di bawah naungan Nahdlatul Ulama."</p>
+            </div>
+            
+            <div>
+                <h5 class="text-lg font-black mb-10 flex items-center uppercase tracking-widest">
+                    <span class="w-2 h-6 bg-accent mr-3 rounded-full"></span> Link Cepat
+                </h5>
+                <ul class="space-y-4 text-sm text-slate-400 font-bold uppercase tracking-tighter">
+                    <li><a href="#" class="hover:text-accent transition italic">Website Utama</a></li>
+                    <li><a href="#" class="hover:text-accent transition italic">Pendaftaran</a></li>
+                    <li><a href="https://wa.me/6285715232441" class="hover:text-accent transition italic">Hubungi Kami</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h5 class="text-lg font-black mb-10 flex items-center uppercase tracking-widest">
+                    <span class="w-2 h-6 bg-primary mr-3 rounded-full"></span> Lokasi
+                </h5>
+                <p class="text-sm text-slate-400 leading-relaxed font-bold italic">
+                    Kampus UNUSIA Jakarta<br>
+                    Jl. Taman Amir Hamzah No. 5, Menteng, Jakarta Pusat.
+                </p>
+            </div>
+
+            <div class="bg-white/5 p-8 rounded-[2rem] border border-white/5 text-center">
+                <h5 class="text-xs font-black mb-6 uppercase tracking-widest text-accent italic">Support By</h5>
+                <div class="grid grid-cols-2 gap-4 opacity-50 grayscale hover:grayscale-0 transition duration-700">
+                    <div class="bg-white/10 p-2 rounded-xl text-[10px] font-black">MUNDZIR</div>
+                    <div class="bg-white/10 p-2 rounded-xl text-[10px] font-black">FAUZAN</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container mx-auto px-6 mt-20 pt-10 border-t border-white/5 text-center md:flex md:justify-between items-center">
+            <p class="text-[9px] text-slate-500 font-black tracking-widest uppercase">© 2026 PAGARNUSA UNUSIA JAKARTA. Hak Cipta Dilindungi.</p>
+            <div class="flex justify-center gap-6 mt-4 md:mt-0">
+                <a href="https://www.instagram.com/pagarnusaunusia/" class="text-slate-500 hover:text-white transition text-lg"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/6285715232441" class="text-slate-500 hover:text-white transition text-lg"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true, offset: 100 });
+    </script>
+</body>
+</html>

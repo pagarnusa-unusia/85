@@ -337,6 +337,11 @@
             submitBtn.innerHTML = `<span>Kirim Laporan Evaluasi</span> <i class="fas fa-paper-plane"></i>`;
         });
     });
+
+    // --- TAMBAHKAN INI AGAR WAKTU BERJALAN ---
+    setInterval(checkDeadline, 1000);
+    checkDeadline();
+    validateForm();
 </script>
 </body>
 </html>

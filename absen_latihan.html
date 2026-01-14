@@ -5,17 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Absensi Latihan | PSNU PAGARNUSA UNUSIA</title>
     <link rel="icon" type="image/png" href="logopn.png">
-    
-    <script>
-        if (sessionStorage.getItem('isLoggedIn') !== 'true') {
-            window.location.replace("login.html"); 
-        }
-    </script>
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
     <style>
         :root { 
             --primary: #1B7548; 
@@ -69,6 +61,7 @@
             border-color: var(--primary);
         }
 
+        /* Checkbox Styling */
         .check-card input:checked + .card-content { 
             background: rgba(27, 117, 72, 0.15); 
             border-color: var(--primary); 
@@ -94,18 +87,13 @@
             100% { background-position: -200% 0; }
         }
 
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
     </style>
 </head>
 <body class="flex flex-col items-center">
-
-    <div class="fixed top-4 right-4 z-[100]">
-        <button onclick="logout()" class="glass px-3 py-2 rounded-xl text-red-400 text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
-            <i class="fas fa-sign-out-alt"></i> Keluar
-        </button>
-    </div>
 
     <div id="page-kampus" class="page active">
         <div class="text-center mt-8 mb-12">
@@ -197,6 +185,7 @@
     </div>
 
     <script>
+        // SCRIPT LOGIKA TETAP SAMA AGAR TIDAK ERROR
         const CONFIG = {
             API: "https://script.google.com/macros/s/AKfycbw4JRpC7MC_j6_grznsTCXJfTDYXDHB5mM24ArR4hnQmA_O-D_pwmAw0agM0whwmk2N/exec",
             MENU: { 
@@ -206,13 +195,6 @@
         };
 
         let state = { kampus: '', tingkat: '', pelet: '', data: [] };
-
-        function logout() {
-            if(confirm("Apakah Anda ingin keluar dari sistem?")) {
-                sessionStorage.clear();
-                window.location.href = "login.html";
-            }
-        }
 
         function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));

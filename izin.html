@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Izin Latihan — PAGARNUSA UNUSIA</title>
+  <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ ">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#07693A" />
+
+  <style>
+    :root {
+      --primary: #07693A;
+      --primary-dark: #054d2a;
+      --accent: #ffcc00;
+      --bg: #f4f7f6;
+      --card-bg: #ffffff;
+      --text-main: #1a2b23;
+      --text-muted: #5a7167;
+      --input-border: #e2e8f0;
+      --radius-lg: 20px;
+      --radius-md: 12px;
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b1410;
+        --card-bg: #14211a;
+        --text-main: #ecf3f0;
+        --text-muted: #a0b3a9;
+        --input-border: #2d3f36;
+      }
+    }
+
+    * { 
+      box-sizing: border-box; 
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    /* Background Accent */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 300px;
+      background: linear-gradient(135deg, #07693A 0%, #0a8b4a 100%);
+      z-index: -1;
+      border-radius: 0 0 50px 50px;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px 20px;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .logo img {
+      width: 80px;
+      height: 80px;
+      background: white;
+      padding: 5px;
+      border-radius: 50%;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 15px;
+    }
+
+    .title {
+      color: white;
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      color: rgba(255,255,255,0.8);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 5px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      width: 90%;
+      max-width: 500px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      padding: 30px;
+      margin-bottom: 30px;
+      transition: transform 0.3s ease;
+    }
+
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 0;
+      margin-bottom: 25px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h2::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--input-border);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-muted);
+    }
+
+    input[type="text"], 
+    input[type="date"], 
+    select, 
+    textarea {
+      width: 100%;
+      padding: 14px 16px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-main);
+      background-color: transparent;
+      border: 2px solid var(--input-border);
+      border-radius: var(--radius-md);
+      transition: all 0.2s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(7, 105, 58, 0.1);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .small-info {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 15px;
+      font-style: italic;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 25px;
+    }
+
+    .btn {
+      padding: 16px;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      text-align: center;
+      width: 100%;
+    }
+
+    .btn.primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(7, 105, 58, 0.3);
+    }
+
+    .btn.primary:active { transform: scale(0.98); }
+
+    .btn.secondary {
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      text-decoration: underline;
+    }
+
+    /* Lock Screen Style */
+    .locked {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 50px 30px;
+      text-align: center;
+      margin-top: 50px;
+      box-shadow: var(--shadow-lg);
+      width: 90%;
+      max-width: 450px;
+    }
+
+    /* Toast & Popup */
+    .toast {
+      position: fixed; top: 20px; left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      background: #1a2b23; color: white;
+      padding: 12px 24px; border-radius: 30px;
+      font-weight: 600; box-shadow: var(--shadow-lg);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 10000;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    .popup {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(5px); display: none;
+      justify-content: center; align-items: center; z-index: 9999;
+    }
+    .popup.show { display: flex; }
+    .popup-content {
+      background: var(--card-bg); padding: 35px;
+      border-radius: 24px; width: 85%; max-width: 380px;
+      text-align: center; box-shadow: var(--shadow-lg);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    @media (max-width: 480px) {
+      .row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="content" style="width: 100%; display: flex; flex-direction: column; align-items: center;"></div>
+  
+  <div id="toast" class="toast">✅ Izin berhasil dikirim!</div>
+
+  <div id="popupSuccess" class="popup">
+    <div class="popup-content">
+      <div style="font-size: 50px; margin-bottom: 15px;">🎉</div>
+      <h3 style="margin: 0; color: var(--primary); font-size: 1.4rem;">Berhasil Dikirim!</h3>
+      <p style="font-size: 0.95rem; color: var(--text-muted); margin: 15px 0 25px;">
+        Jika ada kendala silahkan hubungi nomor berikut:<br><br>
+        <a href="https://wa.me/6285715232441" target="_blank" style="color:var(--primary); font-weight:800; text-decoration:none; font-size: 1.1rem; border: 1px solid var(--primary); padding: 8px 15px; border-radius: 10px; display: inline-block;">
+          Hubungi Admin
+        </a>
+      </p>
+      <button id="closePopup" class="btn primary">Oke, Mengerti</button>
+    </div>
+  </div>
+
+<script>
+  function getWIBTime() {
+    const now = new Date();
+    const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+    return new Date(utc + 7 * 3600000);
+  }
+
+  // LOGIKA AKSES BERDASARKAN KAMPUS
+  function isAccessible(now, kampus) {
+    const d = now.getDay(), t = now.getHours() * 60 + now.getMinutes();
+    
+    if (kampus === "Bogor") {
+        if (d === 1) return t <= 1439;
+        if (d === 2) return true;
+        if (d === 3 || d === 4 || d === 5) return t <= 1439;
+        if (d === 6) return (t <= 420) || (t >= 720);
+        if (d === 0) return true;
+    } else if (kampus === "Jakarta") {
+        // Kembali ke semula: Senin & Rabu jam 18.00-23.59 (1080 menit - 1439 menit) dilarang
+        if ((d === 1 || d === 3) && (t >= 1080 && t <= 1439)) return false;
+        return true;
+    }
+    return false;
+  }
+
+  const content = document.getElementById("content");
+  let selectedKampus = "";
+  let namaEl, angkatanEl, sabukEl, perihalEl, hariEl, tanggalEl;
+
+  // HALAMAN 1: PILIH KAMPUS
+  function showKampusSelection() {
+    content.innerHTML = `
+      <header>
+        <div class="logo"><img src="logopn.png" alt="Logo"></div>
+        <h1 class="title">Pilih Kampus</h1>
+        <div class="subtitle">PSNU PAGARNUSA UNUSIA</div>
+      </header>
+      <section class="card">
+        <h2>Lokasi Latihan</h2>
+        <div class="actions">
+          <button class="btn primary" onclick="handleKampus('Jakarta')">Kampus Jakarta</button>
+          <button class="btn primary" onclick="handleKampus('Bogor')">Kampus Bogor</button>
+        </div>
+      </section>`;
+  }
+
+  function handleKampus(kampus) {
+    selectedKampus = kampus;
+    const now = getWIBTime();
+    
+    if (!isAccessible(now, kampus)) {
+        showLocked(kampus);
+    } else {
+        showForm();
+    }
+  }
+
+  function showLocked(kampus) {
+    const infoBogor = "Permohonan izin maksimal 2 jam sebelum latihan.";
+    const infoJakarta = "Formulir ditutup saat jam latihan berlangsung (Senin & Rabu 18.00-24.00).";
+    
+    content.innerHTML = `
+      <div class="locked">
+        <div style="font-size: 4rem; margin-bottom: 20px;">🔒</div>
+        <h2 style="justify-content: center; border: none;">Formulir Izin Ditutup</h2>
+        <p style="color: var(--text-muted); line-height: 1.6;">
+          <b>${kampus === "Bogor" ? infoBogor : infoJakarta}</b><br>
+          Akses formulir hanya tersedia pada waktu yang telah disepakati.<br><br>
+          <button class="btn secondary" onclick="showKampusSelection()">Kembali</button>
+        </p>
+      </div>`;
+  }
+
+  function showForm() {
+    content.innerHTML = `
+      <header>
+        <div class="logo"><img src="logopn.png" alt="Logo"></div>
+        <h1 class="title">Formulir Izin Santri</h1>
+        <div class="subtitle">PSNU PAGARNUSA UNUSIA - ${selectedKampus}</div>
+      </header>
+
+      <section class="card">
+        <h2>Data Izin Latihan</h2>
+        <form id="izinForm" onsubmit="return handleSubmit(event)">
+          
+          <div class="form-group">
+            <label for="nama">Nama Lengkap</label>
+            <input id="nama" name="nama" type="text" placeholder="Masukkan nama lengkap" required />
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label for="angkatan">Angkatan</label>
+              <select id="angkatan" required>
+                <option value="" disabled selected>Pilih...</option>
+                <option>2023</option><option>2024</option><option>2025</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="sabuk">Sabuk</label>
+              <select id="sabuk" required>
+                <option value="" disabled selected>Pilih...</option>
+                <option>Polos</option><option>Putih</option><option>Kuning</option><option>Merah</option><option>Biru</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="perihal">Perihal (Alasan)</label>
+            <textarea id="perihal" placeholder="Tuliskan alasan berhalangan hadir secara singkat..." required></textarea>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <label for="hari">Hari Latihan</label>
+              <select id="hari" required>
+                <option value="" disabled selected>Pilih hari</option>
+                ${selectedKampus === 'Jakarta' 
+                    ? '<option>Senin</option><option>Rabu</option>' 
+                    : '<option>Selasa</option><option>Sabtu</option>'}
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="tanggal">Tanggal</label>
+              <input id="tanggal" type="date" required />
+            </div>
+          </div>
+
+          <div class="small-info">Pastikan data yang Anda masukkan sudah benar sebelum menekan tombol kirim.</div>
+
+          <div class="actions">
+            <button type="submit" class="btn primary">Kirim Izin Sekarang</button>
+            <button type="button" class="btn secondary" onclick="showKampusSelection()">Ganti Kampus</button>
+          </div>
+        </form>
+      </section>
+
+      <footer>
+        &copy; 2025 Pagarnusa UNUSIA<br>
+        Developed for Excellence
+      </footer>`;
+    
+    namaEl = document.getElementById("nama");
+    angkatanEl = document.getElementById("angkatan");
+    sabukEl = document.getElementById("sabuk");
+    perihalEl = document.getElementById("perihal");
+    hariEl = document.getElementById("hari");
+    tanggalEl = document.getElementById("tanggal");
+  }
+
+  const scriptURL = "https://script.google.com/macros/s/AKfycbxy-jJRoeX2Ymq862iBj1B15V2PotKf2hIYBcOyV4vsRQ5OCeodwTDhRJ9eUC40gjH3/exec";
+
+  function showToast() {
+    const t = document.getElementById("toast");
+    t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 3000);
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    submitBtn.innerText = "Mengirim...";
+    submitBtn.style.opacity = "0.7";
+    submitBtn.disabled = true;
+
+    const data = {
+      kampus: selectedKampus,
+      nama: namaEl.value.trim(),
+      angkatan: angkatanEl.value,
+      sabuk: sabukEl.value,
+      perihal: perihalEl.value.trim(),
+      hari: hariEl.value,
+      tanggal: tanggalEl.value
+    };
+
+    try {
+      await fetch(scriptURL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      showToast();
+      resetForm();
+      document.getElementById("popupSuccess").classList.add("show");
+    } catch (err) {
+      alert("❌ Gagal mengirim data!");
+      console.error(err);
+    } finally {
+      submitBtn.innerText = "Kirim Izin Sekarang";
+      submitBtn.style.opacity = "1";
+      submitBtn.disabled = false;
+    }
+    return false;
+  }
+
+  function resetForm() {
+    const form = document.getElementById("izinForm");
+    if(form) form.reset();
+  }
+
+  document.getElementById("closePopup").addEventListener("click", () => {
+    document.getElementById("popupSuccess").classList.remove("show");
+    showKampusSelection();
+  });
+
+  document.getElementById("popupSuccess").addEventListener("click", (e) => {
+    if (e.target.id === "popupSuccess") {
+      document.getElementById("popupSuccess").classList.remove("show");
+      showKampusSelection();
+    }
+  });
+
+  // JALANKAN PEMILIHAN KAMPUS SAAT START
+  showKampusSelection();
+</script>
+
+</body>
+</html>

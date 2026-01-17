@@ -8,7 +8,7 @@
         
         // Cek: Apakah sudah login? Dan apakah redirecturl-nya adalah bendahara.html?
         if (!user || user.redirecturl !== 'bendahara.html') {
-            alert("Akses Ditolak! Anda bukan Bendahara.");
+            alert("Silahkan Login Terlebih Dahulu.");
             window.location.href = 'login.html';
         }
     })();
@@ -759,4 +759,5 @@ function editIuran(fullDesc, amount, date) {
 }
     </script>
 </body>
+
 </html>

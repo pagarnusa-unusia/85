@@ -34,7 +34,7 @@
             height: 100%;
             z-index: -1;
             background: linear-gradient(rgba(27, 117, 72, 0.7), rgba(0, 0, 0, 0.8)), 
-                        url('https://lh3.googleusercontent.com/d/1vI4PCquzIBTekytJ0pGo1xKym9qtZIQX?q=80&w=2070&auto=format&fit=crop'); /* Ganti URL ini dengan gambar Pagar Nusa Anda */
+                        url('https://lh3.googleusercontent.com/d/1vI4PCquzIBTekytJ0pGo1xKym9qtZIQX?q=80&w=2070&auto=format&fit=crop'); 
             background-size: cover;
             background-position: center;
             animation: zoomBg 20s infinite alternate;
@@ -106,7 +106,7 @@
 
 <script>
 // 1. URL Apps Script Anda
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxwf-nOiuigRQi5gLBglkrxqMEYm2F-zRCP4Dc_meDnFqmCodjMgeIYyQHC_tx6rHxJ6w/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby4KcQwRiUVLXhf5dEd1ZGMxTXfjJQQ_XzcDfLw2ikPca7VYDZZr3hE4vcjZYibbMT-zw/exec";
 
 // 2. Fungsi Toggle Password (VERSI YANG DIPERBAIKI)
 const toggleBtn = document.getElementById('togglePassword');
@@ -116,18 +116,41 @@ toggleBtn.onclick = function() {
     const isPass = passInput.type === 'password';
     passInput.type = isPass ? 'text' : 'password';
     
-    // Mengganti icon
     const icon = this.querySelector('i');
     if (isPass) {
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
     } else {
-        icon.classList.remove('fa-eye');
-        icon.classList.add('fa-eye-slash');
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
     }
 };
 
-// 3. Logika Login
+// --- TAMBAHAN LOGIKA VERIFIKASI EXCEL ---
+async function verifyExcel(userInp, passInp) {
+    try {
+        const response = await fetch('db_login.xlsx');
+        if (!response.ok) return null;
+        
+        const arrayBuffer = await response.arrayBuffer();
+        const data = new Uint8Array(arrayBuffer);
+        const workbook = XLSX.read(data, { type: 'array' });
+        
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+        return jsonData.find(row => {
+            // Kita gunakan toLowerCase untuk username agar tidak sensitif huruf besar/kecil
+            const user = (row.USERNAME || "").toString().trim().toLowerCase();
+            const pass = (row.PASSWORD || "").toString().trim();
+            return user === userInp.toLowerCase() && pass === passInp;
+        });
+    } catch (e) {
+        console.warn("Gagal membaca file Excel lokal:", e);
+        return null;
+    }
+}
+
+// 3. Logika Login (VERSI GANDA)
 document.getElementById('loginForm').onsubmit = async (e) => {
     e.preventDefault();
     const btn = document.getElementById('btnSubmit');
@@ -140,36 +163,58 @@ document.getElementById('loginForm').onsubmit = async (e) => {
     errorDiv.classList.add('hidden');
 
     try {
-        const response = await fetch(`${SCRIPT_URL}?type=login&nocache=${new Date().getTime()}`);
-        if (!response.ok) throw new Error("Gagal terhubung ke server database.");
-        
-        const dataJSON = await response.json();
+        let userMatch = null;
 
-        const userMatch = dataJSON.find(u => {
-            const dbUser = (u.username || "").toString().trim();
-            const dbPass = (u.password || "").toString().trim();
-            return dbUser === userInp && dbPass === passInp;
-        });
+        // Logika 1: Verifikasi via Cloud (Google Script)
+        try {
+            const cloudResponse = await fetch(`${SCRIPT_URL}?type=login&nocache=${new Date().getTime()}`);
+            if (cloudResponse.ok) {
+                const cloudData = await cloudResponse.json();
+                userMatch = cloudData.find(u => {
+                    const dbUser = (u.username || "").toString().trim().toLowerCase();
+                    const dbPass = (u.password || "").toString().trim();
+                    return dbUser === userInp.toLowerCase() && dbPass === passInp;
+                });
+            }
+        } catch (cloudErr) {
+            console.warn("Cloud skip, mencoba verifikasi Excel...");
+        }
+
+        // Logika 2: Verifikasi via Excel Lokal (jika Cloud tidak menemukan user)
+        if (!userMatch) {
+            userMatch = await verifyExcel(userInp, passInp);
+            if (userMatch) {
+                // Standarisasi data agar sama dengan format Cloud
+                userMatch.username = userMatch.USERNAME;
+                userMatch.nama = userMatch.USERNAME;
+                userMatch.redirecturl = userMatch.redirecturl;
+            }
+        }
 
         if (userMatch) {
             localStorage.setItem('currentUserProfile', JSON.stringify(userMatch));
-            const targetPage = userMatch.redirecturl || "profil_siswa.html";
+            const targetPage = userMatch.redirecturl || "profil_santri.html";
             setTimeout(() => {
                 window.location.href = targetPage;
             }, 800);
         } else {
             throw new Error("Username atau Password salah.");
         }
+        if (userMatch) {
+            localStorage.setItem('currentUserProfile', JSON.stringify(userMatch));
+            localStorage.setItem('loginTimestamp', new Date().getTime()); // <--- TAMBAHKAN INI
+            // ... rest of code
+        }
 
-    } catch (err) {
-        console.error("Login Error:", err);
-        errorDiv.classList.remove('hidden');
-        document.getElementById('error-text').innerText = err.message;
-        btn.disabled = false;
-        btn.innerHTML = '<span>MASUK</span><i class="fas fa-sign-in-alt text-sm"></i>';
-    }
-};
+        } catch (err) {
+            console.error("Login Error:", err);
+            errorDiv.classList.remove('hidden');
+            document.getElementById('error-text').innerText = err.message;
+            btn.disabled = false;
+            btn.innerHTML = '<span>MASUK</span><i class="fas fa-sign-in-alt text-sm"></i>';
+        }
+    };
+
 </script>
 </body>
 </html>
-

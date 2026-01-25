@@ -40,12 +40,15 @@
                 <img src="logopn.png" class="w-full h-full object-contain" alt="Logo">
             </div>
             <div>
-                <h1 class="text-xl font-extrabold text-pnDark tracking-tighter leading-none">BENDAHARA CLOUD</h1>
-                <p class="text-[9px] font-bold text-pnGreen uppercase tracking-[0.2em] mt-1 italic">Automated Sync System</p>
+                <h1 class="text-xl font-extrabold text-pnDark tracking-tighter leading-none uppercase" id="display-nama">BRANKAS IURAN</h1>
+                <p class="text-[9px] font-bold text-pnGreen uppercase tracking-[0.2em] mt-1">PSNU PAGARNUSA UNUSIA</p>
             </div>
         </div>
         
         <div class="flex gap-3">
+            <button onclick="logout()" title="Logout" class="bg-white text-red-500 border border-slate-200 p-3 rounded-2xl hover:bg-red-50 transition-all shadow-sm">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
             <button onclick="exportToExcel()" class="bg-white text-slate-500 border border-slate-200 p-3 rounded-2xl hover:bg-slate-50 transition-all shadow-sm">
                 <i class="fas fa-file-excel"></i>
             </button>
@@ -63,18 +66,18 @@
                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Pemasukan</p>
                     <span class="bg-green-100 text-green-600 p-2 rounded-xl text-xs"><i class="fas fa-arrow-up"></i></span>
                 </div>
-                <h3 id="stat-TotalMasuk" class="text-3xl font-black text-pnDark italic">Rp 0</h3>
+                <h3 id="stat-TotalMasuk" class="text-3xl font-black text-pnDark">Rp 0</h3>
             </div>
             <div class="bg-white p-8 rounded-[2.5rem] card-shadow border border-slate-50">
                 <div class="flex justify-between items-start mb-4">
                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Iuran Bulan Ini</p>
                     <span class="bg-blue-100 text-blue-600 p-2 rounded-xl text-xs"><i class="fas fa-calendar-check"></i></span>
                 </div>
-                <h3 id="stat-BulanIni" class="text-3xl font-black text-pnGreen italic">Rp 0</h3>
+                <h3 id="stat-BulanIni" class="text-3xl font-black text-pnGreen">Rp 0</h3>
             </div>
             <div class="gradient-pn p-8 rounded-[2.5rem] shadow-2xl shadow-pnDark/30 text-white relative overflow-hidden">
                 <p class="text-[10px] font-black text-white/40 uppercase tracking-widest mb-4">Saldo Kas Rayon</p>
-                <h3 id="stat-Saldo" class="text-3xl font-black text-pnAccent italic">Rp 0</h3>
+                <h3 id="stat-Saldo" class="text-3xl font-black text-pnAccent">Rp 0</h3>
                 <i class="fas fa-wallet absolute -right-4 -bottom-4 text-7xl opacity-10"></i>
             </div>
         </section>
@@ -151,6 +154,39 @@
     </div>
 
     <script>
+        // === FUNGSI PROTEKSI LOGIN & SESI 24 JAM ===
+        function validateSesi() {
+            const profil = localStorage.getItem('currentUserProfile');
+            const logTime = localStorage.getItem('loginTimestamp');
+            const now = new Date().getTime();
+            const ONE_DAY = 24 * 60 * 60 * 1000;
+
+            if (!profil) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            if (logTime && (now - logTime > ONE_DAY)) {
+                localStorage.clear();
+                alert("Sesi Anda habis. Silahkan login kembali.");
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Opsional: Menampilkan Nama User di Header
+            const userObj = JSON.parse(profil);
+            if(userObj.username) {
+                document.getElementById('display-nama').innerText = "BRANKAS " + userObj.username;
+            }
+        }
+        validateSesi();
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'login.html';
+        }
+
+        // === FUNGSI CORE SISTEM ===
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby4KcQwRiUVLXhf5dEd1ZGMxTXfjJQQ_XzcDfLw2ikPca7VYDZZr3hE4vcjZYibbMT-zw/exec";
         let allData = [];
         let listSantri = []; 
@@ -210,11 +246,9 @@
             Swal.fire({ title: 'Menyiapkan Kwitansi...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
 
             try {
-                // 1. CARI NOMOR WA DENGAN VALIDASI EKSTRA
                 const profil = listSantri.find(s => s.nama.toString().toLowerCase().trim() === nama.toString().toLowerCase().trim());
                 let noWA = profil ? profil.wa : "";
 
-                // 2. Buat PDF Kwitansi
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: [100, 150] });
 
@@ -256,16 +290,13 @@
                 doc.text("E-VERIFIED BY BENDAHARA CLOUD", 50, 140, { align: "center" });
 
                 doc.save(`Kwitansi_${nama}_${bulan}.pdf`);
-
                 Swal.close();
 
-                // 3. VALIDASI NOMOR SEBELUM KIRIM WA
                 if (!noWA || noWA.toString().trim() === "") {
-                    Swal.fire('WA Tidak Ditemukan', 'PDF Berhasil diunduh. Namun nomor WA tidak ditemukan di Sheet Data_Santri untuk nama ini.', 'warning');
+                    Swal.fire('WA Tidak Ditemukan', 'PDF Berhasil diunduh.', 'warning');
                     return;
                 }
 
-                // Pembersihan nomor (Hanya angka, ubah 0 ke 62)
                 let cleanWA = noWA.toString().replace(/\D/g, '');
                 if (cleanWA.startsWith('0')) cleanWA = '62' + cleanWA.slice(1);
                 if (cleanWA.startsWith('8')) cleanWA = '62' + cleanWA;
@@ -277,7 +308,6 @@
                 }, 800);
 
             } catch (err) {
-                console.error(err);
                 Swal.fire('Error', 'Gagal memproses file.', 'error');
             }
         }

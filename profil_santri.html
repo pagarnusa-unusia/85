@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PROFIL SANTRI | PAGAR NUSA UNUSIA</title>
+    <link rel="icon" href="logopn.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -131,15 +132,15 @@
                         <div class="space-y-3 text-left border-t pt-5">
                             <div class="flex flex-col">
                                 <span class="text-[8px] font-black text-slate-400 uppercase tracking-tighter">Email</span>
-                                <span id="disp-email" class="text-[11px] font-bold text-slate-700 truncate">---</span>
+                                <span id="disp-email" class="text-[11px] font-bold text-slate-700 italic truncate">---</span>
                             </div>
                             <div class="flex flex-col">
                                 <span class="text-[8px] font-black text-slate-400 uppercase tracking-tighter">WhatsApp</span>
-                                <span id="disp-wa" class="text-[11px] font-bold text-slate-700">---</span>
+                                <span id="disp-wa" class="text-[11px] font-bold text-slate-700 italic">---</span>
                             </div>
                             <div class="flex flex-col">
                                 <span class="text-[8px] font-black text-slate-400 uppercase tracking-tighter">TTL</span>
-                                <span id="disp-ttl" class="text-[11px] font-bold text-slate-700">---</span>
+                                <span id="disp-ttl" class="text-[11px] font-bold text-slate-700 italic">---</span>
                             </div>
                         </div>
                     </div>
@@ -227,7 +228,7 @@
             </div>
 
             <button type="submit" id="btnSubmitPay" class="w-full bg-pnDark text-white font-black py-4 rounded-2xl shadow-xl hover:bg-black transition-all uppercase tracking-widest text-[10px] flex items-center justify-center gap-2">
-                <i class="fab fa-whatsapp text-lg"></i> KIRIM KE BENDAHARA
+                <i class="fab fa-whatsapp text-lg"></i> Bayar
             </button>
         </form>
     </div>
@@ -236,7 +237,7 @@
 <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby4KcQwRiUVLXhf5dEd1ZGMxTXfjJQQ_XzcDfLw2ikPca7VYDZZr3hE4vcjZYibbMT-zw/exec";
     const daftarBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-    const NOMOR_BENDAHARA = "6285715232441"; 
+    const NOMOR_BENDAHARA = "6281366203248"; 
     
     // Variabel kontrol akses materi
     let isLunasBulanIni = false;
@@ -335,7 +336,7 @@
                 <tr class="hover:bg-slate-50 transition-colors">
                     <td class="p-3 md:p-4 uppercase">${tr.bulan}</td>
                     <td class="p-3 md:p-4 text-center text-slate-400 font-medium">${tr.tanggal}</td>
-                    <td class="p-3 md:p-4 text-right text-pnGreen font-black">Rp ${Number(tr.nominal).toLocaleString('id-ID')}</td>
+                    <td class="p-3 md:p-4 text-right text-pnGreen font-black italic">Rp ${Number(tr.nominal).toLocaleString('id-ID')}</td>
                 </tr>
             `);
         });
@@ -379,29 +380,48 @@
         setTimeout(() => { modal.classList.add('hidden'); }, 300);
     }
 
+// BAGIAN YANG DIUPDATE:
     document.getElementById('payForm').onsubmit = async function(e) {
         e.preventDefault();
         const btn = document.getElementById('btnSubmitPay');
         const session = JSON.parse(localStorage.getItem('currentUserProfile'));
+        
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+
         const bulan = document.getElementById('payBulan').value;
         const nominal = document.getElementById('payNominal').value;
-        const fileInput = document.getElementById('payBukti');
-        if (!fileInput.files[0]) { alert("Mohon upload bukti pembayaran."); return; }
-        btn.disabled = true;
-        btn.innerHTML = `<i class="fas fa-circle-notch fa-spin"></i> MEMPROSES...`;
+        // Ambil nama file atau placeholder karena file asli tidak bisa dikirim mentah ke json
+        const bukti = document.getElementById('payBukti').value.split('\\').pop() || "Gambar Terlampir";
+
         const payload = {
             action: "insert",
             data: {
+                id: "TRX-" + Date.now(),
+                date: new Date().toISOString().split('T')[0],
                 v1: session.nama,
                 v2: bulan,
                 v3: nominal,
-                date: new Date().toISOString().split('T')[0],
+                v4: bukti,
                 status: "PENDING"
             }
         };
+
         try {
-            await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) });
-            const tglSekarang = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            // 1. Kirim data ke database (Google Sheets)
+            await fetch(SCRIPT_URL, { 
+                method: "POST", 
+                mode: "no-cors", 
+                body: JSON.stringify(payload) 
+            });
+
+            const tglSekarang = new Date().toLocaleDateString('id-ID', { 
+                day: '2-digit', 
+                month: '2-digit', 
+                year: 'numeric' 
+            });
+
+            // 2. Format Pesan WhatsApp
             const pesanText = `*KONFIRMASI PEMBAYARAN IURAN*%0A` +
                               `----------------------------------%0A` +
                               `*Nama Santri:* ${session.nama}%0A` +
@@ -409,24 +429,25 @@
                               `*Nominal:* Rp ${Number(nominal).toLocaleString('id-ID')}%0A` +
                               `*Tanggal:* ${tglSekarang}%0A` +
                               `----------------------------------%0A` +
-                              `_Data sudah masuk ke sistem dengan status PENDING._`;
-            window.open(`https://wa.me/${NOMOR_BENDAHARA}?text=${pesanText}`, '_blank');
-            alert("Data berhasil dikirim!");
-            this.reset();
-            document.getElementById('imgPreview').classList.add('hidden');
-            document.getElementById('previewContainer').classList.remove('hidden');
-            closeModal();
-            fetchData();
+                              `_Mohon segera diverifikasi, terima kasih._`;
+
+            // 3. Notifikasi Sukses
+            alert("Lanjut untuk meminta verifikasi.");
+
+            // 4. Redirect ke WhatsApp (Metode location.href paling stabil untuk HP/Mobile)
+            const waUrl = `https://api.whatsapp.com/send?phone=${NOMOR_BENDAHARA}&text=${pesanText}`;
+            window.location.href = waUrl;
+
         } catch (err) {
-            alert("Terjadi kesalahan koneksi.");
+            alert("Terjadi kesalahan koneksi. Silahkan coba lagi.");
+            console.error(err);
         } finally {
             btn.disabled = false;
-            btn.innerText = "Kirim ke Bendahara";
+            btn.innerHTML = '<i class="fab fa-whatsapp text-lg"></i> Bayar';
         }
     };
 
     function logout() { localStorage.clear(); window.location.href = "login.html"; }
 </script>
 </body>
-
 </html>

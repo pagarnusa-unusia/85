@@ -3,234 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PROFIL SANTRI | PAGAR NUSA UNUSIA</title>
+    <title>PORTAL SANTRI | PSNU PAGARNUSA UNUSIA</title>
     <link rel="icon" href="logopn.png">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: { pnGreen: '#1B7548', pnDark: '#0b3d26', pnLight: '#f1f5f9' },
-                    borderRadius: { 'xl': '1rem', '2xl': '1.5rem', '3xl': '2rem' },
-                    animation: { 'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite' }
+                    colors: { 
+                        pnGreen: '#1B7548', 
+                        pnDark: '#0b3d26', 
+                        pnGold: '#D4AF37',
+                        pnLight: '#f8fafc' 
+                    },
+                    borderRadius: { 'xl': '1rem', '2xl': '1.5rem', '3xl': '2rem', '4xl': '3rem' },
                 }
             }
         }
     </script>
-<style>
-    /* Google Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
-    body {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        background: #f8fafc;
-        color: #1e293b;
-        -webkit-tap-highlight-color: transparent;
-    }
-    @keyframes shimmer {
-            100% { transform: translateX(100%); }
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; color: #1e293b; -webkit-tap-highlight-color: transparent; }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        @media print { .no-print { display: none !important; } }
+        
+        /* Animasi Progress Bar */
+        #progressBar { transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        
+        /* State Aktif Navigasi */
+        .nav-active {
+            background-color: rgba(27, 117, 72, 0.1); /* bg-pnGreen/10 */
+            color: #1B7548; /* text-pnGreen */
+            border-top-width: 2px;
+            border-color: #1B7548;
         }
 
-    /* Glassmorphism Effect */
-    .glass-card {
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
-    }
-
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: #f1f1f1; }
-    ::-webkit-scrollbar-thumb { background: #1B7548; border-radius: 10px; }
-
-    /* Animated Button */
-    .btn-primary {
-        background: linear-gradient(135deg, #1B7548 0%, #145c38 100%);
-        transition: all 0.3s ease;
-    }
-    .btn-primary:active { transform: scale(0.95); }
-
-    /* Bottom Nav Shadow */
-    .nav-shadow { box-shadow: 0 -4px 20px rgba(0,0,0,0.05); }
-
-    /* Avatar Glow */
-    .avatar-container {
-        position: relative;
-        padding: 4px;
-        background: linear-gradient(135deg, #1B7548, #fbbf24);
-        border-radius: 50%;
-    }
-</style>
+        @media (min-width: 768px) {
+            .nav-active {
+                border-top-width: 0;
+                border-right-width: 4px;
+            }
+        }
+    </style>
 </head>
-<body class="min-h-screen bg-[#F8FAFC] pb-24 md:pb-0 text-slate-900 font-['Plus_Jakarta_Sans']">
+
+<body class="min-h-screen pb-24 md:pb-0">
+
     <div class="flex flex-col md:flex-row min-h-screen">
         
-        <aside class="no-print fixed bottom-0 left-0 w-full z-[60] bg-white/80 backdrop-blur-xl border-t border-slate-200 md:static md:w-80 md:h-screen md:border-r md:p-8 md:bg-white md:shadow-none shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
-            <div class="hidden md:flex items-center gap-4 px-2 mb-10">
-                <div class="p-3 bg-pnGreen/10 rounded-2xl shadow-inner">
-                    <img src="logopn.png" alt="Logo" class="h-10 w-10 object-contain">
-                </div>
-                <div>
-                    <h2 class="font-black text-pnDark leading-none text-xl tracking-tighter uppercase">Portal <span class="text-pnGreen">Santri</span></h2>
-                    <p class="text-[8px] font-black text-slate-400 tracking-[0.2em] uppercase mt-1">PSNU Pagar Nusa UNUSIA</p>
-                </div>
-            </div>
+<aside class="no-print fixed bottom-0 left-0 w-full z-[60] bg-white/90 backdrop-blur-xl border-t border-slate-200 md:static md:w-80 md:h-screen md:border-r md:p-8 md:bg-white shadow-[0_-10px_40px_rgba(0,0,0,0.05)] md:shadow-none">
+    
+    <div class="hidden md:flex items-center gap-4 px-2 mb-10">
+        <div class="p-3 bg-pnGreen/10 rounded-2xl">
+            <img src="logopn.png" alt="Logo" class="h-10 w-10 object-contain">
+        </div>
+        <div>
+            <h2 class="font-black text-pnDark leading-none text-xl tracking-tighter uppercase">Portal <span class="text-pnGreen">Santri</span></h2>
+            <p class="text-[8px] font-black text-slate-400 tracking-[0.2em] uppercase mt-1 text-nowrap">PSNU PAGARNUSA UNUSIA</p>
+        </div>
+    </div>
 
-            <nav class="flex justify-around items-center md:block md:space-y-2 px-2 py-3 md:py-0">
-                <p class="hidden md:block text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 px-4">Main Menu</p>
-                
-                <a href="#" class="flex flex-col md:flex-row items-center gap-1 md:gap-4 px-4 py-2 md:py-4 bg-pnGreen/10 text-pnGreen md:rounded-2xl font-black text-[10px] md:text-sm transition-all border-t-2 border-pnGreen md:border-none">
-                    <i class="fas fa-home-alt text-lg"></i> 
-                    <span>Profil</span>
-                </a>
+<nav class="flex justify-around items-center md:block md:space-y-2 px-2 py-3 md:py-0">
+    
+    <a href="index.html" class="flex flex-col md:flex-row items-center gap-1 md:gap-4 px-4 py-2 md:py-4 bg-pnGreen/10 text-pnGreen md:rounded-2xl font-black text-[10px] md:text-sm border-t-2 border-pnGreen md:border-none transition-all">
+        <i class="fas fa-th-large text-lg"></i> <span>Dashboard</span>
+    </a>
 
-                <a href="#" id="menuMateri" onclick="aksesMateri(event)" class="flex flex-col md:flex-row items-center gap-1 md:gap-4 px-4 py-2 md:py-4 text-slate-400 md:rounded-2xl font-bold text-[10px] md:text-sm transition-all opacity-50 relative">
-                    <i class="fas fa-book-open text-lg"></i>
-                    <span>Materi</span>
-                    <i id="lockIconDesktop" class="fas fa-lock text-[10px] ml-auto hidden md:block"></i>
-                </a>
-                
-                <button onclick="openModal()" class="flex flex-col md:flex-row items-center gap-1 md:gap-4 px-4 py-2 md:py-4 text-emerald-600 md:rounded-2xl font-black text-[10px] md:text-sm transition-all group">
-                    <div class="md:hidden -mt-8 w-14 h-14 bg-pnGreen text-white rounded-full flex items-center justify-center shadow-lg shadow-pnGreen/30 border-4 border-white">
-                        <i class="fas fa-wallet text-xl"></i>
-                    </div>
-                    <i class="hidden md:block fas fa-wallet text-lg"></i> 
-                    <span class="md:block">Bayar</span>
-                </button>
-                
-                <a href="#" onclick="window.print()" class="flex flex-col md:flex-row items-center gap-1 md:gap-4 px-4 py-2 md:py-4 text-slate-500 md:rounded-2xl font-bold text-[10px] md:text-sm transition-all">
-                    <i class="fas fa-print text-lg"></i> <span>Cetak</span>
-                </a>
-                
-                <button onclick="logout()" class="flex flex-col md:flex-row items-center gap-1 md:gap-4 px-4 py-2 md:py-4 text-red-500 md:rounded-2xl font-bold text-[10px] md:text-sm md:mt-20 transition-all w-full">
-                    <i class="fas fa-power-off text-lg"></i> <span>Keluar</span>
-                </button>
-            </nav>
-        </aside>
+    <a href="#" id="menuMateri" onclick="aksesMateri(event)" class="flex flex-col md:flex-row items-center gap-1 md:gap-4 px-4 py-2 md:py-4 text-slate-400 md:rounded-2xl font-bold text-[10px] md:text-sm transition-all opacity-50 cursor-not-allowed">
+        <i class="fas fa-book-open text-lg"></i> <span>Materi</span>
+    </a>
 
-        <main class="flex-1 p-4 md:p-14 space-y-8 md:space-y-12 max-w-7xl mx-auto w-full">
+    <button onclick="openModal()" class="flex flex-col md:flex-row items-center gap-1 md:gap-4 px-4 py-2 md:py-4 text-emerald-600 md:rounded-2xl font-black text-[10px] md:text-sm transition-all">
+        <div class="md:hidden -mt-10 w-14 h-14 bg-pnGreen text-white rounded-full flex items-center justify-center shadow-lg border-4 border-white active:scale-90">
+            <i class="fas fa-plus text-xl"></i>
+        </div>
+        <i class="hidden md:block fas fa-wallet text-lg"></i> <span class="md:block">Bayar Iuran</span>
+    </button>
+
+    <button onclick="downloadKHI()" class="flex flex-col md:flex-row items-center gap-1 md:gap-4 px-4 py-2 md:py-4 text-slate-600 md:rounded-2xl font-bold text-[10px] md:text-sm transition-all">
+        <i class="fas fa-file-download text-lg"></i> <span>KHI</span>
+    </button>
+
+    <button onclick="logout()" class="flex flex-col md:flex-row items-center gap-1 md:gap-4 px-4 py-2 md:py-4 text-red-500 md:rounded-2xl font-bold text-[10px] md:text-sm transition-all">
+        <i class="fas fa-sign-out-alt text-lg"></i> <span>Keluar</span>
+    </button>
+
+</nav>
+</aside>
+
+        <main class="flex-1 p-4 md:p-12 space-y-8 max-w-7xl mx-auto w-full">
             
-            <header class="flex flex-row items-center justify-between gap-4 mt-2 md:mt-0">
+            <header class="flex flex-row items-center justify-between gap-4">
                 <div class="space-y-1">
                     <div class="flex items-center gap-2">
                         <span class="h-1 w-6 bg-pnGreen rounded-full"></span>
                         <p class="text-[9px] font-black text-pnGreen uppercase tracking-widest">Santri Dashboard</p>
                     </div>
-                    <h1 class="text-2xl md:text-5xl font-black text-slate-900 tracking-tighter italic uppercase">Pagar Nusa</h1>
-                    <p id="dateNow" class="text-[10px] text-slate-400 font-bold uppercase tracking-tight"></p>
+                    <h1 id="disp-nama-header" class="text-2xl md:text-5xl font-black text-slate-900 tracking-tighter uppercase truncate max-w-[180px] md:max-w-none">
+                        Memuat...
+                    </h1>
+                    <p id="dateNow" class="text-[10px] text-slate-400 font-bold uppercase tracking-tight italic"></p>
                 </div>
                 
-                <div class="flex items-center gap-3 bg-white p-1.5 pr-4 md:pr-8 rounded-2xl md:rounded-[2rem] shadow-sm border border-slate-100">
-                    <div id="avatarSmall" class="w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br from-pnGreen to-pnDark text-white rounded-xl md:rounded-2xl flex items-center justify-center font-black text-sm md:text-xl shadow-inner">..</div>
+                <div onclick="openProfileModal()" class="flex items-center gap-3 bg-white p-1.5 pr-4 md:pr-8 rounded-2xl md:rounded-full shadow-sm border border-slate-100 cursor-pointer hover:shadow-md transition-all active:scale-95 group">
+                    <div id="avatarSmall" class="w-10 h-10 md:w-14 md:h-14 bg-gradient-to-br from-pnGreen to-pnDark text-white rounded-xl md:rounded-full flex items-center justify-center font-black text-sm md:text-xl shadow-inner group-hover:rotate-6 transition-transform">..</div>
                     <div class="hidden sm:block">
-                        <p id="userSmall" class="text-xs md:text-sm font-black text-slate-800 italic truncate max-w-[120px]">Memuat...</p>
-                        <span class="flex items-center gap-1 text-[8px] text-emerald-500 font-black uppercase mt-0.5">
-                            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span> Online
+                        <p id="userSmall" class="text-xs md:text-sm font-black text-slate-800 truncate max-w-[100px]">Santri</p>
+                        <span class="flex items-center gap-1 text-[8px] text-emerald-500 font-black uppercase mt-0.5 tracking-tighter">
+                            Lihat Profil <i class="fas fa-chevron-right text-[6px]"></i>
                         </span>
                     </div>
                 </div>
             </header>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
-                <div class="bg-white p-6 md:p-10 rounded-[2.5rem] md:rounded-[3rem] shadow-xl shadow-slate-200/40 relative overflow-hidden group border border-slate-50">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                <div class="bg-white p-6 md:p-8 rounded-4xl shadow-sm border border-slate-100 relative overflow-hidden group">
                     <div class="relative z-10">
-                        <p class="text-[10px] font-black text-slate-400 tracking-widest mb-2 uppercase text-center md:text-left">Kepatuhan Iuran</p>
-                        <h3 id="scoreIuran" class="text-4xl md:text-5xl font-black text-pnDark tracking-tighter text-center md:text-left">0%</h3>
-                        <div class="w-full bg-slate-100 h-3 rounded-full mt-5 overflow-hidden p-0.5 border border-slate-200/50">
-                            <div id="progressBar" class="bg-gradient-to-r from-emerald-400 to-pnGreen h-full rounded-full transition-all duration-1000" style="width: 0%"></div>
+                        <p class="text-[10px] font-black text-slate-400 tracking-widest mb-2">Persentase Iuran</p>
+                        <h3 id="scoreIuran" class="text-4xl md:text-5xl font-black text-pnDark tracking-tighter">0%</h3>
+                        <div class="w-full bg-slate-100 h-2.5 rounded-full mt-6 overflow-hidden border border-slate-200/50">
+                            <div id="progressBar" class="bg-gradient-to-r from-emerald-500 to-pnGreen h-full rounded-full" style="width: 0%"></div>
                         </div>
                     </div>
+                    <i class="fas fa-chart-line absolute -right-6 -bottom-6 text-slate-50 text-8xl group-hover:scale-110 transition-transform"></i>
                 </div>
 
-                <div class="bg-white p-6 md:p-10 rounded-[2.5rem] md:rounded-[3rem] shadow-xl shadow-slate-200/40 relative overflow-hidden group border border-slate-50">
-                    <div class="relative z-10 flex flex-col items-center md:items-start">
-                        <p class="text-[10px] font-black text-pnGreen tracking-widest mb-2 uppercase">Total Kas Saya</p>
-                        <h3 id="totalBayar" class="text-3xl md:text-5xl font-black text-pnDark tracking-tighter leading-none text-center md:text-left">Rp 0</h3>
-                        <p class="text-[9px] text-slate-400 mt-4 font-bold uppercase flex items-center gap-2">
-                            <i class="fas fa-check-circle text-emerald-500"></i> Saldo Terverifikasi
-                        </p>
-                    </div>
+                <div class="bg-white p-6 md:p-8 rounded-4xl shadow-sm border border-slate-100 group">
+                    <p class="text-[10px] font-black text-pnGreen tracking-widest mb-2">Total Iuran</p>
+                    <h3 id="totalBayar" class="text-3xl md:text-5xl font-black text-pnDark tracking-tighter leading-none">Rp 0</h3>
+                    <p class="text-[9px] text-slate-400 mt-5 font-bold flex items-center gap-2">
+                        <i class="fas fa-shield-alt text-emerald-500"></i>Terverifikasi
+                    </p>
                 </div>
 
-                <div class="bg-pnDark p-6 md:p-10 rounded-[2.5rem] md:rounded-[3rem] shadow-2xl shadow-pnDark/20 text-white relative overflow-hidden group transition-transform active:scale-95">
+                <div class="bg-pnDark p-6 md:p-8 rounded-4xl shadow-2xl text-white relative overflow-hidden active:scale-[0.98] transition-all cursor-pointer" onclick="openModal()">
                     <div class="relative z-10">
-                        <p class="text-[10px] font-black text-emerald-300/60 tracking-widest mb-2 uppercase">Wajib Bayar</p>
+                        <p class="text-[10px] font-black text-emerald-400/80 tracking-widest mb-2 uppercase">Status Tagihan</p>
                         <h3 id="currentMonthPay" class="text-3xl md:text-5xl font-black tracking-tighter">Rp 0</h3>
                         <div class="mt-4 flex items-center gap-2">
-                            <span id="currentMonthName" class="px-4 py-1.5 bg-white/10 rounded-xl text-[9px] font-black uppercase tracking-widest border border-white/10 italic">---</span>
+                            <span id="currentMonthName" class="px-4 py-1.5 bg-white/10 rounded-xl text-[9px] font-black uppercase tracking-widest border border-white/10 backdrop-blur-md italic">---</span>
                         </div>
                     </div>
-                    <i class="fas fa-receipt absolute -right-4 -bottom-4 text-white/5 text-8xl rotate-12"></i>
+                    <i class="fas fa-arrow-right absolute right-8 top-1/2 -translate-y-1/2 text-white/10 text-4xl"></i>
+                    <i class="fas fa-receipt absolute -left-4 -bottom-4 text-white/5 text-8xl rotate-12"></i>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-10">
-                <div class="lg:col-span-4">
-                    <div class="bg-white rounded-[2.5rem] md:rounded-[3.5rem] p-8 md:p-10 border border-slate-100 shadow-xl relative overflow-hidden text-center">
-                        <div id="avatarLarge" class="w-32 h-32 md:w-36 md:h-36 bg-slate-50 text-pnGreen rounded-[2rem] md:rounded-[2.5rem] mx-auto mb-6 flex items-center justify-center text-4xl md:text-5xl font-black border-4 border-white shadow-xl">..</div>
-                        <h4 id="disp-nama" class="font-black text-slate-900 uppercase tracking-tight text-lg md:text-xl mb-2">---</h4>
-                        <span id="disp-angkatan" class="inline-block px-5 py-1.5 bg-pnGreen text-white rounded-full text-[9px] font-black tracking-[0.2em] shadow-lg shadow-pnGreen/20">ANGKATAN ---</span>
-                        
-                        <div class="space-y-4 text-left mt-8 pt-8 border-t border-dashed border-slate-200">
-                            <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-pnGreen shadow-sm shrink-0"><i class="fas fa-envelope text-xs"></i></div>
-                                <div class="min-w-0">
-                                    <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">Email</p>
-                                    <p id="disp-email" class="text-xs font-bold text-slate-700 truncate">---</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-pnGreen shadow-sm shrink-0"><i class="fab fa-whatsapp text-xs"></i></div>
-                                <div>
-                                    <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">WhatsApp</p>
-                                    <p id="disp-wa" class="text-xs font-bold text-slate-700">---</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-pnGreen shadow-sm shrink-0"><i class="fas fa-calendar text-xs"></i></div>
-                                <div>
-                                    <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">TTL</p>
-                                    <p id="disp-ttl" class="text-xs font-bold text-slate-700">---</p>
-                                </div>
-                            </div>
+            <div class="bg-white rounded-[2.5rem] md:rounded-4xl p-6 md:p-10 border border-slate-100 shadow-sm relative overflow-hidden">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+                    <div>
+                        <h3 class="font-black text-slate-900 uppercase tracking-tighter text-xl md:text-2xl flex items-center gap-3">
+                            <span class="w-2 h-8 bg-pnGreen rounded-full"></span> Kartu Hasil Iuran
+                        </h3>
+                        <p class="text-[10px] font-bold text-slate-400 mt-2">Laporan Iuran tahun berjalan</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="px-4 py-2 bg-pnGreen/5 rounded-xl border border-pnGreen/10 text-[10px] font-black text-pnGreen uppercase tracking-widest">
+                            TAHUN <span id="yearNow"></span>
                         </div>
+                        <button onclick="downloadKHI()" class="p-2.5 bg-slate-100 text-slate-500 rounded-xl hover:bg-pnGreen hover:text-white transition-all">
+                            <i class="fas fa-download"></i>
+                        </button>
                     </div>
                 </div>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3" id="khiGrid">
+                    </div>
 
-                <div class="lg:col-span-8 space-y-6 md:space-y-10">
-                    <div class="bg-white rounded-[2.5rem] md:rounded-[3.5rem] p-6 md:p-10 border border-slate-100 shadow-xl">
-                        <div class="flex items-center justify-between mb-8">
-                            <h3 class="font-black text-slate-900 uppercase tracking-tighter text-lg md:text-2xl flex items-center gap-3">
-                                <span class="w-2 h-8 bg-pnGreen rounded-full shadow-sm"></span> Kartu Hasil Iuran
-                            </h3>
-                            <div class="px-4 py-2 bg-slate-50 rounded-xl border border-slate-200 text-[9px] font-black text-slate-500 uppercase tracking-widest">2026</div>
-                        </div>
-                        
-                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-5" id="khiGrid">
-                            </div>
-
-                        <div class="mt-12">
-                            <h3 class="font-black text-slate-400 uppercase tracking-widest text-[10px] flex items-center gap-2 mb-4">
-                                <i class="fas fa-history"></i> Log Transaksi Terakhir
-                            </h3>
-                            <div class="overflow-hidden rounded-3xl border border-slate-100 bg-slate-50/50">
-                                <div class="overflow-x-auto">
-                                    <table class="w-full text-left text-[10px] md:text-xs">
-                                        <thead>
-                                            <tr class="text-slate-400 font-black uppercase tracking-widest border-b border-slate-200">
-                                                <th class="p-4 md:p-5 text-center">Bulan</th>
-                                                <th class="p-4 md:p-5 text-center">Status</th>
-                                                <th class="p-4 md:p-5 text-right">Nominal</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="riwayatBody" class="font-bold text-slate-700 italic">
-                                            </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                <div class="mt-12">
+                    <h3 class="font-black text-slate-400 uppercase tracking-widest text-[10px] flex items-center gap-2 mb-4">
+                        <i class="fas fa-history"></i> Riwayat Transaksi Terakhir
+                    </h3>
+                    <div class="overflow-hidden rounded-3xl border border-slate-100">
+                        <div class="overflow-x-auto no-scrollbar">
+                            <table class="w-full text-left text-xs">
+                                <thead>
+                                    <tr class="bg-slate-50/50 text-slate-400 font-black uppercase tracking-widest border-b border-slate-100">
+                                        <th class="p-5">Bulan Periode</th>
+                                        <th class="p-5 text-center">Status Transaksi</th>
+                                        <th class="p-5 text-center">Kwitansi</th>
+                                        <th class="p-5 text-right">Nominal</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="riwayatBody" class="font-bold text-slate-700 italic divide-y divide-slate-50">
+                                    </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -238,77 +203,162 @@
         </main>
     </div>
 
-    <div id="paymentModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden z-[100] flex items-end md:items-center justify-center transition-all duration-300">
-        <div class="bg-white rounded-t-[3rem] md:rounded-[3rem] w-full max-w-xl max-h-[90vh] overflow-hidden shadow-2xl transform transition-transform translate-y-full" id="modalContent">
-            
+    <div id="profileModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden z-[100] flex items-center justify-center p-4">
+        <div class="bg-white rounded-4xl w-full max-w-sm overflow-hidden shadow-2xl relative border border-slate-100 animate-in fade-in zoom-in duration-300">
+            <button onclick="closeProfileModal()" class="absolute right-6 top-6 w-10 h-10 flex items-center justify-center rounded-full bg-slate-50 text-slate-400 hover:text-red-500 transition-all">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="p-8 pt-12 text-center">
+                <div id="avatarLarge" class="w-28 h-28 bg-pnGreen/10 text-pnGreen rounded-[2.5rem] mx-auto mb-6 flex items-center justify-center text-4xl font-black border-4 border-white shadow-xl">..</div>
+                <h4 id="disp-nama" class="font-black text-slate-900 uppercase tracking-tight text-xl mb-1 italic">---</h4>
+                <span id="disp-angkatan" class="inline-block px-5 py-1.5 bg-pnGreen text-white rounded-full text-[9px] font-black tracking-widest uppercase mb-8 shadow-lg shadow-pnGreen/20">ANGKATAN ---</span>
+                
+                <div class="space-y-4 text-left pt-6 border-t border-dashed border-slate-100">
+                    <div class="flex items-center gap-4 group">
+                        <div class="w-10 h-10 bg-slate-50 group-hover:bg-emerald-50 rounded-xl flex items-center justify-center text-pnGreen transition-colors"><i class="fas fa-envelope text-xs"></i></div>
+                        <div class="min-w-0"><p id="disp-email" class="text-xs font-bold text-slate-700 truncate">---</p></div>
+                    </div>
+                    <div class="flex items-center gap-4 group">
+                        <div class="w-10 h-10 bg-slate-50 group-hover:bg-emerald-50 rounded-xl flex items-center justify-center text-pnGreen transition-colors"><i class="fab fa-whatsapp text-xs"></i></div>
+                        <div><p id="disp-wa" class="text-xs font-bold text-slate-700">---</p></div>
+                    </div>
+                    <div class="flex items-center gap-4 group">
+                        <div class="w-10 h-10 bg-slate-50 group-hover:bg-emerald-50 rounded-xl flex items-center justify-center text-pnGreen transition-colors"><i class="fas fa-map-marker-alt text-xs"></i></div>
+                        <div><p id="disp-ttl" class="text-xs font-bold text-slate-700">---</p></div>
+                    </div>
+                </div>
+
+                <button onclick="logout()" class="w-full mt-8 py-4 bg-red-50 text-red-500 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all">Keluar Sesi</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="paymentModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md hidden z-[100] flex items-end md:items-center justify-center">
+        <div id="modalContent" class="bg-white rounded-t-4xl md:rounded-4xl w-full max-w-xl max-h-[90vh] overflow-hidden shadow-2xl transform translate-y-full transition-transform duration-500">
             <div class="bg-pnDark p-6 md:p-8 text-white flex justify-between items-center relative overflow-hidden">
                 <div class="relative z-10 flex items-center gap-4">
                     <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-md border border-white/20">
                         <i class="fas fa-paper-plane text-xl text-emerald-400"></i>
                     </div>
                     <div>
-                        <h3 class="font-black uppercase tracking-tighter text-xl leading-none">Bayar Iuran</h3>
-                        <p class="text-[9px] text-emerald-400 font-black tracking-widest uppercase mt-1">Konfirmasi Setoran Kas</p>
+                        <h3 class="font-black uppercase tracking-tighter text-xl leading-none">Konfirmasi Bayar</h3>
+                        <p class="text-[9px] text-emerald-400 font-black tracking-widest uppercase mt-1">Portal Keuangan Rayon</p>
                     </div>
                 </div>
-                <button onclick="closeModal()" class="relative z-10 w-10 h-10 flex items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 transition-all">
-                    <i class="fas fa-times"></i>
-                </button>
+                <button onclick="closeModal()" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white/10 hover:bg-white/20 transition-all"><i class="fas fa-times"></i></button>
+                <i class="fas fa-wallet absolute -right-6 -bottom-6 text-white/5 text-8xl rotate-12"></i>
             </div>
             
-            <form id="payForm" class="p-6 md:p-10 space-y-6 overflow-y-auto no-scrollbar max-h-[60vh]">
-                
-                <div class="bg-slate-50 border-2 border-slate-100 rounded-[2rem] p-6 space-y-4">
-                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center">Tujuan Transfer (DANA)</p>
-                    <div class="flex items-center justify-between bg-white p-4 rounded-2xl border border-slate-200">
+            <form id="payForm" class="p-6 md:p-10 space-y-6 overflow-y-auto no-scrollbar max-h-[65vh]">
+                <div class="bg-slate-50 border-2 border-slate-100 rounded-3xl p-6 text-center">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Tujuan Transfer (DANA)</p>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-200 flex items-center justify-between mb-4">
                         <div class="flex items-center gap-3">
-                            <img src="https://1000logos.net/wp-content/uploads/2021/03/Dana-logo.jpg" class="h-3 md:h-4" alt="DANA">
+                            <img src="https://1000logos.net/wp-content/uploads/2021/03/Dana-logo.jpg" class="h-4" alt="DANA">
                             <span class="text-sm font-black text-slate-800">081366203248</span>
                         </div>
-                        <button type="button" onclick="navigator.clipboard.writeText('081366203248'); alert('Nomor disalin!')" class="text-[9px] font-black text-pnGreen uppercase">Salin</button>
+                        <button type="button" onclick="navigator.clipboard.writeText('081366203248'); alert('Nomor disalin!')" class="text-[10px] font-black text-pnGreen uppercase">Salin</button>
                     </div>
-                    <a href="https://link.dana.id/minta?full_url=https://qr.dana.id/v1/281012092026012507613151" target="_blank" class="flex items-center justify-center gap-2 w-full bg-blue-600 text-white py-4 rounded-2xl text-[10px] font-black shadow-lg shadow-blue-200 active:scale-95 transition-all">
-                        <i class="fas fa-external-link-alt"></i> BUKA DANA SEKARANG
+                    <a href="https://link.dana.id/minta?full_url=https://qr.dana.id/v1/281012092026012507613151" target="_blank" class="block w-full bg-blue-600 text-white py-4 rounded-2xl text-[10px] font-black shadow-lg shadow-blue-200 active:scale-95 transition-all">
+                        <i class="fas fa-external-link-alt mr-2"></i> BUKA APLIKASI DANA
                     </a>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2 px-2">Bulan Periode</label>
-                        <div class="relative">
-                            <select id="payBulan" required class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-5 py-4 text-sm font-black outline-none focus:border-pnGreen appearance-none cursor-pointer"></select>
-                            <i class="fas fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none"></i>
-                        </div>
+                        <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2 px-2">Periode</label>
+                        <select id="payBulan" required class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-5 py-4 text-sm font-black outline-none focus:border-pnGreen transition-all"></select>
                     </div>
                     <div>
                         <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2 px-2">Nominal (Rp)</label>
-                        <input type="number" id="payNominal" required value="3000" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-5 py-4 text-sm font-black outline-none focus:border-pnGreen">
+                        <input type="number" id="payNominal" required value="20000" class="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl px-5 py-4 text-sm font-black outline-none focus:border-pnGreen transition-all">
                     </div>
                 </div>
 
                 <div>
-                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2 px-2">Bukti Bayar (Wajib Gambar)</label>
+                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2 px-2">Unggah Bukti Transaksi</label>
                     <input type="file" id="payBukti" accept="image/*" required class="hidden" onchange="previewImage(this)">
-                    <label for="payBukti" class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-slate-200 rounded-[2rem] cursor-pointer bg-slate-50 hover:bg-emerald-50 transition-all overflow-hidden">
+                    <label for="payBukti" class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-slate-200 rounded-3xl cursor-pointer bg-slate-50 hover:bg-emerald-50 transition-all overflow-hidden group">
                         <div id="previewContainer" class="text-center p-4">
-                            <i class="fas fa-cloud-upload-alt text-2xl text-slate-300 mb-2"></i>
-                            <p class="text-[9px] font-black text-slate-400 uppercase">Upload Bukti Transaksi</p>
+                            <i class="fas fa-cloud-upload-alt text-3xl text-slate-300 mb-2 group-hover:text-pnGreen transition-colors"></i>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Klik untuk memilih gambar</p>
                         </div>
                         <img id="imgPreview" class="hidden h-full w-full object-cover">
                     </label>
                 </div>
 
-                <button type="submit" id="btnSubmitPay" class="w-full bg-pnDark text-white font-black py-5 rounded-2xl shadow-xl hover:bg-black transition-all uppercase tracking-widest text-[10px] flex items-center justify-center gap-3 active:scale-95">
+                <button type="submit" id="btnSubmitPay" class="w-full bg-pnDark text-white font-black py-5 rounded-2xl shadow-xl hover:bg-black transition-all uppercase tracking-widest text-[10px] flex items-center justify-center gap-3">
                     <i class="fab fa-whatsapp text-lg"></i> Kirim Konfirmasi Ke Pengurus
                 </button>
             </form>
+        </div>
+    </div>
+
+    <div style="display: none;">
+        <div id="print-area" style="font-family: 'Times New Roman', serif; color: black; background: white; padding: 0;">
+            <div style="text-align: center; border-bottom: 3px solid black; padding-bottom: 10px; margin-bottom: 20px;">
+                <img src="logopn.png" style="width: 80px; margin-bottom: 10px;">
+                <h2 style="margin: 0; font-size: 16pt; font-weight: bold; text-transform: uppercase;">Pimpinan Rayon</h2>
+                <h1 style="margin: 0; font-size: 20pt; font-weight: bold; text-transform: uppercase;">PSNU PAGAR NUSA UNUSIA</h1>
+                <p style="margin: 5px 0 0 0; font-size: 9pt; font-style: italic;">Sekretariat: Kampus UNUSIA Jakarta, Jl. Taman Amir Hamzah No.5</p>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 20px;">
+                <h3 style="margin: 0; font-size: 14pt; text-decoration: underline; font-weight: bold; text-transform: uppercase;">Kartu Hasil Iuran (KHI)</h3>
+                <p style="margin: 0; font-size: 9pt;">Dicetak: <span id="pdf-tgl-cetak"></span></p>
+            </div>
+
+            <div style="margin-bottom: 20px; font-size: 11pt;">
+                <table style="width: 100%;">
+                    <tr><td style="width: 100px;">NAMA</td><td>: <span id="pdf-nama-santri" style="font-weight: bold; text-transform: uppercase;"></span></td></tr>
+                    <tr><td>ANGKATAN</td><td>: <span id="pdf-angkatan-santri"></span></td></tr>
+                </table>
+            </div>
+
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px; font-size: 10pt;">
+                <thead>
+                    <tr style="background-color: #f2f2f2;">
+                        <th style="border: 1px solid black; padding: 10px; text-align: center;">NO</th>
+                        <th style="border: 1px solid black; padding: 10px; text-align: left;">BULAN PERIODE</th>
+                        <th style="border: 1px solid black; padding: 10px; text-align: center;">TANGGAL BAYAR</th>
+                        <th style="border: 1px solid black; padding: 10px; text-align: right;">NOMINAL</th>
+                        <th style="border: 1px solid black; padding: 10px; text-align: center;">STATUS</th>
+                    </tr>
+                </thead>
+                <tbody id="pdf-table-body"></tbody>
+                <tfoot>
+                    <tr style="font-weight: bold; background-color: #f2f2f2;">
+                        <td colspan="3" style="border: 1px solid black; padding: 10px; text-align: right;">TOTAL KONTRIBUSI</td>
+                        <td colspan="2" style="border: 1px solid black; padding: 10px; text-align: left;" id="pdf-total-penerimaan"></td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div style="margin-top: 50px; display: flex; justify-content: space-between; text-align: center; font-size: 10pt;">
+                <div style="width: 200px;">
+                    <p style="margin-bottom: 10px;">Mengetahui,<br>Ketua Umum,</p>
+                    <img src="https://lh3.googleusercontent.com/d/1yCu3bQc69uXpJSUpK-W3nuX0ukzbXYLg" style="height: 65px; margin: 10px 0;">
+                    <p style="margin: 0; font-weight: bold; text-decoration: underline;">ILHAM IQYANUDDIN</p>
+                    <p style="margin: 0;">NIA. 27091985</p>
+                </div>
+                <div style="width: 200px;">
+                    <p style="margin-bottom: 10px;"><br>Bendahara Umum,</p>
+                    <img src="https://lh3.googleusercontent.com/d/1_1sFSL8g98RTrgm6YJLpgduzbHyQP_iJ" style="height: 65px; margin: 10px 0;">
+                    <p style="margin: 0; font-weight: bold; text-decoration: underline;">SYIFA ULYA SETIAWAN</p>
+                    <p style="margin: 0;">NIA. 03011986</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 60px; text-align: center; font-size: 7pt; color: #777; border-top: 1px dashed #ccc; padding-top: 10px;">
+                Dokumen ini dihasilkan secara otomatis oleh Sistem Digital PSNU Pagar Nusa Unusia dan dinyatakan sah sebagai bukti kontribusi santri.
+            </div>
         </div>
     </div>
 <script>
     // --- KONFIGURASI GLOBAL ---
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzkOhlAKxKqRJWYgZ5ajptbx1J0QstJ4jdFcJEbcrA2lTdwgEZ63JTuBC8GHNP1nZkcyQ/exec";
     const NOMOR_BENDAHARA = "6281366203248"; 
-    const TARGET_IURAN = 20000; // Target minimal per bulan untuk dianggap Lunas
+    const TARGET_IURAN = 20000; 
     const daftarBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
     
     let isLunasBulanIni = false;
@@ -316,15 +366,20 @@
 
     // --- INISIALISASI HALAMAN ---
     window.onload = async () => {
-        const elDate = document.getElementById('dateNow');
-        if(elDate) elDate.innerText = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-
+        // 1. Proteksi Halaman (Cek Sesi)
         const session = JSON.parse(localStorage.getItem('currentUserProfile'));
         if (!session || !session.nama) { 
             window.location.href = "login.html"; 
             return; 
         }
 
+        // 2. Set Tanggal Real-time
+        const elYear = document.getElementById('yearNow');
+        if(elYear) elYear.innerText = new Date().getFullYear();
+        const elDate = document.getElementById('dateNow');
+        if(elDate) elDate.innerText = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+        // 3. Isi Dropdown Bulan (Otomatis pilih bulan sekarang)
         const payBulanSelect = document.getElementById('payBulan');
         if (payBulanSelect) {
             payBulanSelect.innerHTML = '';
@@ -342,11 +397,15 @@
 
     // --- LOGIKA AMBIL DATA ---
     async function fetchData() {
+        const tbody = document.getElementById('riwayatBody');
+        if(tbody) tbody.innerHTML = '<tr><td colspan="3" class="p-5 text-center text-slate-400 italic">Memuat data transaksi...</td></tr>';
+
         try {
             const session = JSON.parse(localStorage.getItem('currentUserProfile'));
             const response = await fetch(`${SCRIPT_URL}?action=read`);
             const result = await response.json();
 
+            // Cari profil & filter data iuran milik user ini
             const profil = result.santri.find(s => s.nama.trim().toLowerCase() === session.nama.trim().toLowerCase());
             currentIuranData = result.iuran.filter(i => i.nama.trim().toLowerCase() === session.nama.trim().toLowerCase());
 
@@ -354,14 +413,19 @@
 
         } catch (err) {
             console.error("Fetch Error:", err);
-            alert("Gagal memuat data. Periksa koneksi internet Anda.");
+            if(tbody) tbody.innerHTML = '<tr><td colspan="3" class="p-5 text-center text-red-500">Gagal memuat data. Periksa koneksi.</td></tr>';
         }
     }
 
     // --- RENDER SEMUA KOMPONEN UI ---
     function renderUI(profil, iuran, namaAsli) {
         const initials = namaAsli.substring(0, 2).toUpperCase();
+        
+        // Update Identitas
         document.getElementById('userSmall').innerText = namaAsli;
+        const elHeader = document.getElementById('disp-nama-header');
+        if(elHeader) elHeader.innerText = namaAsli;
+        
         document.getElementById('avatarSmall').innerText = initials;
         document.getElementById('avatarLarge').innerText = initials;
         document.getElementById('disp-nama').innerText = namaAsli;
@@ -373,6 +437,7 @@
             document.getElementById('disp-ttl').innerText = (profil.ttl || "---");
         }
 
+        // Kalkulasi Keuangan (Hanya yang SUCCESS)
         let rekapBulan = {};
         let totalSeluruhnya = 0;
         iuran.forEach(t => {
@@ -385,6 +450,7 @@
     
         document.getElementById('totalBayar').innerText = "Rp " + totalSeluruhnya.toLocaleString('id-ID');
 
+        // Render Grid KHI
         const khiGrid = document.getElementById('khiGrid');
         if (khiGrid) {
             khiGrid.innerHTML = '';
@@ -396,7 +462,7 @@
                 if(statusLunas) bulanLunasCount++;
 
                 khiGrid.insertAdjacentHTML('beforeend', `
-                    <div class="p-4 rounded-3xl border ${statusLunas ? 'bg-emerald-50/50 border-emerald-100 shadow-sm' : 'bg-slate-50/50 border-slate-100'} text-center transition-all hover:scale-105">
+                    <div class="p-4 rounded-3xl border ${statusLunas ? 'bg-emerald-50/50 border-emerald-100' : 'bg-slate-50/50 border-slate-100'} text-center transition-all hover:scale-105">
                         <p class="text-[8px] font-black uppercase ${statusLunas ? 'text-emerald-400' : 'text-slate-400'} tracking-widest mb-1">${bln.substring(0,3)}</p>
                         <p class="text-[11px] font-black ${statusLunas ? 'text-emerald-700' : 'text-slate-600'} italic">Rp ${totalBayarBulanIni.toLocaleString('id-ID')}</p>
                         <div class="mt-2">
@@ -411,6 +477,7 @@
             document.getElementById('progressBar').style.width = persentase + "%";
         }
 
+        // Update Status Bulan Berjalan
         const blnSekarang = daftarBulan[new Date().getMonth()];
         const sudahBayarBlnIni = rekapBulan[blnSekarang] || 0;
         const sisaTagihan = TARGET_IURAN - sudahBayarBlnIni;
@@ -422,36 +489,32 @@
         if (isLunasBulanIni) {
             elStatusText.innerText = "STATUS " + blnSekarang.toUpperCase();
             elStatusNominal.innerText = "LUNAS";
-            elStatusNominal.className = "text-2xl font-black text-emerald-500";
+            elStatusNominal.className = "text-2xl md:text-5xl font-black text-emerald-500 tracking-tighter";
         } else {
             elStatusText.innerText = "TAGIHAN " + blnSekarang.toUpperCase();
             elStatusNominal.innerText = "Rp " + (sisaTagihan > 0 ? sisaTagihan.toLocaleString('id-ID') : "0");
-            elStatusNominal.className = "text-2xl font-black text-amber-500";
+            elStatusNominal.className = "text-2xl md:text-5xl font-black text-amber-500 tracking-tighter";
         }
 
-        // 4. VERSI FINAL TABEL RIWAYAT
+        // Render Riwayat
         const tbody = document.getElementById('riwayatBody');
         if (tbody) {
             tbody.innerHTML = ''; 
-            iuran.sort((a,b) => new Date(b.date || b.tanggal) - new Date(a.date || a.tanggal)).forEach(tr => {
+            const sortedIuran = [...iuran].sort((a,b) => new Date(b.date || b.tanggal) - new Date(a.date || a.tanggal));
+            
+            if(sortedIuran.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" class="p-5 text-center text-slate-400 italic">Belum ada transaksi</td></tr>';
+            }
+
+            sortedIuran.forEach(tr => {
+                const tglFormat = tr.date ? new Date(tr.date).toLocaleDateString('id-ID', {day:'2-digit', month:'short'}) : '---';
                 
-                // Pesan WA Otomatis berdasarkan baris data
-                const teksWA = `Assalamualaikum Kang/Mbak%0AMohon izin untuk meminta Kwitansi Pembayaran Iuran saya atas nama:%0A*${namaAsli.toUpperCase()}*%0A%0A*Detail Transaksi:*%0A- Bulan: ${tr.bulan}%0A- Nominal: Rp ${Number(tr.nominal).toLocaleString('id-ID')}%0A%0ATerimakasih`;
-
-                // Logika Tombol: Hanya muncul jika SUCCESS
-                const tombolKwitansi = tr.status === 'SUCCESS' 
-                    ? `<a href="https://api.whatsapp.com/send?phone=${NOMOR_BENDAHARA}&text=${teksWA}" 
-                          target="_blank" 
-                          class="text-emerald-600 hover:text-emerald-700 text-[10px] font-black flex items-center justify-center gap-1 bg-emerald-50 py-1 px-2 rounded-lg transition-all border border-emerald-100">
-                          <i class="fas fa-image"></i> LIHAT
-                       </a>`
-                    : `<span class="text-slate-400 text-[9px] italic">Menunggu Verifikasi</span>`;
-
                 tbody.insertAdjacentHTML('beforeend', `
                     <tr class="hover:bg-slate-50 transition-colors border-b border-slate-50">
-                        <td class="p-5 uppercase text-xs font-bold tracking-tighter text-slate-700">${tr.bulan}</td>
-                        <td class="p-5 text-center text-slate-400 text-xs font-medium">${tr.tanggal || tr.date}</td>
-                        <td class="p-5 text-center">${tombolKwitansi}</td>
+                        <td class="p-5">
+                            <p class="uppercase text-[10px] font-black tracking-tighter text-slate-700">${tr.bulan}</p>
+                            <p class="text-[8px] text-slate-400 font-bold">${tglFormat}</p>
+                        </td>
                         <td class="p-5 text-center">
                             <span class="px-2 py-1 rounded-md text-[9px] font-black uppercase ${tr.status === 'SUCCESS' ? 'bg-emerald-100 text-emerald-600' : 'bg-amber-100 text-amber-600'}">
                                 ${tr.status}
@@ -462,7 +525,6 @@
                 `);
             });
         }
-
         updateMateriAccess();
     }
 
@@ -474,22 +536,24 @@
         if (isLunasBulanIni) {
             mtrBtn.classList.remove('text-slate-400', 'cursor-not-allowed', 'opacity-50');
             mtrBtn.classList.add('text-slate-600', 'hover:bg-slate-50');
+            mtrBtn.style.opacity = "1";
             mtrBtn.style.cursor = 'pointer';
             
             const icons = ['lockIcon', 'lockIconDesktop'];
             icons.forEach(id => {
                 const el = document.getElementById(id);
-                if(el) el.className = (id === 'lockIcon') 
-                    ? "fas fa-check-circle absolute -top-1 -right-2 text-[8px] text-emerald-500 md:hidden"
-                    : "fas fa-check-circle text-[10px] ml-auto hidden md:block text-emerald-500 opacity-100";
+                if(el) {
+                    el.className = "fas fa-check-circle text-[10px] ml-auto text-emerald-500 animate-pulse";
+                    el.classList.remove('fa-lock');
+                }
             });
         }
     }
 
     function aksesMateri(e) {
         if (!isLunasBulanIni) {
-            e.preventDefault();
-            alert(`AKSES TERKUNCI!\n\nTotal iuran bulan ${daftarBulan[new Date().getMonth()]} Anda belum mencapai Rp ${TARGET_IURAN.toLocaleString('id-ID')}.\nSilakan lakukan pembayaran untuk membuka materi.`);
+            if(e) e.preventDefault();
+            alert(`AKSES TERKUNCI!\n\nTotal iuran bulan ${daftarBulan[new Date().getMonth()]} Anda belum Lunas (Rp ${TARGET_IURAN.toLocaleString('id-ID')}).\nSilakan lakukan pembayaran.`);
         } else {
             window.location.href = "materi.html";
         }
@@ -520,10 +584,12 @@
         const bulan = document.getElementById('payBulan').value;
         const nominal = document.getElementById('payNominal').value;
 
+        // Validasi
         if(!fileInput.files[0]) { alert("Harap unggah bukti transfer!"); return; }
+        if(parseInt(nominal) < 1000) { alert("Nominal tidak valid!"); return; }
 
         btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-circle-notch fa-spin text-xl"></i> Memproses...';
+        btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Mengirim...';
 
         const toBase64 = file => new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -533,7 +599,10 @@
         });
 
         try {
-            const imageBase64 = await toBase64(fileInput.files[0]);
+            const file = fileInput.files[0];
+            const extension = file.name.split('.').pop();
+            const imageBase64 = await toBase64(file);
+            
             const payload = {
                 action: "insert",
                 data: {
@@ -543,7 +612,7 @@
                     v2: bulan,
                     v3: parseInt(nominal),
                     imageRaw: imageBase64,
-                    imageName: `BUKTI_${bulan.toUpperCase()}_${session.nama.replace(/\s+/g, '_')}.jpg`,
+                    imageName: `BUKTI_${bulan.toUpperCase()}_${session.nama.replace(/\s+/g, '_')}.${extension}`,
                     status: "PENDING"
                 }
             };
@@ -552,37 +621,47 @@
 
             if (response.ok) {
                 const tglSekarang = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
-                const pesanWA = `*KONFIRMASI PEMBAYARAN IURAN*%0A----------------------------------%0A*Nama:* ${session.nama}%0A*Bulan:* ${bulan}%0A*Nominal:* Rp ${Number(nominal).toLocaleString('id-ID')}%0A*Tanggal:* ${tglSekarang}%0A----------------------------------%0A_Bukti sudah diupload ke sistem. Mohon dicek._`;
+                const pesanWA = `*KONFIRMASI PEMBAYARAN IURAN*%0A----------------------------------%0A*Nama:* ${session.nama}%0A*Bulan:* ${bulan}%0A*Nominal:* Rp ${Number(nominal).toLocaleString('id-ID')}%0A*Tanggal:* ${tglSekarang}%0A----------------------------------%0A_Bukti sudah diupload ke sistem. Mohon verifikasinya._`;
 
                 alert("Pembayaran Berhasil Dikirim!");
                 window.location.href = `https://api.whatsapp.com/send?phone=${NOMOR_BENDAHARA}&text=${pesanWA}`;
             }
         } catch (err) {
             console.error(err);
-            alert("Terjadi kesalahan saat mengirim data.");
+            alert("Terjadi kesalahan teknis.");
         } finally {
             btn.disabled = false;
-            btn.innerHTML = '<i class="fab fa-whatsapp text-xl"></i> Kirim Konfirmasi';
+            btn.innerHTML = '<i class="fab fa-whatsapp"></i> Kirim Konfirmasi Ke Pengurus';
         }
     };
 
-    // --- MODAL & LOGOUT ---
+    // --- MODAL CONTROLS ---
     function openModal() {
         const modal = document.getElementById('paymentModal');
         const content = document.getElementById('modalContent');
         modal.classList.remove('hidden');
         setTimeout(() => {
-            content.classList.remove('translate-y-full', 'md:scale-90');
-            content.classList.add('translate-y-0', 'md:scale-100');
+            content.classList.remove('translate-y-full');
+            content.classList.add('translate-y-0');
         }, 10);
     }
 
     function closeModal() {
         const modal = document.getElementById('paymentModal');
         const content = document.getElementById('modalContent');
-        content.classList.add('translate-y-full', 'md:scale-90');
-        content.classList.remove('translate-y-0', 'md:scale-100');
+        content.classList.add('translate-y-full');
+        content.classList.remove('translate-y-0');
         setTimeout(() => { modal.classList.add('hidden'); }, 300);
+    }
+
+    function openProfileModal() {
+        document.getElementById('profileModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeProfileModal() {
+        document.getElementById('profileModal').classList.add('hidden');
+        document.body.style.overflow = 'auto';
     }
 
     function logout() { 
@@ -591,6 +670,148 @@
             window.location.href = "login.html"; 
         }
     }
+    // --- FITUR DOWNLOAD KHI (KARTU HASIL IURAN) ---
+async function downloadKHI() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({
+        orientation: 'p',
+        unit: 'mm',
+        format: 'a4'
+    });
+
+    // 1. DATA & KONFIGURASI HALAMAN
+    const session = JSON.parse(localStorage.getItem('currentUserProfile'));
+    const namaUser = session ? session.nama.toUpperCase() : "SANTRI";
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    
+    // MARGIN (Sesuai Logika: Kiri 30mm, Kanan 30mm)
+    const margin = { left: 30, right: 30, top: 15, bottom: 15 };
+    const centerX = pageWidth / 2;
+
+    // 2. HEADER / KOP RESMI (Otomatis)
+    const logoUrl = "https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ";
+    try {
+        // Menambahkan Logo di Tengah
+        doc.addImage(logoUrl, 'PNG', centerX - 11, margin.top, 22, 22);
+    } catch (e) { console.error("Logo error:", e); }
+
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(12);
+    doc.text("PIMPINAN RAYON", centerX, margin.top + 28, { align: "center" });
+    
+    doc.setFontSize(15);
+    doc.setTextColor(27, 117, 72); // Hijau Pagar Nusa
+    doc.text("PSNU PAGAR NUSA UNUSIA", centerX, margin.top + 34, { align: "center" });
+
+    // Garis Pembatas KOP Ganda
+    doc.setLineWidth(0.8);
+    doc.setDrawColor(0, 0, 0);
+    doc.line(margin.left, margin.top + 38, pageWidth - margin.right, margin.top + 38);
+    doc.setLineWidth(0.2);
+    doc.line(margin.left, margin.top + 39.5, pageWidth - margin.right, margin.top + 39.5);
+
+    // 3. INFORMASI JUDUL & IDENTITAS
+    doc.setFontSize(11);
+    doc.setTextColor(0, 0, 0);
+    doc.setFont("helvetica", "bold");
+    doc.text("KARTU HASIL IURAN (KHI) PERSONAL", centerX, margin.top + 48, { align: "center" });
+
+    doc.setFontSize(9);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Nama Santri : ${namaUser}`, margin.left, margin.top + 56);
+    
+    const tglCetak = new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
+    doc.text(`Dicetak: ${tglCetak}`, pageWidth - margin.right, margin.top + 56, { align: "right" });
+
+    // 4. TRANSFORMASI DATA DARI GRID UI KE TABEL PDF
+    // Mengambil data dari currentIuranData (yang difilter SUCCESS)
+    const dataIuran = currentIuranData.filter(x => x.status === "SUCCESS");
+    const rows = dataIuran.map((item, i) => [
+        i + 1,
+        item.bulan.toUpperCase(),
+        item.date || item.tanggal || "-",
+        `Rp ${Number(item.nominal).toLocaleString('id-ID')}`,
+        "LUNAS"
+    ]);
+
+    const totalTerbayar = dataIuran.reduce((a, b) => a + Number(b.nominal), 0);
+
+    // GENERATE TABEL KHI
+    doc.autoTable({
+        head: [['NO', 'BULAN IURAN', 'TANGGAL BAYAR', 'NOMINAL', 'STATUS']],
+        body: rows,
+        startY: margin.top + 62,
+        margin: { left: margin.left, right: margin.right },
+        headStyles: { 
+            fillColor: [27, 117, 72], 
+            halign: 'center', 
+            fontStyle: 'bold',
+            fontSize: 9
+        },
+        columnStyles: { 
+            0: { halign: 'center', cellWidth: 10 }, 
+            3: { halign: 'right' },
+            4: { halign: 'center' }
+        },
+        foot: [['', '', 'TOTAL PENERIMAAN', `Rp ${totalTerbayar.toLocaleString('id-ID')}`, '']],
+        footStyles: { 
+            fillColor: [240, 240, 240], 
+            textColor: [0, 0, 0], 
+            fontStyle: 'bold', 
+            halign: 'right' 
+        },
+        theme: 'grid',
+        styles: { fontSize: 8, cellPadding: 2.5 }
+    });
+
+    // 5. AREA TANDA TANGAN (Menyesuaikan Akhir Tabel)
+    let ySign = doc.lastAutoTable.finalY + 15;
+    
+    // Proteksi jika ruang tanda tangan tidak cukup
+    if (ySign + 50 > pageHeight) {
+        doc.addPage();
+        ySign = 20;
+    }
+
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text("Mengetahui,", centerX, ySign, { align: "center" });
+
+    // Tanda Tangan Ketua Umum (Kiri)
+    const leftCol = margin.left + 25;
+    doc.text("Ketua Umum,", leftCol, ySign + 10, { align: "center" });
+    try {
+        const ttdKetua = "https://lh3.googleusercontent.com/d/1yCu3bQc69uXpJSUpK-W3nuX0ukzbXYLg"; 
+        doc.addImage(ttdKetua, 'PNG', leftCol - 15, ySign + 12, 30, 15);
+    } catch(e) {}
+    doc.setFont("helvetica", "bold");
+    doc.text("ILHAM IQYANUDDIN", leftCol, ySign + 35, { align: "center" });
+    doc.setFont("helvetica", "normal");
+    doc.text("NIA. 27091985", leftCol, ySign + 40, { align: "center" });
+
+    // Tanda Tangan Bendahara Umum (Kanan)
+    const rightCol = pageWidth - margin.right - 25;
+    doc.text("Bendahara Umum,", rightCol, ySign + 10, { align: "center" });
+    try {
+        const ttdBendahara = "https://lh3.googleusercontent.com/d/1_1sFSL8g98RTrgm6YJLpgduzbHyQP_iJ"; 
+        doc.addImage(ttdBendahara, 'PNG', rightCol - 15, ySign + 12, 30, 15);
+    } catch(e) {}
+    doc.setFont("helvetica", "bold");
+    doc.text("SYIFA ULYA SETIAWAN", rightCol, ySign + 35, { align: "center" });
+    doc.setFont("helvetica", "normal");
+    doc.text("NIA. 03011986", rightCol, ySign + 40, { align: "center" });
+
+    // 6. FOOTER DIGITAL
+    doc.setFontSize(8);
+    doc.setTextColor(150);
+    doc.text("Dicetak melalui Sistem Digital Brankas Psnu Pagarnusa Unusia", centerX, pageHeight - 10, { align: "center" });
+
+    // Simpan File dengan Nama Santri
+    const fileName = `KHI_${namaUser.replace(/\s+/g, '_')}_${new Date().getFullYear()}.pdf`;
+    doc.save(fileName);
+}
 </script>
 </body>
 </html>

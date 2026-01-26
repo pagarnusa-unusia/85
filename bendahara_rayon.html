@@ -35,155 +35,196 @@
         tr { transition: all 0.2s ease; }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen pb-24 lg:pb-0 bg-[#F8FAFC]">
 
-    <header class="sticky top-0 z-50 glass px-6 py-4 lg:px-12 flex justify-between items-center">
-        <div class="flex items-center gap-4">
-            <div class="w-12 h-12 flex items-center justify-center p-1 bg-white rounded-xl shadow-sm border border-slate-100">
+    <header class="sticky top-0 z-50 glass px-4 py-3 lg:px-12 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 lg:w-12 lg:h-12 flex items-center justify-center p-1 bg-white rounded-xl shadow-sm border border-slate-100">
                 <img src="logopn.png" class="w-full h-full object-contain" alt="Logo">
             </div>
             <div>
-                <h1 class="text-xl font-extrabold text-pnDark tracking-tight leading-none uppercase" id="display-nama">BRANKAS IURAN</h1>
-                <p class="text-[10px] font-bold text-pnGreen uppercase tracking-[0.2em] mt-1">PSNU PAGARNUSA UNUSIA</p>
+                <h1 class="text-sm lg:text-xl font-black text-pnDark tracking-tighter leading-none uppercase" id="display-nama">BRANKAS IURAN</h1>
+                <p class="text-[8px] lg:text-[10px] font-bold text-pnGreen uppercase tracking-[0.0em] mt-1">PSNU PAGARNUSA UNUSIA</p>
             </div>
         </div>
         
         <div class="flex gap-2">
-            <button onclick="logout()" class="bg-white text-red-500 border border-slate-200 p-3 rounded-2xl hover:bg-red-50 transition-all shadow-sm active:scale-90" title="Keluar">
-                <i class="fas fa-sign-out-alt text-lg"></i>
+            <button onclick="generateMonthlyReport()" class="w-10 h-10 flex items-center justify-center bg-white text-pnGreen border border-slate-200 rounded-xl hover:bg-pnGreen/5 active:scale-90 transition-all shadow-sm" title="Laporan PDF">
+                <i class="fas fa-file-pdf"></i>
             </button>
-            <button onclick="generateMonthlyReport()" class="bg-white text-pnGreen border border-slate-200 p-3 rounded-2xl hover:bg-pnGreen/5 transition-all shadow-sm active:scale-90" title="Laporan PDF">
-                <i class="fas fa-file-pdf text-lg"></i>
-            </button>
-            <button onclick="openModal()" class="gradient-pn text-white px-6 py-3 rounded-2xl flex items-center gap-2 shadow-xl shadow-pnGreen/30 hover:shadow-pnGreen/50 hover:-translate-y-0.5 active:translate-y-0 transition-all text-xs font-bold uppercase tracking-wider">
-                <i class="fas fa-plus-circle"></i> Tambah
+            <button onclick="logout()" class="w-10 h-10 flex items-center justify-center bg-white text-red-500 border border-slate-200 rounded-xl hover:bg-red-50 active:scale-90 transition-all shadow-sm" title="Keluar">
+                <i class="fas fa-power-off"></i>
             </button>
         </div>
     </header>
 
-    <main class="p-6 lg:p-12 max-w-7xl mx-auto space-y-10">
+    <main class="p-4 lg:p-12 max-w-7xl mx-auto space-y-6 lg:space-y-10">
         
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white p-8 rounded-[2.5rem] card-shadow border border-slate-50 group hover:border-pnGreen/20 transition-all">
-                <div class="flex justify-between items-start mb-4">
-                    <p class="text-[10px] font-black text-slate-400 tracking-widest uppercase">Total Kas Terkumpul</p>
-                    <span class="bg-green-50 text-green-600 p-2.5 rounded-xl text-xs"><i class="fas fa-vault"></i></span>
-                </div>
-                <h3 id="stat-TotalMasuk" class="text-3xl font-black text-pnDark tracking-tight">Rp 0</h3>
+        <section class="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-6">
+            <div class="col-span-2 lg:col-span-1 gradient-pn p-6 lg:p-8 rounded-[2rem] shadow-xl shadow-pnDark/20 text-white relative overflow-hidden group border border-white/10">
+                <p class="text-[9px] font-black text-white/50 tracking-widest mb-2 uppercase italic">Verified Balance</p>
+                <h3 id="stat-Saldo" class="text-2xl lg:text-4xl font-black text-pnAccent tracking-tight">Rp 0</h3>
+                <i class="fas fa-wallet absolute -right-4 -bottom-4 text-7xl opacity-10 group-hover:scale-110 transition-transform duration-500"></i>
             </div>
 
-            <div class="bg-white p-8 rounded-[2.5rem] card-shadow border border-slate-50 relative overflow-hidden group hover:border-pnGreen/20 transition-all">
-                <div class="flex justify-between items-start mb-4">
-                    <p class="text-[10px] font-black text-slate-400 tracking-widest uppercase">Pencapaian Bulan Ini</p>
-                    <span id="target-percent" class="bg-pnGreen/10 text-pnGreen px-2.5 py-1 rounded-lg text-[10px] font-black tracking-tighter">0%</span>
+            <div class="bg-white p-5 lg:p-8 rounded-[2rem] card-shadow border border-slate-50 group hover:border-pnGreen/20 transition-all">
+                <div class="flex justify-between items-start mb-3">
+                    <p class="text-[9px] font-black text-slate-400 tracking-widest uppercase">Total Masuk</p>
+                    <span class="bg-green-50 text-green-600 p-2 rounded-lg text-[10px]"><i class="fas fa-vault"></i></span>
                 </div>
-                <h3 id="stat-BulanIni" class="text-3xl font-black text-pnGreen mb-5 tracking-tight">Rp 0</h3>
-                <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                <h3 id="stat-TotalMasuk" class="text-lg lg:text-3xl font-black text-pnDark tracking-tight">Rp 0</h3>
+            </div>
+
+            <div class="bg-white p-5 lg:p-8 rounded-[2rem] card-shadow border border-slate-50 relative overflow-hidden group">
+                <div class="flex justify-between items-start mb-3">
+                    <p class="text-[9px] font-black text-slate-400 tracking-widest uppercase">Target Bulan Ini</p>
+                    <span id="target-percent" class="bg-pnGreen/10 text-pnGreen px-2 py-0.5 rounded-md text-[9px] font-black italic">0%</span>
+                </div>
+                <h3 id="stat-BulanIni" class="text-lg lg:text-3xl font-black text-pnGreen mb-4 tracking-tight">Rp 0</h3>
+                <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
                     <div id="progress-bar-inner" class="progress-bar h-full bg-pnAccent rounded-full w-0"></div>
                 </div>
-                <p class="text-[10px] mt-3 text-slate-400 font-bold">Basis: <span id="total-santri-target">0</span> Santri aktif x Rp 25k</p>
-            </div>
-
-            <div class="gradient-pn p-8 rounded-[2.5rem] shadow-2xl shadow-pnDark/30 text-white relative overflow-hidden group">
-                <p class="text-[10px] font-black text-white/40 tracking-widest mb-4 uppercase">Saldo Bersih (Verified)</p>
-                <h3 id="stat-Saldo" class="text-4xl font-black text-pnAccent tracking-tight">Rp 0</h3>
-                <i class="fas fa-wallet absolute -right-4 -bottom-4 text-8xl opacity-10 group-hover:scale-110 group-hover:-rotate-12 transition-transform duration-500"></i>
+                <p class="text-[8px] mt-2 text-slate-400 font-bold">Basis: <span id="total-santri-target">0</span> Santri aktif</p>
             </div>
         </section>
 
-        <section class="bg-white p-8 rounded-[2.5rem] card-shadow border border-slate-50">
-            <div class="flex items-center gap-4 mb-8">
-                <div class="w-1.5 h-8 bg-pnGreen rounded-full"></div>
-                <h4 class="text-lg font-black text-pnDark tracking-tighter uppercase italic">Grafik Kas</h4>
+        <section class="bg-white p-6 lg:p-8 rounded-[2.5rem] card-shadow border border-slate-50">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-1 h-6 bg-pnGreen rounded-full"></div>
+                <h4 class="text-xs lg:text-sm font-black text-pnDark tracking-widest uppercase italic">Visualisasi Arus Kas</h4>
             </div>
-            <div class="h-72">
+            <div class="h-56 lg:h-72">
                 <canvas id="pemasukanChart"></canvas>
             </div>
         </section>
 
-        <div class="bg-white rounded-[3.5rem] card-shadow overflow-hidden border border-slate-100">
-            <div class="p-8 md:p-10 flex flex-col md:flex-row justify-between items-center gap-6 bg-slate-50/50 border-b border-slate-100">
-                <div class="flex items-center gap-4">
+        <div class="bg-white rounded-[2.5rem] lg:rounded-[3.5rem] card-shadow overflow-hidden border border-slate-100">
+            <div class="p-6 lg:p-10 flex flex-col lg:flex-row justify-between items-center gap-4 bg-slate-50/50">
+                <div class="flex items-center gap-3 w-full lg:w-auto">
                     <div class="w-10 h-10 bg-pnAccent rounded-2xl flex items-center justify-center text-pnDark shadow-sm">
-                        <i class="fas fa-list-ul"></i>
+                        <i class="fas fa-list-ul text-xs"></i>
                     </div>
                     <div>
-                        <h4 class="text-lg font-black text-pnDark tracking-tight">Data Riwayat Transaksi</h4>
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sinkronisasi Cloud Aktif</p>
+                        <h4 class="text-sm lg:text-lg font-black text-pnDark tracking-tight uppercase">Riwayat Transaksi</h4>
+                        <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest italic">Live Sync Dashboard</p>
                     </div>
                 </div>
-                <div class="relative w-full md:w-96 group">
-                    <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-pnGreen transition-colors"></i>
-                    <input type="text" onkeyup="filterData(this.value)" placeholder="Cari nama atau bulan..." class="w-full pl-14 pr-6 py-4 bg-white rounded-2xl border border-slate-200 focus:ring-4 focus:ring-pnGreen/10 focus:border-pnGreen outline-none text-sm font-semibold transition-all">
+                <div class="relative w-full lg:w-96 group">
+                    <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-pnGreen transition-colors text-xs"></i>
+                    <input type="text" onkeyup="filterData(this.value)" placeholder="Cari nama atau bulan..." class="w-full pl-12 pr-6 py-3.5 lg:py-4 bg-white rounded-2xl border border-slate-200 focus:ring-4 focus:ring-pnGreen/10 focus:border-pnGreen outline-none text-xs font-semibold transition-all shadow-inner">
                 </div>
             </div>
 
             <div class="overflow-x-auto">
-                <table class="w-full text-left" id="mainTable">
-                    <thead class="text-[11px] font-black text-slate-400 tracking-widest uppercase bg-white">
+                <table class="w-full text-left min-w-[800px] lg:min-w-full" id="mainTable">
+                    <thead class="text-[10px] font-black text-slate-400 tracking-widest uppercase bg-white border-b border-slate-50">
                         <tr>
-                            <th class="px-10 py-6">Nama Anggota</th>
-                            <th class="px-10 py-6">Keterangan</th>
-                            <th class="px-10 py-6">Nominal</th>
-                            <th class="px-10 py-6">Waktu</th>
-                            <th class="px-10 py-6">Lampiran</th>
-                            <th class="px-10 py-6 text-center">Status</th>
-                            <th class="px-10 py-6 text-right">Tindakan</th>
+                            <th class="px-6 lg:px-10 py-5">Nama Anggota</th>
+                            <th class="px-6 lg:px-10 py-5">Keterangan</th>
+                            <th class="px-6 lg:px-10 py-5">Nominal</th>
+                            <th class="px-6 lg:px-10 py-5">Waktu</th>
+                            <th class="px-6 lg:px-10 py-5">Lampiran</th>
+                            <th class="px-6 lg:px-10 py-5 text-center">Status</th>
+                            <th class="px-6 lg:px-10 py-5 text-right">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody id="tBody" class="text-sm divide-y divide-slate-100"></tbody>
+                    <tbody id="tBody" class="text-[11px] lg:text-xs divide-y divide-slate-50">
+                        </tbody>
                 </table>
             </div>
-            <div class="p-8 bg-slate-50/30 text-center border-t border-slate-100">
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em]">Akhir dari baris data</p>
+            
+            <div class="p-6 bg-slate-50/30 text-center border-t border-slate-50">
+                <p class="text-[9px] font-black text-slate-300 uppercase tracking-[0.3em]">End of Data Records</p>
             </div>
         </div>
     </main>
 
-    <div id="modal" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-6 bg-pnDark/90 backdrop-blur-md">
-        <div class="bg-white w-full max-w-lg rounded-[3.5rem] shadow-2xl overflow-hidden animate-slide">
-            <div class="p-10 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
-                <div class="flex items-center gap-3">
-                    <i class="fas fa-file-invoice-dollar text-pnGreen text-2xl"></i>
-                    <h3 class="font-black text-pnDark uppercase tracking-tighter text-xl">Catat Pembayaran</h3>
+    <div class="lg:hidden fixed bottom-6 right-6 z-[60]">
+        <button onclick="openModal()" class="w-16 h-16 gradient-pn text-white rounded-full shadow-2xl shadow-pnGreen/40 flex items-center justify-center text-2xl active:scale-90 transition-all border-4 border-white">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+
+    <div class="hidden lg:block fixed bottom-10 right-10 z-[60]">
+        <button onclick="openModal()" class="gradient-pn text-white px-8 py-4 rounded-2xl flex items-center gap-3 shadow-2xl shadow-pnGreen/30 hover:-translate-y-1 active:translate-y-0 transition-all font-black text-xs uppercase tracking-widest">
+            <i class="fas fa-plus-circle text-lg"></i> Tambah Transaksi
+        </button>
+    </div>
+
+<div id="modal" class="fixed inset-0 z-[70] hidden flex items-end lg:items-center justify-center bg-pnDark/90 backdrop-blur-xl p-0 lg:p-6">
+        <div class="bg-white w-full max-w-lg rounded-t-[3rem] lg:rounded-[3.5rem] shadow-2xl overflow-hidden animate-slide">
+            
+            <div class="p-6 lg:p-10 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-pnGreen text-white rounded-2xl flex items-center justify-center shadow-lg shadow-pnGreen/20">
+                        <i class="fas fa-file-invoice-dollar text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-pnDark uppercase tracking-tighter text-lg lg:text-xl leading-none">Catat Iuran</h3>
+                        <p class="text-[9px] font-bold text-pnGreen uppercase tracking-widest mt-1">Input Data Transaksi</p>
+                    </div>
                 </div>
                 <button onclick="closeModal()" class="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-sm text-slate-300 hover:text-red-500 hover:rotate-90 transition-all duration-300">
                     <i class="fas fa-times text-lg"></i>
                 </button>
             </div>
             
-            <form id="iuranForm" class="p-10 space-y-6">
-                <div class="space-y-2">
-                    <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Input Nama Santri</label>
-                    <input type="text" id="f-nama" required placeholder="Contoh: Muhammad Ali" class="w-full p-5 bg-slate-50 rounded-3xl border border-transparent font-bold text-sm focus:bg-white focus:border-pnGreen focus:ring-4 focus:ring-pnGreen/5 outline-none transition-all">
+            <form id="iuranForm" class="p-6 lg:p-10 space-y-5 lg:space-y-6">
+                
+                <div class="group">
+                    <label class="inline-block text-[10px] font-black text-slate-400 uppercase ml-2 mb-2 tracking-widest">
+                        <i class="fas fa-user-circle mr-1"></i> Nama Lengkap Santri
+                    </label>
+                    <div class="relative">
+                        <input type="text" id="f-nama" required placeholder="Ketik nama anggota..." 
+                        class="w-full p-4 lg:p-5 bg-slate-50 rounded-2xl lg:rounded-3xl border-2 border-transparent font-bold text-sm focus:bg-white focus:border-pnGreen outline-none transition-all shadow-inner group-focus-within:shadow-pnGreen/5">
+                    </div>
                 </div>
                 
-                <div class="grid grid-cols-2 gap-5">
-                    <div class="space-y-2">
-                        <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Bulan Tagihan</label>
-                        <select id="f-bulan" class="w-full p-5 bg-slate-50 rounded-3xl border border-transparent font-bold text-sm outline-none focus:bg-white focus:border-pnGreen transition-all appearance-none">
-                            <option>Januari</option><option>Februari</option><option>Maret</option><option>April</option>
-                            <option>Mei</option><option>Juni</option><option>Juli</option><option>Agustus</option>
-                            <option>September</option><option>Oktober</option><option>November</option><option>Desember</option>
-                        </select>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="group">
+                        <label class="inline-block text-[10px] font-black text-slate-400 uppercase ml-2 mb-2 tracking-widest">
+                            <i class="fas fa-calendar-alt mr-1"></i> Bulan
+                        </label>
+                        <div class="relative">
+                            <select id="f-bulan" class="w-full p-4 lg:p-5 bg-slate-50 rounded-2xl lg:rounded-3xl border-2 border-transparent font-bold text-sm outline-none focus:bg-white focus:border-pnGreen transition-all shadow-inner appearance-none cursor-pointer">
+                                <option>Januari</option><option>Februari</option><option>Maret</option><option>April</option>
+                                <option>Mei</option><option>Juni</option><option>Juli</option><option>Agustus</option>
+                                <option>September</option><option>Oktober</option><option>November</option><option>Desember</option>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-5 top-1/2 -translate-y-1/2 text-slate-300 text-[10px] pointer-events-none"></i>
+                        </div>
                     </div>
-                    <div class="space-y-2">
-                        <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Tanggal Setor</label>
-                        <input type="date" id="f-tgl" required class="w-full p-5 bg-slate-50 rounded-3xl border border-transparent font-bold text-sm outline-none focus:bg-white focus:border-pnGreen transition-all">
+                    <div class="group">
+                        <label class="inline-block text-[10px] font-black text-slate-400 uppercase ml-2 mb-2 tracking-widest">
+                            <i class="fas fa-clock mr-1"></i> Tanggal
+                        </label>
+                        <input type="date" id="f-tgl" required class="w-full p-4 lg:p-5 bg-slate-50 rounded-2xl lg:rounded-3xl border-2 border-transparent font-bold text-sm outline-none focus:bg-white focus:border-pnGreen transition-all shadow-inner">
                     </div>
                 </div>
 
-                <div class="space-y-2">
-                    <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Jumlah Setoran</label>
+                <div class="group">
+                    <label class="inline-block text-[10px] font-black text-slate-400 uppercase ml-2 mb-2 tracking-widest text-pnGreen">
+                        <i class="fas fa-coins mr-1"></i> Nominal Setoran
+                    </label>
                     <div class="relative">
-                        <span class="absolute left-6 top-1/2 -translate-y-1/2 font-black text-pnGreen">Rp</span>
-                        <input type="number" id="f-nominal" value="25000" required class="w-full pl-14 pr-6 py-5 bg-slate-50 rounded-3xl border border-transparent font-black text-2xl text-pnDark focus:bg-white focus:border-pnGreen outline-none transition-all">
+                        <div class="absolute left-6 top-1/2 -translate-y-1/2 flex flex-col items-center">
+                            <span class="font-black text-pnGreen text-xs">IDR</span>
+                        </div>
+                        <input type="number" id="f-nominal" value="25000" required 
+                        class="w-full pl-16 pr-6 py-5 lg:py-6 bg-emerald-50/50 rounded-2xl lg:rounded-3xl border-2 border-transparent font-black text-2xl lg:text-3xl text-pnDark focus:bg-white focus:border-pnGreen outline-none transition-all shadow-inner">
                     </div>
                 </div>
 
-                <button type="submit" id="submitBtn" class="w-full py-6 gradient-pn text-white rounded-3xl font-black text-xs uppercase tracking-[0.2em] shadow-2xl shadow-pnGreen/40 hover:shadow-pnGreen/60 hover:-translate-y-1 active:translate-y-0 active:scale-95 transition-all">
-                    Konfirmasi & Simpan Transaksi
-                </button>
+                <div class="pt-4">
+                    <button type="submit" id="submitBtn" class="w-full py-5 lg:py-6 gradient-pn text-white rounded-2xl lg:rounded-3xl font-black text-xs lg:text-sm uppercase tracking-[0.2em] shadow-2xl shadow-pnGreen/30 active:scale-[0.97] transition-all flex items-center justify-center gap-3">
+                        <span>Konfirmasi & Simpan</span>
+                        <i class="fas fa-arrow-right text-[10px]"></i>
+                    </button>
+                    <p class="text-center text-[8px] font-bold text-slate-400 uppercase tracking-widest mt-4">
+                        <i class="fas fa-shield-alt mr-1"></i> Transaksi akan dicatat secara realtime ke Cloud
+                    </p>
+                </div>
             </form>
         </div>
     </div>

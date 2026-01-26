@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PUSAT MATERI | PN UNUSIA</title>
+    <link rel="icon" href="logopn.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { pnGreen: '#1B7548', pnDark: '#0b3d26', pnGold: '#D4AF37' },
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-tap-highlight-color: transparent; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 1.5rem; background: #000; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .glass-nav { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .lock-screen { position: fixed; inset: 0; background: white; z-index: 9999; display: flex; align-items: center; justify-content: center; transition: all 0.5s ease; }
+        .article-content p { margin-bottom: 1.25rem; line-height: 1.8; color: #475569; font-size: 0.95rem; }
+        ::-webkit-scrollbar { width: 0px; }
+        .tab-active { background: white; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); color: #1B7548 !important; }
+    </style>
+</head>
+<body class="pb-12">
+
+    <div id="lockOverlay" class="lock-screen">
+        <div class="text-center">
+            <div class="inline-block relative">
+                <div class="w-16 h-16 border-4 border-slate-100 border-t-pnGreen rounded-full animate-spin"></div>
+                <i class="fas fa-shield-halved absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-pnGreen"></i>
+            </div>
+            <p id="securityStatus" class="text-slate-500 font-bold text-[10px] mt-4 tracking-[0.1em]">Memverifikasi...</p>
+        </div>
+    </div>
+
+    <nav class="glass-nav sticky top-0 z-50">
+        <div class="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="profil_santri.html" class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-pnGreen hover:text-white transition-all active:scale-90">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div class="text-center">
+                <p class="text-[9px] font-black uppercase tracking-[0.3em] text-pnGreen">Akademi Santri</p>
+                <h1 class="text-xs font-black text-slate-800 italic uppercase">Pusat Materi Digital</h1>
+            </div>
+            <div id="userBadge" class="w-10 h-10 flex items-center justify-center rounded-full bg-emerald-50 text-pnGreen border border-emerald-100">
+                <i class="fas fa-certificate text-xs"></i>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-2xl mx-auto px-6 mt-8">
+        
+        <div class="flex bg-slate-200/50 p-1.5 rounded-3xl mb-10 shadow-inner">
+            <button onclick="switchTab('artikel')" id="btn-artikel" class="flex-1 py-3 text-[10px] font-black rounded-2xl transition-all tab-active tracking-widest uppercase">
+                <i class="fas fa-file-alt mr-2"></i>Artikel Teori
+            </button>
+            <button onclick="switchTab('video')" id="btn-video" class="flex-1 py-3 text-[10px] font-black rounded-2xl transition-all text-slate-500 tracking-widest uppercase">
+                <i class="fas fa-play mr-2"></i>Video Tutorial
+            </button>
+        </div>
+
+        <div id="section-artikel" class="animate-in fade-in duration-500">
+            <header class="mb-10">
+                <span class="px-3 py-1 bg-emerald-100 text-emerald-700 text-[9px] font-black uppercase rounded-lg tracking-widest">Modul 01: Keorganisasian</span>
+                <h1 class="text-3xl font-black text-slate-900 mt-4 leading-tight italic uppercase tracking-tighter">Ideologi & Teknik Dasar Kuda-kuda</h1>
+            </header>
+
+            <article class="article-content">
+                <h2 class="text-lg font-black text-pnGreen uppercase italic border-l-4 border-pnGreen pl-3 mb-4">A. Filosofi Pergerakan</h2>
+                <p>Pagar Nusa didirikan pada 3 Januari 1986 di Pondok Pesantren Lirboyo. Sebagai santri, pemahaman akan slogan <b>"Laa Ghaliba Illa Billah"</b> adalah mutlak. Ini bermakna tidak ada kemenangan yang diraih melainkan atas ijin Allah SWT.</p>
+
+                <div class="p-6 bg-white rounded-[2rem] border border-slate-100 my-8 shadow-sm">
+                    <h4 class="font-black text-[10px] text-slate-400 uppercase tracking-widest mb-3">Tabel Kurikulum Sabuk</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="text-slate-400">
+                                    <th class="pb-3 pr-4">MATERI</th>
+                                    <th class="pb-3 px-4 text-center">TINGKAT</th>
+                                    <th class="pb-3 pl-4 text-right">SYARAT</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-slate-700 font-bold">
+                                <tr class="border-t border-slate-100">
+                                    <td class="py-3 pr-4 uppercase">Kuda-kuda & Fisik</td>
+                                    <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 bg-slate-100 rounded text-[9px]">DASAR</span></td>
+                                    <td class="py-3 pl-4 text-right italic text-pnGreen text-[9px]">WAJIB</td>
+                                </tr>
+                                <tr class="border-t border-slate-100">
+                                    <td class="py-3 pr-4 uppercase">Jurus Paket I</td>
+                                    <td class="py-3 px-4 text-center"><span class="px-2 py-0.5 bg-slate-100 rounded text-[9px]">LANJUT</span></td>
+                                    <td class="py-3 pl-4 text-right italic text-pnGreen text-[9px]">WAJIB</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <h2 class="text-lg font-black text-pnGreen uppercase italic border-l-4 border-pnGreen pl-3 mb-4 mt-10">B. Teknik Pernapasan</h2>
+                <p>Pernapasan adalah kunci tenaga dalam. Lakukan latihan pernapasan perut secara rutin 15 menit sebelum latihan fisik dimulai.</p>
+                
+                <div id="quizBox" class="mt-12 p-8 bg-slate-900 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden group">
+                    <div class="absolute -top-10 -right-10 w-32 h-32 bg-pnGreen opacity-10 rounded-full group-hover:scale-150 transition-all duration-700"></div>
+                    <h3 class="text-xl font-black italic uppercase tracking-tighter mb-2">Uji Pemahaman 🧠</h3>
+                    <p class="text-slate-400 text-[10px] mb-6 font-bold uppercase tracking-[0.2em]">Selesaikan untuk membuka lencana materi</p>
+                    
+                    <div class="space-y-3 relative z-10">
+                        <p class="text-sm font-bold mb-4">Dimana Pagar Nusa pertama kali didirikan?</p>
+                        <button onclick="checkQuiz(this, true)" class="w-full p-4 rounded-2xl bg-white/5 border border-white/10 text-left text-xs font-bold hover:bg-white/10 transition-all flex justify-between items-center group/btn">
+                            PONPES LIRBOYO, KEDIRI <i class="fas fa-chevron-right text-[10px] opacity-0 group-hover/btn:opacity-100 transition-all"></i>
+                        </button>
+                        <button onclick="checkQuiz(this, false)" class="w-full p-4 rounded-2xl bg-white/5 border border-white/10 text-left text-xs font-bold hover:bg-white/10 transition-all">
+                            PONPES TEBUIRENG, JOMBANG
+                        </button>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <div id="section-video" class="hidden space-y-6 animate-in slide-in-from-bottom-5 duration-500">
+            <div id="videoGrid" class="grid gap-6">
+                <div class="p-10 text-center">
+                    <div class="w-10 h-10 border-4 border-slate-200 border-t-pnGreen rounded-full animate-spin mx-auto mb-4"></div>
+                    <p class="text-xs font-bold text-slate-400 tracking-widest">SINKRONISASI VIDEO...</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzkOhlAKxKqRJWYgZ5ajptbx1J0QstJ4jdFcJEbcrA2lTdwgEZ63JTuBC8GHNP1nZkcyQ/exec";
+        const TARGET_IURAN = 20000;
+        const daftarBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+        window.onload = async () => {
+            const session = JSON.parse(localStorage.getItem('currentUserProfile'));
+            if (!session) { window.location.href = "login.html"; return; }
+            
+            // Verifikasi Keamanan & Inisialisasi Data
+            await validateSecurityAndLoad(session.nama);
+        };
+
+        async function validateSecurityAndLoad(nama) {
+            const overlay = document.getElementById('lockOverlay');
+            const statusLabel = document.getElementById('securityStatus');
+            
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=read`);
+                const result = await response.json();
+                
+                const blnSekarang = daftarBulan[new Date().getMonth()];
+                const dataIuranUser = result.iuran.filter(i => 
+                    i.nama.trim().toLowerCase() === nama.trim().toLowerCase() && 
+                    i.bulan === blnSekarang && 
+                    i.status === "SUCCESS"
+                );
+
+                const totalBayar = dataIuranUser.reduce((acc, curr) => acc + (Number(curr.nominal) || 0), 0);
+
+                if (totalBayar < TARGET_IURAN) {
+                    statusLabel.innerText = "AKSES DITOLAK";
+                    alert(`MAAF!\n\nIuran bulan ${blnSekarang} Anda belum mencapai target Rp ${TARGET_IURAN.toLocaleString('id-ID')}.\nSilakan selesaikan pembayaran agar bisa mengakses materi.`);
+                    window.location.href = "profil_santri.html";
+                } else {
+                    // Berhasil: Load Video secara dinamis
+                    loadVideoData(result.videoMateri); 
+                    
+                    overlay.style.opacity = '0';
+                    setTimeout(() => overlay.remove(), 500);
+                }
+            } catch (err) {
+                console.error(err);
+                // Fallback jika API bermasalah namun user sudah login
+                alert("Gagal sinkronisasi cloud. Menggunakan mode cache.");
+                loadVideoData(null); 
+                overlay.remove();
+            }
+        }
+
+        function loadVideoData(cloudVideos) {
+            const grid = document.getElementById('videoGrid');
+            
+            // Data Default (Jika di Google Sheets belum ada data video)
+            const defaultVideos = [
+                { id: "faeZhXnzTHQ", judul: "Kuda-Kuda Dasar", sub: "Teknik & Peragaan" },
+                { id: "faeZhXnzTHQ", judul: "Tangkisan Atas", sub: "Pertahanan Dasar" }
+            ];
+
+            const videos = (cloudVideos && cloudVideos.length > 0) ? cloudVideos : defaultVideos;
+            
+            grid.innerHTML = ""; // Bersihkan loading
+            videos.forEach(v => {
+                grid.innerHTML += `
+                    <div class="bg-white rounded-[2.5rem] p-5 border border-slate-100 shadow-sm group">
+                        <div class="video-container mb-4 shadow-xl shadow-slate-200">
+                            <iframe src="https://www.youtube.com/embed/${v.id}" allowfullscreen></iframe>
+                        </div>
+                        <div class="flex justify-between items-center px-2">
+                            <div>
+                                <h4 class="font-black text-slate-800 uppercase italic text-sm tracking-tighter">${v.judul}</h4>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">${v.sub}</p>
+                            </div>
+                            <span class="bg-emerald-50 text-emerald-600 p-3 rounded-2xl text-xs group-hover:bg-pnGreen group-hover:text-white transition-colors">
+                                <i class="fas fa-play"></i>
+                            </span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function switchTab(type) {
+            const btnArt = document.getElementById('btn-artikel');
+            const btnVid = document.getElementById('btn-video');
+            const secArt = document.getElementById('section-artikel');
+            const secVid = document.getElementById('section-video');
+
+            if(type === 'artikel') {
+                btnArt.className = "flex-1 py-3 text-[10px] font-black rounded-2xl transition-all tab-active tracking-widest uppercase";
+                btnVid.className = "flex-1 py-3 text-[10px] font-black rounded-2xl transition-all text-slate-500 tracking-widest uppercase";
+                secArt.classList.remove('hidden');
+                secVid.classList.add('hidden');
+            } else {
+                btnVid.className = "flex-1 py-3 text-[10px] font-black rounded-2xl transition-all tab-active tracking-widest uppercase";
+                btnArt.className = "flex-1 py-3 text-[10px] font-black rounded-2xl transition-all text-slate-500 tracking-widest uppercase";
+                secVid.classList.remove('hidden');
+                secArt.classList.add('hidden');
+            }
+        }
+
+        function checkQuiz(btn, isCorrect) {
+            if(isCorrect) {
+                btn.classList.add('bg-emerald-500', 'border-emerald-400', 'text-white');
+                btn.innerHTML = '<i class="fas fa-check-circle mr-2"></i> JAWABAN BENAR!';
+                document.getElementById('userBadge').classList.add('bg-pnGreen', 'text-white', 'animate-bounce');
+                setTimeout(() => alert("Luar biasa! Lencana materi berhasil didapatkan."), 300);
+            } else {
+                btn.classList.add('bg-red-500', 'border-red-400', 'text-white');
+                btn.innerHTML = '<i class="fas fa-times-circle mr-2"></i> COBA LAGI';
+                setTimeout(() => {
+                    btn.classList.remove('bg-red-500', 'border-red-400', 'text-white');
+                    btn.innerHTML = 'PONPES TEBUIRENG, JOMBANG';
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -188,29 +188,52 @@
         </div>
     </div>
 <script>
+    // --- KONFIGURASI & STATE ---
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzkOhlAKxKqRJWYgZ5ajptbx1J0QstJ4jdFcJEbcrA2lTdwgEZ63JTuBC8GHNP1nZkcyQ/exec";
     const TARGET_PER_BULAN = 20000;
     let allData = [];
     let listSantri = [];
     let myChart;
-    
 
-    // 1. Validasi Sesi (KONSISTEN)
+    // --- 1. VALIDASI SESI (KONSISTEN) ---
     function validateSesi() {
         const profil = localStorage.getItem('currentUserProfile');
         if (!profil) { window.location.href = 'login.html'; return; }
         const userObj = JSON.parse(profil);
-        if(userObj.username) document.getElementById('display-nama').innerText = "BRANKAS " + userObj.username.toUpperCase();
+        if(userObj.username) {
+            const displayNama = document.getElementById('display-nama');
+            if(displayNama) displayNama.innerText = "BRANKAS " + userObj.username.toUpperCase();
+        }
     }
     validateSesi();
 
-    function logout() { localStorage.clear(); window.location.href = 'login.html'; }
+    function logout() { 
+        Swal.fire({
+            title: 'Keluar?',
+            text: "Sesi Anda akan diakhiri",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#1B7548',
+            confirmButtonText: 'Ya, Keluar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.clear(); 
+                window.location.href = 'login.html'; 
+            }
+        });
+    }
 
-    // 2. Fetch Data (KONSISTEN)
-    window.onload = fetchData;
+    // --- 2. FETCH DATA & AUTO REFRESH ---
+    window.onload = () => {
+        fetchData();
+        setInterval(fetchData, 300000); 
+    };
+
     async function fetchData() {
         const body = document.getElementById('tBody');
-        body.innerHTML = `<tr class="animate-pulse"><td colspan="7" class="p-10 text-center"><div class="flex flex-col items-center gap-2"><div class="h-4 bg-slate-100 rounded-full w-48"></div><div class="h-3 bg-slate-50 rounded-full w-32"></div></div></td></tr>`.repeat(4);
+        if(body.innerHTML === "") {
+             body.innerHTML = `<tr class="animate-pulse"><td colspan="7" class="p-10 text-center"><div class="flex flex-col items-center gap-2"><div class="h-4 bg-slate-100 rounded-full w-48"></div><div class="h-3 bg-slate-50 rounded-full w-32"></div></div></td></tr>`.repeat(4);
+        }
 
         try {
             const res = await fetch(SCRIPT_URL + "?action=read");
@@ -221,12 +244,37 @@
             renderTable(); 
             updateStats();
             updateCharts();
+            populateSantriDropdown(); 
         } catch (e) {
+            console.error(e);
             Swal.fire('Koneksi Gagal', 'Gagal memuat data dari Cloud.', 'error');
         }
     }
 
-    // 3. Render Table (KONSISTEN + Tampilan Baru)
+    // --- 3. LOGIKA OTOMATISASI FORM ---
+    function populateSantriDropdown() {
+        const selectNama = document.getElementById('f-nama');
+        if(!selectNama) return;
+        
+        const currentVal = selectNama.value;
+        selectNama.innerHTML = '<option value="">-- Pilih Nama Santri --</option>';
+        
+        listSantri.sort((a,b) => a.nama.localeCompare(b.nama)).forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s.nama;
+            opt.textContent = s.nama.toUpperCase();
+            selectNama.appendChild(opt);
+        });
+        selectNama.value = currentVal;
+    }
+
+    // Helper Otomatis: Isi nominal saat bulan dipilih
+    document.getElementById('f-bulan')?.addEventListener('change', function() {
+        const nominalInp = document.getElementById('f-nominal');
+        if(nominalInp && !nominalInp.value) nominalInp.value = TARGET_PER_BULAN;
+    });
+
+    // --- 4. RENDER TABLE (KONSISTEN + STYLING + SMART LINK) ---
     function renderTable() {
         const body = document.getElementById('tBody');
         body.innerHTML = '';
@@ -239,42 +287,48 @@
             const status = (item.status || "PENDING").toString().toUpperCase().trim();
             const isPending = status === "PENDING";
             
+            // --- LOGIKA SMART LINK GOOGLE DRIVE ---
             let directLink = item.bukti;
-            if (item.bukti && item.bukti.includes("id=")) {
-                const fileId = item.bukti.split("id=")[1].split("&")[0];
-                directLink = `https://lh3.googleusercontent.com/u/0/d/${fileId}`;
+            if (item.bukti && item.bukti.includes("drive.google.com")) {
+                let fileId = "";
+                if (item.bukti.includes("/d/")) {
+                    fileId = item.bukti.split("/d/")[1].split("/")[0];
+                } else if (item.bukti.includes("id=")) {
+                    fileId = item.bukti.split("id=")[1].split("&")[0];
+                }
+                if (fileId) directLink = `https://lh3.googleusercontent.com/d/${fileId}`;
             }
 
             const tr = document.createElement('tr');
-            tr.className = isPending ? "bg-amber-50/30" : "hover:bg-slate-50/50";
+            tr.className = isPending ? "bg-amber-50/40 border-l-4 border-amber-400 animate-in fade-in duration-500" : "hover:bg-slate-50/50 border-b border-slate-100 transition-colors";
             
             tr.innerHTML = `
-                <td class="px-10 py-5">
+                <td class="px-6 py-4">
                     <button onclick="showDetailSantri('${item.nama}')" class="text-sm font-extrabold text-pnDark hover:text-pnGreen underline decoration-slate-200 decoration-2 underline-offset-4 transition-all">
                         ${item.nama}
                     </button>
                 </td>
-                <td class="px-10 py-5 text-xs font-bold text-slate-500 uppercase tracking-tighter">Iuran ${item.bulan}</td>
-                <td class="px-10 py-5 text-sm font-black text-pnDark">
+                <td class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-tighter">Iuran ${item.bulan}</td>
+                <td class="px-6 py-4 text-sm font-black text-pnDark">
                     Rp ${Number(item.nominal).toLocaleString('id-ID')}
                 </td>
-                <td class="px-10 py-5 text-[10px] font-black text-slate-400">${item.tanggal}</td>
-                <td class="px-10 py-5">
+                <td class="px-6 py-4 text-[10px] font-black text-slate-400">${item.tanggal}</td>
+                <td class="px-6 py-4">
                     ${item.bukti && item.bukti.includes("http") ? 
                         `<a href="${directLink}" target="_blank" class="bg-blue-50 text-blue-600 px-3 py-1.5 rounded-lg text-[9px] font-black uppercase flex items-center gap-2 w-fit border border-blue-100 hover:bg-blue-600 hover:text-white transition-all">
-                            <i class="fas fa-paperclip"></i> Lihat Bukti
+                            <i class="fas fa-image"></i> LIHAT BUKTI
                         </a>` : `<span class="text-slate-300 italic text-[10px] font-bold">Tanpa Berkas</span>`
                     }
                 </td>
-                <td class="px-10 py-5 text-center">
-                    <span class="px-3 py-1.5 rounded-lg text-[9px] font-black tracking-widest ${isPending ? 'bg-orange-100 text-orange-600' : 'bg-green-100 text-green-700'} border ${isPending ? 'border-orange-200':'border-green-200'}">
+                <td class="px-6 py-4 text-center">
+                    <span class="px-3 py-1.5 rounded-lg text-[9px] font-black tracking-widest ${isPending ? 'bg-orange-100 text-orange-600 border-orange-200' : 'bg-green-100 text-green-700 border-green-200'} border">
                         ${status}
                     </span>
                 </td>
-                <td class="px-10 py-5 text-right space-x-2">
+                <td class="px-6 py-4 text-right space-x-2">
                     ${isPending ? 
                         `<button onclick="verifikasiIuranOtomatis('${item.id}', '${item.nama}', '${item.bulan}', '${item.nominal}', '${item.tanggal}')" class="bg-pnGreen text-white px-4 py-2 rounded-xl text-[10px] font-black hover:bg-pnDark shadow-lg shadow-pnGreen/20 transition-all uppercase">Konfirmasi</button>` :
-                        `<button onclick="prosesKwitansi('${item.nama}', '${item.bulan}', '${item.nominal}', '${item.tanggal}')" title="Kirim Kwitansi" class="w-10 h-10 rounded-xl bg-slate-100 text-pnGreen hover:bg-pnGreen hover:text-white transition-all"><i class="fas fa-print"></i></button>`
+                        `<button onclick="prosesKwitansi('${item.nama}', '${item.bulan}', '${item.nominal}', '${item.tanggal}')" title="Cetak Kwitansi" class="w-10 h-10 rounded-xl bg-slate-100 text-pnGreen hover:bg-pnGreen hover:text-white transition-all"><i class="fas fa-print"></i></button>`
                     }
                     <button onclick="hapusData('${item.id}')" title="Hapus Data" class="w-10 h-10 rounded-xl text-slate-200 hover:text-red-500 hover:bg-red-50 transition-all"><i class="fas fa-trash-alt"></i></button>
                 </td>
@@ -283,7 +337,7 @@
         });
     }
 
-    // 4. Update Stats & Target (KONSISTEN)
+    // --- 5. UPDATE STATS & TARGET (KONSISTEN) ---
     function updateStats() {
         const dataValid = allData.filter(x => (x.status || "").toUpperCase() === "SUCCESS");
         const totalTerkumpul = dataValid.reduce((acc, curr) => acc + (Number(curr.nominal) || 0), 0);
@@ -304,18 +358,26 @@
         document.getElementById('stat-TotalMasuk').innerText = 'Rp ' + totalTerkumpul.toLocaleString('id-ID');
         document.getElementById('stat-BulanIni').innerText = 'Rp ' + nominalBulanIni.toLocaleString('id-ID');
         document.getElementById('stat-Saldo').innerText = 'Rp ' + totalTerkumpul.toLocaleString('id-ID');
-        document.getElementById('total-santri-target').innerText = totalAnggota;
-        document.getElementById('target-percent').innerText = percent + '%';
         
-        // Animasi progress bar
-        setTimeout(() => {
-            document.getElementById('progress-bar-inner').style.width = Math.min(percent, 100) + '%';
-        }, 300);
+        const elTarget = document.getElementById('total-santri-target');
+        const elPercent = document.getElementById('target-percent');
+        if(elTarget) elTarget.innerText = totalAnggota;
+        if(elPercent) elPercent.innerText = percent + '%';
+        
+        const progressBar = document.getElementById('progress-bar-inner');
+        if(progressBar) {
+            setTimeout(() => {
+                progressBar.style.width = Math.min(percent, 100) + '%';
+                progressBar.className = percent >= 100 ? "h-full bg-blue-500 transition-all duration-1000" : "h-full bg-pnGreen transition-all duration-1000";
+            }, 300);
+        }
     }
 
-    // 5. Chart Pertumbuhan (KONSISTEN)
+    // --- 6. CHART PERTUMBUHAN (KONSISTEN) ---
     function updateCharts() {
-        const ctx = document.getElementById('pemasukanChart').getContext('2d');
+        const chartEl = document.getElementById('pemasukanChart');
+        if(!chartEl) return;
+        const ctx = chartEl.getContext('2d');
         const bulanIndo = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"];
         const labels = [];
         const dataValues = [];
@@ -343,11 +405,10 @@
                     data: dataValues,
                     borderColor: '#1B7548',
                     backgroundColor: 'rgba(27, 117, 72, 0.08)',
-                    borderWidth: 5,
+                    borderWidth: 4,
                     pointBackgroundColor: '#ffcc00',
                     pointBorderColor: '#fff',
-                    pointRadius: 6,
-                    pointHoverRadius: 8,
+                    pointRadius: 5,
                     tension: 0.4,
                     fill: true
                 }]
@@ -355,16 +416,16 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { display: false }, tooltip: { backgroundColor: '#0b3d26', padding: 12, titleFont: { size: 10 }, bodyFont: { weight: 'bold' } } },
+                plugins: { legend: { display: false } },
                 scales: {
-                    y: { beginAtZero: true, grid: { borderDash: [5, 5], color: '#f1f5f9' }, ticks: { font: { size: 10, weight: 'bold' }, color: '#94a3b8' } },
-                    x: { grid: { display: false }, ticks: { font: { size: 10, weight: 'bold' }, color: '#94a3b8' } }
+                    y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { font: { size: 10 } } },
+                    x: { grid: { display: false }, ticks: { font: { size: 10 } } }
                 }
             }
         });
     }
 
-    // 6. Kwitansi PDF & WA (KONSISTEN)
+    // --- 7. GENERATE KWITANSI (KONSISTEN) ---
     async function prosesKwitansi(nama, bulan, nominal, tgl) {
         const profil = listSantri.find(s => s.nama.toLowerCase().trim() === nama.toLowerCase().trim());
         let noWA = profil ? profil.wa : "";
@@ -372,37 +433,29 @@
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: [100, 150] });
         
-        // Header Kwitansi
-        // 1. Kotak Hijau: Dibuat tinggi 45mm agar muat Logo + Judul
+        // 1. Kotak Header Hijau
         doc.setFillColor(27, 117, 72); 
         doc.rect(0, 0, 100, 45, 'F'); 
 
-        // 2. Logo: Berada di atas (Y=5), Ukuran 20mm
+        // 2. Logo (Direct googleusercontent Link)
         const logoUrl = "https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ";
         try {
             doc.addImage(logoUrl, 'PNG', 40, 5, 20, 20);
-        } catch (e) {
-            console.error("Gagal memuat logo");
-        }
+        } catch (e) { console.error("Logo skip"); }
 
-        // 3. Teks Judul: Turun ke Y=35 (Tepat di bawah logo)
         doc.setTextColor(255, 255, 255); 
         doc.setFontSize(16); 
         doc.setFont("helvetica", "bold");
         doc.text("KWITANSI DIGITAL", 50, 35, { align: "center" });
 
-        // 4. Sub-Judul Organisasi: Turun ke Y=52 (Di bawah kotak hijau)
         doc.setTextColor(40, 40, 40); 
         doc.setFontSize(9); 
-        doc.setFont("helvetica", "bold");
         doc.text("PSNU PAGARNUSA UNUSIA", 50, 52, { align: "center" });
 
-        // 5. Garis Pembatas: Turun ke Y=55 (Agar tidak menumpuk dengan teks)
         doc.setLineWidth(0.5); 
         doc.line(15, 55, 85, 55);
 
-        // 6. Titik Awal Data (y dimulai dari 65 agar ada jarak dari garis)
-        let y = 65;        
+        let yPos = 65;        
         const details = [
             ["Atas Nama", nama.toUpperCase()], 
             ["Jenis Bayar", "Iuran " + bulan], 
@@ -413,10 +466,10 @@
         
         details.forEach(row => { 
             doc.setFont("helvetica", "bold"); doc.setTextColor(120, 120, 120);
-            doc.text(row[0], 15, y); 
+            doc.text(row[0], 15, yPos); 
             doc.setFont("helvetica", "bold"); doc.setTextColor(27, 117, 72);
-            doc.text(": " + row[1], 40, y); 
-            y += 10; 
+            doc.text(": " + row[1], 40, yPos); 
+            yPos += 10; 
         });
 
         doc.setTextColor(180, 180, 180); doc.setFontSize(7);
@@ -424,49 +477,61 @@
 
         doc.save(`Kwitansi_${nama.replace(/\s+/g, '_')}.pdf`);
 
-        // Logika WhatsApp
         if(noWA) {
             let cleanWA = noWA.toString().replace(/\D/g, '');
             if (cleanWA.startsWith('0')) cleanWA = '62' + cleanWA.slice(1);
-            const msg = `*BUKTI PEMBAYARAN IURAN*%0A%0AAtas Nama: *${nama}*%0ABulan: *${bulan}*%0ANominal: *Rp ${Number(nominal).toLocaleString()}*%0AStatus: *Ubah bagian ini (Contoh:Cicil/Lunas)*%0A%0A_Terima kasih sudah berkontribusi untuk organisasi._`;
+            const msg = `*BUKTI PEMBAYARAN IURAN*%0A%0AAtas Nama: *${nama}*%0ABulan: *${bulan}*%0ANominal: *Rp ${Number(nominal).toLocaleString()}*%0AStatus: *TERVERIFIKASI*%0A%0A_Kwitansi PDF telah diterbitkan secara otomatis oleh sistem._`;
             window.open(`https://wa.me/${cleanWA}?text=${msg}`, '_blank');
         }
     }
 
-    // 7. CRUD Ops (KONSISTEN)
-    async function verifikasiIuran(id) {
-        const res = await Swal.fire({ title: 'Verifikasi?', text: "Konfirmasi uang sudah diterima.", icon: 'question', showCancelButton: true, confirmButtonColor: '#1B7548' });
-        if(res.isConfirmed) {
-            Swal.fire({ title: 'Menyimpan...', didOpen: () => Swal.showLoading() });
-            await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'updateStatus', id: id, status: 'SUCCESS' }) });
-            fetchData(); Swal.fire('Berhasil', 'Status diperbarui.', 'success');
-        }
-    }
-
-    // Fitur Otomatisasi (Verifikasi + Kwitansi Sekaligus)
+    // --- 8. CRUD OPERATIONS (KONSISTEN) ---
     async function verifikasiIuranOtomatis(id, nama, bulan, nominal, tgl) {
         const res = await Swal.fire({ 
             title: 'Verifikasi?', 
-            text: `Verifikasi pembayaran ${nama} dan kirim bukti?`, 
+            text: `Konfirmasi pembayaran ${nama} & cetak kwitansi?`, 
             icon: 'question', 
             showCancelButton: true, 
-            confirmButtonText: 'Ya, Verifikasi & Kirim',
+            confirmButtonText: 'Ya, Proses!',
             confirmButtonColor: '#1B7548' 
         });
         
         if(res.isConfirmed) {
-            Swal.fire({ title: 'Proses Verifikasi...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            Swal.fire({ title: 'Memperbarui Cloud...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'updateStatus', id: id, status: 'SUCCESS' }) });
                 await fetchData();
                 await prosesKwitansi(nama, bulan, nominal, tgl);
-                Swal.fire('Sukses', 'Data terverifikasi & Kwitansi diproses.', 'success');
+                Swal.fire('Berhasil', 'Status SUCCESS & Kwitansi Terkirim.', 'success');
             } catch (e) {
-                Swal.fire('Gagal', 'Terjadi kesalahan sistem.', 'error');
+                Swal.fire('Gagal', 'Terjadi gangguan koneksi.', 'error');
             }
         }
     }
 
+    async function hapusData(id) {
+        const res = await Swal.fire({ 
+            title: 'Hapus Data?', 
+            text: "Data akan hilang permanen!", 
+            icon: 'warning', 
+            showCancelButton: true, 
+            confirmButtonColor: '#ef4444',
+            confirmButtonText: 'Ya, Hapus'
+        });
+        
+        if(res.isConfirmed) {
+            Swal.fire({ title: 'Menghapus...', didOpen: () => Swal.showLoading() });
+            try {
+                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'delete', id: id }) });
+                fetchData();
+                Swal.fire('Terhapus', 'Data berhasil dibuang.', 'success');
+            } catch(e) {
+                Swal.fire('Gagal', 'Gagal terhubung ke server.', 'error');
+            }
+        }
+    }
+
+    // --- 9. FORM SUBMISSION ---
     document.getElementById('iuranForm').onsubmit = async (e) => {
         e.preventDefault();
         const btn = document.getElementById('submitBtn');
@@ -487,33 +552,26 @@
             fetchData(); 
             Swal.fire('Tersimpan', 'Data iuran berhasil ditambahkan.', 'success');
         } catch(e) {
-            Swal.fire('Gagal', 'Cek koneksi internet.', 'error');
+            Swal.fire('Gagal', 'Gagal menyimpan data.', 'error');
         } finally {
             btn.disabled = false; btn.innerHTML = "Konfirmasi & Simpan";
         }
     };
 
-    async function hapusData(id) {
-        const res = await Swal.fire({ title: 'Hapus?', text: "Data tidak bisa dikembalikan!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444' });
-        if(res.isConfirmed) {
-            Swal.fire({ title: 'Menghapus...', didOpen: () => Swal.showLoading() });
-            await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: 'delete', id: id }) });
-            fetchData();
-            Swal.fire('Terhapus', '', 'success');
-        }
-    }
-
+    // --- 10. UI HELPERS ---
     function filterData(q) {
         const rows = document.querySelectorAll('#tBody tr');
         rows.forEach(r => {
             const match = r.innerText.toLowerCase().includes(q.toLowerCase());
             r.style.display = match ? '' : 'none';
+            if(match && q !== "") r.classList.add('bg-yellow-50'); else r.classList.remove('bg-yellow-50');
         });
     }
 
     function openModal() { 
         document.getElementById('modal').classList.remove('hidden'); 
-        document.getElementById('f-tgl').valueAsDate = new Date(); 
+        const tglInp = document.getElementById('f-tgl');
+        if(tglInp) tglInp.valueAsDate = new Date(); 
     }
     
     function closeModal() { 
@@ -525,16 +583,16 @@
         const riwayat = allData.filter(x => x.nama.toLowerCase().trim() === nama.toLowerCase().trim() && x.status === "SUCCESS");
         const total = riwayat.reduce((acc, curr) => acc + (Number(curr.nominal) || 0), 0);
         Swal.fire({
-            title: nama.toUpperCase(),
+            title: `<span class="text-pnGreen">${nama.toUpperCase()}</span>`,
             html: `
-                <div class="p-6 bg-slate-50 rounded-[2rem] text-left space-y-3">
+                <div class="p-4 bg-slate-50 rounded-2xl text-left space-y-3 border border-slate-100">
                     <div class="flex justify-between border-b border-slate-200 pb-2">
-                        <span class="text-xs font-bold text-slate-400 uppercase">Nominal</span>
-                        <b class="text-pnGreen">Rp ${total.toLocaleString()}</b>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Kontribusi</span>
+                        <b class="text-pnDark">Rp ${total.toLocaleString('id-ID')}</b>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-xs font-bold text-slate-400 uppercase">Frekuensi Bayar</span>
-                        <b class="text-pnDark">${riwayat.length} Transaksi</b>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Jumlah Transaksi</span>
+                        <b class="text-pnDark">${riwayat.length} Kali</b>
                     </div>
                 </div>`,
             confirmButtonColor: '#1B7548',
@@ -543,13 +601,16 @@
     }
 
     function generateMonthlyReport() {
-        const { jsPDF } = window.jspdf; const doc = new jsPDF();
-        const d = new Date(); const m = d.getMonth()+1; const y = d.getFullYear();
+        const { jsPDF } = window.jspdf; 
+        const doc = new jsPDF();
+        const d = new Date(); 
+        const m = d.getMonth()+1; 
+        const y = d.getFullYear();
         
         doc.setFontSize(18); doc.setTextColor(27, 117, 72);
         doc.text("LAPORAN KEUANGAN PAGARNUSA", 105, 20, { align: "center" });
         doc.setFontSize(10); doc.setTextColor(100, 100, 100);
-        doc.text(`Periode: ${m}/${y} | Dicetak pada: ${new Date().toLocaleString()}`, 105, 27, { align: "center" });
+        doc.text(`Periode: ${m}/${y} | Dicetak: ${new Date().toLocaleString()}`, 105, 27, { align: "center" });
         
         const dataBulanIni = allData.filter(x => {
             const p = x.tanggal.split('/');

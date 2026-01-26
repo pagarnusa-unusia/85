@@ -94,7 +94,7 @@
         <section class="bg-white p-8 rounded-[2.5rem] card-shadow border border-slate-50">
             <div class="flex items-center gap-4 mb-8">
                 <div class="w-1.5 h-8 bg-pnGreen rounded-full"></div>
-                <h4 class="text-lg font-black text-pnDark tracking-tighter uppercase italic">Grafik Pertumbuhan Kas</h4>
+                <h4 class="text-lg font-black text-pnDark tracking-tighter uppercase italic">Grafik Kas</h4>
             </div>
             <div class="h-72">
                 <canvas id="pemasukanChart"></canvas>
@@ -202,7 +202,7 @@
         const userObj = JSON.parse(profil);
         if(userObj.username) {
             const displayNama = document.getElementById('display-nama');
-            if(displayNama) displayNama.innerText = "BRANKAS " + userObj.username.toUpperCase();
+            if(displayNama) displayNama.innerText = "BRANKAS IURAN"
         }
     }
     validateSesi();
@@ -600,35 +600,143 @@
         });
     }
 
-    function generateMonthlyReport() {
+async function generateMonthlyReport() {
         const { jsPDF } = window.jspdf; 
-        const doc = new jsPDF();
+        const doc = new jsPDF({
+            orientation: 'p',
+            unit: 'mm',
+            format: 'a4'
+        });
+
+        // 1. DATA & WAKTU (Otomatis & Konsisten)
         const d = new Date(); 
-        const m = d.getMonth()+1; 
+        const m = d.getMonth() + 1; 
         const y = d.getFullYear();
+        const pageWidth = doc.internal.pageSize.getWidth(); 
+        const pageHeight = doc.internal.pageSize.getHeight();
         
-        doc.setFontSize(18); doc.setTextColor(27, 117, 72);
-        doc.text("LAPORAN KEUANGAN PAGARNUSA", 105, 20, { align: "center" });
-        doc.setFontSize(10); doc.setTextColor(100, 100, 100);
-        doc.text(`Periode: ${m}/${y} | Dicetak: ${new Date().toLocaleString()}`, 105, 27, { align: "center" });
+        // MARGIN PRESISI (Kiri 3cm, Kanan 3cm, Atas 1cm, Bawah 1cm)
+        const margin = { left: 30, right: 30, top: 10, bottom: 10 };
+        const centerX = pageWidth / 2;
+
+        // 2. HEADER / KOP RESMI (Full Otomatis)
+        const logoUrl = "https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ";
+        try {
+            doc.addImage(logoUrl, 'PNG', centerX - 11, margin.top, 22, 22);
+        } catch (e) { console.error("Logo error:", e); }
+
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(12);
+        doc.text("PIMPINAN RAYON", centerX, margin.top + 28, { align: "center" });
         
-        const dataBulanIni = allData.filter(x => {
-            const p = x.tanggal.split('/');
-            return parseInt(p[1]) === m && parseInt(p[2]) === y && x.status === "SUCCESS";
+        doc.setFontSize(15);
+        doc.setTextColor(27, 117, 72); // Hijau Khas Pagar Nusa
+        doc.text("PSNU PAGAR NUSA UNUSIA", centerX, margin.top + 34, { align: "center" });
+
+        // Garis Pembatas KOP (Professional Look)
+        doc.setLineWidth(0.8);
+        doc.setDrawColor(0, 0, 0);
+        doc.line(margin.left, margin.top + 38, pageWidth - margin.right, margin.top + 38);
+        doc.setLineWidth(0.2);
+        doc.line(margin.left, margin.top + 39.5, pageWidth - margin.right, margin.top + 39.5);
+
+        // 3. LOGIKA FILTER DATA (Mengambil SEMUA data SUCCESS agar tidak terpotong)
+        const dataLaporan = allData.filter(x => (x.status || "").toUpperCase() === "SUCCESS");
+
+        doc.setFontSize(10);
+        doc.setTextColor(0, 0, 0);
+        doc.setFont("helvetica", "bold");
+        doc.text(`Laporan Keuangan: Rekapitulasi Kas Keseluruhan`, margin.left, margin.top + 48);
+        
+        doc.setFont("helvetica", "normal");
+        const tglCetak = new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
+        doc.text(`Tanggal Cetak: ${tglCetak}`, pageWidth - margin.right, margin.top + 48, { align: "right" });
+
+        // 4. TRANSFORMASI DATA KE TABEL
+        const rows = dataLaporan.map((item, i) => [
+            i + 1, 
+            item.nama.toUpperCase(), 
+            item.bulan, 
+            item.tanggal, 
+            `Rp ${Number(item.nominal).toLocaleString('id-ID')}`
+        ]);
+
+        const totalPenerimaan = dataLaporan.reduce((a, b) => a + Number(b.nominal), 0);
+
+        // GENERATE TABEL
+        doc.autoTable({
+            head: [['NO', 'NAMA SANTRI', 'BULAN', 'TANGGAL', 'NOMINAL']],
+            body: rows,
+            startY: margin.top + 53,
+            margin: { left: margin.left, right: margin.right },
+            headStyles: { 
+                fillColor: [27, 117, 72], 
+                halign: 'center', 
+                fontStyle: 'bold',
+                fontSize: 9
+            },
+            columnStyles: { 
+                0: { halign: 'center', cellWidth: 10 }, 
+                4: { halign: 'right' } 
+            },
+            // FOOTER TABEL (Total ditaruh paling akhir sekali)
+            foot: [['', '', '', 'TOTAL PENERIMAAN', `Rp ${totalPenerimaan.toLocaleString('id-ID')}`]],
+            showFoot: 'lastPage', // FITUR BARU: Total hanya muncul di akhir tabel saja
+            footStyles: { 
+                fillColor: [240, 240, 240], 
+                textColor: [0, 0, 0], 
+                fontStyle: 'bold', 
+                halign: 'right' 
+            },
+            theme: 'grid',
+            styles: { fontSize: 8, cellPadding: 2.5 }
         });
+
+        // 5. AREA TANDA TANGAN (Otomatis menyesuaikan posisi tabel)
+        let ySign = doc.lastAutoTable.finalY + 15;
         
-        const rows = dataBulanIni.map((item, i) => [i+1, item.nama, item.bulan, item.tanggal, `Rp ${Number(item.nominal).toLocaleString()}`]);
-        
-        doc.autoTable({ 
-            head: [['No', 'Nama Santri', 'Bulan', 'Tanggal', 'Nominal']], 
-            body: rows, 
-            startY: 35, 
-            headStyles: {fillColor: [27, 117, 72], fontStyle: 'bold'},
-            foot: [['', '', '', 'TOTAL', `Rp ${dataBulanIni.reduce((a,b)=>a+Number(b.nominal),0).toLocaleString()}`]],
-            footStyles: {fillColor: [240, 240, 240], textColor: [0, 0, 0], fontStyle: 'bold'}
-        });
-        
-        doc.save(`Laporan_Kas_PN_${m}_${y}.pdf`);
+        // Proteksi Halaman Baru: Jika ruang tanda tangan tidak cukup (muat di bawah 55mm)
+        if (ySign + 55 > pageHeight) {
+            doc.addPage();
+            ySign = 20;
+        }
+
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        doc.text("Mengetahui,", centerX, ySign, { align: "center" });
+
+        // Tanda Tangan Ketua Umum (Kiri)
+        const leftCol = margin.left + 25;
+        doc.text("Ketua Umum,", leftCol, ySign + 10, { align: "center" });
+        try {
+            const ttdKetua = "https://lh3.googleusercontent.com/d/1yCu3bQc69uXpJSUpK-W3nuX0ukzbXYLg"; 
+            doc.addImage(ttdKetua, 'PNG', leftCol - 15, ySign + 12, 30, 15);
+        } catch(e) {}
+        doc.setFont("helvetica", "bold");
+        doc.text("ILHAM IQYANUDDIN", leftCol, ySign + 35, { align: "center" });
+        doc.setFont("helvetica", "normal");
+        doc.text("NIA. 27091985", leftCol, ySign + 40, { align: "center" });
+
+        // Tanda Tangan Bendahara Umum (Kanan)
+        const rightCol = pageWidth - margin.right - 25;
+        doc.text("Bendahara Umum,", rightCol, ySign + 10, { align: "center" });
+        try {
+            const ttdBendahara = "https://lh3.googleusercontent.com/d/1_1sFSL8g98RTrgm6YJLpgduzbHyQP_iJ"; 
+            doc.addImage(ttdBendahara, 'PNG', rightCol - 15, ySign + 12, 30, 15);
+        } catch(e) {}
+        doc.setFont("helvetica", "bold");
+        doc.text("SYIFA ULYA SETIAWAN", rightCol, ySign + 35, { align: "center" });
+        doc.setFont("helvetica", "normal");
+        doc.text("NIA. 03011986", rightCol, ySign + 40, { align: "center" });
+
+        // 6. FOOTER HALAMAN DIGITAL
+        doc.setFontSize(8);
+        doc.setTextColor(150);
+        doc.text("Dicetak melalui Sistem Digital Brankas Pagar Nusa Unusia", centerX, pageHeight - 5, { align: "center" });
+
+        // Simpan File
+        doc.save(`Laporan_Keuangan_${m}_${y}.pdf`);
     }
 </script>
 </body>

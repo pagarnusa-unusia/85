@@ -3,131 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jadwal & Hasil - Pagar Nusa Digital Score</title>
+    <title>Official Portal - Pagar Nusa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background-color: #064e3b; color: white; font-family: 'Segoe UI', sans-serif; }
-        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .winner-glow { box-shadow: 0 0 15px rgba(251, 191, 36, 0.4); border: 1px solid #fbbf24; }
+        body { 
+            background: radial-gradient(circle at top, #065f46, #022c22); 
+            color: white; 
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.05); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover { border-color: rgba(251, 191, 36, 0.5); }
+        .gold-gradient { background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); }
+        
+        /* Animasi untuk pemenang baru */
+        @keyframes highlight {
+            0% { background: rgba(251, 191, 36, 0.3); transform: translateY(-10px); }
+            100% { background: transparent; transform: translateY(0); }
+        }
+        .new-winner { animation: highlight 2s ease-out; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #fbbf24; border-radius: 10px; }
     </style>
 </head>
-<body class="min-h-screen pb-10">
+<body class="p-4 md:p-8">
 
-    <nav class="bg-black/30 sticky top-0 z-50 border-b border-yellow-500/50 backdrop-blur-md">
-        <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <img src="logopn.png" class="h-10" alt="Logo">
-                <div>
-                    <h1 class="text-lg font-black text-yellow-400 leading-none">PAGAR NUSA</h1>
-                    <p class="text-[10px] uppercase tracking-widest opacity-70">Info Jadwal & Hasil</p>
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 mb-10">
+        <div class="flex items-center gap-5">
+            <div class="p-3 bg-yellow-500 rounded-2xl shadow-[0_0_20px_rgba(251,191,36,0.4)]">
+                <img src="logopn.png" class="h-12 w-12 object-contain" alt="Logo">
+            </div>
+            <div>
+                <h1 class="text-3xl font-black tracking-tighter text-white">OFFICIAL <span class="text-yellow-400 italic">PORTAL</span></h1>
+                <p class="text-emerald-300 text-sm font-medium tracking-[0.2em] uppercase">Monitoring Atlet & Hasil Pertandingan</p>
+            </div>
+        </div>
+        
+        <div class="flex gap-4">
+            <div class="glass-card px-6 py-3 rounded-2xl text-center border-b-2 border-yellow-500">
+                <p class="text-[10px] text-emerald-400 uppercase font-bold">Total Partai</p>
+                <p id="stat-total" class="text-2xl font-black">0</p>
+            </div>
+            <div class="glass-card px-6 py-3 rounded-2xl text-center border-b-2 border-blue-500">
+                <p class="text-[10px] text-blue-400 uppercase font-bold">Selesai</p>
+                <p id="stat-selesai" class="text-2xl font-black">0</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto grid grid-cols-12 gap-8">
+        
+        <div class="col-span-12 lg:col-span-3 space-y-6">
+            <div class="glass-card p-6 rounded-3xl">
+                <h3 class="text-yellow-400 font-bold mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-magnifying-glass text-xs"></i> FILTER DATA
+                </h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-[10px] text-emerald-300 ml-1">CARI NAMA / KONTINGEN</label>
+                        <input type="text" id="search-name" oninput="filterData()" 
+                            placeholder="Ketik nama atlet..." 
+                            class="w-full bg-black/40 border border-white/10 p-3 rounded-xl focus:border-yellow-500 outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-emerald-300 ml-1">GELANGGANG</label>
+                        <select id="filter-gel" onchange="filterData()" class="w-full bg-black/40 border border-white/10 p-3 rounded-xl outline-none text-sm">
+                            <option value="">Semua Gelanggang</option>
+                            <option value="A">Gelanggang A</option>
+                            <option value="B">Gelanggang B</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-emerald-300 ml-1">KELAS / KATEGORI</label>
+                        <select id="filter-kelas" onchange="filterData()" class="w-full bg-black/40 border border-white/10 p-3 rounded-xl outline-none text-sm">
+                            <option value="">Semua Kelas</option>
+                            <option value="Remaja">Remaja</option>
+                            <option value="Dewasa">Dewasa</option>
+                            <option value="Putra">Putra</option>
+                            <option value="Putri">Putri</option>
+                        </select>
+                    </div>
+                    <button onclick="resetFilter()" class="w-full py-2 text-xs font-bold text-white/50 hover:text-white transition">RESET FILTER</button>
                 </div>
             </div>
-            <button onclick="loadData()" class="bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold hover:bg-yellow-400 transition">
-                <i class="fas fa-sync-alt mr-1"></i> REFRESH
-            </button>
-        </div>
-    </nav>
-
-    <main class="max-w-4xl mx-auto px-4 mt-6">
-        
-        <div class="grid grid-cols-2 gap-4 mb-8">
-            <div class="glass-card p-4 rounded-2xl text-center">
-                <p class="text-xs opacity-60 uppercase">Total Partai</p>
-                <p id="total-partai" class="text-2xl font-black text-yellow-500">-</p>
-            </div>
-            <div class="glass-card p-4 rounded-2xl text-center">
-                <p class="text-xs opacity-60 uppercase">Update Terakhir</p>
-                <p id="last-update" class="text-xs font-bold mt-2">--:--</p>
-            </div>
         </div>
 
-        <h2 class="text-xl font-bold mb-4 flex items-center gap-2">
-            <i class="fas fa-trophy text-yellow-500"></i> REKAPITULASI PERTANDINGAN
-        </h2>
-
-        <div id="loading" class="flex flex-col items-center justify-center py-20">
-            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-500 mb-4"></div>
-            <p class="text-sm opacity-50">Mengambil data dari server...</p>
-        </div>
-
-        <div id="data-container" class="space-y-4 hidden">
+        <div class="col-span-12 lg:col-span-9 space-y-6">
+            
+            <div class="flex gap-4 border-b border-white/10 pb-2 text-sm font-bold">
+                <button onclick="switchTab('all')" class="text-yellow-500 border-b-2 border-yellow-500 pb-2 px-4">Semua Jadwal</button>
+                <button onclick="switchTab('winner')" class="text-white/50 hover:text-white pb-2 px-4">Pemenang Terbaru</button>
             </div>
 
-    </main>
+            <div id="main-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 h-[70vh] overflow-y-auto pr-2">
+                </div>
+        </div>
+    </div>
 
     <script>
-        // GANTI INI DENGAN URL WEB APP GOOGLE ANDA
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZ-i-nKgn7Ydwym6CvZGTfHUVlzS9tROUkBVHTEcPca-OdWYm_4ssroLn8sV2PXBf4/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZ-i-nKgn7Ydwym6CvZGTfHUVlzS9tROUkBVHTEcPca-OdWYm_4ssroLn8sV2PXBf4/exec"; // Ganti dengan URL deployment Anda
+        let allData = [];
 
-        async function loadData() {
-            const container = document.getElementById('data-container');
-            const loading = document.getElementById('loading');
-            
-            loading.classList.remove('hidden');
-            container.classList.add('hidden');
-
+        async function fetchData() {
             try {
-                const response = await fetch(SCRIPT_URL);
-                const data = await response.json();
-                
-                renderData(data);
-                
-                document.getElementById('total-partai').innerText = data.length;
-                document.getElementById('last-update').innerText = new Date().toLocaleTimeString('id-ID');
-                
-                loading.classList.add('hidden');
-                container.classList.remove('hidden');
-            } catch (error) {
-                console.error("Gagal mengambil data:", error);
-                alert("Gagal memuat data. Pastikan koneksi internet aktif.");
+                const res = await fetch(SCRIPT_URL + "?type=getJadwal");
+                const data = await res.json();
+                allData = data.slice(1); // Skip header
+                renderData(allData);
+                updateStats();
+            } catch (e) {
+                console.error("Gagal mengambil data");
             }
         }
 
-        function renderData(data) {
-            const container = document.getElementById('data-container');
-            container.innerHTML = '';
+        function renderData(dataList) {
+            const container = document.getElementById('main-container');
+            container.innerHTML = "";
 
-            if (data.length === 0) {
-                container.innerHTML = '<p class="text-center opacity-50 py-10 italic text-sm">Belum ada hasil pertandingan yang tersimpan.</p>';
-                return;
-            }
+            // LOGIKA: Pemenang Baru Paling Atas
+            // Kita asumsikan kolom F (index 5) berisi status atau pemenang.
+            // Kita urutkan berdasarkan yang sudah ada isinya di kolom F.
+            const sortedData = [...dataList].sort((a, b) => {
+                if (a[5] && !b[5]) return -1;
+                if (!a[5] && b[5]) return 1;
+                return 0;
+            });
 
-            data.forEach(item => {
-                const card = document.createElement('div');
-                card.className = "glass-card rounded-2xl overflow-hidden mb-4";
-                
-                // Format waktu
-                const dateObj = new Date(item.waktu);
-                const timeStr = dateObj.toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'});
-
-                card.innerHTML = `
-                    <div class="bg-white/5 px-4 py-2 flex justify-between items-center border-b border-white/10 text-[10px] font-bold tracking-widest opacity-60">
-                        <span>GELANGGANG ${item.gel}</span>
-                        <span>PARTAI ${item.partai} | ${timeStr}</span>
-                    </div>
-                    <div class="p-4 grid grid-cols-11 items-center gap-2">
-                        <div class="col-span-5 text-center">
-                            <p class="text-xs opacity-50 mb-1">BIRU</p>
-                            <p class="font-black text-blue-400 uppercase text-sm leading-tight">${item.biru}</p>
+            sortedData.forEach(row => {
+                const isWinner = row[5] && row[5] !== "Menunggu";
+                const card = `
+                    <div class="glass-card p-5 rounded-2xl relative overflow-hidden ${isWinner ? 'new-winner border-l-4 border-yellow-500' : ''}">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="bg-yellow-500 text-black text-[10px] font-black px-3 py-1 rounded-full uppercase">Partai ${row[0]}</span>
+                            <span class="text-white/40 text-[10px] font-bold tracking-widest uppercase">Gelanggang ${row[1]}</span>
                         </div>
-                        <div class="col-span-1 text-center font-black text-gray-500 text-xs italic">VS</div>
-                        <div class="col-span-5 text-center">
-                            <p class="text-xs opacity-50 mb-1">MERAH</p>
-                            <p class="font-black text-red-500 uppercase text-sm leading-tight">${item.merah}</p>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-4 relative">
+                            <div class="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none">
+                                <span class="text-2xl italic font-black">VS</span>
+                            </div>
+
+                            <div class="text-left">
+                                <p class="text-[9px] text-red-400 font-bold uppercase mb-1">Sudut Merah</p>
+                                <p class="font-bold text-sm truncate">${row[3].split('|')[0]}</p>
+                                <p class="text-[10px] text-white/50 truncate">${row[3].split('|')[1] || '-'}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[9px] text-blue-400 font-bold uppercase mb-1">Sudut Biru</p>
+                                <p class="font-bold text-sm truncate">${row[4].split('|')[0]}</p>
+                                <p class="text-[10px] text-white/50 truncate">${row[4].split('|')[1] || '-'}</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mx-4 mb-4 p-2 rounded-xl bg-yellow-500/10 border border-yellow-500/30 text-center">
-                        <p class="text-[10px] uppercase font-bold text-yellow-500">Pemenang</p>
-                        <p class="font-black text-white uppercase italic text-md">${item.pemenang}</p>
+
+                        <div class="pt-3 border-t border-white/10 flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-tag text-yellow-500 text-[10px]"></i>
+                                <span class="text-[10px] font-medium text-emerald-300 uppercase">${row[2]}</span>
+                            </div>
+                            <div class="${isWinner ? 'text-yellow-400' : 'text-white/30'} text-[10px] font-black italic uppercase">
+                                ${row[5] || 'Menunggu'}
+                            </div>
+                        </div>
                     </div>
                 `;
-                container.appendChild(card);
+                container.innerHTML += card;
             });
         }
 
-        // Load data otomatis saat halaman dibuka
-        window.onload = loadData;
+        function filterData() {
+            const nameSearch = document.getElementById('search-name').value.toLowerCase();
+            const gelFilter = document.getElementById('filter-gel').value;
+            const kelasFilter = document.getElementById('filter-kelas').value;
+
+            const filtered = allData.filter(row => {
+                const matchesName = row[3].toLowerCase().includes(nameSearch) || row[4].toLowerCase().includes(nameSearch);
+                const matchesGel = gelFilter === "" || row[1] === gelFilter;
+                const matchesKelas = kelasFilter === "" || row[2].includes(kelasFilter);
+                return matchesName && matchesGel && matchesKelas;
+            });
+
+            renderData(filtered);
+        }
+
+        function updateStats() {
+            document.getElementById('stat-total').innerText = allData.length;
+            document.getElementById('stat-selesai').innerText = allData.filter(r => r[5] && r[5] !== "Menunggu").length;
+        }
+
+        function resetFilter() {
+            document.getElementById('search-name').value = "";
+            document.getElementById('filter-gel').value = "";
+            document.getElementById('filter-kelas').value = "";
+            renderData(allData);
+        }
+
+        // Auto Refresh tiap 30 detik
+        setInterval(fetchData, 30000);
+        window.onload = fetchData;
     </script>
 </body>
 </html>

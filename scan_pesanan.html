@@ -4,8 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Scanner - Pagarnusa Unusia</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/instascan/1.0.0/instascan.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .animate-fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Memperbaiki tampilan area scan agar kotak */
+        #reader { border: none !important; }
+        #reader video { border-radius: 0px !important; object-fit: cover !important; }
+    </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
 
@@ -15,16 +22,19 @@
             <p class="text-xs opacity-80">Scan QR Code pada Kwitansi Pelanggan</p>
         </div>
 
-        <div class="bg-black relative aspect-square overflow-hidden shadow-inner">
-            <video id="preview" class="w-full h-full object-cover"></video>
-            <div class="absolute inset-0 border-[40px] border-black/40 pointer-events-none">
-                <div class="w-full h-full border-2 border-dashed border-white/60 rounded-lg"></div>
+        <div class="bg-black relative overflow-hidden shadow-inner aspect-square">
+            <div id="reader" class="w-full h-full"></div>
+            <div id="scanOverlay" class="absolute inset-0 border-[40px] border-black/40 pointer-events-none z-10">
+                <div class="w-full h-full border-2 border-dashed border-white/60 rounded-lg shadow-[0_0_15px_rgba(255,255,255,0.3)]"></div>
             </div>
         </div>
 
         <div id="statusBox" class="bg-white p-6 rounded-b-2xl shadow-lg border-t border-gray-100">
             <div id="idleState">
                 <p class="text-center text-gray-500 italic text-sm">Mengarahkan kamera ke QR Code...</p>
+                <div class="mt-4 flex justify-center">
+                    <button onclick="startScanning()" class="bg-[#1b7548] text-white px-4 py-2 rounded-lg text-xs font-bold">AKTIFKAN KAMERA</button>
+                </div>
             </div>
 
             <div id="resultState" class="hidden animate-fade-in">
@@ -33,23 +43,23 @@
                     <span id="resOrderID" class="font-mono font-bold text-gray-800"></span>
                 </div>
                 
-                <div class="space-y-3">
+                <div class="space-y-3 text-left">
                     <div>
-                        <label class="text-[10px] text-gray-400 block uppercase">Nama Pemesan</label>
+                        <label class="text-[10px] text-gray-400 block uppercase italic">Nama Pemesan</label>
                         <p id="resNama" class="font-semibold text-gray-800 text-lg"></p>
                     </div>
                     <div>
-                        <label class="text-[10px] text-gray-400 block uppercase">Rincian Item</label>
+                        <label class="text-[10px] text-gray-400 block uppercase italic">Rincian Item</label>
                         <ul id="resItems" class="text-sm text-gray-600 list-disc list-inside"></ul>
                     </div>
                     <div class="pt-3 border-t">
-                        <label class="text-[10px] text-gray-400 block uppercase">Total Bayar</label>
+                        <label class="text-[10px] text-gray-400 block uppercase italic">Total Bayar</label>
                         <p id="resTotal" class="font-bold text-[#1b7548] text-xl"></p>
                     </div>
                 </div>
 
                 <button onclick="resetScanner()" class="w-full mt-6 bg-gray-800 text-white py-3 rounded-xl font-bold hover:bg-black transition">
-                    SCAN LAGI
+                    SCAN PESANAN LAIN
                 </button>
             </div>
 
@@ -61,107 +71,75 @@
     </div>
 
 <script>
-    // --- KONFIGURASI ---
     const scriptUrl = 'https://script.google.com/macros/s/AKfycbxw19azk92bUVGoGJBBgYYaM69W0qu0ukA3ED6yth0yTgGxJmDqVqSNyTfMhXiQNgL8/exec';
+    let html5QrCode;
 
-    let scanner = new Instascan.Scanner({ video: document.getElementById('preview'), mirror: false });
+    // Fungsi Memulai Scanner (Penting untuk izin browser HP)
+    function startScanning() {
+        html5QrCode = new Html5Qrcode("reader");
+        const config = { fps: 10, qrbox: { width: 250, height: 250 } };
 
-    // Event saat QR terbaca
-    scanner.addListener('scan', function (content) {
-        console.log("Terdeteksi ID: " + content);
-        cariDataPesanan(content.trim());
-    });
-
-    // Akses Kamera
-    Instascan.Camera.getCameras().then(function (cameras) {
-        if (cameras.length > 0) {
-            // Pilih kamera belakang jika ada, jika tidak pakai kamera pertama yang tersedia
-            let backCam = cameras.find(c => c.name.toLowerCase().includes('back')) || cameras[0];
-            scanner.start(backCam);
-        } else {
-            alert('Kamera tidak ditemukan.');
-        }
-    }).catch(function (e) {
-        alert('Error kamera: ' + e);
-    });
+        // Memilih kamera belakang (environment) secara otomatis
+        html5QrCode.start({ facingMode: "environment" }, config, (decodedText) => {
+            // Jika berhasil scan
+            html5QrCode.pause(true); // Jeda kamera
+            cariDataPesanan(decodedText.trim());
+        }).catch(err => {
+            alert("Gagal akses kamera. Pastikan izin kamera diizinkan dan gunakan HTTPS.");
+        });
+        
+        document.querySelector('button[onclick="startScanning()"]').classList.add('hidden');
+    }
 
     async function cariDataPesanan(orderID) {
         showState('loading');
-        
         try {
-            // Memanggil Apps Script dengan parameter type=pesanan
             const response = await fetch(scriptUrl + '?type=pesanan&t=' + Date.now());
-            const database = await response.json(); // Berisi array dari Sheet Pesanan
+            const database = await response.json();
             
-            // Cari data di kolom pertama (index 0 adalah Order ID)
+            // Cari data di kolom index 0 (Order ID)
             const row = database.find(r => r[0].toString() === orderID.toString());
 
             if (row) {
-                // Mapping data sesuai urutan appendRow di Apps Script Anda:
-                // index 0: Order ID
-                // index 1: Nama
-                // index 5: Item (Lembaga + Ukuran)
-                // index 7: Harga Total
-                const dataFormatted = {
+                tampilkanHasil({
                     orderID: row[0],
                     nama: row[1],
                     itemRincian: row[5],
                     total: row[7]
-                };
-                tampilkanHasil(dataFormatted, orderID);
+                }, orderID);
             } else {
-                alert("Pesanan dengan ID " + orderID + " tidak ditemukan di database.");
+                alert("ID " + orderID + " Tidak Terdaftar!");
                 resetScanner();
             }
         } catch (error) {
-            console.error(error);
-            alert("Gagal terhubung ke database. Pastikan Web App sudah di-Deploy sebagai 'Anyone'.");
+            alert("Error database: Pastikan Web App sudah Deploy sebagai 'Anyone'");
             resetScanner();
         }
     }
 
     function tampilkanHasil(data, orderID) {
         document.getElementById('resOrderID').innerText = "#" + orderID;
-        document.getElementById('resNama').innerText = data.nama || "Tanpa Nama";
-        
-        // Format Rupiah untuk Total
-        const totalHarga = parseInt(data.total) || 0;
-        document.getElementById('resTotal').innerText = "Rp " + totalHarga.toLocaleString('id-ID');
-        
-        // Render Item Pesanan
-        const itemContainer = document.getElementById('resItems');
-        itemContainer.innerHTML = '';
-        
-        let li = document.createElement('li');
-        li.innerText = data.itemRincian || "Detail item tidak tersedia";
-        itemContainer.appendChild(li);
-
+        document.getElementById('resNama').innerText = data.nama;
+        document.getElementById('resTotal').innerText = "Rp " + (parseInt(data.total) || 0).toLocaleString('id-ID');
+        document.getElementById('resItems').innerHTML = `<li>${data.itemRincian}</li>`;
         showState('result');
+        document.getElementById('scanOverlay').classList.add('hidden');
     }
 
     function showState(state) {
-        document.getElementById('idleState').classList.add('hidden');
-        document.getElementById('loadingState').classList.add('hidden');
-        document.getElementById('resultState').classList.add('hidden');
-
-        if (state === 'loading') document.getElementById('loadingState').classList.remove('hidden');
-        if (state === 'result') document.getElementById('resultState').classList.remove('hidden');
-        if (state === 'idle') document.getElementById('idleState').classList.remove('hidden');
+        document.getElementById('idleState').classList.toggle('hidden', state !== 'idle');
+        document.getElementById('loadingState').classList.toggle('hidden', state !== 'loading');
+        document.getElementById('resultState').classList.toggle('hidden', state !== 'result');
     }
 
     function resetScanner() {
         showState('idle');
+        document.getElementById('scanOverlay').classList.remove('hidden');
+        if (html5QrCode) html5QrCode.resume();
     }
-</script>
 
-    <style>
-        .animate-fade-in {
-            animation: fadeIn 0.3s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+    // Jalankan otomatis saat buka (jika browser mendukung auto-start)
+    window.onload = startScanning;
+</script>
 </body>
 </html>

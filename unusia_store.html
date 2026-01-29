@@ -131,7 +131,7 @@
                     </div>
                     <div class="relative group">
                         <label class="text-[10px] font-black text-primary absolute -top-2 left-4 bg-white px-2 group-focus-within:text-emerald-600 transition-colors">Email Pemesan:</label>
-                        <input type="email" x-model="form.email" placeholder="contoh@mail.com" class="w-full p-4 rounded-2xl border-2 border-slate-100 focus:border-primary outline-none text-sm font-semibold transition-all">
+                        <input type="email" x-model="form.email" placeholder="contoh@gmail.com" class="w-full p-4 rounded-2xl border-2 border-slate-100 focus:border-primary outline-none text-sm font-semibold transition-all">
                     </div>
                     <div class="relative group">
                         <label class="text-[10px] font-black text-primary absolute -top-2 left-4 bg-white px-2 group-focus-within:text-emerald-600 transition-colors">No Whatsapp:</label>
@@ -161,7 +161,7 @@
                 
                 <div class="bg-slate-50 p-5 rounded-[2rem] border-2 border-dashed border-slate-200">
                     <div class="relative mb-4">
-                        <label class="text-[9px] font-black text-slate-400 absolute -top-2 left-3 bg-slate-50 px-2 uppercase">Lembaga / Jenjang</label>
+                        <label class="text-[9px] font-black text-slate-400 absolute -top-2 left-3 bg-slate-50 px-2">Lembaga / Jenjang</label>
                         <select x-model="temp.lembaga" @change="temp.ukuran = ''; temp.qty = 1" class="w-full p-4 rounded-xl border border-slate-200 text-xs font-bold outline-none focus:border-primary bg-white appearance-none">
                             <option value="">-- Pilih Lembaga --</option>
                             <template x-for="l in daftarLembaga"><option :value="l" x-text="l"></option></template>
@@ -292,7 +292,7 @@
             </div>
             <div class="flex justify-between items-center">
                 <span class="text-[9px] font-bold text-slate-400 uppercase">Status Validasi</span>
-                <span class="bg-primary/10 text-primary px-3 py-1 rounded-full font-black text-[9px] border border-primary/20 italic">Lunas</span>
+                <span class="bg-primary/10 text-primary px-3 py-1 rounded-full font-black text-[9px] border border-primary/20">Lunas</span>
             </div>
         </div>
 
@@ -300,7 +300,7 @@
             <template x-for="item in cart" :key="item.id">
                 <div class="flex justify-between items-center text-[11px]">
                     <div class="flex flex-col">
-                        <span class="font-black text-slate-700 uppercase italic" x-text="item.lembaga + ' - ' + item.ukuran"></span>
+                        <span class="font-black text-slate-700" x-text="item.lembaga + ' | ' + item.ukuran"></span>
                         <span class="text-[10px] text-slate-400 font-mono" x-text="item.qty + ' x ' + formatRupiah(item.harga)"></span>
                     </div>
                     <span class="font-black text-slate-800 font-mono" x-text="formatRupiah(item.harga * item.qty)"></span>
@@ -369,8 +369,8 @@
                 {lembaga: "SMP/SMA/Dewasa", ukuran: "XXL", stok: 0, harga: 200000},
                 {lembaga: "SMP/SMA/Dewasa", ukuran: "XXXL", stok: 0, harga: 205000}
             ],
-            scriptUrl: 'https://script.google.com/macros/s/AKfycbxjKvdP5x1JtXi5alofMejBJrtDkis_F3Ghxx7skTKaEzcNDNLH4hoi4m8BPDntP8Ec-Q/exec',
-            waUrl: '#',
+            scriptUrl: 'https://script.google.com/macros/s/AKfycbxw19azk92bUVGoGJBBgYYaM69W0qu0ukA3ED6yth0yTgGxJmDqVqSNyTfMhXiQNgL8/exec',
+            waUrl: '6285715232441',
 
             async init() {
                 this.loadingData = true;
@@ -422,7 +422,7 @@
                     lembaga: this.temp.lembaga,
                     ukuran: this.temp.ukuran,
                     qty: this.temp.qty,
-                    harga: this.temp.harga, // Pastikan ini ada untuk logika PDF
+                    harga: this.temp.harga,
                     hargaTotal: this.temp.harga * this.temp.qty
                 });
                 this.temp.ukuran = '';
@@ -452,20 +452,115 @@
                 reader.readAsDataURL(file);
             },
 
+            // Fungsi Helper untuk membuat konten PDF agar konsisten
+            generatePDFDoc() {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const pageHeight = doc.internal.pageSize.getHeight();
+                const margin = { left: 25, right: 25, top: 15, bottom: 15 };
+                const centerX = pageWidth / 2;
+
+                const logoUrl = "https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ"; 
+                try { doc.addImage(logoUrl, 'PNG', margin.left, margin.top, 20, 20); } catch (e) {}
+
+                doc.setFont("helvetica", "bold").setFontSize(14).setTextColor(0, 0, 0);
+                doc.text("PIMPINAN RAYON", 50, margin.top + 7);
+                doc.setFontSize(18).setTextColor(27, 117, 72).text("PSNU PAGARNUSA UNUSIA", 50, margin.top + 15);
+                doc.setFontSize(9).setTextColor(100).setFont("helvetica", "normal");
+                doc.text("Sekretariat: Kampus UNUSIA, Bogor. | Email: ukmpagarnusaunusia@gmail.com", 50, margin.top + 20);
+
+                doc.setLineWidth(0.8).setDrawColor(0, 0, 0).line(margin.left, margin.top + 25, pageWidth - margin.right, margin.top + 25);
+                doc.setLineWidth(0.2).line(margin.left, margin.top + 26.5, pageWidth - margin.right, margin.top + 26.5);
+
+                doc.setFontSize(12).setTextColor(0, 0, 0).setFont("helvetica", "bold").text("SURAT BUKTI PEMESANAN (INVOICE)", centerX, margin.top + 38, { align: "center" });
+                doc.setFontSize(9).setFont("helvetica", "normal").text(`No. Referensi: ${this.finalOrderID}`, centerX, margin.top + 43, { align: "center" });
+
+                doc.setFontSize(10).text("DATA PEMESAN:", margin.left, margin.top + 55);
+                doc.setFont("helvetica", "bold").text(`Nama : ${this.form.nama.toUpperCase()}`, margin.left, margin.top + 60);
+                doc.setFont("helvetica", "normal").text(`Email : ${this.form.email}`, margin.left, margin.top + 65);
+                doc.text(`WhatsApp : ${this.form.wa}`, margin.left, margin.top + 70);
+                
+                const tglCetak = new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'});
+                doc.setFontSize(8).text(`Waktu Transaksi: ${tglCetak}`, pageWidth - margin.right, margin.top + 60, { align: "right" });
+
+                const rows = this.cart.map((item, i) => [i + 1, `${item.lembaga}\nSize: ${item.ukuran}`, item.qty, `Rp ${item.harga.toLocaleString('id-ID')}`, `Rp ${(item.harga * item.qty).toLocaleString('id-ID')}`]);
+
+doc.autoTable({
+    head: [['NO', 'DESKRIPSI PRODUK', 'QTY', 'HARGA SATUAN', 'SUBTOTAL']],
+    body: rows,
+    startY: margin.top + 78,
+    margin: { left: margin.left, right: margin.right },
+    headStyles: { 
+        fillColor: [27, 117, 72], 
+        halign: 'center', 
+        valign: 'middle',
+        fontStyle: 'bold',
+        fontSize: 10
+    },
+    columnStyles: { 
+        0: { halign: 'center', cellWidth: 10 }, 
+        1: { halign: 'left', cellWidth: 'auto' }, // Deskripsi Produk
+        2: { halign: 'center', cellWidth: 15 }, 
+        3: { halign: 'right', cellWidth: 35 }, 
+        4: { halign: 'right', cellWidth: 35 } 
+    },
+    foot: [[
+        { content: '', colSpan: 2 }, 
+        { content: '', colSpan: 1 }, 
+        { content: 'TOTAL PEMBAYARAN', styles: { halign: 'right', fontStyle: 'bold' } }, 
+        { content: `Rp ${this.grandTotal.toLocaleString('id-ID')}`, styles: { halign: 'right', fontStyle: 'bold', textColor: [27, 117, 72] } }
+    ]],
+    footStyles: { fillColor: [245, 245, 245], textColor: [0, 0, 0] },
+    theme: 'grid',
+    styles: { 
+        fontSize: 9, 
+        cellPadding: 4, 
+        valign: 'middle', 
+        overflow: 'linebreak', // Memastikan teks \n berfungsi sebagai baris baru
+        rowHeight: 15 
+    },
+    didParseCell: function(data) {
+        // Memberikan padding ekstra khusus untuk kolom deskripsi agar teks tidak menempel ke garis
+        if (data.column.index === 1 && data.section === 'body') {
+            data.cell.styles.cellPadding = { top: 4, bottom: 4, left: 3, right: 3 };
+        }
+    }
+});
+
+                let ySign = doc.lastAutoTable.finalY + 15;
+                if (ySign + 40 > pageHeight) { doc.addPage(); ySign = 20; }
+                doc.setFontSize(10).text("Bogor, " + new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'}), pageWidth - margin.right - 10, ySign, { align: "center" });
+                const signPos = pageWidth - margin.right - 35;
+                doc.text("Bendahara,", signPos + 25, ySign + 7, { align: "center" });
+                doc.setFont("helvetica", "bold underline").text("SYIFA ULYA SETIAWAN", signPos + 25, ySign + 33, { align: "center" });
+                doc.setFont("helvetica", "normal").setFontSize(8).text("NIA: 27091985", signPos + 25, ySign + 37, { align: "center" });
+                
+                doc.setDrawColor(200).line(margin.left, pageHeight - 15, pageWidth - margin.right, pageHeight - 15);
+                doc.setFontSize(7).setTextColor(150).text("Simpan bukti ini sebagai syarat pengambilan atribut. Dicetak secara sistem oleh Brankas Psnu Pagarnusa Unusia Store.", centerX, pageHeight - 10, { align: "center" });
+                
+                return doc;
+            },
+
             async submit() {
                 if(this.loading) return;
                 this.loading = true;
                 this.finalOrderID = `KWS1985${Math.floor(100 + Math.random() * 899)}`;
-                
-                const payload = { 
-                    ...this.form, 
-                    orderID: this.finalOrderID,
-                    items: this.cart, 
-                    grandTotal: this.grandTotal,
-                    tanggal: new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })
-                };
 
                 try {
+                    // Generate PDF Base64 untuk dikirim ke Spreadsheet
+                    const doc = this.generatePDFDoc();
+                    const pdfBase64 = doc.output('datauristring').split(',')[1];
+
+                    const payload = { 
+                        ...this.form, 
+                        orderID: this.finalOrderID,
+                        items: this.cart, 
+                        grandTotal: this.grandTotal,
+                        pdfBase64: pdfBase64,
+                        tanggal: new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })
+                    };
+
                     const res = await fetch(this.scriptUrl, { 
                         method: 'POST', 
                         body: JSON.stringify(payload)
@@ -481,125 +576,16 @@
                         throw new Error("Respon server tidak valid");
                     }
                 } catch (e) { 
+                    console.error(e);
                     alert('Gagal mengirim pesanan. Silahkan coba lagi atau hubungi admin via WA.'); 
                 } finally { 
                     this.loading = false; 
                 }
             },
 
-            // --- FUNGSI DOWNLOAD PDF PINDAH KE DALAM SINI ---
             async downloadKwitansi() {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF({
-                    orientation: 'p',
-                    unit: 'mm',
-                    format: 'a4'
-                });
-
-                const pageWidth = doc.internal.pageSize.getWidth();
-                const pageHeight = doc.internal.pageSize.getHeight();
-                const margin = { left: 25, right: 25, top: 15, bottom: 15 };
-                const centerX = pageWidth / 2;
-
-                const logoUrl = "https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ"; 
-                try {
-                    doc.addImage(logoUrl, 'PNG', margin.left, margin.top, 20, 20);
-                } catch (e) { console.error("Logo error:", e); }
-
-                doc.setFont("helvetica", "bold");
-                doc.setTextColor(0, 0, 0);
-                doc.setFontSize(14);
-                doc.text("PIMPINAN RAYON", 50, margin.top + 7);
-                
-                doc.setFontSize(18);
-                doc.setTextColor(27, 117, 72);
-                doc.text("PSNU PAGARNUSA UNUSIA", 50, margin.top + 15);
-                
-                doc.setFontSize(9);
-                doc.setTextColor(100);
-                doc.setFont("helvetica", "normal");
-                doc.text("Sekretariat: Kampus UNUSIA, Bogor. | Email: ukmpagarnusaunusia@gmail.com", 50, margin.top + 20);
-
-                doc.setLineWidth(0.8);
-                doc.setDrawColor(0, 0, 0);
-                doc.line(margin.left, margin.top + 25, pageWidth - margin.right, margin.top + 25);
-                doc.setLineWidth(0.2);
-                doc.line(margin.left, margin.top + 26.5, pageWidth - margin.right, margin.top + 26.5);
-
-                doc.setFontSize(12);
-                doc.setTextColor(0, 0, 0);
-                doc.setFont("helvetica", "bold");
-                doc.text("SURAT BUKTI PEMESANAN (INVOICE)", centerX, margin.top + 38, { align: "center" });
-                
-                doc.setFontSize(9);
-                doc.setFont("helvetica", "normal");
-                doc.text(`No. Referensi: ${this.finalOrderID}`, centerX, margin.top + 43, { align: "center" });
-
-                doc.setFontSize(10);
-                doc.text("DATA PEMESAN:", margin.left, margin.top + 55);
-                doc.setFont("helvetica", "bold");
-                doc.text(`Nama : ${this.form.nama.toUpperCase()}`, margin.left, margin.top + 60);
-                doc.setFont("helvetica", "normal");
-                doc.text(`Email : ${this.form.email}`, margin.left, margin.top + 65);
-                doc.text(`WhatsApp : ${this.form.wa}`, margin.left, margin.top + 70);
-                
-                const tglCetak = new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'});
-                doc.setFontSize(8);
-                doc.text(`Waktu Transaksi: ${tglCetak}`, pageWidth - margin.right, margin.top + 60, { align: "right" });
-
-                const rows = this.cart.map((item, i) => [
-                    i + 1,
-                    `${item.lembaga}\nSize: ${item.ukuran}`,
-                    item.qty,
-                    `Rp ${item.harga.toLocaleString('id-ID')}`,
-                    `Rp ${(item.harga * item.qty).toLocaleString('id-ID')}`
-                ]);
-
-                doc.autoTable({
-                    head: [['NO', 'DESKRIPSI PRODUK', 'QTY', 'HARGA SATUAN', 'SUBTOTAL']],
-                    body: rows,
-                    startY: margin.top + 78,
-                    margin: { left: margin.left, right: margin.right },
-                    headStyles: { fillColor: [27, 117, 72], halign: 'center', fontStyle: 'bold' },
-                    columnStyles: { 
-                        0: { halign: 'center', cellWidth: 10 },
-                        2: { halign: 'center' },
-                        3: { halign: 'right' },
-                        4: { halign: 'right' }
-                    },
-                    foot: [['', '', '', 'TOTAL PEMBAYARAN', `Rp ${this.grandTotal.toLocaleString('id-ID')}`]],
-                    footStyles: { fillColor: [240, 240, 240], textColor: [0, 0, 0], fontStyle: 'bold', halign: 'right' },
-                    theme: 'grid',
-                    styles: { fontSize: 9, cellPadding: 3 }
-                });
-
-                let ySign = doc.lastAutoTable.finalY + 15;
-                if (ySign + 40 > pageHeight) { doc.addPage(); ySign = 20; }
-
-                doc.setFontSize(10);
-                doc.text("Bogor, " + new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'}), pageWidth - margin.right - 10, ySign, { align: "center" });
-                
-                const signPos = pageWidth - margin.right - 35;
-                doc.text("Bendahara,", signPos + 25, ySign + 7, { align: "center" });
-                
-                try {
-                    const stampUrl = "https://lh3.googleusercontent.com/d/1_1sFSL8g98RTrgm6YJLpgduzbHyQP_iJ"; 
-                    doc.addImage(stampUrl, 'PNG', signPos + 10, ySign + 8, 30, 20);
-                } catch(e) {}
-
-                doc.setFont("helvetica", "bold underline");
-                doc.text("SYIFA ULYA SETIAWAN", signPos + 25, ySign + 33, { align: "center" });
-                doc.setFont("helvetica", "normal");
-                doc.setFontSize(8);
-                doc.text("NIA: 27091985", signPos + 25, ySign + 37, { align: "center" });
-
-                doc.setDrawColor(200);
-                doc.line(margin.left, pageHeight - 15, pageWidth - margin.right, pageHeight - 15);
-                doc.setFontSize(7);
-                doc.setTextColor(150);
-                doc.text("Simpan bukti ini sebagai syarat pengambilan atribut. Dicetak secara sistem oleh Brankas Psnu Pagarnusa Unusia Store.", centerX, pageHeight - 10, { align: "center" });
-
-                doc.save(`KWITANSI_${this.finalOrderID}_${this.form.nama.replace(/\s+/g, '_')}.pdf`);
+                const doc = this.generatePDFDoc();
+                doc.save(`PN_${this.finalOrderID}_${this.form.nama.replace(/\s+/g, '_')}.pdf`);
             }
         }
     }

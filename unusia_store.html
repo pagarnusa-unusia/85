@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Pagar Nusa Store - Official Checkout</title>
     <link rel="icon" href="logopn.png">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -16,7 +16,9 @@
                     colors: { 
                         primary: '#1B7548', 
                         primaryDark: '#145c38' 
-                    } 
+                    },
+                    // Menambahkan tinggi custom untuk header agar seragam
+                    height: { '18': '4.5rem' }
                 } 
             } 
         }
@@ -24,343 +26,435 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; overflow-x: hidden; scroll-behavior: smooth; }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: #f8fafc; 
+            overflow-x: hidden; 
+            scroll-behavior: smooth;
+            /* Menghilangkan tap highlight abu-abu di iOS */
+            -webkit-tap-highlight-color: transparent;
+        }
         [x-cloak] { display: none !important; }
+        
+        /* Optimasi Safe Area untuk iOS (Notch & Home Indicator) */
+        header { 
+            padding-top: env(safe-area-inset-top); 
+        }
+        main { 
+            padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)); 
+        }
+
         .fade-in { animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .slide-up { animation: slideUp 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
         .btn-bounce:active { transform: scale(0.95); }
         .cart-item { transition: all 0.3s ease; }
         .cart-item:hover { transform: translateX(8px); background-color: #ecfdf5; }
-        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        
+        input::-webkit-outer-spin-button, 
+        input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+        /* Mencegah zoom otomatis pada input di iPhone */
+        @media screen and (max-width: 768px) {
+            input, select, textarea { font-size: 16px !important; }
+        }
     </style>
 </head>
-<body x-data="checkoutApp()" x-init="init()">
-<div x-show="loading" 
-         x-cloak 
-         class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300">
-        <div class="bg-white p-8 rounded-[2.5rem] shadow-2xl flex flex-col items-center max-w-xs w-full mx-4 fade-in">
-            <div class="relative mb-6">
-                <div class="w-16 h-16 border-4 border-slate-100 border-t-primary rounded-full animate-spin"></div>
+<body x-data="checkoutApp()" x-init="init()" class="antialiased select-none">
+
+<div x-show="loading" x-cloak 
+     x-transition:enter="transition ease-out duration-500"
+     x-transition:leave="transition ease-in duration-500"
+     class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-slate-900/90 backdrop-blur-xl">
+    <div class="relative flex flex-col items-center group">
+        <div class="absolute inset-0 bg-primary/20 blur-3xl rounded-full animate-pulse"></div>
+        
+        <div class="relative bg-white p-12 rounded-[4rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] flex flex-col items-center max-w-xs w-[85vw] border border-white/20 transform hover:scale-105 transition-transform duration-500">
+            <div class="relative mb-8">
+                <div class="w-24 h-24 border-[4px] border-slate-100 border-t-primary rounded-full animate-spin"></div>
                 <div class="absolute inset-0 flex items-center justify-center">
-                    <img src="logopn.png" class="h-6 w-6 opacity-50" alt="">
+                    <img src="logopn.png" class="h-10 w-10 object-contain animate-bounce" alt="Logo">
                 </div>
             </div>
-            <p x-text="loadingMsg" class="text-sm font-black text-slate-800 text-center uppercase italic tracking-wider"></p>
-            <p class="text-[10px] text-slate-400 mt-2 text-center font-medium">Mohon Tunggu Kisaran (1 Menit)...</p>
+            <div class="space-y-3 text-center">
+                <p x-text="loadingMsg" class="text-[10px] font-black text-slate-800 uppercase italic tracking-[0.3em] animate-pulse"></p>
+                <div class="flex gap-1.5 justify-center">
+                    <span class="w-1.5 h-1.5 bg-primary rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                    <span class="w-1.5 h-1.5 bg-primary rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                    <span class="w-1.5 h-1.5 bg-primary rounded-full animate-bounce"></span>
+                </div>
+            </div>
         </div>
     </div>
-<header class="bg-primary text-white sticky top-0 z-50 shadow-lg backdrop-blur-md bg-opacity-95 border-b border-white/10">
-    <div class="container mx-auto px-6 h-16 flex justify-between items-center">
-        <div class="flex items-center gap-3">
-            <div class="bg-white p-1.5 rounded-xl shadow-sm">
-                <img src="logopn.png" class="h-7 w-7 object-contain" alt="Logo">
+</div>
+
+<header class="bg-primary text-white sticky top-0 z-50 shadow-2xl backdrop-blur-md bg-opacity-95 border-b border-white/10 ring-1 ring-white/5 transition-all duration-300">
+    <div class="container mx-auto px-6 h-20 md:h-22 flex justify-between items-center">
+        <div class="flex items-center gap-4 group cursor-pointer">
+            <div class="relative">
+                <div class="absolute inset-0 bg-white/20 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <img src="logopn.png" class="h-11 w-11 object-contain drop-shadow-2xl relative transform group-hover:rotate-12 transition-transform duration-500" alt="Logo">
             </div>
             <div class="flex flex-col">
-                <span class="font-black leading-none text-xs tracking-wider uppercase">PAGARNUSA</span>
-                <span class="font-light text-[10px] opacity-80 tracking-[0.2em] leading-tight">UNUSIA STORE</span>
+                <span class="font-black leading-none text-[13px] tracking-[0.18em] uppercase text-white">PAGARNUSA</span>
+                <span class="font-bold text-[9px] text-emerald-200/60 tracking-[0.3em] leading-tight uppercase mt-1">UNUSIA STORE</span>
             </div>
         </div>
 
         <div class="flex items-center gap-4">
-            <div x-show="loadingData" 
-                 class="flex items-center gap-2 text-[10px] font-medium bg-black/10 px-2 py-1 rounded-lg">
-                <i class="fas fa-circle-notch animate-spin text-emerald-400"></i>
-                <span class="hidden md:inline">Syncing...</span>
+            <div x-show="loadingData" class="flex items-center gap-2 text-[8px] font-black bg-white/10 px-4 py-2 rounded-full border border-white/10 animate-pulse">
+                <i class="fas fa-sync-alt animate-spin text-emerald-400"></i>
+                <span class="tracking-widest uppercase">Syncing</span>
             </div>
 
-            <div class="relative">
-                <div class="text-[9px] font-black text-primary bg-white px-4 py-1.5 rounded-full shadow-sm tracking-widest flex items-center gap-2">
-                    <span class="opacity-100">PROGRESS</span>
-                    <span x-text="step + ' / 2'"></span>
+            <div class="relative bg-black/20 p-1 rounded-full ring-1 ring-white/10 overflow-hidden">
+                <div class="text-[10px] font-black text-primary bg-white px-6 py-2.5 rounded-full shadow-lg tracking-[0.15em] flex items-center gap-3 relative z-10">
+                    <span class="opacity-30 italic text-[8px]">STEP</span>
+                    <span class="text-xs" x-text="step + ' / 2'"></span>
                 </div>
-                <div class="absolute -bottom-1 left-0 h-[2px] bg-emerald-400 transition-all duration-500 rounded-full" 
-                     :style="'width: ' + (step/2 * 100) + '%'"></div>
+                <div class="absolute inset-0 bg-emerald-500/20 transition-all duration-1000" :style="'width: ' + (step/2 * 100) + '%'"></div>
             </div>
         </div>
     </div>
 </header>
 
-    <main class="max-w-xl mx-auto p-4 pb-24">
+<main class="max-w-xl mx-auto p-6 pb-32 relative">
+    <div x-show="showGuide" x-cloak 
+         class="fixed inset-0 z-[60] bg-slate-950/90 flex items-center justify-center p-6 backdrop-blur-xl"
+         x-transition:enter="transition ease-out duration-400"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100">
         
-        <div x-show="showGuide" x-cloak 
-             class="fixed inset-0 z-[60] bg-black/90 flex items-center justify-center p-4"
-             x-transition:enter="transition ease-out duration-300"
-             x-transition:enter-start="opacity-0"
-             x-transition:enter-end="opacity-100"
-             x-transition:leave="transition ease-in duration-200">
-            <div class="bg-white rounded-[2rem] p-6 w-full max-w-md max-h-[90vh] overflow-y-auto relative slide-up shadow-2xl" @click.away="showGuide = false">
-                <button @click="showGuide = false" class="absolute top-4 right-4 bg-red-500 text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center font-bold text-xl z-20 hover:rotate-90 transition-transform">
-                    &times;
-                </button>
-                <div class="space-y-8 p-2">
-                    <div class="text-center">
-                        <h3 class="font-black text-slate-800 text-sm mb-4 uppercase italic">Panduan Ukuran Usia Dini (&lt; TK, SD)</h3>
-                        <div class="overflow-x-auto rounded-xl border border-slate-100">
-                            <table class="w-full text-[10px] border-collapse text-center">
-                                <thead class="bg-slate-50 text-slate-400">
-                                    <tr><th class="border p-2 uppercase">Size</th><th class="border p-2">Lebar</th><th class="border p-2">Atas</th><th class="border p-2">Bawah</th><th class="border p-2">Berat</th></tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="hover:bg-slate-50"><td class="border p-2 font-bold">S</td><td class="border p-2">34</td><td class="border p-2">48</td><td class="border p-2">56</td><td class="border p-2 text-red-500">10-15kg</td></tr>
-                                    <tr class="hover:bg-slate-50"><td class="border p-2 font-bold">M</td><td class="border p-2">38</td><td class="border p-2">53</td><td class="border p-2">62</td><td class="border p-2 text-red-500">15-20kg</td></tr>
-                                    <tr class="hover:bg-slate-50"><td class="border p-2 font-bold">L</td><td class="border p-2">40</td><td class="border p-2">59</td><td class="border p-2">70</td><td class="border p-2 text-red-500">20-25kg</td></tr>
-                                    <tr class="hover:bg-slate-50"><td class="border p-2 font-bold">XL</td><td class="border p-2">44</td><td class="border p-2">65</td><td class="border p-2">78</td><td class="border p-2 text-red-500">25-30kg</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
+        <div class="bg-white rounded-[4rem] w-full max-w-md max-h-[85vh] overflow-hidden relative shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] border border-slate-100 slide-up" @click.away="showGuide = false">
+            <div class="absolute top-0 left-0 w-full h-2 bg-primary"></div>
+            <button @click="showGuide = false" class="absolute top-6 right-6 bg-slate-100 text-slate-400 w-12 h-12 rounded-full flex items-center justify-center font-light text-3xl z-20 hover:bg-red-500 hover:text-white transition-all shadow-sm active:scale-90">
+                &times;
+            </button>
+
+            <div class="p-8 pt-12 overflow-y-auto max-h-[85vh] space-y-12 custom-scrollbar">
+                <div class="text-center relative">
+                    <h3 class="font-black text-slate-800 text-[13px] mb-6 uppercase italic tracking-[0.25em] flex items-center justify-center gap-4">
+                        <span class="h-[1px] w-8 bg-slate-200"></span> USIA DINI <span class="h-[1px] w-8 bg-slate-200"></span>
+                    </h3>
+                    <div class="overflow-hidden rounded-[2.5rem] border border-slate-100 shadow-2xl">
+                        <table class="w-full text-[11px] border-collapse">
+                            <thead class="bg-primary text-white">
+                                <tr><th class="p-4 uppercase font-black tracking-widest">Size</th><th class="p-4">Lebar</th><th class="p-4">Atas</th><th class="p-4">Bawah</th><th class="p-4">Berat</th></tr>
+                            </thead>
+                            <tbody class="text-slate-600 font-bold">
+                                <tr class="border-b border-slate-50"><td class="p-4 bg-slate-50 font-black text-primary">S</td><td class="p-4">34</td><td class="p-4">48</td><td class="p-4">56</td><td class="p-4 text-red-500">10-15kg</td></tr>
+                                <tr class="border-b border-slate-50"><td class="p-4 bg-slate-50 font-black text-primary">M</td><td class="p-4">38</td><td class="p-4">53</td><td class="p-4">62</td><td class="p-4 text-red-500">15-20kg</td></tr>
+                                <tr class="border-b border-slate-50"><td class="p-4 bg-slate-50 font-black text-primary">L</td><td class="p-4">40</td><td class="p-4">59</td><td class="p-4">70</td><td class="p-4 text-red-500">20-25kg</td></tr>
+                                <tr><td class="p-4 bg-slate-50 font-black text-primary">XL</td><td class="p-4">44</td><td class="p-4">65</td><td class="p-4">78</td><td class="p-4 text-red-500">25-30kg</td></tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="text-center border-t pt-6">
-                        <h3 class="font-black text-slate-800 text-sm mb-4 uppercase italic">Panduan Ukuran (SMP, SMA, Dewasa)</h3>
-                        <div class="overflow-x-auto rounded-xl border border-slate-100">
-                            <table class="w-full text-[10px] border-collapse text-center">
-                                <thead class="bg-slate-50 text-slate-400">
-                                    <tr><th class="border p-2 uppercase">Size</th><th class="border p-2">Atas</th><th class="border p-2">Bawah</th><th class="border p-2">LD</th><th class="border p-2">Berat</th></tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="hover:bg-slate-50"><td class="border p-2 font-bold">S</td><td class="border p-2">68</td><td class="border p-2">83</td><td class="border p-2">48</td><td class="border p-2 text-red-500">30-45kg</td></tr>
-                                    <tr class="hover:bg-slate-50"><td class="border p-2 font-bold">M</td><td class="border p-2">70</td><td class="border p-2">87</td><td class="border p-2">51</td><td class="border p-2 text-red-500">45-55kg</td></tr>
-                                    <tr class="hover:bg-slate-50"><td class="border p-2 font-bold">L</td><td class="border p-2">71</td><td class="border p-2">90</td><td class="border p-2">53</td><td class="border p-2 text-red-500">55-65kg</td></tr>
-                                    <tr class="hover:bg-slate-50"><td class="border p-2 font-bold">XL</td><td class="border p-2">73</td><td class="border p-2">93</td><td class="border p-2">56</td><td class="border p-2 text-red-500">65-75kg</td></tr>
-                                    <tr class="hover:bg-slate-50"><td class="border p-2 font-bold">XXL</td><td class="border p-2">76</td><td class="border p-2">95</td><td class="border p-2">60</td><td class="border p-2 text-red-500">75-85kg</td></tr>
-                                    <tr class="hover:bg-slate-50"><td class="border p-2 font-bold">XXXL</td><td class="border p-2">82</td><td class="border p-2">98</td><td class="border p-2">65</td><td class="border p-2 text-red-500">85-95kg</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
+                </div>
+
+                <div class="text-center pb-6">
+                    <h3 class="font-black text-slate-800 text-[13px] mb-6 uppercase italic tracking-[0.25em] flex items-center justify-center gap-4">
+                        <span class="h-[1px] w-8 bg-slate-200"></span> DEWASA <span class="h-[1px] w-8 bg-slate-200"></span>
+                    </h3>
+                    <div class="overflow-hidden rounded-[2.5rem] border border-slate-100 shadow-2xl">
+                        <table class="w-full text-[10px] border-collapse">
+                            <thead class="bg-slate-900 text-white font-black">
+                                <tr><th class="p-4 uppercase tracking-widest">Size</th><th class="p-4">Atas</th><th class="p-4">Bawah</th><th class="p-4">LD</th><th class="p-4">Berat</th></tr>
+                            </thead>
+                            <tbody class="text-slate-600 font-bold">
+                                <template x-for="sz in [['S','68','83','48','30-45kg'],['M','70','87','51','45-55kg'],['L','71','90','53','55-65kg'],['XL','73','93','56','65-75kg'],['XXL','76','95','60','75-85kg'],['XXXL','82','98','65','85-95kg']]">
+                                    <tr class="border-b border-slate-50 hover:bg-emerald-50/50 transition-colors">
+                                        <td class="p-4 bg-slate-50 font-black text-slate-900" x-text="sz[0]"></td>
+                                        <td class="p-4" x-text="sz[1]"></td>
+                                        <td class="p-4" x-text="sz[2]"></td>
+                                        <td class="p-4" x-text="sz[3]"></td>
+                                        <td class="p-4 text-red-500" x-text="sz[4]"></td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div x-show="!isSuccess" class="bg-white rounded-[2.5rem] shadow-xl p-8 border border-slate-100 fade-in">
-            
-            <div x-show="step === 1" x-transition:enter="transition ease-out duration-300" class="space-y-6">
-                <h2 class="text-xl font-black text-slate-800">Identitas Pemesan</h2>
-                <div class="space-y-4">
-                    <div class="relative group">
-                        <label class="text-[10px] font-black text-primary absolute -top-2 left-4 bg-white px-2 group-focus-within:text-emerald-600 transition-colors">Nama Pemesan:</label>
-                        <input type="text" x-model="form.nama" placeholder="Nama Lengkap" class="w-full p-4 rounded-2xl border-2 border-slate-100 focus:border-primary outline-none text-sm font-semibold transition-all">
+    <div x-show="!isSuccess" 
+         class="bg-white rounded-[4rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.12)] p-10 border border-slate-100 relative overflow-hidden fade-in mx-1">
+        
+        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-emerald-300 to-primary"></div>
+        
+        <div x-show="step === 1" x-transition:enter="transition ease-out duration-700 transform" x-transition:enter-start="translate-x-12 opacity-0" class="space-y-10">
+            <div class="space-y-3">
+                <h2 class="text-[28px] font-black text-slate-900 tracking-tight leading-tight">Identitas Pemesan</h2>
+                <div class="flex items-center gap-3">
+                    <span class="h-1 w-10 bg-primary rounded-full"></span>
+                    <p class="text-[10px] text-slate-400 font-black uppercase tracking-[0.25em]">Sesuai Identitas Pembayaran</p>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <template x-for="field in [{m:'nama', l:'Nama Lengkap', p:'Nama Sesuai KTP', i:'fa-user', t:'text'}, {m:'email', l:'Email Pemesan', p:'contoh@gmail.com', i:'fa-envelope', t:'email'}, {m:'wa', l:'Nomor Whatsapp', p:'08xxxxxx', i:'fa-whatsapp', t:'tel'}]">
+                    <div class="group relative">
+                        <label class="text-[10px] font-black text-primary/50 absolute -top-2.5 left-8 bg-white px-3 z-10 transition-all group-focus-within:text-primary group-focus-within:scale-105" x-text="field.l"></label>
+                        <div class="relative">
+                            <i :class="'fas ' + field.i" class="absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-primary transition-colors"></i>
+                            <input :type="field.t" x-model="form[field.m]" :placeholder="field.p" class="w-full pl-14 pr-8 py-5.5 rounded-[1.8rem] border-2 border-slate-100 focus:border-primary focus:ring-[10px] focus:ring-primary/5 outline-none text-[14px] font-bold transition-all placeholder:text-slate-200 placeholder:font-medium">
+                        </div>
                     </div>
-                    <div class="relative group">
-                        <label class="text-[10px] font-black text-primary absolute -top-2 left-4 bg-white px-2 group-focus-within:text-emerald-600 transition-colors">Email Pemesan:</label>
-                        <input type="email" x-model="form.email" placeholder="contoh@gmail.com" class="w-full p-4 rounded-2xl border-2 border-slate-100 focus:border-primary outline-none text-sm font-semibold transition-all">
-                    </div>
-                    <div class="relative group">
-                        <label class="text-[10px] font-black text-primary absolute -top-2 left-4 bg-white px-2 group-focus-within:text-emerald-600 transition-colors">No Whatsapp:</label>
-                        <input type="tel" x-model="form.wa" placeholder="08xxxxxxxxxx" class="w-full p-4 rounded-2xl border-2 border-slate-100 focus:border-primary outline-none text-sm font-semibold transition-all">
-                    </div>
-                    <div class="relative group">
-                        <label class="text-[10px] font-black text-primary absolute -top-2 left-4 bg-white px-2 group-focus-within:text-emerald-600 transition-colors">Sebagai:</label>
-                        <select x-model="form.sebagai" class="w-full p-4 rounded-2xl border-2 border-slate-100 bg-white text-sm font-semibold outline-none focus:border-primary appearance-none">
+                </template>
+
+                <div class="group relative">
+                    <label class="text-[10px] font-black text-primary/50 absolute -top-2.5 left-8 bg-white px-3 z-10">Pesan Sebagai</label>
+                    <div class="relative">
+                        <i class="fas fa-id-badge absolute left-6 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-primary transition-colors"></i>
+                        <select x-model="form.sebagai" class="w-full pl-14 pr-12 py-5.5 rounded-[1.8rem] border-2 border-slate-100 bg-white text-[14px] font-bold outline-none focus:border-primary focus:ring-[10px] focus:ring-primary/5 appearance-none cursor-pointer transition-all">
                             <option value="Wali Santri">Wali Santri</option>
                             <option value="Pelatih">Pelatih / Pengurus</option>
                             <option value="Pribadi">Pribadi / Santri</option>
                         </select>
+                        <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-slate-300">
+                            <i class="fas fa-chevron-down text-[10px]"></i>
+                        </div>
                     </div>
-                    <button @click="step = 2" :disabled="!form.nama || !form.wa || !form.email" class="w-full bg-primary text-white font-black py-5 rounded-2xl shadow-xl hover:bg-primaryDark transition-all disabled:opacity-50 flex items-center justify-center gap-2 btn-bounce">
-                        Lanjut Pesanan <i class="fas fa-chevron-right text-xs"></i>
-                    </button>
                 </div>
-            </div>
 
-            <div x-show="step === 2" x-cloak x-transition:enter="transition ease-out duration-300" class="space-y-6">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-black text-slate-800 uppercase italic">Detail Pesanan</h2>
-                    <button @click="showGuide = true" class="text-[10px] font-black text-primary underline decoration-2 underline-offset-4 hover:text-primaryDark">
-                        <i class="fas fa-ruler-combined mr-1"></i>Panduan Ukuran
-                    </button>
+                <button @click="step = 2" :disabled="!form.nama || !form.wa || !form.email" class="w-full bg-primary text-white font-black py-7 rounded-[2rem] shadow-[0_25px_50px_-10px_rgba(27,117,72,0.4)] hover:bg-primaryDark transition-all disabled:opacity-20 flex items-center justify-center gap-4 btn-bounce group overflow-hidden relative">
+                    <div class="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+                    <span class="tracking-[0.1em] text-[13px]">LANJUT PEMILIHAN PRODUK</span>
+                    <i class="fas fa-chevron-right text-[10px] group-hover:translate-x-2 transition-transform"></i>
+                </button>
+            </div>
+        </div>
+
+        <div x-show="step === 2" x-cloak x-transition:enter="transition ease-out duration-700 transform" x-transition:enter-start="translate-x-12 opacity-0" class="space-y-10">
+            <div class="flex justify-between items-center">
+                <div class="space-y-2">
+                    <h2 class="text-2xl font-black text-slate-900 italic tracking-tighter uppercase">Detail Pesanan</h2>
+                    <p class="text-[9px] text-slate-400 font-black tracking-[0.2em] uppercase">Konfigurasi Produk</p>
+                </div>
+                <button @click="showGuide = true" class="px-5 py-3 bg-slate-50 rounded-2xl text-[10px] font-black text-primary border border-slate-100 flex items-center gap-2 hover:bg-primary hover:text-white transition-all active:scale-90">
+                    <i class="fas fa-ruler-combined"></i> SIZE GUIDE
+                </button>
+            </div>
+            
+            <div class="bg-slate-50/50 p-8 rounded-[3.5rem] border-2 border-dashed border-slate-200/60 relative space-y-8">
+                <div class="relative group">
+                    <label class="text-[9px] font-black text-slate-400 absolute -top-2.5 left-6 bg-[#fcfdfe] px-3 uppercase tracking-widest z-10">Jenjang Lembaga</label>
+                    <select x-model="temp.lembaga" @change="temp.ukuran = ''; temp.qty = 1" class="w-full p-6 rounded-[1.8rem] border border-slate-200 text-xs font-black outline-none focus:border-primary bg-white appearance-none shadow-xl shadow-black/[0.02] transition-all">
+                        <option value="">-- Pilih Lembaga --</option>
+                        <template x-for="l in daftarLembaga"><option :value="l" x-text="l"></option></template>
+                    </select>
+                    <div class="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-slate-200">
+                        <i class="fas fa-university"></i>
+                    </div>
                 </div>
                 
-                <div class="bg-slate-50 p-5 rounded-[2rem] border-2 border-dashed border-slate-200">
-                    <div class="relative mb-4">
-                        <label class="text-[9px] font-black text-slate-400 absolute -top-2 left-3 bg-slate-50 px-2">Lembaga / Jenjang</label>
-                        <select x-model="temp.lembaga" @change="temp.ukuran = ''; temp.qty = 1" class="w-full p-4 rounded-xl border border-slate-200 text-xs font-bold outline-none focus:border-primary bg-white appearance-none">
-                            <option value="">-- Pilih Lembaga --</option>
-                            <template x-for="l in daftarLembaga"><option :value="l" x-text="l"></option></template>
-                        </select>
-                    </div>
-                    
-                    <div class="grid grid-cols-2 gap-2 mb-4" x-show="temp.lembaga">
-                        <template x-for="s in listUkuranTersedia">
-                            <button @click="selectSize(s)" 
-                                :disabled="getRemainingStock(s) <= 0"
-                                :class="[
-                                    temp.ukuran === s.ukuran ? 'bg-primary text-white border-primary shadow-md scale-[1.02]' : 'bg-white text-slate-600 border-slate-100',
-                                    getRemainingStock(s) <= 0 ? 'opacity-40 grayscale cursor-not-allowed' : 'hover:border-primary/30'
-                                ]"
-                                class="p-3 rounded-xl border-2 text-[10px] font-black transition-all flex flex-col items-center btn-bounce">
-                                <span x-text="s.ukuran"></span>
-                                <span class="text-[8px] opacity-70" x-text="getRemainingStock(s) > 0 ? 'Sisa: ' + getRemainingStock(s) : 'Habis'"></span>
-                            </button>
-                        </template>
-                    </div>
-
-                    <div x-show="temp.ukuran" class="mb-4 flex items-center justify-between bg-white p-3 rounded-xl border border-slate-200 fade-in">
-                        <span class="text-[10px] font-black text-slate-500 uppercase">Kuantitas:</span>
-                        <div class="flex items-center gap-3">
-                            <button @click="if(temp.qty > 1) temp.qty--" class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-colors">-</button>
-                            <input type="number" x-model.number="temp.qty" @input="validateQty" class="w-10 text-center font-black text-primary text-sm bg-transparent outline-none">
-                            <button @click="if(temp.qty < temp.availableLimit) temp.qty++" class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-colors">+</button>
-                        </div>
-                    </div>
-
-                    <button @click="addItem" :disabled="!temp.ukuran || temp.availableLimit <= 0" class="w-full bg-slate-800 text-white text-[10px] font-black py-4 rounded-xl shadow-lg hover:bg-black transition-all flex items-center justify-center gap-2 btn-bounce disabled:opacity-50">
-                        <i class="fas fa-plus-circle"></i> TAMBAH <span class="bg-white/20 px-2 py-0.5 rounded mx-1" x-text="temp.qty"></span> KE PESANAN
-                    </button>
-                </div>
-
-                <div class="space-y-3">
-                    <template x-for="(item, index) in cart" :key="index">
-                        <div class="flex justify-between items-center bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100 cart-item slide-up">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-primary text-white rounded-lg flex items-center justify-center text-[10px] font-black" x-text="item.ukuran"></div>
-                                <div>
-                                    <p class="text-[10px] font-black text-emerald-900 leading-none mb-1" x-text="item.lembaga + ' x ' + item.qty"></p>
-                                    <p class="text-[11px] font-bold text-primary" x-text="formatRupiah(item.hargaTotal)"></p>
-                                </div>
-                            </div>
-                            <button @click="cart.splice(index, 1)" class="w-8 h-8 text-red-400 hover:text-red-600 transition-colors"><i class="fas fa-trash-alt"></i></button>
-                        </div>
+                <div class="grid grid-cols-3 gap-3" x-show="temp.lembaga" x-transition:enter="transition duration-500 ease-out transform scale-95">
+                    <template x-for="s in listUkuranTersedia">
+                        <button @click="selectSize(s)" 
+                            :disabled="getRemainingStock(s) <= 0"
+                            :class="[
+                                temp.ukuran === s.ukuran ? 'bg-primary text-white border-primary shadow-[0_15px_30px_-5px_rgba(27,117,72,0.3)] ring-[6px] ring-primary/10' : 'bg-white text-slate-500 border-slate-100',
+                                getRemainingStock(s) <= 0 ? 'opacity-30 grayscale cursor-not-allowed' : 'hover:border-primary/30 transition-all active:scale-95'
+                            ]"
+                            class="p-5 rounded-[1.8rem] border-2 text-[12px] font-black flex flex-col items-center gap-1.5 transition-all">
+                            <span class="text-xs tracking-tighter" x-text="s.ukuran"></span>
+                            <span class="text-[7px] font-black uppercase opacity-60" x-text="getRemainingStock(s) > 0 ? 'Sisa: ' + getRemainingStock(s) : 'Habis'"></span>
+                        </button>
                     </template>
                 </div>
 
-                <div x-show="cart.length > 0" class="bg-slate-100 text-slate-800 p-6 rounded-[2rem] shadow-inner space-y-5 fade-in border border-slate-200">
-                    <div class="flex justify-between items-start">
-                        <div class="space-y-1">
-                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Total Tagihan</span>
-                            <div class="text-2xl font-black text-primary" x-text="formatRupiah(grandTotal)"></div>
-                        </div>
-                        <img src="https://images.seeklogo.com/logo-png/62/2/seabank-logo-png_seeklogo-620133.png" class="h-6 object-contain grayscale opacity-70" alt="Seabank">
+                <div x-show="temp.ukuran" x-transition class="flex items-center justify-between bg-white p-5 rounded-[1.8rem] border border-slate-100 shadow-sm">
+                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Jumlah:</span>
+                    <div class="flex items-center gap-5">
+                        <button @click="if(temp.qty > 1) temp.qty--" class="w-11 h-11 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-800 hover:bg-slate-200 active:scale-90 transition-all font-black border border-slate-100 shadow-sm">-</button>
+                        <input type="number" x-model.number="temp.qty" @input="validateQty" class="w-10 text-center font-black text-primary text-lg bg-transparent outline-none">
+                        <button @click="if(temp.qty < temp.availableLimit) temp.qty++" class="w-11 h-11 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-800 hover:bg-slate-200 active:scale-90 transition-all font-black border border-slate-100 shadow-sm">+</button>
                     </div>
+                </div>
 
-                    <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-3 shadow-sm">
-                        <div class="flex justify-between items-center">
-                            <span class="text-[9px] font-bold text-slate-400 uppercase">Bank Tujuan</span>
-                            <span class="text-[10px] font-black text-slate-700">SEABANK (901)</span>
-                        </div>
-                        <div class="flex justify-between items-center bg-slate-50 p-2 rounded-xl border border-slate-100">
+                <button @click="addItem" :disabled="!temp.ukuran || temp.availableLimit <= 0" class="w-full bg-slate-900 text-white text-[11px] font-black py-6 rounded-[1.8rem] shadow-2xl hover:bg-black transition-all flex items-center justify-center gap-3 disabled:opacity-20 active:scale-95 group">
+                    <i class="fas fa-plus-circle group-hover:rotate-90 transition-transform"></i>
+                    <span class="tracking-widest">TAMBAHKAN KE DAFTAR</span>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <template x-for="(item, index) in cart" :key="index">
+                    <div class="flex justify-between items-center bg-white p-6 rounded-[2.5rem] border border-slate-50 shadow-[0_15px_40px_-15px_rgba(0,0,0,0.05)] cart-item border-l-4 border-l-primary">
+                        <div class="flex items-center gap-5">
+                            <div class="w-12 h-12 bg-primary/5 text-primary rounded-[1.2rem] flex items-center justify-center text-[12px] font-black border border-primary/10" x-text="item.ukuran"></div>
                             <div class="flex flex-col">
-                                <span class="text-[9px] font-bold text-slate-400 uppercase">No Rekening</span>
-                                <span class="text-[14px] font-black text-primary tracking-wider">901898555541</span>
-                            </div>
-                            <button @click="copyToClipboard('901898555541')" class="bg-primary text-white px-3 py-2 rounded-lg text-[10px] font-bold active:scale-95 hover:bg-primaryDark transition-all shadow-sm">SALIN</button>
-                        </div>
-                        <div class="text-center">
-                            <span class="text-[9px] font-bold text-slate-500">A.N MUHAMMAD IBNU MUNDZIR</span>
-                        </div>
-                    </div>
-                    
-                    <div class="border-t border-slate-200 pt-4">
-                        <label class="block text-[10px] font-black text-slate-500 mb-3 text-center">Upload Bukti Transfer:</label>
-                        <div class="relative group">
-                            <input type="file" @change="uploadFile" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                            <div class="bg-white border-2 border-dashed border-slate-300 rounded-2xl p-6 text-center group-hover:border-primary group-hover:bg-emerald-50 transition-all">
-                                <i class="fas fa-camera mb-2 text-slate-400 group-hover:text-primary text-2xl"></i>
-                                <p class="text-[10px] font-bold text-slate-500" x-text="form.buktiBase64 ? '✓ Bukti Berhasil Dipilih' : 'Ketuk untuk Ambil Foto Bukti'"></p>
+                                <p class="text-[12px] font-black text-slate-800 tracking-tight" x-text="item.lembaga"></p>
+                                <p class="text-[10px] font-bold text-emerald-600 mt-0.5" x-text="item.qty + ' Pcs • ' + formatRupiah(item.hargaTotal)"></p>
                             </div>
                         </div>
+                        <button @click="cart.splice(index, 1)" class="w-12 h-12 rounded-full bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300 flex items-center justify-center shadow-inner active:scale-90">
+                            <i class="fas fa-trash-alt text-[11px]"></i>
+                        </button>
                     </div>
+                </template>
+            </div>
+
+            <div x-show="cart.length > 0" class="bg-slate-900 text-white p-10 rounded-[4rem] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.4)] space-y-10 border border-white/10 relative overflow-hidden fade-in">
+                <div class="absolute top-0 right-0 w-48 h-48 bg-primary/20 rounded-full -mr-24 -mt-24 blur-[80px]"></div>
+                <div class="absolute bottom-0 left-0 w-32 h-32 bg-emerald-500/10 rounded-full -ml-16 -mb-16 blur-[60px]"></div>
+
+                <div class="flex justify-between items-start relative z-10">
+                    <div class="space-y-2">
+                        <span class="text-[10px] font-black text-white/30 uppercase tracking-[0.3em]">Total Invoice</span>
+                        <div class="text-4xl font-black text-emerald-400 tracking-tighter" x-text="formatRupiah(grandTotal)"></div>
+                    </div>
+                    <img src="https://images.seeklogo.com/logo-png/62/2/seabank-logo-png_seeklogo-620133.png" class="h-9 object-contain brightness-0 invert opacity-40" alt="Seabank">
                 </div>
 
-                <div class="flex gap-2">
-                    <button @click="step = 1" class="flex-1 bg-slate-100 text-slate-500 font-black py-5 rounded-2xl text-xs btn-bounce transition-colors hover:bg-slate-200">KEMBALI</button>
-                    <button @click="submit" :disabled="loading || cart.length === 0 || !form.buktiBase64" class="flex-[2] bg-primary text-white font-black py-5 rounded-2xl shadow-xl hover:bg-primaryDark transition-all disabled:opacity-50 flex items-center justify-center gap-2 btn-bounce">
-                        <span x-show="!loading">KIRIM PESANAN</span>
-                        <i x-show="loading" class="fas fa-circle-notch animate-spin"></i>
-                    </button>
+                <div class="bg-white/5 border border-white/10 rounded-[2.5rem] p-7 space-y-5 relative z-10 backdrop-blur-sm">
+                    <div class="flex justify-between items-center px-3">
+                        <span class="text-[9px] font-black text-white/20 uppercase tracking-[0.2em]">Metode Transfer</span>
+                        <span class="text-[11px] font-black text-emerald-400 italic">Virtual Account (901)</span>
+                    </div>
+                    <div class="flex justify-between items-center bg-black/40 p-5 rounded-[1.8rem] border border-white/5 ring-4 ring-white/[0.02]">
+                        <div class="flex flex-col">
+                            <span class="text-[8px] font-black text-white/20 uppercase tracking-widest mb-1.5">No. Rekening</span>
+                            <span class="text-[17px] font-mono font-black text-white tracking-[0.15em]">901898555541</span>
+                        </div>
+                        <button @click="copyToClipboard('901898555541')" class="bg-white text-slate-900 px-6 py-3 rounded-2xl text-[10px] font-black active:scale-95 hover:bg-emerald-400 hover:text-white transition-all shadow-2xl">SALIN</button>
+                    </div>
+                    <p class="text-center text-[9px] font-black text-white/40 tracking-[0.2em] uppercase">A.N MUHAMMAD IBNU MUNDZIR</p>
+                </div>
+                
+                <div class="pt-4 relative z-10">
+                    <label class="block text-[10px] font-black text-white/20 mb-5 text-center uppercase tracking-[0.3em]">Lampirkan Bukti Pembayaran</label>
+                    <div class="relative group">
+                        <input type="file" @change="uploadFile" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20">
+                        <div class="bg-white/5 border-2 border-dashed border-white/10 rounded-[2.5rem] p-10 text-center group-hover:border-emerald-500/50 group-hover:bg-white/[0.07] transition-all duration-700">
+                            <div class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 shadow-2xl ring-8 ring-white/[0.02]">
+                                <i class="fas fa-cloud-upload-alt text-2xl text-white/20 group-hover:text-emerald-400 transition-colors"></i>
+                            </div>
+                            <p class="text-[12px] font-black tracking-tight" :class="form.buktiBase64 ? 'text-emerald-400' : 'text-white/30'" x-text="form.buktiBase64 ? '✓ BERKAS BERHASIL DIUNGGAH' : 'TEKAN UNTUK PILIH GAMBAR'"></p>
+                            <p class="text-[8px] font-bold text-white/10 mt-2 uppercase">Maksimal 5MB (JPG/PNG)</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-<div x-show="isSuccess" x-cloak class="max-w-md mx-auto space-y-6 fade-in pb-10">
-    
-    <div class="text-center bg-white p-8 rounded-[2.5rem] shadow-xl border-b-4 border-primary relative overflow-hidden">
-        <div class="absolute -top-10 -right-10 w-32 h-32 bg-emerald-50 rounded-full opacity-50"></div>
-        
-        <div class="w-20 h-20 bg-primary text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg animate-bounce relative z-10">
-            <i class="fas fa-check text-3xl"></i>
+            <div class="flex gap-4 pt-4">
+                <button @click="step = 1" class="flex-1 bg-slate-50 text-slate-400 font-black py-7 rounded-[2rem] text-[11px] transition-all hover:bg-slate-100 active:scale-95 border border-slate-100 tracking-widest">KEMBALI</button>
+                <button @click="submit" :disabled="loading || cart.length === 0 || !form.buktiBase64" class="flex-[2.5] bg-primary text-white font-black py-7 rounded-[2rem] shadow-[0_30px_60px_-15px_rgba(27,117,72,0.4)] hover:bg-primaryDark transition-all disabled:opacity-20 flex items-center justify-center gap-4 active:scale-95 relative overflow-hidden">
+                    <span x-show="!loading" class="tracking-[0.2em] text-[12px]">KONFIRMASI PESANAN</span>
+                    <i x-show="loading" class="fas fa-spinner animate-spin"></i>
+                </button>
+            </div>
         </div>
-        
-        <h2 class="text-xl font-black uppercase text-slate-800 tracking-tight">Pesanan Berhasil</h2>
-        <p class="text-slate-500 text-[11px] mt-1">Terimakasih atas Menggunakan Layanan Kami.</p>
     </div>
 
-    <div id="invoice-preview" class="bg-white p-6 rounded-[2.5rem] shadow-2xl border border-slate-100 relative overflow-hidden">
-        <div class="flex justify-between items-start border-b border-dashed border-slate-200 pb-4 mb-4">
-            <div>
-                <h3 class="font-black text-primary text-sm uppercase tracking-tighter">Detail Pesanan</h3>
-                <p class="text-[9px] text-slate-400 font-mono" x-text="new Date().toLocaleString('id-ID')"></p>
-            </div>
-            <div class="text-right">
-                <span class="text-[8px] font-bold text-slate-400 block uppercase">Ref ID</span>
-                <span class="text-xs font-black text-slate-800 font-mono" x-text="finalOrderID"></span>
-            </div>
-        </div>
-
-        <div class="space-y-2 mb-5">
-            <div class="flex justify-between text-[11px]">
-                <span class="text-slate-400 font-bold uppercase text-[9px]">Pemesan</span>
-                <span class="font-black text-slate-800 text-right uppercase" x-text="form.nama"></span>
-            </div>
-            <div class="flex justify-between items-center">
-                <span class="text-[9px] font-bold text-slate-400 uppercase">Status Validasi</span>
-                <span class="bg-primary/10 text-primary px-3 py-1 rounded-full font-black text-[9px] border border-primary/20">Lunas</span>
-            </div>
-        </div>
-
-        <div class="bg-slate-50 rounded-2xl p-5 space-y-3 mb-4 border border-slate-100">
-            <template x-for="item in cart" :key="item.id">
-                <div class="flex justify-between items-center text-[11px]">
-                    <div class="flex flex-col">
-                        <span class="font-black text-slate-700" x-text="item.lembaga + ' | ' + item.ukuran"></span>
-                        <span class="text-[10px] text-slate-400 font-mono" x-text="item.qty + ' x ' + formatRupiah(item.harga)"></span>
-                    </div>
-                    <span class="font-black text-slate-800 font-mono" x-text="formatRupiah(item.harga * item.qty)"></span>
-                </div>
-            </template>
+    <div x-show="isSuccess" x-cloak class="max-w-md mx-auto space-y-10 fade-in pb-12">
+        
+        <div class="text-center bg-white p-12 rounded-[4rem] shadow-2xl border-b-[12px] border-primary relative overflow-hidden ring-1 ring-slate-100">
+            <div class="absolute -top-16 -right-16 w-56 h-56 bg-emerald-50 rounded-full opacity-40 animate-pulse"></div>
             
-            <div class="border-t-2 border-dashed border-slate-200 mt-3 pt-3 flex justify-between items-center">
-                <span class="font-black text-slate-500 text-[10px] uppercase">Total Dibayarkan</span>
-                <span class="font-black text-primary text-sm font-mono" x-text="formatRupiah(grandTotal)"></span>
+            <div class="w-28 h-28 bg-primary text-white rounded-[2.5rem] flex items-center justify-center mx-auto mb-8 shadow-[0_20px_50px_-10px_rgba(27,117,72,0.5)] animate-bounce relative z-10 rotate-12">
+                <i class="fas fa-check text-5xl"></i>
+            </div>
+            
+            <h2 class="text-3xl font-black uppercase text-slate-900 tracking-tighter italic leading-none">Berhasil!</h2>
+            <p class="text-slate-400 text-[11px] mt-4 font-black uppercase tracking-[0.3em] leading-relaxed">Pesanan telah masuk ke sistem kami</p>
+        </div>
+
+        <div id="invoice-preview" class="bg-white p-10 rounded-[4rem] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.1)] border border-slate-50 relative overflow-hidden group">
+            <div class="absolute -left-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-[#f8fafc] rounded-full ring-1 ring-slate-100 shadow-inner"></div>
+            <div class="absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-[#f8fafc] rounded-full ring-1 ring-slate-100 shadow-inner"></div>
+
+            <div class="flex justify-between items-start border-b-2 border-dashed border-slate-100 pb-8 mb-8">
+                <div class="space-y-2">
+                    <h3 class="font-black text-primary text-[12px] uppercase tracking-[0.3em] italic">DIGITAL RECEIPT</h3>
+                    <p class="text-[10px] text-slate-300 font-mono font-bold uppercase tracking-widest" x-text="new Date().toLocaleString('id-ID')"></p>
+                </div>
+                <div class="text-right">
+                    <span class="text-[9px] font-black text-slate-300 block uppercase tracking-widest mb-1.5">No. Referensi:</span>
+                    <span class="text-xs font-black text-slate-900 font-mono bg-slate-50 px-4 py-2 rounded-xl" x-text="finalOrderID"></span>
+                </div>
+            </div>
+
+            <div class="space-y-5 mb-10 px-2">
+                <div class="flex justify-between items-center">
+                    <span class="text-slate-400 font-black uppercase text-[10px] tracking-widest">Atas Nama:</span>
+                    <span class="font-black text-slate-900 uppercase italic text-[13px]" x-text="form.nama"></span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Status:</span>
+                    <div class="flex items-center gap-2.5 bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-100">
+                         <span class="h-2 w-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                         <span class="text-emerald-600 font-black text-[10px] uppercase italic tracking-widest">Paid Verified</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-50/70 rounded-[3rem] p-8 space-y-6 mb-8 border border-slate-100 shadow-inner">
+                <template x-for="item in cart" :key="item.id">
+                    <div class="flex justify-between items-center group/item transform hover:translate-x-1 transition-transform">
+                        <div class="flex flex-col">
+                            <span class="font-black text-slate-800 text-[12px] uppercase tracking-tight" x-text="item.lembaga + ' | ' + item.ukuran"></span>
+                            <span class="text-[10px] text-slate-400 font-bold mt-0.5" x-text="item.qty + ' Pcs @ ' + formatRupiah(item.harga)"></span>
+                        </div>
+                        <span class="font-black text-slate-900 text-[13px] font-mono tracking-tighter" x-text="formatRupiah(item.harga * item.qty)"></span>
+                    </div>
+                </template>
+                
+                <div class="border-t-2 border-slate-200/50 mt-6 pt-6 flex justify-between items-center">
+                    <span class="font-black text-slate-400 text-[11px] uppercase tracking-[0.3em]">Total Bayar</span>
+                    <span class="font-black text-primary text-2xl font-mono tracking-tighter" x-text="formatRupiah(grandTotal)"></span>
+                </div>
+            </div>
+
+            <div class="text-center py-4 relative">
+                <div class="absolute inset-0 flex items-center justify-center opacity-[0.05] select-none pointer-events-none -rotate-12">
+                     <span class="text-[70px] font-black italic">LUNAS</span>
+                </div>
+                <div class="inline-block px-8 py-3 border border-slate-100 rounded-2xl bg-white shadow-sm relative z-10">
+                    <p class="text-[10px] font-black tracking-[0.4em] text-slate-300 uppercase">PN UNUSIA STORE OFFICIAL</p>
+                </div>
             </div>
         </div>
 
-        <div class="text-center py-2">
-            <div class="inline-block px-4 py-1 border-2 border-slate-100 rounded-lg">
-                <p class="text-[8px] font-black tracking-[0.2em] text-slate-300 uppercase">PSNU PAGARNUSA UNUSIA Store</p>
-            </div>
+        <div class="flex flex-col gap-5 pt-4 px-4">
+            <button @click="downloadKwitansi()" class="bg-slate-900 text-white font-black py-7 rounded-[2.5rem] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] flex items-center justify-center gap-5 active:scale-95 hover:bg-black transition-all text-[12px] group overflow-hidden relative">
+                <div class="absolute inset-0 bg-white/5 translate-y-full group-hover:translate-y-0 transition-transform"></div>
+                <div class="w-10 h-10 bg-white/10 rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-transform">
+                    <i class="fas fa-file-pdf text-emerald-400 text-lg"></i> 
+                </div>
+                <span class="tracking-[0.2em] relative z-10">UNDUH KWITANSI DIGITAL</span>
+            </button>
+            
+            <a :href="waUrl" target="_blank" class="bg-emerald-500 text-white font-black py-7 rounded-[2.5rem] shadow-[0_20px_40px_-10px_rgba(16,185,129,0.4)] flex items-center justify-center gap-5 active:scale-95 hover:opacity-95 transition-all text-[12px] group">
+                <div class="w-10 h-10 bg-white/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <i class="fab fa-whatsapp text-xl"></i>
+                </div>
+                <span class="tracking-[0.2em] uppercase">Konfirmasi Admin</span>
+            </a>
+
+            <button @click="location.reload()" class="text-slate-300 font-black py-6 text-[11px] hover:text-primary transition-all uppercase tracking-[0.5em] text-center active:scale-90 flex items-center justify-center gap-3">
+                <i class="fas fa-home text-[10px]"></i> KEMBALI KE BERANDA
+            </button>
         </div>
-        
-        <div class="absolute -bottom-3 left-0 right-0 flex justify-around opacity-5">
-            <template x-for="i in 12">
-                <div class="w-5 h-5 bg-black rounded-full"></div>
-            </template>
-        </div>
     </div>
+</main>
 
-    <div class="flex flex-col gap-3 pt-2">
-        <button @click="downloadKwitansi()" class="bg-slate-900 text-white font-black py-4 rounded-2xl shadow-xl flex items-center justify-center gap-3 active:scale-95 hover:bg-black transition-all text-sm group">
-            <i class="fas fa-file-pdf text-rose-500 group-hover:scale-110 transition-transform"></i> 
-            DOWNLOAD BUKTI
-        </button>
-        
-        <a :href="waUrl" target="_blank" class="bg-[#25D366] text-white font-black py-4 rounded-2xl shadow-lg flex items-center justify-center gap-3 active:scale-95 hover:opacity-90 transition-all text-sm">
-            <i class="fab fa-whatsapp text-xl"></i> KONFIRMASI PEMBAYARAN
-        </a>
-
-        <button @click="location.reload()" class="text-slate-400 font-bold py-3 text-[10px] hover:text-primary transition-all uppercase tracking-[0.2em]">
-            ← Beli Lagi
-        </button>
+<div x-show="copied" x-cloak 
+     x-transition:enter="transition ease-out duration-300 transform"
+     x-transition:enter-start="opacity-0 translate-y-20"
+     x-transition:enter-end="opacity-100 translate-y-0"
+     x-transition:leave="transition ease-in duration-300 transform"
+     x-transition:leave-end="opacity-0 translate-y-20"
+     class="fixed bottom-16 left-1/2 -translate-x-1/2 bg-slate-900 text-emerald-400 px-10 py-5 rounded-[2rem] text-[11px] font-black shadow-[0_30px_60px_rgba(0,0,0,0.5)] z-[100] border border-white/10 tracking-[0.2em] uppercase flex items-center gap-4">
+    <div class="w-6 h-6 bg-emerald-400 text-slate-900 rounded-full flex items-center justify-center text-[10px]">
+        <i class="fas fa-check"></i>
     </div>
+    DATA BERHASIL DISALIN
 </div>
-    </div>
-</div>
-    </main>
 
-    <div x-show="copied" x-cloak x-transition class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-emerald-500 text-white px-6 py-3 rounded-full text-[11px] font-black shadow-2xl z-[100] border-2 border-white/20">
-        DATA BERHASIL DISALIN
-    </div>
 <script>
     function checkoutApp() {
         return {

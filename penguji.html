@@ -3,130 +3,593 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Penguji | PAGARNUSA UNUSIA</title>
+    <title>Sistem Penilaian | PAGARNUSA UNUSIA</title>
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <script>
         tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { primary: '#1B7548', primaryDark: '#145c38' }
-                }
-            }
+            theme: { extend: { colors: { primary: '#1B7548', primaryDark: '#145c38' } } }
         }
     </script>
     <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; }
-        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: #1e293b;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        nav {
+            backdrop-filter: blur(10px);
+            background-color: rgba(27, 117, 72, 0.9) !important;
+        }
+
+        .page { display: none; padding-bottom: 2rem; }
+        .page.active { 
+            display: block; 
+            animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+
+        @keyframes slideUp { 
+            from { opacity: 0; transform: translateY(30px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        .cat-card { 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            border: 1px solid rgba(255,255,255,0.8);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+        }
+
+        .cat-card:hover { 
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(27, 117, 72, 0.1), 0 10px 10px -5px rgba(27, 117, 72, 0.04);
+            border-color: #1B7548;
+        }
+
+        select, input {
+            border: 2px solid #e2e8f0 !important;
+            border-radius: 1rem !important;
+            transition: all 0.3s !important;
+        }
+
+        select:focus, input:focus {
+            border-color: #1B7548 !important;
+            box-shadow: 0 0 0 4px rgba(27, 117, 72, 0.15) !important;
+            background-color: #fff !important;
+        }
+
+        .overflow-x-auto::-webkit-scrollbar { height: 4px; }
+        .overflow-x-auto::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen pb-10">
 
-    <nav class="bg-primary text-white p-4 shadow-lg">
-        <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <img src="logopn.png" alt="Logo" class="h-10 w-10 brightness-0 invert">
-                <span class="font-bold tracking-wider">PAGAR NUSA</span>
+    <div id="popupSukses" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/50 backdrop-blur-sm p-6">
+        <div class="bg-white rounded-3xl p-8 flex flex-col items-center shadow-2xl max-w-xs w-full">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-2xl mb-4">
+                <i class="fas fa-check"></i>
             </div>
-            <button onclick="logout()" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-xl text-xs font-bold transition-all">
-                <i class="fas fa-sign-out-alt mr-1"></i> KELUAR
+            <h3 class="font-bold text-slate-800 text-lg mt-2">Berhasil Disimpan!</h3>
+            <p class="text-slate-500 text-center text-[10px] mt-2 mb-6">Data telah berhasil tercatat di sistem.</p>
+            
+            <button onclick="tutupPopupDanLanjut()" class="w-full bg-primary text-white font-bold py-3 rounded-xl shadow-lg hover:bg-primaryDark active:scale-95 transition-all text-xs uppercase tracking-wider">
+                Next
             </button>
+        </div>
+    </div>
+
+    <nav class="bg-primary text-white p-4 shadow-lg sticky top-0 z-50">
+        <div class="flex items-center justify-between max-w-4xl mx-auto">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="goToDashboard()">
+                <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center overflow-hidden shadow-inner">
+                    <img src="logopn.png" alt="Logo Pagar Nusa" class="w-full h-full object-contain p-1">
+                </div>
+                <div class="flex flex-col leading-tight">
+                    <span class="font-bold text-[11px] tracking-wider text-white">SISTEM PENILAIAN</span>
+                    <span class="font-medium text-[9px] text-emerald-200 tracking-[0.1em]">PSNU PAGARNUSA UNUSIA</span>
+                </div>
+            </div>
+            <div id="status-badge" class="text-[10px] bg-emerald-500/20 px-3 py-1 rounded-full border border-emerald-500/30 text-emerald-400 font-bold tracking-widest">ONLINE</div>
         </div>
     </nav>
 
-    <main class="max-w-4xl mx-auto p-6">
-        <div class="mb-8">
-            <h1 class="text-2xl font-bold text-slate-800">Selamat Datang, <span id="display-nama" class="text-primary">Penguji</span>!</h1>
-            <p class="text-slate-500 text-sm">Panel kendali penguji pengesahan anggota.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="md:col-span-1">
-                <div class="glass-card border border-white rounded-[2rem] p-6 shadow-xl shadow-emerald-900/5 text-center">
-                    <div class="w-24 h-24 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-inner">
-                        <i class="fas fa-user-tie text-4xl text-primary"></i>
-                    </div>
-                    <h2 id="user-role" class="text-[10px] font-bold text-primary uppercase tracking-[0.2em] mb-1">PENGUJI PUSAT</h2>
-                    <p id="user-full-name" class="font-bold text-slate-800 leading-tight">Memuat nama...</p>
-                    <hr class="my-4 border-slate-100">
-                    <div class="text-left space-y-3">
-                        <div class="flex items-center gap-3 text-xs">
-                            <i class="fas fa-id-badge text-slate-400 w-4"></i>
-                            <span class="text-slate-500">ID:</span>
-                            <span id="user-id" class="font-bold text-slate-700">-</span>
-                        </div>
-                        <div class="flex items-center gap-3 text-xs">
-                            <i class="fas fa-map-marker-alt text-slate-400 w-4"></i>
-                            <span class="text-slate-500">Wilayah:</span>
-                            <span id="user-wilayah" class="font-bold text-slate-700">-</span>
-                        </div>
-                    </div>
+    <section id="page-dashboard" class="page active p-6">
+        <div class="max-w-4xl mx-auto">
+            <div class="mb-8 flex justify-between items-end">
+                <div>
+                    <h1 class="text-2xl font-extrabold text-slate-800 tracking-tight">UKT & DIKLAT</h1>
+                    <p class="text-primary font-medium">PSNU PAGARNUSA PAC CIBUNGBULANG</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase">Tanggal</span>
+                    <p id="tgl-skrg" class="text-xs font-bold text-slate-700"></p>
                 </div>
             </div>
 
-            <div class="md:col-span-2 space-y-4">
-                <h3 class="font-bold text-slate-700 ml-2">Menu Penguji</h3>
-                
-                <a href="penilaian.html" class="flex items-center p-5 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-primary transition-all group">
-                    <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center group-hover:bg-primary transition-colors">
-                        <i class="fas fa-edit text-primary group-hover:text-white"></i>
-                    </div>
-                    <div class="ml-4">
-                        <h4 class="font-bold text-slate-800">Input Nilai Pengesahan</h4>
-                        <p class="text-xs text-slate-500">Berikan penilaian untuk peserta ujian.</p>
-                    </div>
-                    <i class="fas fa-chevron-right ml-auto text-slate-300"></i>
-                </a>
+            <div class="grid grid-cols-3 gap-3 mb-8">
+                <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-100 text-center">
+                    <p class="text-[10px] text-slate-400 font-bold uppercase">Peserta</p>
+                    <p id="stat-total-peserta" class="text-lg font-bold text-primary">--</p> 
+                </div>
+                <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-100 text-center">
+                    <p class="text-[10px] text-slate-400 font-bold uppercase">Tersimpan</p>
+                    <p id="count-lokal" class="text-lg font-bold text-blue-500">0</p>
+                </div>
+                <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-100 text-center">
+                <p class="text-[10px] text-slate-400 font-bold uppercase mb-1">Sinyal</p>
+                <div class="flex items-end justify-center gap-1 h-4" id="signal-container">
+                    <div id="bar-1" class="w-1 h-[25%] rounded-full bg-slate-200 transition-all duration-500"></div>
+                    <div id="bar-2" class="w-1 h-[50%] rounded-full bg-slate-200 transition-all duration-500"></div>
+                    <div id="bar-3" class="w-1 h-[75%] rounded-full bg-slate-200 transition-all duration-500"></div>
+                    <div id="bar-4" class="w-1 h-[100%] rounded-full bg-slate-200 transition-all duration-500"></div>
+                </div>
+            </div>
+            </div>
 
-                <a href="daftar_peserta.html" class="flex items-center p-5 bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:border-primary transition-all group">
-                    <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center group-hover:bg-blue-500 transition-colors">
-                        <i class="fas fa-users text-blue-500 group-hover:text-white"></i>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button onclick="showPage('page-pilih-kategori')" class="p-8 bg-white rounded-3xl border border-slate-100 shadow-md flex items-center group active:scale-95 transition-all">
+                    <div class="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all shadow-inner">
+                        <i class="fas fa-edit text-2xl"></i>
                     </div>
-                    <div class="ml-4">
-                        <h4 class="font-bold text-slate-800">Data Peserta</h4>
-                        <p class="text-xs text-slate-500">Lihat daftar peserta yang Anda uji.</p>
+                    <div class="ml-5 text-left">
+                        <h4 class="font-bold text-slate-800 text-lg">Mulai Menilai</h4>
+                        <p class="text-xs text-slate-400">Pilih kategori ujian</p>
                     </div>
-                    <i class="fas fa-chevron-right ml-auto text-slate-300"></i>
-                </a>
+                </button>
+                <button onclick="loadRekapInternal()" class="p-8 bg-white rounded-3xl border border-slate-100 shadow-md flex items-center group active:scale-95 transition-all">
+                    <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all shadow-inner">
+                        <i class="fas fa-history text-2xl"></i>
+                    </div>
+                    <div class="ml-5 text-left">
+                        <h4 class="font-bold text-slate-800 text-lg">Riwayat Nilai</h4>
+                        <p class="text-xs text-slate-400">Data tersimpan di HP ini</p>
+                    </div>
+                </button>
             </div>
         </div>
-    </main>
+    </section>
 
-    <script>
-        // Jalankan saat halaman dimuat
-        window.onload = function() {
-            // 1. Ambil data dari LocalStorage
-            const userData = JSON.parse(localStorage.getItem('currentUserProfile'));
-
-            // 2. Jika tidak ada data (belum login), tendang ke login.html
-            if (!userData) {
-                window.location.href = 'login.html';
-                return;
-            }
-
-            // 3. Tampilkan data ke elemen HTML
-            // Sesuaikan ID elemen dengan header kolom di Excel Anda
-            document.getElementById('display-nama').innerText = userData.nama || userData.username || 'Penguji';
-            document.getElementById('user-full-name').innerText = userData.nama || userData.username || 'Nama Tidak Ditemukan';
-            document.getElementById('user-id').innerText = userData.username || '-';
-            document.getElementById('user-wilayah').innerText = userData.wilayah || userData.Cabang || 'Pusat';
+    <section id="page-pilih-kategori" class="page p-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <button onclick="showPage('page-dashboard')" class="mb-6 text-sm font-bold text-primary flex items-center">
+                <i class="fas fa-arrow-left mr-2"></i> Kembali ke Menu
+            </button>
+            <h2 class="text-xl font-bold text-slate-800 mb-2">Pilih Kategori</h2>
+            <p class="text-xs text-slate-400 mb-8">Pilih salah satu materi yang sedang diuji</p>
             
-            // Jika ada kolom 'role' di excel, tampilkan
-            if(userData.role) {
-                document.getElementById('user-role').innerText = userData.role;
-            }
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div onclick="initForm('Fisik')" class="cat-card bg-white p-6 rounded-3xl shadow-sm cursor-pointer flex flex-col items-center">
+                    <div class="w-12 h-12 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mb-3"><i class="fas fa-bolt"></i></div>
+                    <span class="font-bold text-sm text-slate-700">Fisik</span>
+                </div>
+                <div onclick="initForm('teknik')" class="cat-card bg-white p-6 rounded-3xl shadow-sm cursor-pointer flex flex-col items-center">
+                    <div class="w-12 h-12 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mb-3"><i class="fas fa-user-ninja"></i></div>
+                    <span class="font-bold text-sm text-slate-700">Teknik</span>
+                </div>
+                <div onclick="initForm('Mental')" class="cat-card bg-white p-6 rounded-3xl shadow-sm cursor-pointer flex flex-col items-center">
+                    <div class="w-12 h-12 bg-red-50 text-red-500 rounded-full flex items-center justify-center mb-3"><i class="fas fa-heart"></i></div>
+                    <span class="font-bold text-sm text-slate-700">Mental</span>
+                </div>
+                <div onclick="initForm('Jurus')" class="cat-card bg-white p-6 rounded-3xl shadow-sm cursor-pointer flex flex-col items-center">
+                    <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mb-3"><i class="fas fa-hand-fist"></i></div>
+                    <span class="font-bold text-sm text-slate-700">Jurus</span>
+                </div>
+                <div onclick="initForm('Kebangsaan')" class="cat-card bg-white p-6 rounded-3xl shadow-sm cursor-pointer flex flex-col items-center">
+                    <div class="w-12 h-12 bg-purple-50 text-purple-500 rounded-full flex items-center justify-center mb-3"><i class="fas fa-flag"></i></div>
+                    <span class="font-bold text-sm text-slate-700">Kebangsaan</span>
+                </div>
+                <div onclick="initForm('Nahdlatul Ulama')" class="cat-card bg-white p-6 rounded-3xl shadow-sm cursor-pointer flex flex-col items-center">
+                    <div class="w-12 h-12 bg-green-50 text-green-600 rounded-full flex items-center justify-center mb-3"><i class="fas fa-mosque"></i></div>
+                    <span class="font-bold text-sm text-slate-700">Ke-NU-an</span>
+                </div>
+                <div onclick="initForm('Pagarnusa')" class="cat-card bg-white p-6 rounded-3xl shadow-sm cursor-pointer flex flex-col items-center col-span-2 md:col-span-1">
+                    <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-full flex items-center justify-center mb-3"><i class="fas fa-shield-halved"></i></div>
+                    <span class="font-bold text-sm text-slate-700">Ke-PN-an</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page-penilaian" class="page p-6">
+        <div class="max-w-xl mx-auto">
+            <div class="flex justify-between items-center mb-6">
+                <button onclick="showPage('page-pilih-kategori')" class="text-xs font-bold text-slate-400 flex items-center bg-white px-3 py-2 rounded-xl shadow-sm border border-slate-100">
+                    <i class="fas fa-chevron-left mr-2"></i> Ganti Kategori
+                </button>
+                <div class="flex items-center gap-2">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Materi:</span>
+                    <span id="badgeKategori" class="bg-primary/10 text-primary px-3 py-1 rounded-lg text-xs font-bold uppercase border border-primary/20"></span>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-[2rem] shadow-xl border border-slate-50">
+                <form id="nilaiForm" class="space-y-6">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 mb-2 uppercase tracking-tighter">1. Pilih Kelompok</label>
+                        <select id="kelompok" required class="w-full rounded-2xl border-2 border-slate-100 p-4 text-sm font-semibold outline-none focus:border-primary transition-all">
+                            <option value="" disabled selected>Memuat Kelompok...</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 mb-2 uppercase tracking-tighter">2. Nama Peserta</label>
+                        <select id="namaPeserta" required disabled class="w-full rounded-2xl border-2 border-slate-100 p-4 text-sm font-semibold outline-none focus:border-primary transition-all disabled:opacity-50">
+                            <option value="" disabled selected>Pilih Kelompok Dulu</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 mb-2 uppercase tracking-tighter">3. Skor Akhir</label>
+                        <div class="flex gap-3">
+                            <select id="skor" required class="flex-1 rounded-2xl border-2 border-slate-100 p-4 text-sm font-bold outline-none focus:border-primary transition-all">
+                                <option value="" disabled selected>Skor</option>
+                                <option value="70">70 (C)</option>
+                                <option value="80">80 (B)</option>
+                                <option value="90">90 (A)</option>
+                                <option value="99">99 (S+)</option>
+                                <option value="custom">Manual</option>
+                            </select>
+                            <input type="number" id="customSkor" min="0" max="100" placeholder="0-100" class="hidden w-24 rounded-2xl border-2 border-primary/30 p-4 text-sm font-bold outline-none focus:border-primary animate-pulse">
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btnSimpan" class="w-full bg-primary text-white font-bold py-5 rounded-2xl shadow-lg shadow-emerald-900/20 hover:bg-primaryDark active:scale-95 transition-all uppercase tracking-widest text-sm">
+                        <i class="fas fa-cloud-arrow-up mr-2"></i> Simpan Penilaian
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section id="page-rekap" class="page p-6">
+        <div class="max-w-4xl mx-auto">
+            <button onclick="goToDashboard()" class="mb-6 font-bold text-primary flex items-center"><i class="fas fa-arrow-left mr-2"></i> Dashboard</button>
+            <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+            <div class="flex gap-2">
+                <button onclick="hapusSemuaRiwayatLokal()" class="bg-red-100 text-red-600 px-4 py-2 rounded-xl text-[10px] font-bold uppercase hover:bg-red-200 transition-all">
+                    <i class="fas fa-trash-sweep mr-1"></i> Hapus Semua
+                </button>
+                
+                <button onclick="downloadExcel()" class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-[10px] font-bold uppercase hover:bg-emerald-700 shadow-lg shadow-emerald-200 transition-all">
+                    <i class="fas fa-file-excel mr-1"></i> Export Excel
+                </button>
+            </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                    <thead class="bg-slate-100 text-[10px] uppercase text-slate-400 font-bold">
+                        <tr>
+                            <th class="p-4">Nama Peserta</th>
+                            <th class="p-4">Materi</th>
+                            <th class="p-4">Skor</th>
+                            <th class="p-4 text-center">Aksi</th> </tr>
+                    </thead>
+                        <tbody id="tabel-rekap" class="text-xs text-slate-600"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<script>
+    // KONFIGURASI
+    // PASTIKAN URL INI ADALAH URL DEPLOYMENT APPSCRIPT ANDA
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxd3bFNpSIl6ORAGBV5QyyAE4ni-oTzKlco9o6jAOyMnbOzmZ2fQxXb6T1eIROgFX9bjA/exec";
+    let DB_NILAI = {};
+    let currentKategori = "";
+    let totalPesertaGlobal = 0;
+
+    // ELEMENT SELECTOR
+    const selectKel = document.getElementById('kelompok');
+    const selectNama = document.getElementById('namaPeserta');
+    const selectSkor = document.getElementById('skor');
+    const customSkorInput = document.getElementById('customSkor');
+    const badgeKategori = document.getElementById('badgeKategori');
+
+    // --- SISTEM SINYAL & KONEKSI ---
+    window.addEventListener('online', updateConnectionStatus);
+    window.addEventListener('offline', updateConnectionStatus);
+
+    function updateConnectionStatus() {
+        const badge = document.getElementById('status-badge');
+        if (navigator.onLine) {
+            badge.innerText = "ONLINE";
+            badge.className = "text-[10px] bg-emerald-500/20 px-3 py-1 rounded-full border border-emerald-500/30 text-emerald-400 font-bold tracking-widest";
+            updateSignalVisual(4); 
+        } else {
+            badge.innerText = "OFFLINE";
+            badge.className = "text-[10px] bg-red-500/20 px-3 py-1 rounded-full border border-red-500/30 text-red-400 font-bold tracking-widest";
+            updateSignalVisual(1); 
+        }
+    }
+
+    function updateSignalVisual(strength) {
+        const bars = [
+            document.getElementById('bar-1'),
+            document.getElementById('bar-2'),
+            document.getElementById('bar-3'),
+            document.getElementById('bar-4')
+        ];
+
+        bars.forEach((bar, index) => {
+            const heights = ['h-[25%]', 'h-[50%]', 'h-[75%]', 'h-[100%]'];
+            bar.className = `w-1 rounded-full bg-slate-200 transition-all duration-500 ${heights[index]}`;
+        });
+
+        const isOnline = navigator.onLine;
+        const finalStrength = isOnline ? strength : 1;
+
+        let colorClass = "bg-red-500";
+        if (isOnline && finalStrength === 2) colorClass = "bg-orange-500";
+        if (isOnline && finalStrength >= 3) colorClass = "bg-emerald-500";
+
+        for (let i = 0; i < finalStrength; i++) {
+            bars[i].classList.remove('bg-slate-200');
+            bars[i].classList.add(colorClass);
+            if (i === finalStrength - 1) bars[i].classList.add('animate-pulse');
+        }
+    }
+
+    setInterval(() => {
+        if (navigator.onLine) {
+            const randomStrength = Math.floor(Math.random() * 2) + 3; 
+            updateSignalVisual(randomStrength);
+        }
+    }, 4000);
+
+
+    // --- LOGIKA DATABASE EXCEL ---
+    async function fetchDatabase() {
+        try {
+            const response = await fetch('db_nilai.xlsx?v=' + Date.now());
+            const arrayBuffer = await response.arrayBuffer();
+            const workbook = XLSX.read(new Uint8Array(arrayBuffer), {type: 'array'});
+            const data = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+            
+            totalPesertaGlobal = data.length;
+            DB_NILAI = {};
+            data.forEach(row => {
+                const k = row.Kelompok ? row.Kelompok.toString() : "Umum";
+                if(!DB_NILAI[k]) DB_NILAI[k] = [];
+                DB_NILAI[k].push(row.Nama);
+            });
+
+            updateKelompokList();
+            updateDashboardStats();
+        } catch (e) {
+            console.error(e);
+            alert("Database Excel (db_nilai.xlsx) tidak ditemukan atau format salah.");
+        }
+    }
+
+    function updateKelompokList() {
+        selectKel.innerHTML = '<option value="" disabled selected>Pilih Kelompok</option>';
+        Object.keys(DB_NILAI).sort((a,b)=>a-b).forEach(k => {
+            selectKel.innerHTML += `<option value="${k}">Kelompok ${k}</option>`;
+        });
+    }
+
+
+    // --- NAVIGATION & UI ---
+    function updateDashboardStats() {
+        const lokalData = JSON.parse(localStorage.getItem('rekapPN')) || [];
+        document.getElementById('count-lokal').innerText = lokalData.length;
+        document.getElementById('stat-total-peserta').innerText = totalPesertaGlobal || "--";
+        document.getElementById('tgl-skrg').innerText = new Date().toLocaleDateString('id-ID', {day:'numeric', month:'short'});
+    }
+
+    function initForm(kategori) {
+        currentKategori = kategori;
+        // Penyesuaian teks tampilan agar lebih rapi
+        const labelMap = {
+            "Fisik": "Fisik",
+            "teknik": "Teknik",
+            "Mental": "Mental",
+            "Jurus": "Jurus",
+            "Kebangsaan": "Kebangsaan", // Sesuaikan typo
+            "Nahdlatul Ulama": "Ke-NU-an",
+            "Pagarnusa": "Ke-PN-an"
+        };
+        badgeKategori.innerText = labelMap[kategori] || kategori;
+        showPage('page-penilaian');
+    }
+
+    function showPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function goToDashboard() {
+        if(document.getElementById('page-penilaian').classList.contains('active')) {
+            if(!confirm("Keluar dari penilaian?")) return;
+        }
+        updateDashboardStats();
+        showPage('page-dashboard');
+    }
+
+
+    // --- FORM HANDLING ---
+    selectKel.addEventListener('change', function() {
+        const listNama = DB_NILAI[this.value] || [];
+        const lokal = JSON.parse(localStorage.getItem('rekapPN')) || [];
+        const sudahDinilai = lokal.filter(item => item.kategori === currentKategori).map(item => item.nama);
+
+        selectNama.innerHTML = '<option value="" disabled selected>Pilih Peserta</option>';
+        listNama.forEach(n => {
+            const isDone = sudahDinilai.includes(n);
+            const opt = document.createElement('option');
+            opt.value = n;
+            opt.textContent = isDone ? `✅ ${n}` : n;
+            if (isDone) opt.style.color = "#94a3b8"; 
+            selectNama.appendChild(opt);
+        });
+        selectNama.disabled = false;
+    });
+
+    selectSkor.addEventListener('change', function() {
+        customSkorInput.classList.toggle('hidden', this.value !== 'custom');
+        if(this.value === 'custom') {
+            customSkorInput.required = true;
+            customSkorInput.focus();
+        }
+    });
+
+document.getElementById('nilaiForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Ambil nilai skor
+        const skorValue = selectSkor.value === 'custom' ? customSkorInput.value : selectSkor.value;
+        const skorAngka = parseInt(skorValue);
+
+        // VALIDASI: Cegah nilai lebih dari 100
+        if (skorAngka > 100) {
+            alert("⚠️ Nilai tidak boleh lebih dari 100!");
+            customSkorInput.focus();
+            return; // Berhenti di sini, tidak lanjut mengirim data
+        }
+
+        // VALIDASI: Cegah input kosong atau tidak valid
+        if (isNaN(skorAngka) || skorAngka < 0) {
+            alert("⚠️ Masukkan nilai skor yang valid!");
+            return;
+        }
+
+        const btn = document.getElementById('btnSimpan');
+        const payload = {
+            nama: selectNama.value,
+            skor: skorAngka,
+            kategori: currentKategori 
         };
 
-        // Fungsi Logout
-        function logout() {
-            if(confirm('Apakah Anda yakin ingin keluar?')) {
-                localStorage.removeItem('currentUserProfile');
-                window.location.href = 'login.html';
+        // Simpan ke Local Storage (Offline Backup)
+        let lokal = JSON.parse(localStorage.getItem('rekapPN')) || [];
+        lokal.push({...payload, waktu: new Date().toLocaleString('id-ID')});
+        localStorage.setItem('rekapPN', JSON.stringify(lokal));
+
+        // UI Loading
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Mengirim...';
+
+        try {
+            await fetch(SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors", 
+                body: JSON.stringify(payload)
+            });
+
+            // Munculkan popup dan biarkan tetap terbuka sampai tombol diklik
+            document.getElementById('popupSukses').style.display = 'flex';
+
+        } catch (err) {
+            alert("Terjadi gangguan jaringan, namun data aman di memori HP.");
+            resetFormSetelahSimpan();
+        }
+    });
+
+    function resetFormSetelahSimpan() {
+        const btn = document.getElementById('btnSimpan');
+        selectNama.value = "";
+        selectSkor.value = "";
+        customSkorInput.value = "";
+        customSkorInput.classList.add('hidden');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-cloud-arrow-up mr-2"></i> Simpan Penilaian';
+        selectKel.dispatchEvent(new Event('change')); 
+    }
+
+
+    // --- REKAP & EXPORT ---
+function loadRekapInternal() {
+        showPage('page-rekap');
+        const s = JSON.parse(localStorage.getItem('rekapPN')) || [];
+        
+        // Render tabel dengan tombol hapus (menggunakan index asli agar tidak salah hapus)
+        const reversedData = [...s].reverse();
+        
+        document.getElementById('tabel-rekap').innerHTML = reversedData.map((i, index) => {
+            // Hitung index asli karena data di-reverse
+            const realIndex = s.length - 1 - index;
+            
+            return `
+                <tr class="border-b">
+                    <td class="p-4 font-medium">${i.nama}</td>
+                    <td class="p-4 text-primary font-bold">${i.kategori}</td>
+                    <td class="p-4 font-bold text-slate-800">${i.skor}</td>
+                    <td class="p-4 text-center">
+                        <button onclick="hapusRiwayatLokal(${realIndex}, '${i.nama}')" class="text-red-500 hover:text-red-700 transition-colors p-2">
+                            <i class="fas fa-trash-can"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    function downloadExcel() {
+        const s = JSON.parse(localStorage.getItem('rekapPN')) || [];
+        if(s.length === 0) return alert("Belum ada data.");
+        const ws = XLSX.utils.json_to_sheet(s);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Rekap");
+        XLSX.writeFile(wb, "Rekap_UKT_PN_Cibungbulang.xlsx");
+    }
+
+    window.onload = () => {
+        fetchDatabase();
+        updateConnectionStatus();
+    }
+    function tutupPopupDanLanjut() {
+        document.getElementById('popupSukses').style.display = 'none';
+        resetFormSetelahSimpan();
+        // Scroll kembali ke atas agar penguji mudah memilih peserta lagi
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function hapusRiwayatLokal(index, nama) {
+        // Tampilkan peringatan konfirmasi
+        const konfirmasi = confirm(`Hapus riwayat penilaian untuk "${nama}" dari HP ini?\nPastikan sudah menyimpan nilai yang telah diinput.`);
+        
+        if (konfirmasi) {
+            let s = JSON.parse(localStorage.getItem('rekapPN')) || [];
+            
+            // Hapus data berdasarkan index
+            s.splice(index, 1);
+            
+            // Simpan kembali ke localStorage
+            localStorage.setItem('rekapPN', JSON.stringify(s));
+            
+            // Refresh tampilan tabel dan statistik dashboard
+            loadRekapInternal();
+            updateDashboardStats();
+            
+            // Opsional: Pesan sukses kecil
+            console.log("Data lokal berhasil dihapus.");
+        }
+    }
+    function hapusSemuaRiwayatLokal() {
+        // Peringatan konfirmasi ganda agar tidak sengaja terhapus
+        const konfirmasi1 = confirm("⚠️ PERINGATAN: Anda akan menghapus SELURUH riwayat di HP ini.");
+        
+        if (konfirmasi1) {
+            const konfirmasi2 = confirm("Apakah Anda yakin? Data di Spreadsheet TIDAK akan terhapus, tapi riwayat di layar ini akan kosong.");
+            
+            if (konfirmasi2) {
+                // Menghapus kunci rekapPN dari Local Storage
+                localStorage.removeItem('rekapPN');
+                
+                // Refresh tampilan
+                loadRekapInternal();
+                updateDashboardStats();
+                
+                alert("Semua riwayat di HP berhasil dibersihkan.");
             }
         }
-    </script>
+    }
+</script>
 </body>
 </html>

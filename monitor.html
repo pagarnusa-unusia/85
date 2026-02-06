@@ -10,6 +10,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <script>
+        // AUTH GUARD - Jalankan sebelum render apapun
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+
         tailwind.config = {
             theme: { extend: { colors: { primary: '#1B7548', primaryDark: '#145c38' } } }
         }
@@ -34,11 +39,14 @@
         }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         
-        /* Mobile Scrollbar Hide */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
         .progress-bar-fill { transition: width 1s ease-in-out; }
+
+        /* Score Coloring */
+        .score-low { background-color: #ef4444 !important; color: white !important; }
+        .score-mid { background-color: #f59e0b !important; color: white !important; }
+        .score-high { background-color: #10b981 !important; color: white !important; }
     </style>
 </head>
 <body class="pb-10 min-h-screen">
@@ -51,24 +59,24 @@
                     <i class="fas fa-chart-line text-primary text-xl"></i>
                 </div>
                 <div class="flex flex-col leading-tight">
-                    <span class="font-bold text-[11px] tracking-wider uppercase">Operator Sistem</span>
-                    <span id="last-update" class="font-medium text-[9px] text-emerald-200 tracking-wider">Sinkronisasi...</span>
+                    <span class="font-bold text-[11px] tracking-wider uppercase">Operator Dashboard</span>
+                    <span id="last-update" class="font-medium text-[9px] text-emerald-200 tracking-wider">Menghubungkan...</span>
                 </div>
             </div>
-            <div class="flex items-center gap-3">
-                <div id="conn-status" class="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full border border-white/20">
-                    <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-                    <span class="text-[9px] font-bold tracking-widest uppercase">Live</span>
+            <div class="flex items-center gap-2">
+                <div id="conn-status" class="hidden md:flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full border border-white/20">
+                    <div id="status-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
+                    <span id="status-text" class="text-[9px] font-bold tracking-widest uppercase">Online</span>
                 </div>
-                <button onclick="fetchData()" class="w-8 h-8 flex items-center justify-center hover:bg-white/10 rounded-full transition-all">
-                    <i class="fas fa-sync-alt text-sm" id="refresh-icon"></i>
+                <button onclick="logout()" class="ml-2 w-8 h-8 flex items-center justify-center bg-red-500/20 hover:bg-red-500 rounded-full transition-all text-xs">
+                    <i class="fas fa-sign-out-alt"></i>
                 </button>
             </div>
         </div>
     </nav>
 
     <main class="max-w-6xl mx-auto px-4 pt-6">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <div class="glass-card p-5 rounded-[2rem]">
                 <p class="text-[10px] font-bold text-slate-400 uppercase mb-1 tracking-wider">Total Peserta</p>
                 <p id="stat-total" class="text-2xl font-black text-slate-800">0</p>
@@ -88,6 +96,21 @@
             </div>
         </div>
 
+        <div class="sticky top-[80px] z-40 mb-6 flex flex-col md:flex-row gap-3">
+            <div class="flex-1 relative">
+                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                <input type="text" id="search-input" oninput="applyFilters()" placeholder="Cari nama peserta..." 
+                    class="w-full pl-10 pr-4 py-3 rounded-2xl glass-card focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm">
+            </div>
+            <select id="filter-kelompok" onchange="applyFilters()" 
+                class="bg-white px-4 py-3 rounded-2xl glass-card focus:outline-none text-sm font-bold text-slate-600">
+                <option value="all">Semua Kelompok</option>
+            </select>
+            <button onclick="fetchData()" class="bg-primary text-white px-6 py-3 rounded-2xl font-bold text-sm hover:bg-primaryDark transition-all shadow-lg shadow-emerald-900/20">
+                <i class="fas fa-sync-alt mr-2" id="refresh-icon"></i> Refresh
+            </button>
+        </div>
+
         <div id="kelompok-container" class="space-y-8">
             <div class="flex flex-col items-center justify-center py-20 text-slate-400">
                 <div class="w-12 h-12 border-4 border-slate-200 border-t-primary rounded-full animate-spin mb-4"></div>
@@ -97,9 +120,31 @@
     </main>
 
     <script>
-        // GANTI DENGAN URL SCRIPT GOOGLE ANDA
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyj9RdmXWoSUJ1wvwAquHwfiFvUHTBww_6JeJjGjQKCc4bvcReUfNW2B5c7idBZW_8p/exec";
+        let MASTER_DATA = [];
         let PREVIOUS_DATA = null;
+
+        // Monitoring Koneksi (Fitur 4)
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+
+        function updateOnlineStatus() {
+            const dot = document.getElementById('status-dot');
+            const txt = document.getElementById('status-text');
+            if(navigator.onLine) {
+                dot.classList.replace('bg-red-500', 'bg-emerald-400');
+                txt.innerText = "Online";
+                fetchData();
+            } else {
+                dot.classList.replace('bg-emerald-400', 'bg-red-500');
+                txt.innerText = "Offline";
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("isLoggedIn");
+            window.location.href = "login.html";
+        }
 
         function showNotification(nama, pos) {
             const area = document.getElementById('notification-area');
@@ -107,26 +152,20 @@
             const toast = `
                 <div id="toast-${id}" class="notification-toast bg-white shadow-2xl rounded-2xl p-4 border-l-4 border-primary flex items-center gap-4 mb-3 min-w-[280px]">
                     <div class="w-10 h-10 bg-emerald-100 text-primary rounded-full flex items-center justify-center">
-                        <i class="fas fa-check-double text-lg"></i>
+                        <i class="fas fa-bell text-lg"></i>
                     </div>
                     <div>
                         <p class="text-xs font-bold text-slate-800">${nama}</p>
-                        <p class="text-[10px] text-slate-500">Nilai Pos <b class="text-primary">${pos}</b> telah masuk!</p>
+                        <p class="text-[10px] text-slate-50:">Update di Pos <b class="text-primary">${pos}</b></p>
                     </div>
                 </div>
             `;
             area.insertAdjacentHTML('beforeend', toast);
-            setTimeout(() => {
-                const el = document.getElementById(`toast-${id}`);
-                if(el) {
-                    el.style.opacity = '0';
-                    el.style.transform = 'translateX(20px)';
-                    setTimeout(() => el.remove(), 500);
-                }
-            }, 4000);
+            setTimeout(() => { document.getElementById(`toast-${id}`)?.remove(); }, 4000);
         }
 
         async function fetchData() {
+            if (!navigator.onLine) return;
             const refreshIcon = document.getElementById('refresh-icon');
             refreshIcon.classList.add('fa-spin');
             
@@ -134,21 +173,15 @@
                 const response = await fetch(SCRIPT_URL);
                 const data = await response.json();
                 
-                if (PREVIOUS_DATA) {
-                    checkNewValues(PREVIOUS_DATA, data);
-                }
+                if (PREVIOUS_DATA) checkNewValues(PREVIOUS_DATA, data);
                 PREVIOUS_DATA = data;
-
-                const grouped = data.reduce((acc, curr) => {
-                    const klp = curr.kelompok || "Umum";
-                    if (!acc[klp]) acc[klp] = [];
-                    acc[klp].push(curr);
-                    return acc;
-                }, {});
+                MASTER_DATA = data;
 
                 updateGlobalStats(data);
-                renderDashboard(grouped);
-                document.getElementById('last-update').innerText = "Live Update: " + new Date().toLocaleTimeString('id-ID');
+                populateGroupFilter(data);
+                applyFilters();
+
+                document.getElementById('last-update').innerText = "Live: " + new Date().toLocaleTimeString('id-ID');
             } catch (error) {
                 console.error("Fetch Error:", error);
             } finally {
@@ -157,29 +190,55 @@
         }
 
         function checkNewValues(oldData, newData) {
-            newData.forEach((newItem, index) => {
+            newData.forEach((newItem) => {
                 const oldItem = oldData.find(o => o.nama === newItem.nama);
                 if(!oldItem) return;
-
-                const posKeys = ['fisik', 'teknik', 'mental', 'jurus', 'kebangsaan', 'nu', 'pn'];
-                posKeys.forEach(pos => {
-                    if (newItem[pos] && !oldItem[pos]) {
-                        showNotification(newItem.nama, pos.toUpperCase());
-                    }
+                ['fisik', 'teknik', 'mental', 'jurus', 'kebangsaan', 'nu', 'pn'].forEach(pos => {
+                    if (newItem[pos] && !oldItem[pos]) showNotification(newItem.nama, pos.toUpperCase());
                 });
             });
         }
 
+        function populateGroupFilter(data) {
+            const select = document.getElementById('filter-kelompok');
+            const groups = [...new Set(data.map(item => item.kelompok))].sort((a,b) => a-b);
+            
+            // Simpan pilihan user sebelumnya
+            const currentVal = select.value;
+            select.innerHTML = '<option value="all">Semua Kelompok</option>';
+            groups.forEach(g => {
+                select.innerHTML += `<option value="${g}">Kelompok ${g}</option>`;
+            });
+            select.value = currentVal;
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const groupFilter = document.getElementById('filter-kelompok').value;
+
+            const filtered = MASTER_DATA.filter(item => {
+                const matchSearch = item.nama.toLowerCase().includes(searchTerm);
+                const matchGroup = groupFilter === 'all' || String(item.kelompok) === groupFilter;
+                return matchSearch && matchGroup;
+            });
+
+            const grouped = filtered.reduce((acc, curr) => {
+                const klp = curr.kelompok || "Umum";
+                if (!acc[klp]) acc[klp] = [];
+                acc[klp].push(curr);
+                return acc;
+            }, {});
+
+            renderDashboard(grouped);
+        }
+
         function updateGlobalStats(data) {
             const total = data.length;
-            let finished = 0;
-            data.forEach(m => {
-                if(m.fisik && m.teknik && m.mental && m.jurus && m.kebangsaan && m.nu && m.pn) finished++;
-            });
+            const finished = data.filter(m => m.fisik && m.teknik && m.mental && m.jurus && m.kebangsaan && m.nu && m.pn).length;
+            const percent = Math.round((finished / total * 100)) || 0;
 
             document.getElementById('stat-total').innerText = total;
             document.getElementById('stat-done').innerText = finished;
-            const percent = Math.round((finished / total * 100)) || 0;
             document.getElementById('stat-percent').innerText = percent + '%';
             document.getElementById('global-progress').style.width = percent + '%';
         }
@@ -188,33 +247,38 @@
             const container = document.getElementById('kelompok-container');
             container.innerHTML = '';
 
-            Object.keys(grouped).sort((a, b) => a - b).forEach(klp => {
+            const sortedGroups = Object.keys(grouped).sort((a, b) => a - b);
+            
+            if(sortedGroups.length === 0) {
+                container.innerHTML = `<div class="text-center py-10 text-slate-400 text-sm">Data tidak ditemukan...</div>`;
+                return;
+            }
+
+            sortedGroups.forEach(klp => {
                 const members = grouped[klp];
                 const groupProgress = calculateGroupProgress(members);
                 
                 let groupHtml = `
-                    <div class="glass-card rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-sm">
-                        <div class="bg-primary/5 px-6 py-5 flex justify-between items-center border-b border-slate-100">
+                    <div class="glass-card rounded-[2.5rem] overflow-hidden border border-slate-100 mb-6">
+                        <div class="bg-primary/5 px-6 py-4 flex justify-between items-center border-b border-slate-100">
                             <div>
-                                <h2 class="font-black text-slate-800 text-lg">KELOMPOK ${klp}</h2>
-                                <p class="text-[9px] text-primary font-bold tracking-[0.2em] uppercase">Group Progress Overview</p>
+                                <h2 class="font-black text-slate-800">KELOMPOK ${klp}</h2>
+                                <p class="text-[9px] text-primary font-bold tracking-widest uppercase">Overview</p>
                             </div>
-                            <div class="text-right">
-                                <span class="text-sm font-black text-primary">${groupProgress}%</span>
-                            </div>
+                            <span class="bg-primary text-white text-[10px] px-3 py-1 rounded-full font-bold">${groupProgress}% Selesai</span>
                         </div>
                         <div class="overflow-x-auto no-scrollbar">
                             <table class="w-full text-left">
-                                <thead class="bg-slate-50/50">
-                                    <tr class="text-[9px] uppercase font-bold text-slate-400">
-                                        <th class="px-6 py-4 min-w-[180px]">Nama Peserta</th>
-                                        <th class="px-2 py-4 text-center">Fisik</th>
-                                        <th class="px-2 py-4 text-center">Teknik</th>
-                                        <th class="px-2 py-4 text-center">Mental</th>
-                                        <th class="px-2 py-4 text-center">Jurus</th>
-                                        <th class="px-2 py-4 text-center">Kebangsaan</th>
-                                        <th class="px-2 py-4 text-center">Ke NUan</th>
-                                        <th class="px-2 py-4 text-center">Pagarnusa</th>
+                                <thead class="bg-slate-50/50 text-[9px] uppercase font-bold text-slate-400">
+                                    <tr>
+                                        <th class="px-6 py-4 min-w-[150px]">Nama</th>
+                                        <th class="px-2 py-4 text-center">FIS</th>
+                                        <th class="px-2 py-4 text-center">TEK</th>
+                                        <th class="px-2 py-4 text-center">MEN</th>
+                                        <th class="px-2 py-4 text-center">JUR</th>
+                                        <th class="px-2 py-4 text-center">KBN</th>
+                                        <th class="px-2 py-4 text-center">NU</th>
+                                        <th class="px-2 py-4 text-center">PN</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-slate-50">
@@ -222,8 +286,8 @@
 
                 members.forEach(m => {
                     groupHtml += `
-                        <tr class="hover:bg-emerald-50/30 transition-colors">
-                            <td class="px-6 py-4 text-xs font-bold text-slate-700">${m.nama}</td>
+                        <tr class="hover:bg-emerald-50/30">
+                            <td class="px-6 py-4 text-[11px] font-bold text-slate-700">${m.nama}</td>
                             ${renderStatusCell(m.fisik)}
                             ${renderStatusCell(m.teknik)}
                             ${renderStatusCell(m.mental)}
@@ -241,11 +305,20 @@
         }
 
         function renderStatusCell(val) {
+            const score = parseInt(val);
+            let colorClass = 'bg-slate-50 text-slate-200';
+            
+            if (!isNaN(score)) {
+                if (score < 75) colorClass = 'score-low';
+                else if (score < 85) colorClass = 'score-mid';
+                else colorClass = 'score-high';
+            }
+
             const isDone = val !== "" && val !== null && val !== undefined;
             return `
-                <td class="px-2 py-4 text-center">
-                    <div class="w-7 h-7 mx-auto rounded-xl flex items-center justify-center text-[10px] font-black ${isDone ? 'bg-primary text-white shadow-lg shadow-emerald-900/20 border border-primary' : 'bg-slate-50 text-slate-200 border border-slate-100'} status-badge">
-                        ${isDone ? val : '<i class="fas fa-minus opacity-30"></i>'}
+                <td class="px-2 py-3 text-center">
+                    <div class="w-8 h-8 mx-auto rounded-xl flex items-center justify-center text-[10px] font-black status-badge ${colorClass} ${isDone ? 'shadow-md border border-white/20' : 'border border-slate-100'}">
+                        ${isDone ? val : '<i class="fas fa-minus opacity-20"></i>'}
                     </div>
                 </td>
             `;
@@ -255,14 +328,14 @@
             let totalPossible = members.length * 7;
             let current = 0;
             members.forEach(m => {
-                const posKeys = ['fisik', 'teknik', 'mental', 'jurus', 'kebangsaan', 'nu', 'pn'];
-                posKeys.forEach(k => { if(m[k]) current++; });
+                ['fisik', 'teknik', 'mental', 'jurus', 'kebangsaan', 'nu', 'pn'].forEach(k => { if(m[k]) current++; });
             });
             return Math.round((current / totalPossible) * 100) || 0;
         }
 
-        window.onload = fetchData;
-        setInterval(fetchData, 10000); // Sinkronisasi otomatis setiap 10 detik
+        // Jalankan saat startup
+        updateOnlineStatus();
+        setInterval(fetchData, 10000); 
     </script>
 </body>
 </html>

@@ -47,21 +47,42 @@
 <body class="pb-10 min-h-screen">
     <div id="notification-area"></div>
 
-    <nav class="bg-primary text-white p-4 shadow-lg sticky top-0 z-50 backdrop-blur-md bg-opacity-90">
-        <div class="flex items-center justify-between max-w-6xl mx-auto">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-inner">
-                    <i class="fas fa-chart-line text-primary text-xl"></i>
+<nav class="bg-primary text-white shadow-lg sticky top-0 z-50 backdrop-blur-md bg-opacity-95 border-b border-emerald-800/30">
+        <div class="max-w-6xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                
+                <div class="flex items-center gap-4">
+                    <div class="relative">
+                        <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-lg transform -rotate-3 border-2 border-emerald-100">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_Pagar_Nusa.png/600px-Logo_Pagar_Nusa.png" 
+                                 alt="Logo" class="w-10 h-10 object-contain">
+                        </div>
+                        <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-400 border-2 border-primary rounded-full animate-pulse"></div>
+                    </div>
+                    
+                    <div class="flex flex-col">
+                        <h1 class="font-black text-sm md:text-lg tracking-tight leading-none">PANTU MONITORING</h1>
+                        <p class="text-[10px] md:text-xs text-emerald-200 font-medium tracking-[0.15em] uppercase opacity-80">Pagar Nusa UNUSIA</p>
+                    </div>
                 </div>
-                <div class="flex flex-col leading-tight">
-                    <span class="font-bold text-[11px] tracking-wider uppercase">Public Dashboard</span>
-                    <span id="last-update" class="font-medium text-[9px] text-emerald-200 tracking-wider">Menghubungkan...</span>
-                </div>
-            </div>
-            <div class="flex items-center gap-2">
-                <div id="conn-status" class="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full border border-white/20">
-                    <div id="status-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-                    <span id="status-text" class="hidden md:inline text-[9px] font-bold tracking-widest uppercase">Online</span>
+
+                <div class="flex items-center gap-3 md:gap-6">
+                    <div class="hidden sm:flex flex-col items-end pr-4 border-r border-white/10">
+                        <div id="digital-clock" class="font-black text-xl tracking-tighter leading-none text-white">
+                            00:00<span class="text-emerald-400 text-sm ml-1">:00</span>
+                        </div>
+                        <div id="current-date" class="text-[9px] font-bold text-emerald-200 uppercase tracking-widest">
+                            Loading date...
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-center gap-1">
+                        <div id="conn-status" class="flex items-center gap-2 bg-black/20 px-3 py-1.5 rounded-xl border border-white/10 shadow-inner">
+                            <div id="status-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
+                            <span id="status-text" class="text-[10px] font-black tracking-widest uppercase">Live</span>
+                        </div>
+                        <span id="last-update" class="text-[8px] text-emerald-300 font-medium italic">Syncing...</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -323,3 +344,4 @@
     </script>
 </body>
 </html>
+

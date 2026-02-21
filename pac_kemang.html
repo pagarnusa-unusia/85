@@ -3,394 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pac Kemang</title>
+    <title>Jadwal Imsakiyah 1447H | Pagar Nusa Kemang</title>
     <link rel="icon" href="logopn.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* --- VARIABEL WARNA (Referensi Gambar) --- */
         :root { 
-            --primary: #064e3b;    /* Hijau Tua PN */
-            --secondary: #10b981;  /* Hijau Aksen */
-            --accent: #dc2626;     /* Merah Waktu Aktif */
-            --bg-dark: #070707; 
-            --glass: rgba(255, 255, 255, 0.1);
-            --card-white: #ffffffdc;
+            --primary: #064e3b; --secondary: #10b981; --accent: #dc2626; 
+            --bg-dark: #070707; --glass: rgba(255, 255, 255, 0.1); --card-white: #ffffffdc;
         }
         
         body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: var(--bg-dark); 
-            color: #fff; 
-            margin: 0;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            text-align: center; /* Rata tengah keseluruhan */
+            font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-dark); 
+            color: #fff; margin: 0; overflow-x: hidden; -webkit-font-smoothing: antialiased; text-align: center; 
         }
 
-        /* --- KEYFRAMES ANIMASI KAYA --- */
-        @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(40px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        @keyframes fadeInScale {
-            0% { opacity: 0; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes pulseActive {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-            70% { transform: scale(1.02); box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-        }
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(40px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes fadeInScale { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes pulseActive { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); } 70% { transform: scale(1.02); box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
 
         .bg-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0, 0, 0, 0.281), rgba(0,0,0,0.95)), 
-                        url('https://lh3.googleusercontent.com/d/10vtofCleDAMiK4gYNuA_B0EQm5RuAWAd'); 
-            background-size: cover;
-            background-position: center;
-            z-index: -2;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0,0,0,0.95)), url('https://lh3.googleusercontent.com/d/10vtofCleDAMiK4gYNuA_B0EQm5RuAWAd'); 
+            background-size: cover; background-position: center; z-index: -2;
         }
 
-        /* --- HEADER (RATA TENGAH & ANTI-MEPET) --- */
         .header-green {
-            background: var(--primary);
-            min-height: 180px; 
-            border-bottom-left-radius: 50px;
-            border-bottom-right-radius: 50px;
-            display: flex;
-            flex-direction: column; /* Ubah ke kolom untuk rata tengah */
-            align-items: center;
-            justify-content: center;
-            padding: 50px 20px 100px; 
-            position: relative;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-            animation: fadeInScale 0.8s ease-out;
+            background: var(--primary); min-height: 180px; border-bottom-left-radius: 50px; border-bottom-right-radius: 50px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 50px 20px 100px; 
+            position: relative; box-shadow: 0 15px 40px rgba(0,0,0,0.6); animation: fadeInScale 0.8s ease-out;
         }
 
-        .logo-box { 
-            display: flex; 
-            flex-direction: column; /* Stack logo di atas teks */
-            align-items: center; 
-            gap: 15px; 
-            text-align: center;
-        }
+        .logo-box img { width: 280px; height: auto; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.4)); animation: float 4s ease-in-out infinite; }
 
-        .logo-box img { 
-            width: 300px; /* Ukuran lebih tegas */
-            height: auto; 
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.4));
-            animation: float 4s ease-in-out infinite;
-        }
-
-        /* --- INFO CARD (MAIN TIMER) --- */
         .info-card {
-            background: var(--card-white);
-            color: #1a1a1a;
-            width: 90%;
-            max-width: 400px;
-            margin: -60px auto 35px; 
-            padding: 30px 20px;
-            border-radius: 35px;
-            box-shadow: 0 20px 45px rgba(0,0,0,0.5);
-            position: relative;
-            z-index: 10;
-            animation: slideInUp 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+            background: var(--card-white); color: #1a1a1a; width: 92%; max-width: 450px; margin: -60px auto 35px; 
+            padding: 30px 20px; border-radius: 35px; box-shadow: 0 20px 45px rgba(0,0,0,0.5); position: relative; z-index: 10; animation: slideInUp 0.8s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
-        .wilayah { font-size: 0.8rem; color: var(--text-muted); font-weight: 700; margin-bottom: 8px; }
-        .upcoming-prayer { font-size: 2.4rem; font-weight: 800; margin: 0; color: var(--primary); letter-spacing: -1px; }
-        .timer-countdown { font-size: 1.6rem; font-weight: 700; color: #000; margin: 10px 0; font-variant-numeric: tabular-nums; }
-        .full-date { font-size: 0.80rem; color: #555; font-weight: 600; border-top: 1px solid #eee; padding-top: 15px; margin-top: 15px; }
+        .wilayah { font-size: 0.8rem; color: #666; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; }
+        .upcoming-prayer { font-size: 2rem; font-weight: 800; margin: 0; color: var(--primary); letter-spacing: -1px; }
+        .timer-countdown { font-size: 1.8rem; font-weight: 700; color: #000; margin: 10px 0; font-family: 'Courier New', Courier, monospace; }
+        .full-date { font-size: 0.85rem; color: #444; font-weight: 600; border-top: 1px solid #eee; padding-top: 15px; margin-top: 15px; }
 
-        /* --- SEARCH BAR --- */
         .search-container { padding: 0 25px; margin-bottom: 30px; }
         .search-input { 
-            background: var(--glass); 
-            border: 1px solid rgba(255,255,255,0.2);
-            color: rgb(255, 255, 255) !important; border-radius: 18px; padding: 15px 25px; font-size: 1rem;
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            text-align: center;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--glass); border: 1px solid rgba(255,255,255,0.2); color: white !important; border-radius: 18px; 
+            padding: 15px 25px; text-align: center; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
         }
-        .search-input:focus { outline: none; border-color: var(--secondary); background: rgba(255,255,255,0.18); transform: translateY(-3px); }
 
-        /* --- JADWAL LIST --- */
-        .jadwal-container { padding: 0 15px; margin-bottom: 120px; }
+        .jadwal-container { padding: 0 10px; margin-bottom: 120px; }
         
         .card-row {
-            background: rgba(255, 255, 255, 0.758);
-            color: #1f2937;
-            border-radius: 20px;
-            padding: 16px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: all 0.4s ease;
-            animation: slideInUp 0.6s ease backwards;
-            text-align: left; /* Teks dalam kartu tetap kiri untuk keterbacaan */
+            background: rgba(255, 255, 255, 0.9); color: #1f2937; border-radius: 20px; padding: 15px 10px;
+            margin-bottom: 12px; display: flex; align-items: center; transition: all 0.4s ease;
         }
 
-        .card-row.today {
-            background: #ffffff;
-            transform: scale(1.03);
-            border: 3px solid var(--secondary);
-            animation: pulseActive 2s infinite;
-        }
+        .card-row.today { background: #ffffff; transform: scale(1.02); border: 3px solid var(--secondary); animation: pulseActive 2s infinite; }
 
-        .date-col { 
-            width: 100px; 
-            font-size: 0.72rem; 
-            font-weight: 800; 
-            border-right: 2px solid #f0f0f0; 
-            padding-right: 12px; 
-            line-height: 1.4;
-        }
-        .date-col small { display: block; color: var(--primary); font-size: 0.65rem; }
+        .date-col { width: 85px; font-size: 0.7rem; font-weight: 800; border-right: 2px solid #ddd; padding-right: 8px; text-align: left; flex-shrink: 0; }
+        .date-col small { display: block; color: var(--primary); font-size: 0.6rem; }
 
         .times-wrapper { 
             display: flex; flex-grow: 1; justify-content: space-between; 
-            overflow-x: auto; gap: 15px; padding-left: 15px;
-            scrollbar-width: none;
+            overflow-x: auto; gap: 8px; padding-left: 10px; scrollbar-width: none;
         }
         .times-wrapper::-webkit-scrollbar { display: none; }
 
-        .time-item-sm { text-align: center; min-width: 50px; }
-        .time-item-sm .lbl { font-size: 0.6rem; font-weight: 800; color: #999; margin-bottom: 3px; }
-        .time-item-sm .val { font-size: 0.9rem; font-weight: 800; color: #222; }
+        .time-item-sm { text-align: center; min-width: 42px; flex: 1; }
+        .time-item-sm .lbl { font-size: 0.5rem; font-weight: 800; color: #777; margin-bottom: 2px; text-transform: uppercase; }
+        .time-item-sm .val { font-size: 0.78rem; font-weight: 800; color: #222; }
         
-        /* Highlight Aktif */
-        .card-row.today .active-time .val { color: var(--accent); font-weight: 900; transform: scale(1.1); }
-        .card-row.today .active-time .lbl { color: var(--accent); }
+        /* Highlight Waktu Berikutnya */
+        .active-target { color: var(--accent) !important; font-weight: 900 !important; }
+        .active-target-lbl { color: var(--accent) !important; }
 
-        /* --- FLOATING CONTACT --- */
         .btn-contact { 
-            position: fixed; bottom: 35px; right: 25px; 
-            width: 65px; height: 65px; border-radius: 50%; 
-            background: var(--primary); color: white; 
-            display: flex; align-items: center; justify-content: center; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 2px solid rgba(255,255,255,0.3); 
-            z-index: 1000; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-size: 1.5rem;
-        }
-        .btn-contact:hover { transform: scale(1.2) rotate(15deg); background: var(--secondary); }
-
-        /* --- MODAL --- */
-        .modal-content { border-radius: 30px; border: none; overflow: hidden; text-align: center; }
-        .modal-header { background: var(--primary); color: white; border: none; padding: 25px; justify-content: center; }
-        .modal-title { font-weight: 800; letter-spacing: 1px; }
-        .modal-body { padding: 30px 20px; }
-        .form-control { border-radius: 15px; padding: 12px 20px; background: #f8f9fa; border: 1.5px solid #eee; text-align: center; }
-        .form-control:focus { border-color: var(--primary); box-shadow: none; }
-
-        /* Responsivitas Mobile */
-        @media (max-width: 400px) {
-            .header-text h1 { font-size: 1rem; }
-            .upcoming-prayer { font-size: 1.8rem; }
-            .date-col { width: 85px; font-size: 0.65rem; }
-            .time-item-sm .val { font-size: 0.8rem; }
+            position: fixed; bottom: 35px; right: 25px; width: 65px; height: 65px; border-radius: 50%; 
+            background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 1000; font-size: 1.5rem; border: none;
         }
     </style>
 </head>
 <body>
 
 <div class="bg-overlay"></div>
-
 <div class="header-green">
-    <div class="logo-box">
-        <img src="logopac.png" alt="Logo PN">
-    </div>
+    <div class="logo-box"><img src="logopac.png" alt="Logo PAC PN"></div>
 </div>
 
 <div class="info-card">
     <div class="wilayah"><i class="fa-solid fa-location-dot me-2"></i>Kemang, Kab. Bogor</div>
-    <div id="target-display" class="upcoming-prayer">- --:-- WIB</div>
-    <div id="timer" class="timer-countdown">-00 : 00 : 00</div>
-    <div id="date-display" class="full-date">Memuat...</div>
+    <div id="target-display" class="upcoming-prayer">Memuat Jadwal...</div>
+    <div id="timer" class="timer-countdown">00 : 00 : 00</div>
+    <div id="date-display" class="full-date">-</div>
 </div>
 
 <div class="search-container">
-    <input type="text" id="searchInput" class="form-control search-input" placeholder="Cari Tanggal atau Hari...">
+    <input type="text" id="searchInput" class="form-control search-input" placeholder="Cari Tanggal (Misal: 25 Feb)">
 </div>
 
 <div class="jadwal-container container">
-    <div id="loader" class="text-center py-5">
-        <div class="spinner-border text-success" style="width: 3rem; height: 3rem;" role="status"></div>
-        <p class="mt-3 text-light fw-bold">Menghitung Waktu Salat...</p>
-    </div>
     <div id="jadwal-list"></div>
 </div>
 
-<button class="btn-contact" data-bs-toggle="modal" data-bs-target="#contactModal">
-    <i class="fa-solid fa-paper-plane"></i>
-</button>
+<button class="btn-contact"><i class="fa-solid fa-paper-plane"></i></button>
 
-<div class="modal fade" id="contactModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered mx-3">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">HUBUNGI KAMI</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <p class="text-muted mb-4">Punya pertanyaan atau saran untuk PAC PN Kemang?</p>
-                <input type="text" id="contactNama" class="form-control mb-3" placeholder="Nama Lengkap">
-                <textarea id="contactPesan" class="form-control mb-4" rows="3" placeholder="Tulis pesan Anda di sini..."></textarea>
-                <button onclick="sendContact()" id="btnKirim" class="btn btn-success w-100 fw-bold py-3 shadow-sm" style="border-radius: 15px; background: var(--primary);">KIRIM SEKARANG</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbxetWFVR3NNlZVwaYF53eFavaCAFUpzvwZL_NMl0mVFkxAqKd_AkwyBfXJNzNws0rxzXA/exec";
-    let allData = [];
+    // DATA 100% LENGKAP DARI PDF NU ONLINE KEMANG
+    const JADWAL_DATA = [
+        {m: "19 Feb 2026", h: "1 Ramadhan", imsak: "04:29", subuh: "04:39", terbit: "05:58", dhuha: "06:20", zuhur: "12:08", asar: "15:18", magrib: "18:17", isya: "19:26"},
+        {m: "20 Feb 2026", h: "2 Ramadhan", imsak: "04:29", subuh: "04:39", terbit: "05:58", dhuha: "06:20", zuhur: "12:08", asar: "15:17", magrib: "18:17", isya: "19:26"},
+        {m: "21 Feb 2026", h: "3 Ramadhan", imsak: "04:29", subuh: "04:39", terbit: "05:58", dhuha: "06:20", zuhur: "12:08", asar: "15:16", magrib: "18:16", isya: "19:25"},
+        {m: "22 Feb 2026", h: "4 Ramadhan", imsak: "04:30", subuh: "04:40", terbit: "05:58", dhuha: "06:20", zuhur: "12:08", asar: "15:15", magrib: "18:16", isya: "19:25"},
+        {m: "23 Feb 2026", h: "5 Ramadhan", imsak: "04:30", subuh: "04:40", terbit: "05:58", dhuha: "06:20", zuhur: "12:07", asar: "15:15", magrib: "18:16", isya: "19:25"},
+        {m: "24 Feb 2026", h: "6 Ramadhan", imsak: "04:30", subuh: "04:40", terbit: "05:59", dhuha: "06:20", zuhur: "12:07", asar: "15:14", magrib: "18:15", isya: "19:24"},
+        {m: "25 Feb 2026", h: "7 Ramadhan", imsak: "04:30", subuh: "04:40", terbit: "05:59", dhuha: "06:20", zuhur: "12:07", asar: "15:13", magrib: "18:15", isya: "19:24"},
+        {m: "26 Feb 2026", h: "8 Ramadhan", imsak: "04:30", subuh: "04:40", terbit: "05:59", dhuha: "06:20", zuhur: "12:07", asar: "15:12", magrib: "18:15", isya: "19:23"},
+        {m: "27 Feb 2026", h: "9 Ramadhan", imsak: "04:30", subuh: "04:40", terbit: "05:59", dhuha: "06:20", zuhur: "12:07", asar: "15:11", magrib: "18:14", isya: "19:23"},
+        {m: "28 Feb 2026", h: "10 Ramadhan", imsak: "04:30", subuh: "04:40", terbit: "05:59", dhuha: "06:20", zuhur: "12:07", asar: "15:10", magrib: "18:14", isya: "19:23"},
+        {m: "01 Mar 2026", h: "11 Ramadhan", imsak: "04:30", subuh: "04:40", terbit: "05:59", dhuha: "06:20", zuhur: "12:06", asar: "15:09", magrib: "18:14", isya: "19:22"},
+        {m: "02 Mar 2026", h: "12 Ramadhan", imsak: "04:30", subuh: "04:40", terbit: "05:59", dhuha: "06:20", zuhur: "12:06", asar: "15:08", magrib: "18:13", isya: "19:22"},
+        {m: "03 Mar 2026", h: "13 Ramadhan", imsak: "04:31", subuh: "04:41", terbit: "05:59", dhuha: "06:20", zuhur: "12:06", asar: "15:07", magrib: "18:13", isya: "19:21"},
+        {m: "04 Mar 2026", h: "14 Ramadhan", imsak: "04:31", subuh: "04:41", terbit: "05:59", dhuha: "06:20", zuhur: "12:06", asar: "15:06", magrib: "18:12", isya: "19:21"},
+        {m: "05 Mar 2026", h: "15 Ramadhan", imsak: "04:31", subuh: "04:41", terbit: "05:58", dhuha: "06:20", zuhur: "12:06", asar: "15:06", magrib: "18:12", isya: "19:20"},
+        {m: "06 Mar 2026", h: "16 Ramadhan", imsak: "04:31", subuh: "04:41", terbit: "05:58", dhuha: "06:20", zuhur: "12:05", asar: "15:07", magrib: "18:12", isya: "19:20"},
+        {m: "07 Mar 2026", h: "17 Ramadhan", imsak: "04:31", subuh: "04:41", terbit: "05:58", dhuha: "06:20", zuhur: "12:05", asar: "15:07", magrib: "18:11", isya: "19:19"},
+        {m: "08 Mar 2026", h: "18 Ramadhan", imsak: "04:31", subuh: "04:41", terbit: "05:58", dhuha: "06:20", zuhur: "12:05", asar: "15:08", magrib: "18:11", isya: "19:19"},
+        {m: "09 Mar 2026", h: "19 Ramadhan", imsak: "04:31", subuh: "04:41", terbit: "05:58", dhuha: "06:20", zuhur: "12:05", asar: "15:08", magrib: "18:10", isya: "19:18"},
+        {m: "10 Mar 2026", h: "20 Ramadhan", imsak: "04:31", subuh: "04:41", terbit: "05:58", dhuha: "06:20", zuhur: "12:04", asar: "15:08", magrib: "18:10", isya: "19:18"},
+        {m: "11 Mar 2026", h: "21 Ramadhan", imsak: "04:31", subuh: "04:41", terbit: "05:58", dhuha: "06:20", zuhur: "12:04", asar: "15:09", magrib: "18:09", isya: "19:17"},
+        {m: "12 Mar 2026", h: "22 Ramadhan", imsak: "04:31", subuh: "04:41", terbit: "05:58", dhuha: "06:20", zuhur: "12:04", asar: "15:09", magrib: "18:09", isya: "19:17"},
+        {m: "13 Mar 2026", h: "23 Ramadhan", imsak: "04:31", subuh: "04:41", terbit: "05:58", dhuha: "06:19", zuhur: "12:04", asar: "15:09", magrib: "18:09", isya: "19:16"},
+        {m: "14 Mar 2026", h: "24 Ramadhan", imsak: "04:30", subuh: "04:40", terbit: "05:58", dhuha: "06:19", zuhur: "12:03", asar: "15:10", magrib: "18:08", isya: "19:16"},
+        {m: "15 Mar 2026", h: "25 Ramadhan", imsak: "04:30", subuh: "04:40", terbit: "05:58", dhuha: "06:19", zuhur: "12:03", asar: "15:10", magrib: "18:08", isya: "19:15"},
+        {m: "16 Mar 2026", h: "26 Ramadhan", imsak: "04:30", subuh: "04:40", terbit: "05:58", dhuha: "06:19", zuhur: "12:03", asar: "15:10", magrib: "18:07", isya: "19:15"},
+        {m: "17 Mar 2026", h: "27 Ramadhan", imsak: "04:30", subuh: "04:40", terbit: "05:58", dhuha: "06:19", zuhur: "12:02", asar: "15:10", magrib: "18:07", isya: "19:14"},
+        {m: "18 Mar 2026", h: "28 Ramadhan", imsak: "04:30", subuh: "04:40", terbit: "05:57", dhuha: "06:19", zuhur: "12:02", asar: "15:11", magrib: "18:06", isya: "19:14"},
+        {m: "19 Mar 2026", h: "29 Ramadhan", imsak: "04:30", subuh: "04:40", terbit: "05:57", dhuha: "06:19", zuhur: "12:02", asar: "15:11", magrib: "18:06", isya: "19:13"},
+        {m: "20 Mar 2026", h: "30 Ramadhan", imsak: "04:30", subuh: "04:40", terbit: "05:57", dhuha: "06:19", zuhur: "12:02", asar: "15:11", magrib: "18:05", isya: "19:13"}
+    ];
 
-    function checkIsToday(masehiStr) {
-        if (!masehiStr) return false;
+    let currentTargetName = "";
+
+    function isSameDay(masehiStr) {
         const now = new Date();
-        const d = now.getDate().toString().padStart(2, '0');
-        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        const monthsId = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
-        const m = months[now.getMonth()];
-        const mId = monthsId[now.getMonth()];
-        const y = now.getFullYear();
-        return masehiStr.includes(d) && (masehiStr.includes(m) || masehiStr.includes(mId)) && masehiStr.includes(y);
-    }
-
-    async function getData() {
-        try {
-            const res = await fetch(API_URL);
-            allData = await res.json();
-            render(allData);
-            updateLogic(allData);
-        } catch (err) {
-            document.getElementById('jadwal-list').innerHTML = `<div class="text-center py-3 text-danger">Gagal memuat data. Periksa koneksi Anda.</div>`;
-        } finally {
-            document.getElementById('loader').style.display = 'none';
-        }
+        const d = new Date(masehiStr);
+        return d.getDate() === now.getDate() && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
     }
 
     function render(data) {
         const list = document.getElementById('jadwal-list');
         list.innerHTML = '';
-        data.forEach((item, index) => {
-            const todayStatus = checkIsToday(item.MASEHI);
+        data.forEach(item => {
+            const todayStatus = isSameDay(item.m);
             const card = document.createElement('div');
             card.className = `card-row ${todayStatus ? 'today' : ''}`;
-            card.style.animationDelay = `${index * 0.08}s`;
+            card.id = todayStatus ? 'active-row' : '';
             card.innerHTML = `
-                <div class="date-col">${item.MASEHI}<br><small>${item.HIJRIYAH}</small></div>
+                <div class="date-col">${item.m}<br><small>${item.h}</small></div>
                 <div class="times-wrapper">
-                    <div class="time-item-sm"><div class="lbl">IMSAK</div><div class="val">${item.IMSAK}</div></div>
-                    <div class="time-item-sm"><div class="lbl">SUBUH</div><div class="val">${item.SUBUH}</div></div>
-                    <div class="time-item-sm"><div class="lbl">ZUHUR</div><div class="val">${item.ZUHUR}</div></div>
-                    <div class="time-item-sm"><div class="lbl">ASAR</div><div class="val">${item.ASAR}</div></div>
-                    <div class="time-item-sm"><div class="lbl">MAGRIB</div><div class="val">${item.MAGRIB}</div></div>
-                    <div class="time-item-sm"><div class="lbl">ISYA</div><div class="val">${item.ISYA}</div></div>
-                </div>
-            `;
+                    <div class="time-item-sm"><div class="lbl lbl-imsak">Imsak</div><div class="val val-imsak">${item.imsak}</div></div>
+                    <div class="time-item-sm"><div class="lbl lbl-subuh">Subuh</div><div class="val val-subuh">${item.subuh}</div></div>
+                    <div class="time-item-sm"><div class="lbl lbl-terbit">Terbit</div><div class="val val-terbit">${item.terbit}</div></div>
+                    <div class="time-item-sm"><div class="lbl lbl-dhuha">Dhuha</div><div class="val val-dhuha">${item.dhuha}</div></div>
+                    <div class="time-item-sm"><div class="lbl lbl-zuhur">Zuhur</div><div class="val val-zuhur">${item.zuhur}</div></div>
+                    <div class="time-item-sm"><div class="lbl lbl-asar">Asar</div><div class="val val-asar">${item.asar}</div></div>
+                    <div class="time-item-sm"><div class="lbl lbl-magrib">Magrib</div><div class="val val-magrib">${item.magrib}</div></div>
+                    <div class="time-item-sm"><div class="lbl lbl-isya">Isya</div><div class="val lbl-isya">${item.isya}</div></div>
+                </div>`;
             list.appendChild(card);
-            if(todayStatus) setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 1000);
+            if(todayStatus) {
+                setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 1000);
+            }
         });
     }
 
-    function updateLogic(data) {
-        setInterval(() => {
-            const now = new Date();
-            const todayIndex = data.findIndex(i => checkIsToday(i.MASEHI));
-            
-            if (todayIndex !== -1) {
-                const today = data[todayIndex];
-                document.getElementById('date-display').innerText = `${today.MASEHI} M | ${today.HIJRIYAH} H`;
-                
-                const schedule = [
-                    { name: 'Imsak', time: today.IMSAK },
-                    { name: 'Subuh', time: today.SUBUH },
-                    { name: 'Zuhur', time: today.ZUHUR },
-                    { name: 'Asar', time: today.ASAR },
-                    { name: 'Magrib', time: today.MAGRIB },
-                    { name: 'Isya', time: today.ISYA }
-                ];
+    function updateTimer() {
+        const now = new Date();
+        const today = JADWAL_DATA.find(i => isSameDay(i.m));
+        
+        if (!today) {
+            document.getElementById('target-display').innerText = "Belum Masuk Ramadhan";
+            return;
+        }
 
-                let next = null;
-                // 1. Cek jadwal yang tersisa hari ini
-                for (let s of schedule) {
-                    if(!s.time) continue;
-                    const [h, m] = s.time.split(':');
-                    const t = new Date(); t.setHours(parseInt(h), parseInt(m), 0);
-                    if (t > now) { next = { ...s, target: t }; break; }
-                }
+        document.getElementById('date-display').innerText = `${today.m} M | ${today.h} H`;
 
-                // 2. Jika jadwal hari ini habis (setelah Isya), cari Imsak besok
-                if (!next && data[todayIndex + 1]) {
-                    const tomorrow = data[todayIndex + 1];
-                    const [h, m] = tomorrow.IMSAK.split(':');
-                    const t = new Date();
-                    t.setDate(t.getDate() + 1); // Set ke tanggal besok
-                    t.setHours(parseInt(h), parseInt(m), 0);
-                    next = { name: 'Imsak Esok', time: tomorrow.IMSAK, target: t, isTomorrow: true };
-                }
+        const schedule = [
+            { n: 'Imsak', t: today.imsak, id: 'imsak' },
+            { n: 'Subuh', t: today.subuh, id: 'subuh' },
+            { n: 'Terbit', t: today.terbit, id: 'terbit' },
+            { n: 'Dhuha', t: today.dhuha, id: 'dhuha' },
+            { n: 'Zuhur', t: today.zuhur, id: 'zuhur' },
+            { n: 'Asar', t: today.asar, id: 'asar' },
+            { n: 'Magrib', t: today.magrib, id: 'magrib' },
+            { n: 'Isya', t: today.isya, id: 'isya' }
+        ];
 
-                if (next) {
-                    const diff = next.target - now;
-                    const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
-                    const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
-                    const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
-                    
-                    document.getElementById('timer').innerText = `-${h} : ${m} : ${s}`;
-                    // Jika besok, tambahkan info agar pengguna tidak bingung
-                    const label = next.isTomorrow ? `Besok: ${next.name}` : next.name;
-                    document.getElementById('target-display').innerText = `${label} ${next.time} WIB`;
-                } else {
-                    document.getElementById('timer').innerText = "00 : 00 : 00";
-                    document.getElementById('target-display').innerText = "Qiyamul Lail";
-                }
+        let next = null;
+        for (let s of schedule) {
+            const [h, m] = s.t.split(':');
+            const target = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0);
+            if (target > now) {
+                next = { ...s, target };
+                break;
             }
-        }, 1000);
-    }
+        }
 
-    async function sendContact() {
-        const btn = document.getElementById('btnKirim');
-        const nama = document.getElementById('contactNama').value;
-        const pesan = document.getElementById('contactPesan').value;
-        if(!nama || !pesan) return alert("Mohon isi nama dan pesan Anda.");
-        btn.disabled = true;
-        btn.innerText = "MENGIRIM...";
-        try {
-            await fetch(API_URL, {
-                method: 'POST',
-                body: JSON.stringify({ nama, pesan, email: "Website Jadwal PN" })
+        // Jika sudah lewat Isya, target adalah Imsak Besok
+        if (!next) {
+            const tomorrowDate = new Date();
+            tomorrowDate.setDate(now.getDate() + 1);
+            const tomorrow = JADWAL_DATA.find(i => {
+                const d = new Date(i.m);
+                return d.getDate() === tomorrowDate.getDate() && d.getMonth() === tomorrowDate.getMonth();
             });
-            alert("Terima kasih! Pesan Anda telah kami terima.");
-            bootstrap.Modal.getInstance(document.getElementById('contactModal')).hide();
-            document.getElementById('contactNama').value = '';
-            document.getElementById('contactPesan').value = '';
-        } catch (e) {
-            alert("Maaf, terjadi kesalahan teknis.");
-        } finally {
-            btn.disabled = false;
-            btn.innerText = "KIRIM SEKARANG";
+            if (tomorrow) {
+                const [h, m] = tomorrow.imsak.split(':');
+                const target = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, h, m, 0);
+                next = { n: 'Imsak Esok', t: tomorrow.imsak, target, id: 'imsak' };
+            }
+        }
+
+        // Highlight di tabel (Hanya untuk baris 'today')
+        const activeRow = document.getElementById('active-row');
+        if (activeRow && next) {
+            // Reset semua highlight dulu
+            activeRow.querySelectorAll('.val, .lbl').forEach(el => {
+                el.classList.remove('active-target', 'active-target-lbl');
+            });
+            // Pasang highlight pada waktu yang dituju
+            const valEl = activeRow.querySelector(`.val-${next.id}`);
+            const lblEl = activeRow.querySelector(`.lbl-${next.id}`);
+            if(valEl) valEl.classList.add('active-target');
+            if(lblEl) lblEl.classList.add('active-target-lbl');
+        }
+
+        if (next) {
+            const diff = next.target - now;
+            const hh = Math.floor(diff / 3600000).toString().padStart(2, '0');
+            const mm = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+            const ss = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+            document.getElementById('timer').innerText = `${hh} : ${mm} : ${ss}`;
+            document.getElementById('target-display').innerText = `${next.n} ${next.t} WIB`;
         }
     }
 
     document.getElementById('searchInput').addEventListener('input', (e) => {
         const val = e.target.value.toLowerCase();
-        render(allData.filter(i => (i.MASEHI + i.HIJRIYAH).toLowerCase().includes(val)));
+        render(JADWAL_DATA.filter(i => (i.m + i.h).toLowerCase().includes(val)));
     });
 
-    getData();
+    // Inisialisasi
+    render(JADWAL_DATA);
+    setInterval(updateTimer, 1000);
+    updateTimer();
 </script>
+
 </body>
 </html>

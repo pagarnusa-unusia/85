@@ -285,13 +285,11 @@
     function render(data) {
         const list = document.getElementById('jadwal-list');
         list.innerHTML = '';
-
         data.forEach((item, index) => {
             const todayStatus = checkIsToday(item.MASEHI);
             const card = document.createElement('div');
             card.className = `card-row ${todayStatus ? 'today' : ''}`;
-            card.style.animationDelay = `${index * 0.08}s`; /* Staggered effect */
-            
+            card.style.animationDelay = `${index * 0.08}s`;
             card.innerHTML = `
                 <div class="date-col">${item.MASEHI}<br><small>${item.HIJRIYAH}</small></div>
                 <div class="times-wrapper">
@@ -311,11 +309,11 @@
     function updateLogic(data) {
         setInterval(() => {
             const now = new Date();
-            const today = data.find(i => checkIsToday(i.MASEHI));
+            const todayIndex = data.findIndex(i => checkIsToday(i.MASEHI));
             
-            if (today) {
-                document.getElementById('date-display').innerText = `${today.MASEHI} M 
-                 ${today.HIJRIYAH} H`;
+            if (todayIndex !== -1) {
+                const today = data[todayIndex];
+                document.getElementById('date-display').innerText = `${today.MASEHI} M | ${today.HIJRIYAH} H`;
                 
                 const schedule = [
                     { name: 'Imsak', time: today.IMSAK },
@@ -327,6 +325,7 @@
                 ];
 
                 let next = null;
+                // 1. Cek jadwal yang tersisa hari ini
                 for (let s of schedule) {
                     if(!s.time) continue;
                     const [h, m] = s.time.split(':');
@@ -334,13 +333,26 @@
                     if (t > now) { next = { ...s, target: t }; break; }
                 }
 
+                // 2. Jika jadwal hari ini habis (setelah Isya), cari Imsak besok
+                if (!next && data[todayIndex + 1]) {
+                    const tomorrow = data[todayIndex + 1];
+                    const [h, m] = tomorrow.IMSAK.split(':');
+                    const t = new Date();
+                    t.setDate(t.getDate() + 1); // Set ke tanggal besok
+                    t.setHours(parseInt(h), parseInt(m), 0);
+                    next = { name: 'Imsak Esok', time: tomorrow.IMSAK, target: t, isTomorrow: true };
+                }
+
                 if (next) {
                     const diff = next.target - now;
                     const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
                     const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
                     const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+                    
                     document.getElementById('timer').innerText = `-${h} : ${m} : ${s}`;
-                    document.getElementById('target-display').innerText = `${next.name} ${next.time} WIB`;
+                    // Jika besok, tambahkan info agar pengguna tidak bingung
+                    const label = next.isTomorrow ? `Besok: ${next.name}` : next.name;
+                    document.getElementById('target-display').innerText = `${label} ${next.time} WIB`;
                 } else {
                     document.getElementById('timer').innerText = "00 : 00 : 00";
                     document.getElementById('target-display').innerText = "Qiyamul Lail";
@@ -353,12 +365,9 @@
         const btn = document.getElementById('btnKirim');
         const nama = document.getElementById('contactNama').value;
         const pesan = document.getElementById('contactPesan').value;
-
         if(!nama || !pesan) return alert("Mohon isi nama dan pesan Anda.");
-        
         btn.disabled = true;
         btn.innerText = "MENGIRIM...";
-
         try {
             await fetch(API_URL, {
                 method: 'POST',
@@ -384,6 +393,4 @@
     getData();
 </script>
 </body>
-
 </html>
-

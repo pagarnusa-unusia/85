@@ -150,19 +150,12 @@
 
     function isSameDay(masehiStr) {
         const now = new Date();
-        
-        // Pecah string "19 Feb 2026" manual agar browser tidak bingung
-        const months = {
-            "Jan": 0, "Feb": 1, "Mar": 2, "Apr": 3, "May": 4, "Jun": 5,
-            "Jul": 6, "Aug": 7, "Sep": 8, "Oct": 9, "Nov": 10, "Dec": 11
-        };
-        
-        const parts = masehiStr.split(' '); // [19, Feb, 2026]
-        const day = parseInt(parts[0]);
-        const month = months[parts[1]];
-        const year = parseInt(parts[2]);
-
-        return day === now.getDate() && month === now.getMonth() && year === now.getFullYear();
+        const months = {"Jan": 0, "Feb": 1, "Mar": 2, "Apr": 3, "May": 4, "Jun": 5, "Jul": 6, "Aug": 7, "Sep": 8, "Oct": 9, "Nov": 10, "Dec": 11};
+        const parts = masehiStr.split(' ');
+        const d = parseInt(parts[0]);
+        const m = months[parts[1]];
+        const y = parseInt(parts[2]);
+        return d === now.getDate() && m === now.getMonth() && y === now.getFullYear();
     }
 
     function render(data) {
@@ -172,7 +165,6 @@
             const todayStatus = isSameDay(item.m);
             const card = document.createElement('div');
             card.className = `card-row ${todayStatus ? 'today' : ''}`;
-            card.id = todayStatus ? 'active-row' : '';
             card.innerHTML = `
                 <div class="date-col">${item.m}<br><small class="text-muted">${item.h}</small></div>
                 <div class="times-wrapper">
@@ -192,34 +184,59 @@
 
     function updateTimer() {
         const now = new Date();
-        const today = JADWAL_DATA.find(i => isSameDay(i.m));
-        if (!today) return;
+        const todayIdx = JADWAL_DATA.findIndex(i => isSameDay(i.m));
+        let targetDay = JADWAL_DATA[todayIdx];
 
-        document.getElementById('date-display').innerText = `${today.m} | ${today.h}`;
+        if (!targetDay) {
+            // Jika hari ini di luar jangkauan data, tampilkan data pertama saja
+            document.getElementById('target-display').innerText = "Belum Masuk Jadwal";
+            return;
+        }
+
+        document.getElementById('date-display').innerText = `${targetDay.m} | ${targetDay.h}`;
 
         const sched = [
-            {n:'Imsak', t:today.imsak}, {n:'Subuh', t:today.subuh},
-            {n:'Terbit', t:today.terbit}, {n:'Dhuha', t:today.dhuha},
-            {n:'Zuhur', t:today.zuhur}, {n:'Asar', t:today.asar},
-            {n:'Magrib', t:today.magrib}, {n:'Isya', t:today.isya}
+            {n:'Imsak', t:targetDay.imsak}, {n:'Subuh', t:targetDay.subuh},
+            {n:'Terbit', t:targetDay.terbit}, {n:'Dhuha', t:targetDay.dhuha},
+            {n:'Zuhur', t:targetDay.zuhur}, {n:'Asar', t:targetDay.asar},
+            {n:'Magrib', t:targetDay.magrib}, {n:'Isya', t:targetDay.isya}
         ];
 
+        // Cari jadwal yang akan datang hari ini
         let next = sched.find(s => {
             const [h, m] = s.t.split(':');
             const target = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
             return target > now;
         });
 
+        let diff, label;
+
         if (next) {
+            // Jika masih ada jadwal hari ini
             const [h, m] = next.t.split(':');
             const target = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
-            const diff = target - now;
-            const hh = Math.floor(diff/3600000).toString().padStart(2,'0');
-            const mm = Math.floor((diff%3600000)/60000).toString().padStart(2,'0');
-            const ss = Math.floor((diff%60000)/1000).toString().padStart(2,'0');
-            document.getElementById('timer').innerText = `${hh} : ${mm} : ${ss}`;
-            document.getElementById('target-display').innerText = `${next.n} ${next.t}`;
+            diff = target - now;
+            label = `${next.n} ${next.t}`;
+        } else {
+            // Jika sudah lewat Isya, cari Imsak besok
+            const tomorrow = JADWAL_DATA[todayIdx + 1];
+            if (tomorrow) {
+                const [h, m] = tomorrow.imsak.split(':');
+                const target = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, h, m);
+                diff = target - now;
+                label = `Besok: Imsak ${tomorrow.imsak}`;
+            } else {
+                label = "Ramadhan Berakhir";
+                diff = 0;
+            }
         }
+
+        const hh = Math.floor(diff/3600000).toString().padStart(2,'0');
+        const mm = Math.floor((diff%3600000)/60000).toString().padStart(2,'0');
+        const ss = Math.floor((diff%60000)/1000).toString().padStart(2,'0');
+        
+        document.getElementById('timer').innerText = `${hh} : ${mm} : ${ss}`;
+        document.getElementById('target-display').innerText = label;
     }
 
     document.getElementById('searchInput').addEventListener('input', (e) => {
@@ -227,10 +244,12 @@
         render(JADWAL_DATA.filter(i => (i.m + i.h).toLowerCase().includes(val)));
     });
 
+    // Inisialisasi
     render(JADWAL_DATA);
-    setInterval(updateTimer, 1000);
     updateTimer();
+    setInterval(updateTimer, 1000);
 </script>
 
 </body>
 </html>
+

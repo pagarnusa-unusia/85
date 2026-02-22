@@ -150,8 +150,19 @@
 
     function isSameDay(masehiStr) {
         const now = new Date();
-        const d = new Date(masehiStr);
-        return d.getDate() === now.getDate() && d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+        
+        // Pecah string "19 Feb 2026" manual agar browser tidak bingung
+        const months = {
+            "Jan": 0, "Feb": 1, "Mar": 2, "Apr": 3, "May": 4, "Jun": 5,
+            "Jul": 6, "Aug": 7, "Sep": 8, "Oct": 9, "Nov": 10, "Dec": 11
+        };
+        
+        const parts = masehiStr.split(' '); // [19, Feb, 2026]
+        const day = parseInt(parts[0]);
+        const month = months[parts[1]];
+        const year = parseInt(parts[2]);
+
+        return day === now.getDate() && month === now.getMonth() && year === now.getFullYear();
     }
 
     function render(data) {

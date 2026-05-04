@@ -1,0 +1,82 @@
+// 2. Kirim Email Konfirmasi Otomatis (Elite Professional Edition - Bahasa Indonesia)
+var subject = "Konfirmasi Pendaftaran Resmi - PAC PSNU Pagar Nusa Kemang";
+var logoUrl = "https://lh3.googleusercontent.com/d/123qoNjx-Cy5OOaaX0MTSVk88TE03YayN"; // Gunakan direct link logo Anda
+var htmlBody = `
+  <style>
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-box { animation: fadeInUp 1s ease-out forwards; }
+    .btn-smooth:hover { background-color: #04522d !important; box-shadow: 0 8px 20px rgba(5,104,57,0.25) !important; transform: translateY(-1px); }
+  </style>
+
+  <div style="background-color: #f9fbfb; padding: 60px 0; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+    <div class="animate-box" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.05); border: 1px solid #eee;">
+      
+      <div style="padding: 45px 20px 30px 20px; text-align: center;">
+        <img src="${logoUrl}" alt="Logo Pagar Nusa Kemang" style="max-width: 280px; height: auto; display: block; margin: 0 auto;">
+      </div>
+
+      <div style="padding: 0 50px 50px 50px;">
+        <div style="text-align: center; margin-bottom: 35px;">
+          <span style="background-color: #eaf4ef; color: #056839; padding: 6px 14px; border-radius: 100px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;">
+            Pendaftaran Terverifikasi
+          </span>
+          <h1 style="color: #1a1a1a; font-size: 24px; font-weight: 700; margin-top: 15px; margin-bottom: 8px; letter-spacing: -0.5px;">Selamat Bergabung</h1>
+          <div style="width: 40px; height: 3px; background-color: #056839; margin: 0 auto; border-radius: 2px;"></div>
+        </div>
+        
+        <p style="color: #4a4a4a; font-size: 15px; line-height: 1.8; margin-bottom: 25px;">
+          Assalamu'alaikum Wr. Wb.,<br><br>
+          Yth. <strong>${namaPendaftar}</strong>,<br><br>
+          Terima kasih telah melakukan pendaftaran di <strong>${data.instansi_nama}</strong>. Kami mengonfirmasi bahwa data Anda telah berhasil masuk dan tercatat dalam sistem administrasi kami secara resmi.
+        </p>
+
+        <div style="background-color: #fdfdfd; border: 1px solid #f0f0f0; border-radius: 12px; padding: 20px; margin: 30px 0;">
+          <table width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td>
+                <p style="color: #999; font-size: 11px; margin: 0; letter-spacing: 0.5px;">Status Akun</p>
+                <p style="color: #056839; font-weight: 700; margin: 4px 0 0 0; font-size: 14px;">Aktif / Terproses</p>
+              </td>
+              <td style="text-align: right;">
+                <p style="color: #999; font-size: 11px; margin: 0; letter-spacing: 0.5px;">Referensi ID</p>
+                <p style="color: #1a1a1a; font-weight: 700; margin: 4px 0 0 0; font-size: 14px;">#${new Date().getTime().toString().slice(-6)}</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <p style="color: #4a4a4a; font-size: 15px; text-align: center; margin-bottom: 30px;">
+          Sebagai langkah akhir koordinasi, silakan bergabung ke dalam grup resmi kami melalui tautan di bawah ini:
+        </p>
+
+        <div style="text-align: center; margin: 35px 0;">
+          <a href="${waGroupLink}" class="btn-smooth" style="background-color: #056839; color: #ffffff; padding: 18px 40px; text-decoration: none; font-weight: 600; border-radius: 12px; display: inline-block; font-size: 15px; transition: all 0.3s ease; box-shadow: 0 10px 20px rgba(5,104,57,0.15);">
+            Gabung Grup Koordinasi
+          </a>
+        </div>
+
+        <p style="color: #aaa; font-size: 12px; text-align: center; line-height: 1.6;">
+          Kendala pada tombol? <a href="${waGroupLink}" style="color: #056839; text-decoration: none; border-bottom: 1px solid rgba(5,104,57,0.3);">Klik di sini untuk bergabung secara manual</a>
+        </p>
+
+        <div style="margin-top: 50px; padding-top: 25px; border-top: 1px solid #f5f5f5;">
+          <p style="color: #1a1a1a; font-size: 13px; font-weight: 700; margin: 0;">Sekretariat Administrasi</p>
+          <p style="color: #888; font-size: 12px; margin: 4px 0 0 0;">PAC PSNU Pagar Nusa Kec. Kemang</p>
+        </div>
+      </div>
+
+      <div style="background-color: #111111; padding: 35px; text-align: center;">
+        <p style="color: #ffffff; font-size: 11px; margin: 0; opacity: 0.5; letter-spacing: 0.8px;">
+          © ${new Date().getFullYear()} PAC Pagar Nusa Kemang. Seluruh Hak Cipta Dilindungi.
+        </p>
+        <div style="margin: 15px auto; width: 30px; height: 1px; background-color: #333;"></div>
+        <p style="color: #056839; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;">
+          Berkhidmat dengan Hati, Bergerak dengan Aksi
+        </p>
+      </div>
+    </div>
+  </div>
+`;

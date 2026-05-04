@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Pengurus - Pagar Nusa Kemang</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --pn-green: #2d6a4f; --pn-dark: #1b4332; --pn-gold: #fbbf24; }
+        body { font-family: 'Roboto', sans-serif; background-color: #fcfdfd; color: #334155; }
+        .nav-font { font-family: 'Oswald', sans-serif; }
+        .bg-pn { background-color: var(--pn-green); }
+        .text-pn { color: var(--pn-green); }
+        
+        .profile-gradient {
+            background: linear-gradient(135deg, var(--pn-dark) 0%, var(--pn-green) 100%);
+        }
+        
+        #loader { transition: opacity 0.5s ease; }
+        .fade-in { animation: fadeIn 0.8s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .info-card { border-left: 4px solid var(--pn-green); }
+    </style>
+</head>
+<body>
+
+    <div id="loader" class="fixed inset-0 bg-white z-[100] flex items-center justify-center">
+        <div class="flex flex-col items-center">
+            <div class="w-12 h-12 border-4 border-pn border-t-transparent rounded-full animate-spin"></div>
+            <p class="mt-4 text-xs font-bold nav-font uppercase tracking-widest text-gray-400">Memuat Profil...</p>
+        </div>
+    </div>
+
+    <header class="bg-white/90 backdrop-blur-md py-4 border-b sticky top-0 z-50">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <button onclick="history.back()" class="flex items-center text-pn font-bold text-xs uppercase tracking-widest hover:opacity-70 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                Kembali
+            </button>
+            <div class="nav-font font-bold text-pn uppercase tracking-tighter">Profil Pendekar</div>
+            <div class="w-10"></div> </div>
+    </header>
+
+    <main id="profile-content" class="hidden">
+        <section class="profile-gradient pt-16 pb-32">
+            <div class="container mx-auto px-4 text-center">
+                <div class="relative inline-block">
+                    <div class="w-40 h-40 md:w-48 md:h-48 mx-auto rounded-3xl border-4 border-white/20 overflow-hidden shadow-2xl mb-6">
+                        <img id="p-foto" src="" class="w-full h-full object-cover">
+                    </div>
+                    <div class="absolute -bottom-2 -right-2 bg-yellow-400 p-2 rounded-xl shadow-lg">
+                        <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" class="h-6 w-6">
+                    </div>
+                </div>
+                <h2 id="p-nama" class="text-3xl md:text-4xl font-bold text-white nav-font uppercase tracking-tight"></h2>
+                <p id="p-jabatan" class="text-yellow-400 font-bold uppercase tracking-[0.2em] text-sm mt-2"></p>
+            </div>
+        </section>
+
+        <section class="container mx-auto px-4 -mt-20 mb-20">
+            <div class="max-w-3xl mx-auto">
+                <div class="bg-white rounded-[2rem] shadow-xl p-8 md:p-12 fade-in">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        
+                        <div class="space-y-6">
+                            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest border-b pb-2">Informasi Dasar</h3>
+                            
+                            <div>
+                                <label class="text-[10px] font-bold text-pn uppercase block">Nomor eKTA</label>
+                                <p id="p-ekta" class="text-lg font-bold text-gray-800 font-mono"></p>
+                            </div>
+                            
+                            <div>
+                                <label class="text-[10px] font-bold text-pn uppercase block">Tempat, Tanggal Lahir</label>
+                                <p id="p-ttl" class="text-gray-700 font-medium"></p>
+                            </div>
+
+                            <div>
+                                <label class="text-[10px] font-bold text-pn uppercase block">Pekerjaan</label>
+                                <p id="p-pekerjaan" class="text-gray-700 font-medium"></p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest border-b pb-2">Domisili & Kontak</h3>
+                            
+                            <div class="info-card pl-4">
+                                <label class="text-[10px] font-bold text-pn uppercase block">Alamat Tetap</label>
+                                <p id="p-alamat" class="text-sm leading-relaxed text-gray-600"></p>
+                            </div>
+
+                            <div class="pt-4">
+                                <div class="bg-pn/5 rounded-2xl p-4 border border-pn/10">
+                                    <p class="text-[10px] text-gray-500 italic leading-snug text-center">
+                                        "Laa Ghaliba Illa Billah - Tiada Kemenangan Kecuali dengan Pertolongan Allah"
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-12 pt-8 border-t border-gray-50 flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Status Anggota Aktif</span>
+                        </div>
+                        <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" class="h-8 opacity-20 grayscale">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxrjbI6ZzqcX4zurydbnqAo8GvNdsKzQ0nODvelWFJlPJGAjaUPw7u64CdMNaoZTvZ-/exec';
+
+        async function fetchDetailProfil() {
+            // 1. Ambil ID dari URL (?id=8612...)
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetId = urlParams.get('id');
+
+            if (!targetId) {
+                window.location.href = 'struktural.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(API_URL);
+                const res = await response.json();
+                
+                // 2. Cari anggota yang eKTA-nya cocok
+                const member = res.struktural.find(m => m.ekta === targetId);
+
+                if (member) {
+                    // 3. Masukkan data ke HTML
+                    document.getElementById('p-nama').innerText = member.nama;
+                    document.getElementById('p-jabatan').innerText = member.jabatan;
+                    document.getElementById('p-ekta').innerText = member.ekta;
+                    document.getElementById('p-ttl').innerText = member.ttl || "-";
+                    document.getElementById('p-pekerjaan').innerText = member.pekerjaan || "-";
+                    document.getElementById('p-alamat').innerText = member.alamat || "-";
+                    document.getElementById('p-foto').src = member.foto || "https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ";
+                    
+                    document.title = `${member.nama} - Profil Pengurus`;
+
+                    // Tampilkan konten
+                    document.getElementById('loader').classList.add('opacity-0');
+                    setTimeout(() => {
+                        document.getElementById('loader').classList.add('hidden');
+                        document.getElementById('profile-content').classList.remove('hidden');
+                        document.getElementById('profile-content').classList.add('fade-in');
+                    }, 500);
+
+                } else {
+                    alert("Data pengurus tidak ditemukan!");
+                    window.location.href = 'struktural.html';
+                }
+
+            } catch (error) {
+                console.error("Gagal mengambil data:", error);
+                alert("Terjadi kesalahan koneksi.");
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchDetailProfil);
+    </script>
+</body>
+</html>

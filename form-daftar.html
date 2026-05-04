@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Daftar - PAC Pagar Nusa Kemang</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root { --primary-green: #056839; }
+        .bg-primary { background-color: var(--primary-green); }
+        .text-primary { color: var(--primary-green); }
+        .border-primary { border-color: var(--primary-green); }
+        .hidden-section { display: none; }
+        
+        #mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        #mobile-menu.open {
+            max-height: 300px;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-700 font-sans leading-relaxed">
+
+<header class="bg-[#056839] sticky top-0 z-50 shadow-lg">
+    <nav class="container mx-auto px-5 py-2">
+        <div class="flex justify-between items-center">
+            <a href="#" class="flex items-center">
+                <img src="logopacp.png" alt="Logo Pagar Nusa" class="h-14 w-auto object-contain">
+            </a>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#" class="text-sm font-medium text-white hover:text-gray-200 transition">Beranda</a>
+                <a href="#" class="text-sm font-medium text-white hover:text-gray-200 transition">Login</a>
+                <a href="#" class="bg-white text-[#056839] px-6 py-2 rounded text-sm font-bold hover:bg-gray-100 transition shadow-sm">Daftar</a>
+            </div>
+
+            <button onclick="toggleMobileMenu()" class="md:hidden text-white focus:outline-none p-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="md:hidden">
+            <div class="flex flex-col space-y-4 pt-4 pb-4 border-t border-white/20 mt-3">
+                <a href="#" class="text-sm font-medium text-white hover:text-gray-200">Beranda</a>
+                <a href="#" class="text-sm font-medium text-white hover:text-gray-200">Login</a>
+                <a href="#" class="text-sm font-bold text-white underline underline-offset-8">Daftar</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main class="container mx-auto px-4 py-12 max-w-4xl">
+    <div id="form-container" class="bg-white border border-gray-200 rounded-lg p-6 md:p-10">
+        <div class="mb-10 text-center">
+            <h1 class="text-2xl font-bold text-gray-900">Formulir Pendaftaran</h1>
+            <p class="text-gray-500 mt-2">Silakan lengkapi data Anda di bawah ini.</p>
+        </div>
+        
+        <form id="formPendaftaran" class="space-y-8">
+            <div class="bg-gray-50 p-4 rounded border border-gray-100">
+                <label class="block text-sm font-semibold mb-2">Pilih Ranting atau Rayon</label>
+                <select id="ranting-select" name="instansi_type" class="w-full border border-gray-300 p-3 rounded bg-white focus:ring-1 focus:ring-primary focus:border-primary outline-none transition" required onchange="handleRantingChange()">
+                    <option value="">-- Pilih Instansi --</option>
+                    <option value="PT">Universitas Nahdlatul Ulama Indonesia</option>
+                    <option value="SD">SDN Jampang 01</option>
+                    <option value="SD">SDN Bojong 01</option>
+                    <option value="SD">SDN Bojong 04</option>
+                </select>
+                <input type="hidden" name="instansi_nama" id="instansi_nama">
+            </div>
+
+            <div id="main-form-content" class="hidden-section animate-fade-in">
+                <div class="space-y-5">
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-primary border-b pb-2">Data Diri</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-gray-600">NIK</label>
+                            <input type="text" name="nik" class="w-full border p-2.5 rounded text-sm" placeholder="Sesuai KTP/KK" required>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-gray-600">Email</label>
+                            <input type="email" name="email" class="w-full border p-2.5 rounded text-sm" placeholder="nama@email.com" required>
+                        </div>
+                        <div class="space-y-1 md:col-span-2">
+                            <label class="text-xs font-medium text-gray-600">Nama Lengkap</label>
+                            <input type="text" name="nama" class="w-full border p-2.5 rounded text-sm" placeholder="Nama Lengkap Tanpa Gelar" required>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-gray-600">Tempat Lahir</label>
+                            <input type="text" name="tempat_lahir" class="w-full border p-2.5 rounded text-sm" required>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-gray-600">Tanggal Lahir</label>
+                            <input type="date" name="tanggal_lahir" class="w-full border p-2.5 rounded text-sm" required>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-gray-600">Jenis Kelamin</label>
+                            <select name="gender" class="w-full border p-2.5 rounded text-sm" required>
+                                <option value="">Pilih</option>
+                                <option>Laki-Laki</option>
+                                <option>Perempuan</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-gray-600">No. HP (WhatsApp)</label>
+                            <input type="tel" name="whatsapp" class="w-full border p-2.5 rounded text-sm" placeholder="081xxxxxxxxx" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="section-kampus" class="hidden-section mt-10 space-y-5">
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-blue-700 border-b pb-2">Data Kampus</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-gray-600">NIM (8 Digit)</label>
+                            <input type="text" name="nim" maxlength="8" minlength="8" class="w-full border p-2.5 rounded text-sm" placeholder="Contoh: 12345678">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-gray-600">Program Studi</label>
+                            <select name="prodi" class="w-full border p-2.5 rounded text-sm">
+                                <option value="">Pilih Program Studi</option>
+                                <option>S1 - Teknik Informatika</option>
+                                <option>S1 - Pendidikan Agama Islam</option>
+                                <option>S1 - Teknologi Agroindustri</option>
+                                <option>S1 - Pendidikan Guru Madrasah Ibtidaiyah</option>
+                                <option>S1 - Ilmu Hukum</option>
+                                <option>S1 - Hukum Keluarga (Ahwal Syakhshiyah)</option>
+                                <option>S1 - Sejarah Peradaban Islam</option>
+                                <option>S1 - Ekonomi Syariah</option>
+                                <option>S1 - Pendidikan/Tadris Bahasa Inggris</option>
+                                <option>S1 - Pendidikan Anak Usia Dini</option>
+                                <option>S1 - Psikologi</option>
+                                <option>S1 - Sistem Informasi</option>
+                                <option>S1 - Sosiologi</option>
+                                <option>S1 - Akuntansi</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="section-sekolah" class="hidden-section mt-10 space-y-5">
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-orange-700 border-b pb-2">Data Sekolah</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-gray-600">Tingkat Sekolah</label>
+                            <select name="tingkat_sekolah" class="w-full border p-2.5 rounded text-sm">
+                                <option>SD/Sederajat</option>
+                                <option>SMP/Sederajat</option>
+                                <option>SMA/Sederajat</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-gray-600">NIS (Minimal 10 Digit)</label>
+                            <input type="text" name="nis" minlength="10" class="w-full border p-2.5 rounded text-sm" placeholder="Nomor Induk Siswa">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-gray-600">Kelas</label>
+                            <input type="text" name="kelas" class="w-full border p-2.5 rounded text-sm" placeholder="Contoh: 7-B">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-xs font-medium text-gray-600">No. HP Orang Tua / Wali</label>
+                            <input type="tel" name="hp_ortu" class="w-full border p-2.5 rounded text-sm" placeholder="081xxxxxxxxx">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-10 p-5 bg-gray-50 rounded border border-gray-200">
+                    <h3 class="text-sm font-bold mb-4">Pernyataan Dengan Ini:</h3>
+                    <div class="space-y-3">
+                        <label class="flex items-start cursor-pointer group">
+                            <input type="checkbox" class="mt-1 mr-3 h-4 w-4 text-primary focus:ring-primary" required>
+                            <span class="text-sm text-gray-700 group-hover:text-black">Saya bergabung tanpa ada paksaan apapun.</span>
+                        </label>
+                        <label class="flex items-start cursor-pointer group">
+                            <input type="checkbox" class="mt-1 mr-3 h-4 w-4 text-primary focus:ring-primary" required>
+                            <span class="text-sm text-gray-700 group-hover:text-black">Saya bergabung sudah mendapatkan restu dari orangtua/wali saya.</span>
+                        </label>
+                        <label class="flex items-start cursor-pointer group">
+                            <input type="checkbox" class="mt-1 mr-3 h-4 w-4 text-primary focus:ring-primary" required>
+                            <span class="text-sm text-gray-700 group-hover:text-black">Saya siap mematuhi seluruh Peraturan Organisasi (PO) dan PD/PRT yang telah diatur oleh Pimpinan Pusat.</span>
+                        </label>
+                        <label class="flex items-start cursor-pointer group">
+                            <input type="checkbox" class="mt-1 mr-3 h-4 w-4 text-primary focus:ring-primary" required>
+                            <span class="text-sm text-gray-700 group-hover:text-black">Saya siap menerima konsekuensi apabila saya tidak memenuhi kebijakan yang telah diatur oleh Pimpinan Pusat maupun Pimpinan Anak Cabang.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn" class="w-full bg-primary text-white font-bold py-3.5 rounded mt-8 hover:brightness-110 transition shadow-sm">Kirim Pendaftaran</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="success-container" class="hidden-section bg-white border border-gray-200 rounded-lg p-10 text-center animate-fade-in">
+        <div class="flex justify-center mb-6">
+            <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+        </div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Pendaftaran Berhasil!</h2>
+        <p class="text-gray-600 mb-8 leading-relaxed">Terima kasih telah mendaftar. Data Anda telah kami terima.<br>Silakan periksa <b>Email</b> Anda untuk konfirmasi, dan pastikan Anda bergabung ke grup WhatsApp di bawah ini.</p>
+        
+        <a href="https://chat.whatsapp.com/IvUpzuuxMZX9logoGGahBE" class="inline-flex items-center bg-[#25D366] text-white font-bold py-4 px-8 rounded-lg hover:brightness-110 transition shadow-lg">
+            <i class="fa-brands fa-whatsapp text-2xl mr-3"></i>
+            Gabung Grup WhatsApp Sekarang
+        </a>
+        
+        <p class="mt-8 text-xs text-gray-400">Anda akan diarahkan otomatis dalam <span id="countdown">10</span> detik...</p>
+    </div>
+</main>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<footer class="bg-[#0a0a0a] text-gray-400 py-12 border-t-4 border-primary">
+    <div class="container mx-auto px-6">
+        <div class="flex flex-col md:flex-row justify-between items-start gap-10">
+            
+            <div class="max-w-xs">
+                <h4 class="text-white font-bold text-xl mb-5">Sosial Media</h4>
+                                <div class="flex space-x-3">
+                    <a href="https://www.instagram.com/pac_pagarnusakemang" target="_blank" class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-800 hover:bg-primary hover:text-white transition duration-300">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="https://www.tiktok.com/@pagarnusa_kemang" target="_blank" class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-800 hover:bg-white hover:text-black transition duration-300">
+                        <i class="fa-brands fa-tiktok"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@PACPagarNusaKemang" target="_blank" class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-800 hover:bg-red-600 hover:text-white transition duration-300">
+                        <i class="fa-brands fa-youtube"></i>
+                    </a>
+                    <a href="https://www.facebook.com/pacpagarnusakemang11" target="_blank" class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-800 hover:bg-blue-600 hover:text-white transition duration-300 mb-4">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                </div>
+                <p class="text-sm leading-relaxed mb-4">
+                      Berkhidmat dengan Hati, <br>Bergerak dengan Aksi.
+                </p>
+            </div>
+
+            <div class="flex flex-col space-y-2 text-sm">
+                <h5 class="text-white font-semibold uppercase tracking-widest mb-2">Kontak Kami</h5>
+                                <a href="https://maps.app.goo.gl/1eA7jKcNW2ZpJB857" class="flex items-center hover:text-white transition">
+                    <i class="fa-solid fa-location-dot mr-2 text-primary"></i>
+                    Sekretariat PAC Pagarnusa Kemang
+                </a>
+                <a href="mailto:pacpagarnusakemang@gmail.com" class="flex items-center hover:text-white transition">
+                    <i class="fa-regular fa-envelope mr-2 text-primary"></i>
+                    pacpagarnusakemang@gmail.com
+                </a>
+            </div>
+
+        </div>
+
+        <div class="border-t border-gray-800 mt-12 pt-6 text-center text-xs tracking-wide">
+            <p>&copy; 2026 <span class="text-white">PAC Pagar Nusa Kemang</span>. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbx4jBgw5nPt3bM7DzKmcDR3834XrAz3EgbacC5FmUo6sMuVq0rOmC320cphG2aWIg-vYQ/exec';
+    const form = document.getElementById('formPendaftaran');
+    const submitBtn = document.getElementById('submitBtn');
+    const formContainer = document.getElementById('form-container');
+    const successContainer = document.getElementById('success-container');
+    const waLink = "https://chat.whatsapp.com/IvUpzuuxMZX9logoGGahBE";
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        
+        // Ambil nama instansi dari dropdown
+        const select = document.getElementById('ranting-select');
+        document.getElementById('instansi_nama').value = select.options[select.selectedIndex].text;
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = "Memproses...";
+
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => {
+                // Sembunyikan Form, Tampilkan Sukses
+                formContainer.classList.add('hidden-section');
+                successContainer.classList.remove('hidden-section');
+                
+                // Jalankan Countdown 10 detik
+                let timeLeft = 10;
+                const countdownElem = document.getElementById('countdown');
+                const timer = setInterval(() => {
+                    timeLeft--;
+                    countdownElem.innerText = timeLeft;
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        window.location.href = waLink;
+                    }
+                }, 1000);
+            })
+            .catch(error => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = "Kirim Pendaftaran";
+                alert('Terjadi kesalahan: ' + error.message);
+            });
+    });
+
+    function handleRantingChange() {
+        const select = document.getElementById('ranting-select');
+        const mainContent = document.getElementById('main-form-content');
+        const kampusSection = document.getElementById('section-kampus');
+        const sekolahSection = document.getElementById('section-sekolah');
+        
+        if (select.value === "") {
+            mainContent.classList.add('hidden-section');
+        } else {
+            mainContent.classList.remove('hidden-section');
+            if (select.value === "PT") {
+                kampusSection.classList.remove('hidden-section');
+                sekolahSection.classList.add('hidden-section');
+                setFieldsRequired(kampusSection, true);
+                setFieldsRequired(sekolahSection, false);
+            } else {
+                sekolahSection.classList.remove('hidden-section');
+                kampusSection.classList.add('hidden-section');
+                setFieldsRequired(sekolahSection, true);
+                setFieldsRequired(kampusSection, false);
+            }
+        }
+    }
+
+    function setFieldsRequired(section, isRequired) {
+        const inputs = section.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            if (isRequired) input.setAttribute('required', '');
+            else input.removeAttribute('required');
+        });
+    }
+
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobile-menu');
+        menu.classList.toggle('open');
+    }
+</script>
+</body>
+</html>

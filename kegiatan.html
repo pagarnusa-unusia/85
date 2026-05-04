@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kegiatan & Agenda - Pagar Nusa Kemang</title>
+    <meta name="description" content="Daftar agenda dan kegiatan resmi PAC Pagar Nusa Kecamatan Kemang - Kabupaten Bogor.">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --pn-green: #2d6a4f; --pn-dark: #1b4332; --pn-light: #d8f3dc; }
+        body { font-family: 'Roboto', sans-serif; scroll-behavior: smooth; color: #334155; }
+        .nav-font { font-family: 'Oswald', sans-serif; }
+        .bg-pn { background-color: var(--pn-green); }
+        .text-pn { color: var(--pn-green); }
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        /* Shimmer Loading */
+        .shimmer { 
+            background: linear-gradient(90deg, #f8fafc 25%, #f1f5f9 50%, #f8fafc 75%); 
+            background-size: 200% 100%; 
+            animation: shimmer 2s infinite ease-out; 
+        }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+        .reveal { opacity: 0; transform: translateY(15px); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        #mobile-menu { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .nav-link-hover { position: relative; }
+        .nav-link-hover::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: white; transition: width 0.3s ease; }
+        .nav-link-hover:hover::after { width: 100%; }
+    </style>
+</head>
+<body class="bg-[#fcfdfd] selection:bg-pn selection:text-white">
+
+    <div id="top-bar" class="bg-white py-2.5 text-[10px] text-center uppercase tracking-[0.15em] text-gray-400 font-semibold border-b">
+        Media Resmi PAC Pagar Nusa Kecamatan Kemang - Kabupaten Bogor
+    </div>
+
+    <header class="bg-white/95 backdrop-blur-md py-5 border-b border-gray-100 sticky top-0 z-[60] shadow-sm">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div id="menu-toggle" class="p-2 -ml-2 cursor-pointer hover:text-pn transition md:hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+            </div>
+
+            <div class="flex items-center space-x-4 mx-auto md:mx-0">
+                <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo" class="h-12 md:h-14 drop-shadow-sm">
+                <div class="text-left border-l-2 border-pn/20 pl-4">
+                    <h1 class="text-2xl md:text-3xl font-bold text-pn tracking-tight leading-none nav-font uppercase">Pagar Nusa</h1>
+                    <p class="text-gray-500 font-medium text-xs md:text-sm tracking-wide">Pagar NU dan Bangsa</p>
+                </div>
+            </div>
+
+            <div class="relative hidden md:block">
+                <div class="flex items-center bg-gray-50 border border-gray-100 rounded-full px-4 py-2">
+                    <input id="search-input" type="text" placeholder="Cari kegiatan..." class="bg-transparent border-none text-sm outline-none w-48 focus:w-64 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="bg-pn shadow-md hidden md:block">
+        <div class="container mx-auto">
+            <ul id="main-nav" class="flex flex-wrap justify-center items-center text-white nav-font uppercase tracking-widest text-[13px]">
+                <li class="px-6 py-4 opacity-50">Memuat Menu...</li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="mobile-menu" class="fixed inset-y-0 left-0 w-72 bg-pn z-[70] transform -translate-x-full shadow-2xl md:hidden">
+        <div class="p-8">
+            <div class="flex justify-between items-center border-b border-white/10 pb-6 mb-6">
+                <h2 class="text-white font-bold nav-font text-xl tracking-widest">MENU UTAMA</h2>
+                <div id="close-menu" class="text-white p-2 cursor-pointer hover:bg-white/10 rounded-full transition">✕</div>
+            </div>
+            <ul id="mobile-nav-list" class="text-white space-y-5 nav-font uppercase tracking-wider text-lg"></ul>
+        </div>
+    </div>
+    <div id="overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[65] hidden md:hidden"></div>
+
+    <main class="container mx-auto px-4 py-12">
+        <div class="flex items-end justify-between border-b-2 border-gray-100 mb-10 pb-2">
+            <h3 id="news-title-trigger" class="text-3xl font-bold nav-font tracking-tight border-b-4 border-pn -mb-[10px] pb-2 uppercase">Agenda & Kegiatan</h3>
+            <div id="search-status" class="text-xs text-gray-400 font-semibold mb-2"></div>
+        </div>
+
+        <div id="loader-kegiatan" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="h-80 shimmer rounded-2xl"></div>
+            <div class="h-80 shimmer rounded-2xl"></div>
+            <div class="h-80 shimmer rounded-2xl"></div>
+        </div>
+
+        <div id="kegiatan-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden">
+            </div>
+
+        <div id="empty-state" class="hidden text-center py-24">
+            <h3 class="text-2xl font-bold text-gray-300 nav-font uppercase tracking-widest">Belum Ada Agenda Kegiatan</h3>
+            <p class="text-gray-400 mt-2">Pastikan kategori di Google Sheets berisi kata "Kegiatan"</p>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-100 py-16 mt-20">
+        <div class="container mx-auto px-4 text-center">
+            <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" class="h-20 mx-auto mb-8 opacity-90">
+            <p class="font-bold text-pn text-2xl nav-font uppercase mb-4 tracking-[0.2em]">PAC Pagar Nusa Kemang</p>
+            <div id="copyright-text" class="text-gray-400 text-[11px] tracking-widest max-w-md mx-auto leading-relaxed border-t border-gray-50 pt-8">
+                © 2026 Lembaga IT & Infokom PAC Pagar Nusa Kecamatan Kemang
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxrjbI6ZzqcX4zurydbnqAo8GvNdsKzQ0nODvelWFJlPJGAjaUPw7u64CdMNaoZTvZ-/exec';
+        let allKegiatan = [];
+
+        // Mobile Menu Logic
+        const toggle = document.getElementById('menu-toggle');
+        const menu = document.getElementById('mobile-menu');
+        const overlay = document.getElementById('overlay');
+        const closeBtn = document.getElementById('close-menu');
+
+        function toggleMenu() {
+            menu.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+            document.body.classList.toggle('overflow-hidden');
+        }
+
+        toggle.onclick = toggleMenu;
+        overlay.onclick = toggleMenu;
+        closeBtn.onclick = toggleMenu;
+
+        async function initPage() {
+            try {
+                const response = await fetch(API_URL);
+                const res = await response.json();
+                if (res.status !== "success") throw new Error(res.message);
+
+                // 1. VALIDASI: Hanya ambil data yang Kategorinya mengandung kata "Kegiatan"
+                allKegiatan = res.berita.filter(n => n.kategori.toLowerCase().includes('kegiatan'));
+
+                // 2. Render Navigasi (Sesuai index)
+                renderNav(res.navigasi);
+                
+                // 3. Render Profil/Footer
+                if(res.profil) {
+                    document.getElementById('copyright-text').innerText = res.profil.copyright || `© 2026 PAC Pagar Nusa Kemang`;
+                }
+
+                // 4. Render Grid Kegiatan
+                renderKegiatan(allKegiatan);
+
+            } catch (error) {
+                console.error(error);
+                document.getElementById('loader-kegiatan').innerHTML = `<div class="col-span-full p-8 bg-red-50 text-red-600 rounded-2xl text-center">Gagal memuat: ${error.message}</div>`;
+            }
+        }
+
+        function renderNav(navData) {
+            const navContainer = document.getElementById('main-nav');
+            const mobileNav = document.getElementById('mobile-nav-list');
+            navContainer.innerHTML = '';
+            mobileNav.innerHTML = '';
+
+            navData.forEach(menuItem => {
+                const [label, link] = menuItem;
+                const isJoin = label.toLowerCase().includes('join');
+                
+                // Desktop Nav
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="${link}" class="px-6 py-5 block transition-colors nav-link-hover ${isJoin ? 'text-yellow-400 font-bold' : 'hover:bg-white/5'}">${label}</a>`;
+                navContainer.appendChild(li);
+
+                // Mobile Nav
+                const mLi = document.createElement('li');
+                mLi.innerHTML = `<a href="${link}" class="block py-1 ${isJoin ? 'text-yellow-400' : ''}">${label}</a>`;
+                mobileNav.appendChild(mLi);
+            });
+        }
+
+        function renderKegiatan(data) {
+            const grid = document.getElementById('kegiatan-grid');
+            const loader = document.getElementById('loader-kegiatan');
+            const empty = document.getElementById('empty-state');
+            const status = document.getElementById('search-status');
+
+            loader.classList.add('hidden');
+            grid.innerHTML = '';
+
+            if (data.length === 0) {
+                empty.classList.remove('hidden');
+                grid.classList.add('hidden');
+                return;
+            }
+
+            empty.classList.add('hidden');
+            grid.classList.remove('hidden');
+            
+            data.forEach(item => {
+                grid.innerHTML += `
+                    <a href="detail.html?id=${item.id}" class="group bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-500 reveal">
+                        <div class="relative h-56 overflow-hidden">
+                            <img src="${item.gambar}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="${item.judul}">
+                            <div class="absolute top-4 left-4 bg-yellow-400 text-pn font-bold text-[10px] px-3 py-1 rounded-lg uppercase tracking-widest">
+                                ${item.kategori}
+                            </div>
+                        </div>
+                        <div class="p-8">
+                            <div class="flex items-center text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-pn" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                ${item.tanggal}
+                            </div>
+                            <h2 class="text-xl font-bold text-gray-900 nav-font leading-tight group-hover:text-pn transition-colors uppercase mb-4 line-clamp-2">
+                                ${item.judul}
+                            </h2>
+                            <span class="inline-flex items-center text-xs font-bold text-pn uppercase tracking-widest">
+                                Lihat Agenda 
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                            </span>
+                        </div>
+                    </a>`;
+            });
+
+            // Re-trigger scroll reveal
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) entry.target.classList.add('active');
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+
+        // Search Logic
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase();
+            const filtered = allKegiatan.filter(k => k.judul.toLowerCase().includes(val));
+            renderKegiatan(filtered);
+        });
+
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+</body>
+</html>

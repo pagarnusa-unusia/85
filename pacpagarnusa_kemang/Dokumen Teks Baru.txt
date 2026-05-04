@@ -1,0 +1,3 @@
+buatkan versi final tanpa mengubah/mengganti/menghilangkan fungsi/tampilan kerangka yang ada sedikitpun. kembangkan website ini semaksimal mungkin
+
+buatkan versi final full 100%, tanpa mengubah/menghilangkan appscript yang sudah ada. buatkan versi final

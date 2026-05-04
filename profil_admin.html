@@ -611,7 +611,7 @@ let globalData = [];
         btn.innerText = "Saving..."; btn.disabled = true;
         try {
             await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ updateStatus: true, nama: p.nama, newStatus: newVal }) });
-            alert("Status berhasil diperbarui di Spreadsheet!");
+            alert("Status berhasil diperbarui!");
             closeModal();
             loadExcelData();
         } catch (e) { alert("Error saat menyimpan status."); }

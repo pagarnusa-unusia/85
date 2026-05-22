@@ -4,14 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login | PAGARNUSA UNUSIA</title>
-    <link rel="icon" href="logopn.png">
+    <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
     <script>
         tailwind.config = {
             theme: {
@@ -24,27 +22,14 @@
 
     <style>
         body { font-family: 'Poppins', sans-serif; overflow: hidden; }
-        
-        /* Background Animation Overlay */
         .bg-animated {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
             background: linear-gradient(rgba(27, 117, 72, 0.7), rgba(0, 0, 0, 0.8)), 
                         url('https://lh3.googleusercontent.com/d/1vI4PCquzIBTekytJ0pGo1xKym9qtZIQX?q=80&w=2070&auto=format&fit=crop'); 
-            background-size: cover;
-            background-position: center;
+            background-size: cover; background-position: center;
             animation: zoomBg 20s infinite alternate;
         }
-
-        @keyframes zoomBg {
-            from { transform: scale(1); }
-            to { transform: scale(1.1); }
-        }
-
+        @keyframes zoomBg { from { transform: scale(1); } to { transform: scale(1.1); } }
         .login-card { background: rgba(255, 255, 255, 0.90); backdrop-filter: blur(15px); }
     </style>
 </head>
@@ -55,22 +40,20 @@
 
     <div class="fixed top-6 left-6">
         <a href="index.html" class="flex items-center gap-2 text-white font-bold hover:text-emerald-200 transition-colors drop-shadow-md">
-            <i class="fas fa-arrow-left"></i>
-            <span>Kembali</span>
+            <i class="fas fa-arrow-left"></i> <span>Kembali</span>
         </a>
     </div>
 
     <div class="text-center mb-8 relative z-10">
-        <img src="logopn.png" alt="Logo" class="h-20 mx-auto mb-4 drop-shadow-lg">
+        <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo" class="h-20 w-20 rounded-full mx-auto mb-4 border-2 border-white shadow-lg">
         <h1 class="text-2xl font-bold text-white uppercase tracking-wider drop-shadow-md">Pagar Nusa UNUSIA</h1>
         <p class="text-emerald-100 text-sm italic drop-shadow-sm">Sistem Informasi Digital</p>
     </div>
 
     <div class="w-full max-w-md login-card p-8 rounded-[2.5rem] shadow-2xl shadow-black/30 border border-white/20 relative z-10">
         <form id="loginForm" class="space-y-6">
-            
             <div>
-                <label class="block text-xs font-bold text-slate-400 tracking-widest mb-2 ml-1">Username</label>
+                <label class="block text-xs font-bold text-slate-400 tracking-widest mb-2 ml-1">Username / Email</label>
                 <div class="relative group">
                     <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-primary transition-colors"></i>
                     <input type="text" id="username" required placeholder="Masukkan username"
@@ -95,126 +78,100 @@
                 <span id="error-text">Username atau Password salah!</span>
             </div>
 
-            <button type="submit" id="btnSubmit" class="w-full bg-primary hover:bg-primaryDark text-white font-bold py-4 rounded-2xl shadow-lg shadow-emerald-900/20 transition-all transform active:scale-[0.98] flex items-center justify-center gap-3">
+            <button type="submit" id="btnSubmit" class="w-full bg-primary hover:bg-primaryDark text-white font-bold py-4 rounded-2xl shadow-lg transition-all transform active:scale-[0.98] flex items-center justify-center gap-3">
                 <span>MASUK</span>
                 <i class="fas fa-sign-in-alt text-sm"></i>
             </button>
         </form>
     </div>
 
-    <p class="mt-8 text-[10px] text-emerald-100/70 font-bold tracking-[0.2em] uppercase relative z-10">Pagar Nusa UNUSIA • Security System</p>
-
 <script>
-// 1. URL Apps Script Anda
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzkOhlAKxKqRJWYgZ5ajptbx1J0QstJ4jdFcJEbcrA2lTdwgEZ63JTuBC8GHNP1nZkcyQ/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2ufh31_FFgnuLkt9PIDmyGaAF0liXMMQplMFTlE4cgqeq5hIVCoYsHP054FdcTgW5/exec";
 
-// 2. Fungsi Toggle Password (VERSI YANG DIPERBAIKI)
+// Toggle Password
 const toggleBtn = document.getElementById('togglePassword');
 const passInput = document.getElementById('password');
-
-toggleBtn.onclick = function() {
+toggleBtn.onclick = () => {
     const isPass = passInput.type === 'password';
     passInput.type = isPass ? 'text' : 'password';
-    
-    const icon = this.querySelector('i');
-    if (isPass) {
-        icon.classList.replace('fa-eye-slash', 'fa-eye');
-    } else {
-        icon.classList.replace('fa-eye', 'fa-eye-slash');
-    }
+    toggleBtn.querySelector('i').classList.toggle('fa-eye-slash');
+    toggleBtn.querySelector('i').classList.toggle('fa-eye');
 };
 
-// --- TAMBAHAN LOGIKA VERIFIKASI EXCEL ---
-async function verifyExcel(userInp, passInp) {
+// Cek Admin dari CSV Lokal
+async function checkAdminLogin(userInp, passInp) {
     try {
-        const response = await fetch('db_login.xlsx');
-        if (!response.ok) return null;
+        // Pastikan nama file sudah diubah menjadi admin.csv
+        const response = await fetch('admin.csv');
         
-        const arrayBuffer = await response.arrayBuffer();
-        const data = new Uint8Array(arrayBuffer);
-        const workbook = XLSX.read(data, { type: 'array' });
-        
-        const firstSheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[firstSheetName];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+// Ganti bagian if (!response.ok) agar lebih informatif
+if (!response.ok) {
+    console.warn("File admin.csv tidak ditemukan, melewati pengecekan admin lokal.");
+    return false; // Lanjut ke pengecekan peserta
+}
 
-        return jsonData.find(row => {
-            // Kita gunakan toLowerCase untuk username agar tidak sensitif huruf besar/kecil
-            const user = (row.USERNAME || "").toString().trim().toLowerCase();
-            const pass = (row.PASSWORD || "").toString().trim();
-            return user === userInp.toLowerCase() && pass === passInp;
-        });
+        const text = await response.text();
+        const rows = text.split('\n');
+        
+        // Loop mulai dari i=1 untuk melewati header (USERNAME, PASSWORD, redirecturl)
+        for (let i = 1; i < rows.length; i++) {
+            const cols = rows[i].split(',');
+            if (cols.length >= 2) {
+                const u = cols[0].trim();
+                const p = cols[1].trim();
+                if (u === userInp && p === passInp) {
+                    return true;
+                }
+            }
+        }
+        return false;
     } catch (e) {
-        console.warn("Gagal membaca file Excel lokal:", e);
-        return null;
+        console.error("Error pada fungsi checkAdminLogin:", e);
+        return false;
     }
 }
 
-// 3. Logika Login (VERSI GANDA)
 document.getElementById('loginForm').onsubmit = async (e) => {
     e.preventDefault();
     const btn = document.getElementById('btnSubmit');
     const errorDiv = document.getElementById('error-message');
-    const userInp = document.getElementById('username').value.trim();
-    const passInp = document.getElementById('password').value.trim();
+    const userInp = document.getElementById('username').value.trim(); // Ini akan dicocokkan ke Email (Kolom C)
+    const passInp = document.getElementById('password').value.trim(); // Ini akan dicocokkan ke Password (Kolom B)
 
     btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> MEMVERIFIKASI...';
-    errorDiv.classList.add('hidden');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
 
+    // 1. Cek Admin
+    if (await checkAdminLogin(userInp, passInp)) {
+        window.location.href = "admin.html";
+        return;
+    }
+
+    // 2. Cek Peserta (Cloud)
     try {
-        let userMatch = null;
+        const response = await fetch(SCRIPT_URL);
+        const res = await response.json();
+        
+        // PENTING: Sesuaikan dengan Apps Script
+        // p.email di Apps Script mengambil data dari row[2] (Kolom C)
+        // p.password di Apps Script mengambil data dari row[1] (Kolom B)
+        const peserta = res.data.find(p => {
+            return String(p.email).trim() === userInp && String(p.password).trim() === passInp;
+        });
 
-        // Logika 1: Verifikasi via Cloud (Google Script)
-        try {
-            const cloudResponse = await fetch(`${SCRIPT_URL}?type=login&nocache=${new Date().getTime()}`);
-            if (cloudResponse.ok) {
-                const cloudData = await cloudResponse.json();
-                userMatch = cloudData.find(u => {
-                    const dbUser = (u.username || "").toString().trim().toLowerCase();
-                    const dbPass = (u.password || "").toString().trim();
-                    return dbUser === userInp.toLowerCase() && dbPass === passInp;
-                });
-            }
-        } catch (cloudErr) {
-            console.warn("Cloud skip, mencoba verifikasi Excel...");
-        }
-
-        // Logika 2: Verifikasi via Excel Lokal (jika Cloud tidak menemukan user)
-        if (!userMatch) {
-            userMatch = await verifyExcel(userInp, passInp);
-            if (userMatch) {
-                // Standarisasi data agar sama dengan format Cloud
-                userMatch.username = userMatch.USERNAME;
-                userMatch.nama = userMatch.USERNAME;
-                userMatch.redirecturl = userMatch.redirecurl;
-            }
-        }
-
-        if (userMatch) {
-            localStorage.setItem('currentUserProfile', JSON.stringify(userMatch));
-            const targetPage = userMatch.redirecturl || "profil_santri.html";
-            setTimeout(() => {
-                window.location.href = targetPage;
-            }, 800);
+        if (peserta) {
+            localStorage.setItem('sesiPeserta', JSON.stringify(peserta));
+            window.location.href = "panelpeserta.html";
         } else {
-            throw new Error("Username atau Password salah.");
+            throw new Error("Email atau Password tidak cocok.");
         }
-        if (userMatch) {
-            localStorage.setItem('currentUserProfile', JSON.stringify(userMatch));
-            localStorage.setItem('loginTimestamp', new Date().getTime()); // <--- TAMBAHKAN INI
-            // ... rest of code
-        }
-
-        } catch (err) {
-            console.error("Login Error:", err);
-            errorDiv.classList.remove('hidden');
-            document.getElementById('error-text').innerText = err.message;
-            btn.disabled = false;
-            btn.innerHTML = '<span>MASUK</span><i class="fas fa-sign-in-alt text-sm"></i>';
-        }
-    };
-
+    } catch (err) {
+        errorDiv.classList.remove('hidden');
+        document.getElementById('error-text').innerText = err.message;
+        btn.disabled = false;
+        btn.innerHTML = '<span>MASUK</span><i class="fas fa-sign-in-alt text-sm"></i>';
+    }
+};
 </script>
 </body>
 </html>

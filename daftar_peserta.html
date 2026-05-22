@@ -195,18 +195,17 @@
                     </div>
 
                     <div class="bg-brand/5 p-4 rounded-card border border-brand/10">
-                        <label for="sertifikaturl" class="block text-sm font-semibold text-brand-dark mb-1">Link Sertifikat <span class="text-gray-400 font-normal">(Jika sudah UKT sebelumnya)</span></label>
+                        <label for="sertifikatFile" class="block text-sm font-semibold text-brand-dark mb-1">Unggah Sertifikat UKT Terakhir <span class="text-gray-400 font-normal">(Opsional)</span></label>
                         <div class="text-xs text-brand-textGray mb-3 leading-relaxed">
-                            <p class="font-medium text-brand mb-1">Langkah mengunggah berkas:</p>
-                            Klik link di bawah &rarr; Upload Sertifikat &rarr; Ubah nama file ke <strong class="text-brand-dark">Nama Lengkap</strong> &rarr; Salin Link File &rarr; Tempel di kolom berikut.
-                            <a href="https://drive.google.com" target="_blank" class="block mt-1 text-brand font-bold hover:underline"><i class="fa-solid fa-cloud-arrow-up mr-1"></i> Upload disini </a>
+                            <p class="font-medium text-brand mb-1">Panduan Pengunggahan:</p>
+                            Pilih file sertifikat Anda langsung dari HP/Komputer (Format Gambar/PDF, Maks. 10MB).
                         </div>
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                                <i class="fa-solid fa-link text-sm"></i>
+                                <i class="fa-solid fa-file-arrow-up text-sm"></i>
                             </span>
-                            <input type="url" id="sertifikaturl" name="sertifikaturl" placeholder="https://drive.google.com/..."
-                                class="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-btn focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 smooth-transition text-sm">
+<input type="file" id="sertifikatFile" name="sertifikat" accept="image/*,application/pdf"
+    class="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-btn focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 smooth-transition text-sm cursor-pointer file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-brand/10 file:text-brand file:hover:bg-brand/20">
                         </div>
                     </div>
 
@@ -244,81 +243,110 @@
                 </div>
             </div>
             <div class="pt-4 text-center text-xs text-gray-300">
-                <p>&copy; 2026 PAC PSNU PAGARNUSA Kecamatan Kemang. All Rights Reserved.</p>
+                <p>© 2026 PAC PSNU PAGARNUSA Kecamatan Kemang. All Rights Reserved.</p>
             </div>
         </div>
     </footer>
 
-    <script>
-        // Toggle Mobile Menu
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
+<script>
+    // Toggle Mobile Menu
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
 
+    if (mobileMenuBtn && mobileMenu) {
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
+    }
 
-        // URL Integrasi Web App Google Apps Script Anda yang Valid
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxuRSraJTx6QRG_uk6jtGPaDIsl8YpZ2jFOpuTVUg_kCtUCUHVSnCY_TPC7VYYqK_hjLQ/exec";
+    // URL Integrasi Web App Google Apps Script Yang Baru Di-Deploy
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbys-occORyKAjk38F4WPqcYhs01BiS5jh2NSwRzvC_q7aTp1zOJYIfK_9SMlTWJy7mxkA/exec";
 
-        const form = document.getElementById('registrationForm');
-        const submitBtn = document.getElementById('submitBtn');
+    const form = document.getElementById('registrationForm');
+    const submitBtn = document.getElementById('submitBtn');
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
 
-            // Set UI saat Loading proses pengiriman
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> <span>Memproses...</span>`;
-            submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+        // Mengubah status tombol menjadi Loading animasi spin
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> <span>Mengunggah Berkas & Mendaftar...</span>`;
+        submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
 
-            const formData = new FormData(form);
-            
-            // Masukkan data esensial action agar dideteksi blok "tambahPeserta" di server backend Anda
-            const dataObj = {
-                action: "tambahPeserta",
-                tambahPeserta: true
-            };
-            
-            formData.forEach((value, key) => {
-                if (key === 'whatsapp') {
-                    dataObj[key] = "+62" + value;
-                } else {
-                    dataObj[key] = value;
-                }
-            });
+        const formData = new FormData(form);
+        const dataObj = {};
+        
+        // Membaca isi formulir teks reguler
+        formData.forEach((value, key) => {
+            if (key === 'whatsapp') {
+                dataObj[key] = "+62" + value;
+            } else {
+                dataObj[key] = value;
+            }
+        });
 
-            // Kirim Data JSON menggunakan Fetch API standar
+        const fileInput = document.getElementById('sertifikatFile');
+        
+        // Fungsi pembantu untuk mengirim payload final setelah file diconvert
+        const sendDataToServer = (payload) => {
             fetch(WEB_APP_URL, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'text/plain;charset=utf-8' // Menghindari preflight CORS bermasalah di Apps Script
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                body: JSON.stringify(dataObj)
+                body: new URLSearchParams(payload).toString()
             })
-            .then(response => response.json()) // Parsing respon teks mentah menjadi Objek JSON
+            .then(response => {
+                if (!response.ok) throw new Error('Jaringan Apps Script terindikasi memblokir koneksi.');
+                return response.json();
+            })
             .then(result => {
                 if (result.status === "success") {
-                    // Berhasil: Tampilkan Username berupa Email dan password acak 5 digit yang dibuat server backend
-                    alert(`Pendaftaran Berhasil Dikirim!\n\nBerikut Akun Login Ujian Anda:\n• Username : ${dataObj.email}\n• Password : (Silakan periksa lembar baris baru di database Google Sheets Anda)\n\nHarap simpan data kredensial login tersebut.`);
+                    const passUjian = result.generatedPassword || "Cek Google Sheets";
+                    alert(`Pendaftaran & Unggah Berkas Berhasil Dikirim!\n\nBerikut Akun Login Ujian Anda:\n• Username : ${payload.email}\n• Password : ${passUjian}\n\nHarap simpan data kredensial login tersebut.`);
                     form.reset();
+                    if (fileInput) fileInput.value = ""; // Ikut membersihkan input file setelah sukses
                 } else {
-                    alert("Gagal memproses data pendaftaran: " + (result.message || "Unknown error"));
+                    alert("Gagal memproses data: " + (result.message || "Terjadi kesalahan sistem internal."));
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                // Sebagai alternatif jika server Google Apps Script merespon status redirect 302 tanpa JSON penuh
-                alert("Pendaftaran selesai dikirim! Jika data tidak muncul di pop-up, silakan konfirmasi akun pendaftaran Anda ke Admin PAC.");
-                form.reset();
+                alert("Terjadi kendala jaringan saat menyambungkan ke server Google Sheets. Harap pastikan Web App sudah di-deploy ulang sebagai 'Anyone'.");
             })
             .finally(() => {
-                // Kembalikan keadaan tombol submit setelah proses tuntas
+                // Mengembalikan tombol ke keadaan semula
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> <span>Kirim Pendaftaran</span>`;
                 submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
             });
-        });
-    </script>
+        };
+
+        // Cek apakah user melampirkan file sertifikat
+        if (fileInput && fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(evt) {
+                // SINKRONISASI BACKEND: Mengirimkan string murni dataURL (termasuk header Base64) 
+                // agar dibaca sempurna oleh parameter teks Apps Script.
+                payloadDataUrl = evt.target.result;
+                
+                payloadFileName = dataObj.nama ? dataObj.nama.replace(/[^a-z0-9]/gi, '_').toLowerCase() + "_" + file.name : file.name;
+                
+                // Menambahkan data parameter teks baru ke objek utama agar ikut terkirim via URLSearchParams
+                dataObj.fileUrl = ""; // Nilai default string kosong, nanti diproses di gs
+                dataObj.baseData = payloadDataUrl;
+                dataObj.baseName = payloadFileName;
+                
+                sendDataToServer(dataObj);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            // Jika tidak ada file, langsung kirim data teks pendaftaran saja
+            sendDataToServer(dataObj);
+        }
+    });
+</script>
 </body>
 </html>

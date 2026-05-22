@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konfirmasi Kehadiran Pelantikan - PAC PSNU PAGARNUSA Kecamatan Kemang</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#056839',
+                            dark: '#044d2b',
+                            light: '#0b8f4d',
+                            white: '#ffffff',
+                            bgLight: '#f5f5f5',
+                            textGray: '#555555'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'btn': '8px',
+                        'card': '12px',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #495057;
+        }
+        .smooth-transition {
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen justify-between">
+
+    <nav class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm smooth-transition">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center space-x-3">
+                    <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="w-12 h-12 object-contain">
+                    <div class="text-brand-dark tracking-tight leading-tight">
+                        <span class="block text-sm font-bold uppercase">PAC PSNU PAGARNUSA</span>
+                        <span class="block text-xs font-semibold text-brand">Kecamatan Kemang</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-6 text-sm font-medium">
+                    <a href="index.html" class="text-brand-textGray hover:text-brand smooth-transition">Home</a>
+                    <a href="#" class="text-brand-textGray hover:text-brand smooth-transition">Profil</a>
+                    <a href="#" class="text-brand-textGray hover:text-brand smooth-transition">Kepengurusan</a>
+                    <a href="#" class="text-brand-textGray hover:text-brand smooth-transition">Berita</a>
+                    <a href="daftar_peserta.html" class="text-brand font-semibold border-b-2 border-brand pb-1">Konfirmasi Kehadiran</a>
+                    <a href="#" class="text-brand-textGray hover:text-brand smooth-transition">Kontak</a>
+                </div>
+                <div class="flex items-center md:hidden">
+                    <button id="mobile-menu-btn" class="text-brand focus:outline-none text-2xl">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 pt-2 pb-4 space-y-2 shadow-inner">
+            <a href="index.html" class="block py-2 px-3 text-brand-textGray hover:bg-brand/10 hover:text-brand rounded-lg smooth-transition">Home</a>
+            <a href="#" class="block py-2 px-3 text-brand-textGray hover:bg-brand/10 hover:text-brand rounded-lg smooth-transition">Profil</a>
+            <a href="#" class="block py-2 px-3 text-brand-textGray hover:bg-brand/10 hover:text-brand rounded-lg smooth-transition">Kepengurusan</a>
+            <a href="#" class="block py-2 px-3 text-brand-textGray hover:bg-brand/10 hover:text-brand rounded-lg smooth-transition">Berita</a>
+            <a href="daftar_peserta.html" class="block py-2 px-3 bg-brand text-white font-medium rounded-lg smooth-transition">Konfirmasi Kehadiran</a>
+            <a href="#" class="block py-2 px-3 text-brand-textGray hover:bg-brand/10 hover:text-brand rounded-lg smooth-transition">Kontak</a>
+        </div>
+    </nav>
+
+    <main class="flex-grow py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-xl mx-auto">
+            
+            <div class="text-center mb-8">
+                <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="w-20 h-20 mx-auto object-contain mb-4">
+                <h1 class="text-2xl font-bold text-brand-dark mb-2">Formulir Konfirmasi Kehadiran</h1>
+                <p class="text-sm text-brand-textGray mb-4">Mohon isi formulir ini untuk kepastian kehadiran Anda pada Acara Pelantikan Pengurus PAC PSNU PAGARNUSA Kecamatan Kemang.</p>
+                
+                <div class="inline-block bg-amber-50 border border-amber-200 text-amber-800 px-4 py-2 rounded-md text-xs font-medium">
+                    <i class="fa-solid fa-calendar-day mr-1.5 text-amber-700"></i>
+                    Batas Waktu Konfirmasi: Maksimal H-3 Sebelum Acara Dimulai
+                </div>
+            </div>
+
+            <div class="bg-white rounded-card shadow-sm p-6 sm:p-8 border border-gray-200">
+                <form id="registrationForm" class="space-y-5">
+                    
+                    <div>
+                        <label for="nama" class="block text-sm font-semibold text-brand-dark mb-1.5">Nama Lengkap/Kelompok<span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fa-solid fa-user text-sm"></i>
+                            </span>
+                            <input type="text" id="nama" name="nama" required placeholder="Contoh: PAC Cibungbulang"
+                                class="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-300 rounded-btn focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand/30 smooth-transition text-sm">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="instansi" class="block text-sm font-semibold text-brand-dark mb-1.5">Instansi / Jabatan <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fa-solid fa-briefcase text-sm"></i>
+                            </span>
+                            <input type="text" id="instansi" name="instansi" required placeholder="Contoh: Pengurus Cabang / PAC Parung / Utusan Banom"
+                                class="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-300 rounded-btn focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand/30 smooth-transition text-sm">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="sumber_undangan" class="block text-sm font-semibold text-brand-dark mb-1.5">Sumber Undangan <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fa-solid fa-envelope-open text-sm"></i>
+                            </span>
+                            <select id="sumber_undangan" name="sumber_undangan" required
+                                class="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-300 rounded-btn focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand/30 smooth-transition text-sm appearance-none cursor-pointer">
+                                <option value="" disabled selected>-- Pilih Sumber Undangan --</option>
+                                <option value="Flyer">Flyer</option>
+                                <option value="Instagram">Instagram</option>
+                                <option value="Website">Website</option>
+                                <option value="WhatsApp">WhatsApp</option>
+                                <option value="Saudara">Saudara</option>
+                                <option value="Keluarga">Keluarga</option>
+                                <option value="Organisasi (Banom NU)">Organisasi (Banom NU)</option>
+                            </select>
+                            <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="whatsapp" class="block text-sm font-semibold text-brand-dark mb-1.5">Nomor WhatsApp Aktif <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 font-medium text-sm">
+                                +62
+                            </span>
+                            <input type="tel" id="whatsapp" name="whatsapp" required placeholder="8xxxxxxxxxx" pattern="[0-9]{9,13}"
+                                class="w-full pl-12 pr-4 py-2.5 bg-gray-50 border border-gray-300 rounded-btn focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand/30 smooth-transition text-sm">
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">Gunakan angka saja tanpa spasi atau tanda hubung.</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-brand-dark mb-2">Status Kehadiran <span class="text-red-500">*</span></label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <label class="flex items-center justify-between p-3 border border-gray-300 rounded-btn cursor-pointer bg-gray-50 hover:border-brand smooth-transition">
+                                <div class="flex items-center space-x-2.5">
+                                    <i class="fa-solid fa-check text-emerald-600 text-sm"></i>
+                                    <span class="text-sm font-medium text-gray-700">Hadir</span>
+                                </div>
+                                <input type="radio" id="hadir" name="status_kehadiran" value="Hadir" required class="w-4 h-4 text-brand focus:ring-brand">
+                            </label>
+
+                            <label class="flex items-center justify-between p-3 border border-gray-300 rounded-btn cursor-pointer bg-gray-50 hover:border-brand smooth-transition">
+                                <div class="flex items-center space-x-2.5">
+                                    <i class="fa-solid fa-xmark text-red-600 text-sm"></i>
+                                    <span class="text-sm font-medium text-gray-700">Tidak Hadir</span>
+                                </div>
+                                <input type="radio" id="tidak_hadir" name="status_kehadiran" value="Tidak Hadir" required class="w-4 h-4 text-brand focus:ring-brand">
+                            </label>
+                        </div>
+                    </div>
+<div id="field-hadir" class="hidden space-y-4 border-t border-gray-200 pt-4">
+    <div>
+        <label for="jumlah_tamu" class="block text-sm font-semibold text-brand-dark mb-1.5">Jumlah Tamu / Pendamping <span class="text-red-500">*</span></label>
+        <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                <i class="fa-solid fa-users text-sm"></i>
+            </span>
+            <select id="jumlah_tamu" name="jumlah_tamu"
+                class="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-300 rounded-btn focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand/30 smooth-transition text-sm appearance-none cursor-pointer">
+                <option value="1 Orang (Tanpa Pendamping)">1 Orang (Hanya Saya)</option>
+                <option value="2 Orang (Membawa 1 Pendamping)">2 Orang (Membawa 1 Pendamping)</option>
+                <option value="3 Orang (Membawa 2 Pendamping)">3 Orang (Membawa 2 Pendamping)</option>
+                <option value="Kelompok">Kelompok / Rombongan</option>
+            </select>
+            <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
+                <i class="fa-solid fa-chevron-down text-xs"></i>
+            </span>
+        </div>
+    </div>
+
+    <div id="input-spesifik-kelompok" class="hidden">
+        <label for="jumlah_anggota_kelompok" class="block text-sm font-semibold text-brand-dark mb-1.5">Total Jumlah Orang dalam Kelompok <span class="text-red-500">*</span></label>
+        <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                <i class="fa-solid fa-arrow-up-1-9 text-sm"></i>
+            </span>
+            <input type="number" id="jumlah_anggota_kelompok" name="jumlah_anggota_kelompok" min="1" placeholder="Masukkan total jumlah orang (contoh: 15)"
+                class="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-300 rounded-btn focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand/30 smooth-transition text-sm">
+        </div>
+    </div>
+</div>                    <div id="field-tidak-hadir" class="hidden space-y-4 border-t border-gray-200 pt-4">
+                        <div>
+                            <label for="pesan_kesan" class="block text-sm font-semibold text-brand-dark mb-1.5">Pesan dan Kesan <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pt-2.5 flex items-start pl-3 text-gray-400">
+                                    <i class="fa-solid fa-comment-dots text-sm"></i>
+                                </span>
+                                <textarea id="pesan_kesan" name="pesan_kesan" rows="3" placeholder="Tuliskan pesan, kesan, atau alasan singkat Anda berhalangan hadir..."
+                                    class="w-full pl-9 pr-4 py-2.5 bg-gray-50 border border-gray-300 rounded-btn focus:outline-none focus:border-brand focus:ring-1 focus:ring-brand/30 smooth-transition text-sm"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submitBtn"
+                        class="w-full bg-brand hover:bg-brand-dark text-white font-medium py-3 px-6 rounded-btn shadow-sm transition-all duration-150 flex items-center justify-center space-x-2 cursor-pointer mt-6">
+                        <i class="fa-solid fa-paper-plane text-xs"></i>
+                        <span>Kirim Konfirmasi Kehadiran</span>
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="bg-brand text-white pt-6 pb-6 border-t-2 border-brand-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center border-b border-white/10 pb-4 space-y-3 md:space-y-0">
+                <div>
+                    <h3 class="text-sm font-bold tracking-wide text-center md:text-left">PAC PSNU PAGARNUSA Kecamatan Kemang</h3>
+                </div>
+                <div class="flex flex-wrap justify-center gap-x-6 gap-y-1 text-xs font-medium text-gray-200">
+                    <a href="mailto:pagarnusatazkemang@gmail.com" class="hover:text-white smooth-transition flex items-center space-x-1">
+                        <i class="fa-solid fa-envelope"></i> <span>Email</span>
+                    </a>
+                    <a href="#" target="_blank" class="hover:text-white smooth-transition flex items-center space-x-1">
+                        <i class="fa-brands fa-instagram"></i> <span>Instagram</span>
+                    </a>
+                    <a href="#" target="_blank" class="hover:text-white smooth-transition flex items-center space-x-1">
+                        <i class="fa-brands fa-tiktok"></i> <span>TikTok</span>
+                    </a>
+                    <a href="#" target="_blank" class="hover:text-white smooth-transition flex items-center space-x-1">
+                        <i class="fa-brands fa-youtube"></i> <span>YouTube</span>
+                    </a>
+                </div>
+            </div>
+            <div class="pt-3 text-center text-[11px] text-gray-300">
+                <p>© 2026 PAC PSNU PAGARNUSA Kecamatan Kemang. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+<script>
+    // Toggle Mobile Menu
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    // Elemen Input Kontrol Utama
+    const hadirRadio = document.getElementById('hadir');
+    const tidakHadirRadio = document.getElementById('tidak_hadir');
+    const fieldHadir = document.getElementById('field-hadir');
+    const fieldTidakHadir = document.getElementById('field-tidak-hadir');
+    
+    const inputJumlahTamu = document.getElementById('jumlah_tamu');
+    const inputPesanKesan = document.getElementById('pesan_kesan');
+
+    // Elemen Tambahan Elemen Kontrol Kelompok
+    const inputSpesifikKelompok = document.getElementById('input-spesifik-kelompok');
+    const jumlahAnggotaKelompok = document.getElementById('jumlah_anggota_kelompok');
+
+    // Fungsi Mengatur Visibilitas Berdasarkan Status Kehadiran
+    function handleStatusKehadiranChange() {
+        if (hadirRadio.checked) {
+            fieldHadir.classList.remove('hidden');
+            fieldTidakHadir.classList.add('hidden');
+            
+            inputJumlahTamu.disabled = false;
+            inputPesanKesan.disabled = true;
+            inputPesanKesan.required = false;
+            
+            // Evaluasi ulang apakah dropdown jumlah tamu saat ini memilih opsi 'Kelompok'
+            handleJumlahTamuChange();
+        } else if (tidakHadirRadio.checked) {
+            fieldHadir.classList.add('hidden');
+            fieldTidakHadir.classList.remove('hidden');
+            
+            inputJumlahTamu.disabled = true;
+            inputPesanKesan.disabled = false;
+            inputPesanKesan.required = true;
+            
+            // Sembunyikan dan nonaktifkan input angka kelompok jika memilih tidak hadir
+            inputSpesifikKelompok.classList.add('hidden');
+            jumlahAnggotaKelompok.disabled = true;
+            jumlahAnggotaKelompok.required = false;
+        }
+    }
+
+    // Fungsi Mengatur Visibilitas Input Angka Kelompok
+    function handleJumlahTamuChange() {
+        if (inputJumlahTamu.value === 'Kelompok' && !inputJumlahTamu.disabled) {
+            inputSpesifikKelompok.classList.remove('hidden');
+            jumlahAnggotaKelompok.disabled = false;
+            jumlahAnggotaKelompok.required = true;
+        } else {
+            inputSpesifikKelompok.classList.add('hidden');
+            jumlahAnggotaKelompok.disabled = true;
+            jumlahAnggotaKelompok.required = false;
+        }
+    }
+
+    // Event Listener untuk Perubahan Pilihan
+    hadirRadio.addEventListener('change', handleStatusKehadiranChange);
+    tidakHadirRadio.addEventListener('change', handleStatusKehadiranChange);
+    inputJumlahTamu.addEventListener('change', handleJumlahTamuChange);
+
+    // URL Integrasi Web App Google Apps Script
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyr6aHX60dbGYSrTlV0A2hoiZF2aHp3v0Errb-ZfiTgsdD36cUkVCGHN_ffe1NNu6dkQg/exec";
+
+    const form = document.getElementById('registrationForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // Event Listener Submit Form
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Mengunci tombol agar tidak terjadi double submit
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin text-xs"></i> <span>Memproses...</span>`;
+        submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+
+        const formData = new FormData(form);
+        const dataObj = {
+            action: "konfirmasiPelantikan",
+            tambahPeserta: false
+        };
+        
+        // Memasukkan seluruh entri form ke dalam objek data
+        formData.forEach((value, key) => {
+            if (key === 'whatsapp') {
+                dataObj[key] = "+62" + value;
+            } else {
+                dataObj[key] = value;
+            }
+        });
+
+        // Kondisional Formatting Nilai Akhir Sebelum Dikirim ke Spreadsheet
+        if (hadirRadio.checked) {
+            dataObj['pesan_kesan'] = "-";
+            
+            // Format khusus jika yang dipilih adalah kelompok / rombongan
+            if (inputJumlahTamu.value === 'Kelompok') {
+                const totalOrang = jumlahAnggotaKelompok.value || "1";
+                dataObj['jumlah_tamu'] = "Kelompok (" + totalOrang + " Orang)";
+            }
+        } else {
+            dataObj['jumlah_tamu'] = "0 Orang (Tidak Hadir)";
+        }
+
+        // Mengirimkan data via Fetch API
+        fetch(WEB_APP_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain;charset=utf-8'
+            },
+            body: JSON.stringify(dataObj)
+        })
+        .then(response => response.text())
+        .then(textData => {
+            try {
+                const result = JSON.parse(textData);
+                if (result.status === "success") {
+                    alert(`Konfirmasi Berhasil!\n\nData konfirmasi atas nama "${dataObj.nama}" telah tersimpan.`);
+                    form.reset();
+                    handleStatusKehadiranChange();
+                } else {
+                    alert("Gagal memproses data: " + (result.message || "Unknown error"));
+                }
+            } catch (jsonError) {
+                // Penanganan jika respon balik dari Apps Script bukan format JSON murni tetapi mengandung teks sukses
+                if (textData.includes("success") || textData.includes("berhasil")) {
+                    alert(`Konfirmasi Berhasil!\n\nTerima kasih, data Anda telah tercatat.`);
+                    form.reset();
+                    handleStatusKehadiranChange();
+                } else {
+                    alert("Terjadi kendala pemformatan data dari server.");
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("Konfirmasi selesai diproses! Jika ada kendala silakan hubungi admin PAC.");
+            form.reset();
+            handleStatusKehadiranChange();
+        })
+        .finally(() => {
+            // Mengembalikan status tombol submit seperti semula
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-xs"></i> <span>Kirim Konfirmasi Kehadiran</span>`;
+            submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+        });
+    });
+</script>
+</body>
+</html>

@@ -302,7 +302,7 @@
             })
             .then(result => {
                 if (result.status === "success") {
-                    const passUjian = result.generatedPassword || "Cek Google Sheets";
+                    const passUjian = result.generatedPassword || "Cek Email Anda";
                     alert(`Pendaftaran & Unggah Berkas Berhasil Dikirim!\n\nBerikut Akun Login Ujian Anda:\n• Username : ${payload.email}\n• Password : ${passUjian}\n\nHarap simpan data kredensial login tersebut.`);
                     form.reset();
                     if (fileInput) fileInput.value = ""; // Ikut membersihkan input file setelah sukses

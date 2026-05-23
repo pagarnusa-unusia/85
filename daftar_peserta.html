@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -300,16 +301,36 @@
                 if (!response.ok) throw new Error('Jaringan Apps Script terindikasi memblokir koneksi.');
                 return response.json();
             })
-            .then(result => {
-                if (result.status === "success") {
-                    const passUjian = result.generatedPassword || "Cek Email Anda";
-                    alert(`Pendaftaran & Unggah Berkas Berhasil Dikirim!\n\nBerikut Akun Login Ujian Anda:\n• Username : ${payload.email}\n• Password : ${passUjian}\n\nHarap simpan data kredensial login tersebut.`);
-                    form.reset();
-                    if (fileInput) fileInput.value = ""; // Ikut membersihkan input file setelah sukses
-                } else {
-                    alert("Gagal memproses data: " + (result.message || "Terjadi kesalahan sistem internal."));
-                }
-            })
+.then(result => {
+    if (result.status === "success") {
+        form.reset();
+        if (fileInput) fileInput.value = "";
+
+        Swal.fire({
+            title: 'Pendaftaran Berhasil!',
+            text: 'Silahkan cek email anda untuk mendapatkan Informasi Akun Ujian anda',
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonText: 'Kembali ke Home',
+            cancelButtonText: 'Daftar Lagi',
+            confirmButtonColor: '#166534', // Sesuaikan warna dengan tema Anda
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = 'index.html';
+            } else {
+                // Jika klik "Daftar Lagi", halaman tidak reload, form sudah di-reset di atas
+                console.log("User memilih daftar lagi");
+            }
+        });
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: result.message || "Terjadi kesalahan sistem internal."
+        });
+    }
+})
             .catch(error => {
                 console.error('Error:', error);
                 alert("Terjadi kendala jaringan saat menyambungkan ke server Google Sheets. Harap pastikan Web App sudah di-deploy ulang sebagai 'Anyone'.");

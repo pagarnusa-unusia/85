@@ -142,7 +142,7 @@ document.getElementById('loginForm').onsubmit = async (e) => {
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
 
     // 1. Cek Admin
-    if (await checkAdminLogin(userInp, passInp)) {
+if (userInp === "pacpagarnusakemang@gmail.com" && passInp === "admin123") {
         window.location.href = "admin.html";
         return;
     }

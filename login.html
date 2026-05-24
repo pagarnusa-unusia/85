@@ -161,6 +161,8 @@ if (userInp === "pacpagarnusakemang@gmail.com" && passInp === "admin123") {
 
         if (peserta) {
             localStorage.setItem('sesiPeserta', JSON.stringify(peserta));
+const loginTime = new Date().getTime();
+localStorage.setItem('loginTime', loginTime);
             window.location.href = "panelpeserta.html";
         } else {
             throw new Error("Email atau Password tidak cocok.");

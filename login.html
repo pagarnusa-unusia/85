@@ -21,68 +21,73 @@
     </script>
 
     <style>
-        body { font-family: 'Poppins', sans-serif; overflow: hidden; }
+        body { font-family: 'Poppins', sans-serif; }
         .bg-animated {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background: linear-gradient(rgba(27, 117, 72, 0.7), rgba(0, 0, 0, 0.8)), 
+            background: linear-gradient(rgba(20, 40, 28, 0.75), rgba(10, 15, 12, 0.9)), 
                         url('https://lh3.googleusercontent.com/d/1vI4PCquzIBTekytJ0pGo1xKym9qtZIQX?q=80&w=2070&auto=format&fit=crop'); 
             background-size: cover; background-position: center;
-            animation: zoomBg 20s infinite alternate;
+            animation: zoomBg 25s infinite alternate ease-in-out;
         }
-        @keyframes zoomBg { from { transform: scale(1); } to { transform: scale(1.1); } }
-        .login-card { background: rgba(255, 255, 255, 0.90); backdrop-filter: blur(15px); }
+        @keyframes zoomBg { from { transform: scale(1); } to { transform: scale(1.06); } }
+        .login-card { background: rgb(200, 252, 187); backdrop-filter: blur(0px); }
     </style>
 </head>
 
-<body class="min-h-screen flex flex-col items-center justify-center p-4">
+<body class="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 overflow-y-auto selection:bg-primary selection:text-white">
 
     <div class="bg-animated"></div>
 
-    <div class="fixed top-6 left-6">
-        <a href="index.html" class="flex items-center gap-2 text-white font-bold hover:text-emerald-200 transition-colors drop-shadow-md">
-            <i class="fas fa-arrow-left"></i> <span>Kembali</span>
+    <div class="absolute top-4 left-4 sm:top-6 sm:left-6 z-20">
+        <a href="index.html" class="flex items-center gap-2 text-white/90 text-sm font-semibold hover:text-white bg-black/20 hover:bg-black/40 px-4 py-2 rounded-xl border border-white/10 transition-all duration-200">
+            <i class="fas fa-arrow-left text-xs"></i> <span>Kembali</span>
         </a>
     </div>
 
-    <div class="text-center mb-8 relative z-10">
-        <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo" class="h-20 w-20 rounded-full mx-auto mb-4 border-2 border-white shadow-lg">
-        <h1 class="text-2xl font-bold text-white uppercase tracking-wider drop-shadow-md">Pagar Nusa UNUSIA</h1>
-        <p class="text-emerald-100 text-sm italic drop-shadow-sm">Sistem Informasi Digital</p>
-    </div>
+    <div class="w-full max-w-md my-auto py-8 flex flex-col items-center">
+        <div class="text-center mb-6 relative z-10 w-full px-4">
+            <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo" class="h-24 w-auto object-contain mx-auto mb-4 drop-shadow-xl">
+            <h1 class="text-xl sm:text-2xl font-bold text-white uppercase tracking-wider block">Pagar Nusa UNUSIA</h1>
+            <p class="text-emerald-400/90 text-xs sm:text-sm font-medium mt-1 tracking-wide">Sistem Informasi Digital Panel Peserta</p>
+        </div>
 
-    <div class="w-full max-w-md login-card p-8 rounded-[2.5rem] shadow-2xl shadow-black/30 border border-white/20 relative z-10">
-        <form id="loginForm" class="space-y-6">
-            <div>
-                <label class="block text-xs font-bold text-slate-400 tracking-widest mb-2 ml-1">Username / Email</label>
-                <div class="relative group">
-                    <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-primary transition-colors"></i>
-                    <input type="text" id="username" required placeholder="Masukkan username"
-                        class="w-full pl-12 pr-4 py-4 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-primary focus:bg-white outline-none transition-all text-sm">
+        <div class="w-full login-card p-6 sm:p-8 rounded-2xl shadow-2xl shadow-black/50 border border-white/40 relative z-10 transition-all duration-300">
+            <form id="loginForm" class="space-y-5">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Username / Email</label>
+                    <div class="relative group">
+                        <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors text-sm"></i>
+                        <input type="text" id="username" required placeholder="Masukkan username atau email"
+                            class="w-full pl-11 pr-4 py-3.5 bg-slate-50 rounded-xl border border-slate-200 focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10 outline-none transition-all text-sm text-slate-800 placeholder:text-slate-400 font-medium">
+                    </div>
                 </div>
-            </div>
 
-            <div>
-                <label class="block text-xs font-bold text-slate-400 tracking-widest mb-2 ml-1">Password</label>
-                <div class="relative group">
-                    <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-primary transition-colors"></i>
-                    <input type="password" id="password" required placeholder="••••••••"
-                        class="w-full pl-12 pr-12 py-4 bg-slate-50 rounded-2xl border-2 border-transparent focus:border-primary focus:bg-white outline-none transition-all text-sm">
-                    <button type="button" id="togglePassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-primary">
-                        <i class="fas fa-eye-slash"></i>
-                    </button>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Password</label>
+                    <div class="relative group">
+                        <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors text-sm"></i>
+                        <input type="password" id="password" required placeholder="••••••••"
+                            class="w-full pl-11 pr-11 py-3.5 bg-slate-50 rounded-xl border border-slate-200 focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10 outline-none transition-all text-sm text-slate-800 placeholder:text-slate-400 font-mono">
+                        <button type="button" id="togglePassword" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-primary transition-colors cursor-pointer p-1">
+                            <i class="fas fa-eye-slash text-sm"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
 
-            <div id="error-message" class="hidden flex items-center gap-2 text-red-600 bg-red-50 p-4 rounded-xl text-xs font-bold border border-red-100">
-                <i class="fas fa-circle-exclamation"></i>
-                <span id="error-text">Username atau Password salah!</span>
-            </div>
-
-            <button type="submit" id="btnSubmit" class="w-full bg-primary hover:bg-primaryDark text-white font-bold py-4 rounded-2xl shadow-lg transition-all transform active:scale-[0.98] flex items-center justify-center gap-3">
-                <span>MASUK</span>
-                <i class="fas fa-sign-in-alt text-sm"></i>
-            </button>
-        </form>
+                <div id="error-message" class="hidden flex items-start gap-2.5 text-red-700 bg-red-50/90 px-4 py-3 rounded-xl text-xs font-semibold border border-red-200/60 leading-relaxed shadow-sm animate-fadeIn">
+                    <i class="fas fa-circle-exclamation mt-0.5 text-sm"></i>
+                    <span id="error-text">Username atau Password salah!</span>
+                </div>
+<!-- Link Pendaftaran -->
+<div class="text-center text-xs text-slate-500 font-medium mt-5 pt-1">
+    Belum Punya Akun? <a href="daftar_peserta.html" class="text-primary hover:text-primaryDark font-bold hover:underline transition-colors">Daftar Disini</a>
+</div>
+                <button type="submit" id="btnSubmit" class="w-full bg-primary hover:bg-primaryDark text-white font-bold py-4 rounded-xl shadow-md hover:shadow-xl transition-all duration-200 transform active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer text-sm tracking-wider">
+                    <span>MASUK</span>
+                    <i class="fas fa-sign-in-alt text-xs"></i>
+                </button>
+            </form>
+        </div>
     </div>
 
 <script>
@@ -99,33 +104,16 @@ toggleBtn.onclick = () => {
     toggleBtn.querySelector('i').classList.toggle('fa-eye');
 };
 
-// Cek Login Admin Lokal (CSV)
+// Cek Login Admin Langsung (Hardcoded)
 async function checkAdminLogin(userInp, passInp) {
-    try {
-        const response = await fetch('admin.csv');
-        if (!response.ok) {
-            console.warn("File admin.csv tidak ditemukan, melewati pengecekan admin lokal.");
-            return false;
-        }
+    // Kredensial Admin
+    const adminUser = "admin";
+    const adminPass = "123";
 
-        const text = await response.text();
-        const rows = text.split('\n');
-        
-        for (let i = 1; i < rows.length; i++) {
-            const cols = rows[i].split(',');
-            if (cols.length >= 2) {
-                const u = cols[0].trim();
-                const p = cols[1].trim();
-                if (u === userInp && p === passInp) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    } catch (e) {
-        console.error("Error pada fungsi checkAdminLogin:", e);
-        return false;
+    if (userInp === adminUser && passInp === adminPass) {
+        return true;
     }
+    return false;
 }
 
 // Handler Submit Form Login
@@ -142,8 +130,10 @@ document.getElementById('loginForm').onsubmit = async (e) => {
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memeriksa Akun...';
     errorDiv.classList.add('hidden');
 
-    // 1. Jalankan Proteksi Awal: Cek Login Admin Lokal (CSV)
+    // 1. Jalankan Proteksi Awal: Cek Login Admin
     if (await checkAdminLogin(userInp, passInp)) {
+        // Set sesi admin agar halaman admin.html bisa diakses
+        sessionStorage.setItem('isAdminLoggedIn', 'true');
         window.location.href = "admin.html";
         return;
     }

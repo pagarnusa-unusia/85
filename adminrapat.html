@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin Link Rapat | PAGARNUSA KEMANG</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { pnGreenDark: '#0f2e22', pnGreen: '#1b4d3e', pnGold: '#d4af37' }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .nav-font { font-family: 'Oswald', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col text-slate-800">
+
+    <header class="bg-pnGreen text-white py-4 shadow-md">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <h1 class="nav-font text-lg tracking-wider uppercase flex items-center gap-2">
+                <i class="fas fa-user-shield text-amber-300"></i> Panel Kontrol Admin Rapat
+            </h1>
+            <span class="text-[10px] bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 font-bold uppercase tracking-wider">PAC Kemang</span>
+        </div>
+    </header>
+
+    <main class="flex-1 container mx-auto max-w-xl px-4 py-12">
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 md:p-8">
+            <div class="mb-6 border-b border-slate-100 pb-4">
+                <h2 class="text-base font-bold text-slate-800">Perbarui Ruang Pertemuan</h2>
+                <p class="text-xs text-slate-400 mt-0.5">Perubahan akan langsung mengubah tampilan tombol di halaman utama pengguna.</p>
+            </div>
+
+            <form id="adminForm" onsubmit="updateMeeting(event)" class="space-y-5">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Judul Agenda Rapat</label>
+                    <input type="text" id="judulRapat" required placeholder="Contoh: Pemantapan Berkas Administrasi UKT IV" 
+                        class="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none text-sm focus:ring-2 focus:ring-pnGreen/20 focus:border-pnGreen transition-all text-slate-700 font-medium">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Tautan Google Meet Baru</label>
+                    <input type="url" id="linkMeet" required placeholder="https://meet.google.com/xxx-xxxx-xxx" 
+                        class="w-full px-4 py-3 border border-slate-200 rounded-xl outline-none text-sm focus:ring-2 focus:ring-pnGreen/20 focus:border-pnGreen transition-all text-slate-700 font-medium">
+                </div>
+
+                <button type="submit" id="btnSubmit" class="w-full py-4 bg-pnGreen hover:bg-pnGreenDark text-white font-bold rounded-xl text-xs uppercase tracking-widest transition-all shadow-md flex items-center justify-center space-x-2">
+                    <i class="fas fa-save"></i>
+                    <span>Simpan Perubahan</span>
+                </button>
+            </form>
+
+            <div id="statusAlert" class="hidden mt-4 p-4 rounded-xl text-xs font-semibold text-center border"></div>
+        </div>
+    </main>
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzTsLKJbVUQbXLetXt0NvOod4YXRp-f6O6kcjefT0q2rgD5fBsFGFs5p7RALTMSGrQmJA/exec';
+
+        // Mengambil data rapat terkini saat halaman admin dibuka
+        async function fetchCurrentData() {
+            try {
+                const response = await fetch(`${API_URL}?action=getMeeting`);
+                const res = await response.json();
+                if(res.status === "success" && res.data) {
+                    document.getElementById('judulRapat').value = res.data.judul || "";
+                    document.getElementById('linkMeet').value = res.data.link || "";
+                }
+            } catch (e) { console.error("Gagal mengambil data", e); }
+        }
+
+        // Mengirimkan pembaruan data ke Google Sheets
+        async function updateMeeting(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnSubmit');
+            const alertBox = document.getElementById('statusAlert');
+            const judul = document.getElementById('judulRapat').value;
+            const link = document.getElementById('linkMeet').value;
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> <span>Menyimpan...</span>';
+            alertBox.className = "hidden";
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Digunakan untuk menghindari batasan CORS standar Apps Script POST
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ 'judul': judul, 'link': link })
+                });
+
+                alertBox.className = "mt-4 p-4 rounded-xl text-xs font-semibold text-center bg-emerald-50 text-emerald-700 border-emerald-100 block";
+                alertBox.innerText = "Sukses! Data rapat berhasil diperbarui di spreadsheet.";
+            } catch (error) {
+                alertBox.className = "mt-4 p-4 rounded-xl text-xs font-semibold text-center bg-red-50 text-red-700 border-red-100 block";
+                alertBox.innerText = "Proses selesai. Silakan periksa halaman utama untuk memastikan.";
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save"></i> <span>Simpan Perubahan</span>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchCurrentData);
+    </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rapat Umum PSNU PAGARNUSA UNUSIA</title>
+    <title>Rapat Panitia UKT | PAGARNUSA UNUSIA</title>
     <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,16 +12,17 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#1B7548',
-                        primaryDark: '#145c38',
+                        pnGreenDark: '#0f2e22',
+                        pnGreen: '#1b4d3e',
+                        pnGreenLight: '#2c6e59',
+                        pnGold: '#d4af37',
                     },
                     animation: {
-                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
-                        'spin-slow': 'spin 2s linear infinite',
+                        'fade-in-up': 'fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                     },
                     keyframes: {
                         fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '0%': { opacity: '0', transform: 'translateY(16px)' },
                             '100%': { opacity: '1', transform: 'translateY(0)' },
                         }
                     }
@@ -30,11 +31,12 @@
         }
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        body { font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+        .nav-font { font-family: 'Oswald', sans-serif; }
         
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
@@ -42,17 +44,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Loading Spinner Custom */
-        .loader {
-            border-top-color: #1B7548;
-            animation: spinner 0.6s linear infinite;
-        }
-        @keyframes spinner {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Unique Preloader Styles */
         #preloader {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -62,125 +53,142 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 0.5s ease, visibility 0.5s;
+            transition: opacity 0.4s ease, visibility 0.4s;
         }
-        /* Animasi Muter untuk Preloader */
         .spinning-loader {
-            width: 60px;
-            height: 60px;
-            border: 5px solid #f3f3f3; /* Warna dasar abu-abu terang */
-            border-top: 5px solid #1B7548; /* Warna hijau primary */
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f1f5f9;
+            border-top: 4px solid #1b4d3e;
             border-radius: 50%;
-            animation: spin-loading 1s linear infinite;
+            animation: spin-loading 0.8s linear infinite;
         }
-
         @keyframes spin-loading {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-emerald-50 via-slate-50 to-emerald-100 min-h-screen flex flex-col">
+<body class="bg-gradient-to-br from-slate-50 via-slate-100 to-emerald-50/50 min-h-screen flex flex-col selection:bg-pnGreen selection:text-white">
 
-<div id="preloader">
-    <div class="spinning-loader"></div>
-    <p class="mt-6 text-primary font-bold text-sm tracking-widest animate-pulse">
-        Menyiapkan Rapat...
-    </p>
-</div>
+    <div id="preloader">
+        <div class="spinning-loader"></div>
+        <p class="mt-5 text-pnGreen font-bold text-xs tracking-widest uppercase animate-pulse">Menyiapkan Rapat...</p>
+    </div>
 
-    <header id="main-header" class="sticky top-0 z-50 bg-primary text-white shadow-lg">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            
-            <div class="flex items-center space-x-3">
-                <img src="logopn.png" alt="Logo PAGARNUSA" class="h-10 drop-shadow-md">
-                <h1 class="text-sm font-bold tracking-wide leading-tight uppercase">
-                    PAGARNUSA<br>UNUSIA
-                </h1>
+    <div class="bg-pnGreenDark text-white py-2 text-[10px] md:text-xs text-center uppercase tracking-[0.2em] font-medium border-b border-white/10 opacity-95">
+        Media Resmi PAC PSNU PAGARNUSA Kecamatan Kemang - Kabupaten Bogor
+    </div>
+
+    <header class="bg-white/90 backdrop-blur-md py-4 shadow-sm border-b border-slate-100 sticky top-0 z-40">
+        <div class="container mx-auto px-4 md:px-6 flex justify-between items-center">
+            <div class="flex items-center space-x-3.5">
+                <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="h-11 md:h-12 w-auto object-contain">
+                <div class="text-left border-l-2 border-slate-200 pl-3.5">
+                    <h1 class="text-lg md:text-xl font-bold text-pnGreen tracking-tight leading-none nav-font uppercase">PAC PSNU PAGARNUSA</h1>
+                    <p class="text-slate-500 font-semibold text-[11px] tracking-wider uppercase mt-0.5">Kecamatan Kemang, Bogor</p>
+                </div>
             </div>
             
-            <a href="index.html" class="flex items-center space-x-2 bg-primaryDark/50 hover:bg-primaryDark px-4 py-2 rounded-xl transition-all duration-300 border border-white/10 group">
-                <i class="fas fa-arrow-left text-xs group-hover:-translate-x-1 transition-transform"></i>
-                <span class="text-sm font-medium">Menu Utama</span>
+            <a href="index.html" class="text-[11px] font-bold uppercase tracking-widest text-slate-500 hover:text-white bg-slate-50 hover:bg-pnGreen transition-all border border-slate-200 px-4 py-2 rounded-xl flex items-center gap-2 shadow-sm">
+                <i class="fas fa-arrow-left text-[10px]"></i>
+                <span class="hidden sm:inline">Kembali</span>
             </a>
-            
         </div>
     </header>
 
-    <main class="flex-1 container mx-auto flex flex-col items-center justify-center px-4 py-10">
-        
-        <div class="glass-card w-full max-w-md rounded-3xl shadow-2xl overflow-hidden border border-emerald-100 animate-fade-in-up">
+    <main class="flex-1 container mx-auto flex flex-col items-center justify-center px-4 py-12">
+        <div class="glass-card w-full max-w-md rounded-2xl shadow-xl shadow-slate-200/80 overflow-hidden border border-slate-200/60 animate-fade-in-up">
             
-            <div class="bg-primary p-8 text-white text-center relative">
+            <div class="bg-gradient-to-br from-pnGreen to-pnGreenDark p-8 text-white text-center relative border-b border-white/5">
                 <div class="relative z-10">
-                    <img src="https://lh3.googleusercontent.com/d/1g1NjDH47x1l7CmOSlCwk9eJ_K2DZCCKY" alt="Google Meet Logo" class="h-10 mx-auto mb-2 drop-shadow-sm">
-                    <h2 class="text-xl font-bold">Gabung Rapat</h2>
-                    <p class="text-xs opacity-80 mt-1 uppercase tracking-widest">Panitia Ujian Kenaikan Tingkat IV</p>
+                    <div class="w-14 h-14 bg-white/10 border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4 backdrop-blur-sm shadow-inner">
+                        <i class="fas fa-video text-2xl text-amber-300"></i>
+                    </div>
+                    <h2 id="meetingTitle" class="text-lg font-bold nav-font uppercase tracking-wide">Memuat Judul Rapat...</h2>
+                    <p id="meetingSubtitle" class="text-[10px] font-bold text-amber-300 uppercase tracking-widest mt-1">RAPAT PANITIA UKT</p>
                 </div>
             </div>
 
             <div class="p-6 md:p-8 space-y-6">
-                <div id="captchaBox" class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-5 flex items-center justify-between transition-all duration-300 relative overflow-hidden">
-                    
+                <div id="captchaBox" class="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex items-center justify-between transition-all duration-300">
                     <div class="flex items-center space-x-4">
                         <div class="relative w-6 h-6 flex items-center justify-center">
-                            <input type="checkbox" id="robotCheck" 
-                                class="w-6 h-6 rounded border-2 border-slate-300 text-primary focus:ring-primary cursor-pointer appearance-none checked:hidden transition-all">
-                            
-                            <div id="loadingCircle" class="hidden w-6 h-6 border-2 border-slate-200 border-t-primary rounded-full animate-spin"></div>
-                            
-                            <i id="checkIcon" class="hidden fas fa-check-circle text-primary text-xl"></i>
+                            <input type="checkbox" id="robotCheck" class="w-6 h-6 rounded border border-slate-300 text-pnGreen focus:ring-pnGreen cursor-pointer appearance-none checked:hidden transition-all">
+                            <div id="loadingCircle" class="hidden w-5 h-5 border-2 border-slate-200 border-t-pnGreen rounded-full animate-spin"></div>
+                            <i id="checkIcon" class="hidden fas fa-check-circle text-pnGreen text-xl"></i>
                         </div>
-                        
-                        <label id="captchaLabel" for="robotCheck" class="text-sm font-semibold text-slate-700 cursor-pointer select-none">
+                        <label id="captchaLabel" for="robotCheck" class="text-xs font-bold text-slate-600 cursor-pointer select-none uppercase tracking-wider">
                             Verifikasi Panitia
                         </label>
                     </div>
 
-                    <div class="flex flex-col items-end opacity-40">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RecaptchaLogo.svg/1200px-RecaptchaLogo.svg.png" 
-                             alt="reCAPTCHA" class="h-8">
-                        <span class="text-[8px] uppercase font-bold tracking-tighter">Privacy & Terms</span>
+                    <div class="flex flex-col items-end opacity-40 select-none">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/RecaptchaLogo.svg/1200px-RecaptchaLogo.svg.png" alt="reCAPTCHA" class="h-6 object-contain">
+                        <span class="text-[7px] uppercase font-bold tracking-tighter mt-0.5">Privacy & Terms</span>
                     </div>
                 </div>
 
-                <div id="redirectSection" class="hidden animate-fade-in-up mt-4">
-                    <button onclick="redirectToMeet()" class="w-full bg-primary hover:bg-primaryDark text-white font-bold py-4 rounded-2xl shadow-lg transition-all transform hover:scale-[1.02] active:scale-95 flex items-center justify-center space-x-3">
-                        <i class="fas fa-sign-in-alt"></i>
-                        <span>Gabung</span>
+                <div id="redirectSection" class="hidden animate-fade-in-up">
+                    <button onclick="redirectToMeet()" class="w-full bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold py-4 rounded-xl shadow-md transition-all transform active:scale-95 flex items-center justify-center space-x-2.5 text-xs uppercase tracking-widest">
+                        <i class="fas fa-sign-in-alt text-sm"></i>
+                        <span>Masuk Ruang Rapat</span>
                     </button>
-                    <p class="text-[10px] text-center text-slate-400 mt-4 italic">
-                        klik tombol diatas untuk bergabung.
+                    <p class="text-[9px] text-center text-slate-400 mt-3 font-medium italic">
+                        Klik tombol di atas untuk menuju ke ruang Google Meet resmi.
                     </p>
                 </div>
             </div>
         </div>
 
-        <p class="mt-8 text-slate-400 text-[10px]  tracking-widest">
-            Mengetahui, Panitia UKT UNUSIA IV
+        <p class="mt-8 text-slate-400 text-[10px] font-semibold tracking-widest uppercase text-center">
+            Mengetahui, Pimpinan Anak Cabang Kecamatan Kemang
         </p>
     </main>
-    <footer class="bg-primary text-white text-center py-3 mt-auto">
-        <p class="text-xs opacity-90">© 2025 PAGARNUSA UNUSIA. Semua hak cipta dilindungi.</p>
+
+    <footer class="bg-white border-t border-slate-100 py-6 text-center">
+        <p class="text-slate-400 text-[10px] font-semibold uppercase tracking-widest" id="copyright-text">
+            © 2026 Lembaga IT & Infokom PAC Pagar Nusa Kecamatan Kemang
+        </p>
     </footer>
 
     <script>
-        // Preloader Logic
-        window.addEventListener('load', () => {
-            const preloader = document.getElementById('preloader');
-            setTimeout(() => {
-                preloader.style.opacity = '0';
-                preloader.style.visibility = 'hidden';
-            }, 3000); // Durasi 2 detik sesuai permintaan
-        });
+        // Masukkan URL Web App Google Apps Script Anda di bawah ini
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzTsLKJbVUQbXLetXt0NvOod4YXRp-f6O6kcjefT0q2rgD5fBsFGFs5p7RALTMSGrQmJA/exec';
+        
+        let targetMeetUrl = "https://meet.google.com/";
 
+        // 1. Ambil Data Tautan Rapat Aktif dari Google Sheets
+        async function loadActiveMeeting() {
+            try {
+                const response = await fetch(`${API_URL}?action=getMeeting`);
+                const data = await response.json();
+                
+                if (data.status === "success" && data.data) {
+                    document.getElementById('meetingTitle').innerText = data.data.judul;
+                    document.getElementById('meetingSubtitle').innerText = `RAPAT PANITIA - KE ${data.data.ke}`;
+                    targetMeetUrl = data.data.link;
+                } else {
+                    document.getElementById('meetingTitle').innerText = "Belum Ada Rapat Aktif";
+                }
+            } catch (error) {
+                console.error(error);
+                document.getElementById('meetingTitle').innerText = "Rapat Panitia UKT IV";
+            } finally {
+                // Sembunyikan preloader setelah data dimuat atau gagal
+                const preloader = document.getElementById('preloader');
+                preloader.style.opacity = '0';
+                setTimeout(() => preloader.style.visibility = 'hidden', 400);
+            }
+        }
+
+        // 2. Logika Verifikasi Checkbox Keamanan
         const robotCheck = document.getElementById('robotCheck');
         const loadingCircle = document.getElementById('loadingCircle');
         const checkIcon = document.getElementById('checkIcon');
         const captchaLabel = document.getElementById('captchaLabel');
         const captchaBox = document.getElementById('captchaBox');
         const redirectSection = document.getElementById('redirectSection');
-        const meetUrl = "https://meet.google.com/nyb-bfcn-vde";
 
         robotCheck.addEventListener('change', function() {
             if (this.checked) {
@@ -188,7 +196,6 @@
                 loadingCircle.classList.remove('hidden');
                 captchaLabel.innerText = "Memverifikasi...";
                 captchaLabel.classList.add('text-slate-400', 'italic');
-                captchaBox.classList.add('border-primary/20');
 
                 setTimeout(() => {
                     loadingCircle.classList.add('hidden');
@@ -196,14 +203,13 @@
                     
                     captchaLabel.innerText = "Verifikasi Berhasil";
                     captchaLabel.classList.remove('text-slate-400', 'italic');
-                    captchaLabel.classList.add('text-primary');
-                    captchaBox.classList.add('bg-emerald-50', 'border-primary/40');
+                    captchaLabel.classList.add('text-pnGreen');
+                    captchaBox.classList.add('bg-emerald-50/50', 'border-emerald-200');
 
                     setTimeout(() => {
                         redirectSection.classList.remove('hidden');
-                    }, 300);
-
-                }, 3000);
+                    }, 250);
+                }, 2000);
             }
         });
 
@@ -213,21 +219,11 @@
             btn.disabled = true;
             
             setTimeout(() => {
-                window.location.href = meetUrl;
-            }, 500);
+                window.location.href = targetMeetUrl;
+            }, 400);
         }
+
+        document.addEventListener('DOMContentLoaded', loadActiveMeeting);
     </script>
 </body>
-
 </html>
-
-
-
-
-
-
-
-
-
-
-

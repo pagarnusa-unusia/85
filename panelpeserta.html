@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Panel Peserta - PAC PSNU PAGARNUSA Kecamatan Kemang</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,9 +42,15 @@
             font-family: 'Poppins', sans-serif;
             background-color: #f5f5f5;
             color: #555555;
+            -webkit-tap-highlight-color: transparent; /* Optimasi Sentuhan Android */
         }
         .smooth-transition {
             transition: all 0.3s ease;
+        }
+        /* Mencegah teks meluap di layar hp kecil */
+        .word-break-android {
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
     </style>
     <script>
@@ -58,95 +64,95 @@
         const dataPeserta = JSON.parse(sesiPeserta);
     </script>
 </head>
-<body class="flex flex-col min-h-screen justify-between">
+<body class="flex flex-col min-h-screen justify-between bg-[#f5f5f5]">
 
     <nav class="sticky top-0 z-50 bg-white border-b-2 border-brand shadow-sm smooth-transition">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20">
                 <div class="flex items-center space-x-3">
-                    <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="w-12 h-12 object-contain">
+                    <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="w-10 h-10 sm:w-12 sm:h-12 object-contain">
                     <div class="text-brand-dark tracking-tight leading-tight">
-                        <span class="block text-sm font-extrabold uppercase">PAC PSNU PAGARNUSA</span>
-                        <span class="block text-xs font-semibold text-brand">Kecamatan Kemang</span>
+                        <span class="block text-xs sm:text-sm font-extrabold uppercase">PAC PSNU PAGARNUSA</span>
+                        <span class="block text-[10px] sm:text-xs font-semibold text-brand">Kecamatan Kemang</span>
                     </div>
                 </div>
-                <div class="flex items-center space-x-4 text-sm font-medium">
-                    <span class="hidden sm:inline-block text-brand-dark font-semibold">Selamat Datang, <span id="navNama" class="text-brand">...</span></span>
-                    <button id="logoutBtn" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 px-4 rounded-btn smooth-transition flex items-center space-x-1 cursor-pointer shadow-sm">
-                        <i class="fa-solid fa-power-off"></i> <span class="hidden sm:inline">Keluar</span>
+                <div class="flex items-center space-x-2 sm:space-x-4 text-xs sm:text-sm font-medium">
+                    <span class="hidden md:inline-block text-brand-dark font-semibold">Selamat Datang, <span id="navNama" class="text-brand">...</span></span>
+                    <button id="logoutBtn" class="bg-red-600 hover:bg-red-700 text-white text-[11px] sm:text-xs font-bold py-2 px-3 sm:px-4 rounded-btn smooth-transition flex items-center space-x-1 cursor-pointer shadow-sm active:scale-95">
+                        <i class="fa-solid fa-power-off"></i> <span>Keluar</span>
                     </button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <main class="flex-grow py-10 px-4 sm:px-6 lg:px-8">
+    <main class="flex-grow py-6 sm:py-10 px-3 sm:px-6 lg:px-8">
         <div class="max-w-4xl mx-auto">
             
-            <div class="bg-white rounded-card shadow-sm p-6 border-l-4 border-brand flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+            <div class="bg-white rounded-card shadow-sm p-4 sm:p-6 border-l-4 border-brand flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6 sm:mb-8 animate__animated animate__fadeIn">
                 <div>
-                    <h1 class="text-xl sm:text-2xl font-bold text-brand-dark">Dashboard Ujian Kenaikan Tingkat</h1>
-                    <p class="text-xs text-brand-textGray mt-0.5">Pantau dan verifikasi data administrasi profil pendaftaran Anda secara berkala.</p>
+                    <h1 class="text-lg sm:text-2xl font-bold text-brand-dark">Dashboard Ujian Kenaikan Tingkat</h1>
+                    <p class="text-[11px] sm:text-xs text-brand-textGray mt-0.5">Pantau dan verifikasi data administrasi profil pendaftaran Anda secara berkala.</p>
                 </div>
-                <span class="bg-brand/10 text-brand text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-brand animate-pulse"></span> Sesi Peserta Aktif
+                <span class="bg-brand/10 text-brand text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 self-start sm:self-auto">
+                    <span class="w-2 h-2 rounded-full bg-brand animate-pulse"></span> Berlaku Sampai Ujian
                 </span>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 
-                <div class="md:col-span-1">
-                    <div class="bg-gradient-to-br from-brand-dark to-brand rounded-card shadow-md p-6 text-white text-center relative overflow-hidden">
-                        <div class="absolute -right-6 -bottom-6 text-white/5 text-9xl font-bold select-none">PN</div>
-                        <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="w-20 h-20 mx-auto object-contain bg-white rounded-full p-2 mb-4 shadow-inner">
-                        <h2 id="cardNama" class="text-lg font-bold tracking-tight line-clamp-1">Nama Peserta</h2>
-                        <p id="cardEmail" class="text-xs text-white/80 font-light mb-4 truncate">email@domain.com</p>
-                        <div class="inline-block bg-white/20 backdrop-blur-sm text-xs font-semibold px-4 py-2 rounded-lg border border-white/20">
+                <div class="md:col-span-1 animate__animated animate__fadeInLeft">
+                    <div class="bg-gradient-to-br from-brand-dark to-brand rounded-card shadow-md p-5 sm:p-6 text-white text-center relative overflow-hidden">
+                        <div class="absolute -right-6 -bottom-6 text-white/5 text-9xl font-bold select-none pointer-events-none">PN</div>
+                        <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="w-16 h-16 sm:w-20 sm:h-20 mx-auto object-contain bg-white rounded-full p-2 mb-3 sm:mb-4 shadow-inner">
+                        <h2 id="cardNama" class="text-base sm:text-lg font-bold tracking-tight truncate">Nama Peserta</h2>
+                        <p id="cardEmail" class="text-[11px] sm:text-xs text-white/80 font-light mb-4 truncate word-break-android">email@domain.com</p>
+                        <div id="sabukContainer" class="inline-block bg-white/20 backdrop-blur-sm text-[11px] sm:text-xs font-semibold px-4 py-2 rounded-lg border border-white/20 w-full sm:w-auto">
                             Target Sabuk: <span id="cardSabuk" class="font-bold text-amber-300">...</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="md:col-span-3">
+                <div class="md:col-span-3 animate__animated animate__fadeInRight">
                     <div class="bg-white rounded-card shadow-sm border border-gray-100 overflow-hidden">
-                        <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-                            <h3 class="text-sm font-bold text-brand-dark flex items-center gap-2">
+                        <div class="bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 flex items-center justify-between">
+                            <h3 class="text-xs sm:text-sm font-bold text-brand-dark flex items-center gap-2">
                                 <i class="fa-solid fa-id-card"></i> Biodata Lengkap Peserta
                             </h3>
-                            <span class="text-[11px] bg-gray-200 text-gray-700 font-medium px-2 py-0.5 rounded">Data Terverifikasi</span>
+                            <span class="text-[10px] sm:text-[11px] bg-gray-200 text-gray-700 font-medium px-2 py-0.5 rounded">Data Terverifikasi</span>
                         </div>
                         
-                        <div class="p-6 divide-y divide-gray-100 text-sm">
-                            <div class="py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4">
+                        <div class="px-4 sm:px-6 divide-y divide-gray-100 text-xs sm:text-sm">
+                            <div class="py-3 sm:py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4">
                                 <span class="text-gray-400 font-medium">Nama Lengkap</span>
-                                <span id="detailNama" class="sm:col-span-2 font-semibold text-gray-800">...</span>
+                                <span id="detailNama" class="sm:col-span-2 font-semibold text-gray-800 word-break-android">...</span>
                             </div>
-                            <div class="py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4">
-    <span class="text-gray-400 font-medium">Status Pendaftaran</span>
-    <span id="detailStatus" class="sm:col-span-2 font-bold uppercase tracking-wide">
-        <span class="px-2 py-1 rounded-md text-[10px] bg-gray-100 text-gray-500">Memuat...</span>
-    </span>
-</div>
-                            <div class="py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4">
+                            <div class="py-3 sm:py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4">
+                                <span class="text-gray-400 font-medium">Status Pendaftaran</span>
+                                <span id="detailStatus" class="sm:col-span-2 font-bold uppercase tracking-wide flex items-center">
+                                    <span class="px-2 py-1 rounded-md text-[10px] bg-gray-100 text-gray-500">Memuat...</span>
+                                </span>
+                            </div>
+                            <div class="py-3 sm:py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4">
                                 <span class="text-gray-400 font-medium">Tempat, Tgl Lahir</span>
-                                <span id="detailTTL" class="sm:col-span-2 text-gray-700">...</span>
+                                <span id="detailTTL" class="sm:col-span-2 text-gray-700 word-break-android">...</span>
                             </div>
-                            <div class="py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4">
+                            <div class="py-3 sm:py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4">
                                 <span class="text-gray-400 font-medium">Nomor WhatsApp</span>
                                 <span id="detailWA" class="sm:col-span-2 text-gray-700 font-mono">...</span>
                             </div>
-                            <div class="py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4">
+                            <div class="py-3 sm:py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4">
                                 <span class="text-gray-400 font-medium">Angkatan</span>
                                 <span id="detailAngkatan" class="sm:col-span-2 text-gray-700">...</span>
                             </div>
-                            <div class="py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4">
+                            <div class="py-3 sm:py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4">
                                 <span class="text-gray-400 font-medium">Alamat Lengkap</span>
-                                <span id="detailAlamat" class="sm:col-span-2 text-gray-600 text-xs leading-relaxed">...</span>
+                                <span id="detailAlamat" class="sm:col-span-2 text-gray-600 text-xs sm:text-sm leading-relaxed word-break-android">...</span>
                             </div>
-                            <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 items-center">
-                                <span class="text-gray-400 font-medium">Sertifikat Sebelumnya</span>
+                            <div class="py-3.5 sm:py-4 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 items-center">
+                                <span class="text-gray-400 font-medium">Sertifikat</span>
                                 <div id="detailSertifikatWrapper" class="sm:col-span-2">
-                                </div>
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -157,20 +163,24 @@
         </div>
     </main>
 
-    <footer class="bg-white border-t border-gray-200 py-4 text-center text-xs text-gray-400">
+    <footer class="bg-white border-t border-gray-200 py-4 text-center text-[10px] sm:text-xs text-gray-400">
         <p>© 2026 PAC PSNU PAGARNUSA Kecamatan Kemang. All Rights Reserved.</p>
     </footer>
 
 <script>
+    // URL Web App Google Apps Script Anda
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxUL7aoHX4WWO87mzGKTDB1jZW9g5csu5p0guJvj7sRLeLUqHoj-n69nR8PwARs1x4B/exec";
+
     // 1. Helper Function: Truncate Text
     function truncateText(str, max) {
+        if (!str) return '-';
         return (str.length > max) ? str.substr(0, max - 1) + '...' : str;
     }
 
     // 2. Fungsi Popup Status dengan Animasi
     function tampilkanPopupStatus(status) {
         let title, text, icon, confirmButtonColor;
-        const s = status.toLowerCase();
+        const s = String(status || 'Pending').toLowerCase();
 
         if (s.includes('kualifikasi')) {
             title = "Hore! Selamat!";
@@ -183,7 +193,6 @@
             icon = "error";
             confirmButtonColor = "#dc2626";
         } else {
-            // Default untuk Pending
             title = "Menunggu Verifikasi ⏳";
             text = "Data Anda sedang dalam tahap antrean verifikasi oleh Admin. Harap bersabar.";
             icon = "info";
@@ -202,60 +211,145 @@
         });
     }
 
-    // 3. Main Initialization
+    // 3. Main Initialization & Fetch Data Real-Time
     document.addEventListener('DOMContentLoaded', () => {
-        if (dataPeserta) {
-            // Pemetaan Biodata Identitas Utama
-            document.getElementById('navNama').innerText = dataPeserta.nama || 'Peserta';
-            document.getElementById('cardNama').innerText = truncateText(dataPeserta.nama || 'Nama Peserta', 22);
-            document.getElementById('cardEmail').innerText = dataPeserta.email || '-';
-            document.getElementById('cardSabuk').innerText = dataPeserta.ujian || '-';
+        if (!dataPeserta) return;
 
-            document.getElementById('detailNama').innerText = dataPeserta.nama || '-';
-            document.getElementById('detailTTL').innerText = dataPeserta.ttl || '-';
-            document.getElementById('detailWA').innerText = dataPeserta.whatsapp || '-';
-            document.getElementById('detailAngkatan').innerText = dataPeserta.angkatan || '-';
-            document.getElementById('detailAlamat').innerText = dataPeserta.alamat || '-';
+        // Tampilkan data awal dari localStorage agar halaman tidak kosong melompong saat loading
+        renderDataKeHalaman(dataPeserta);
 
-            // Render Status dengan Warna Dinamis
-            const statusEl = document.getElementById('detailStatus');
-            const statusTeks = (dataPeserta.status || 'Pending').trim(); 
-            let colorClass = 'bg-gray-200 text-gray-700 border border-gray-300';
-            let statusLower = statusTeks.toLowerCase();
+        // TARIK DATA TERBARU DARI SPREADSHEET (Membaca Kolom M secara Real-Time)
+        fetch(WEB_APP_URL)
+            .then(res => res.json())
+            .then(res => {
+                if (res.status === "success") {
+                    // Cari data di spreadsheet yang email atau namanya cocok dengan user yang sedang login
+                    const dataTerbaru = res.data.find(row => 
+                        String(row.email).toLowerCase().trim() === String(dataPeserta.email).toLowerCase().trim()
+                    );
 
-            if (statusLower.includes('kualifikasi')) {
-                colorClass = 'bg-green-100 text-green-700 border border-green-200';
-            } else if (statusLower.includes('diskualifikasi')) {
-                colorClass = 'bg-red-100 text-red-700 border border-red-200';
-            } else if (statusLower.includes('pending')) {
-                colorClass = 'bg-gray-200 text-gray-700 border border-gray-300';
-            }
-            
-            // Tampilkan badge status
-            statusEl.innerHTML = `<span class="px-3 py-1 rounded-full text-[11px] font-bold ${colorClass}">${statusTeks.toUpperCase()}</span>`;
-
-            // Render Tombol Berkas
-            const certWrapper = document.getElementById('detailSertifikatWrapper');
-            if (dataPeserta.sertifikatUrl && dataPeserta.sertifikatUrl.trim().startsWith('http')) {
-                certWrapper.innerHTML = `<a href="${dataPeserta.sertifikatUrl.trim()}" target="_blank" class="inline-flex items-center gap-1.5 bg-brand text-white text-xs font-semibold px-3 py-2 rounded-btn hover:bg-brand-dark smooth-transition shadow-sm"><i class="fa-solid fa-file-arrow-down text-sm"></i> Lihat Berkas G-Drive</a>`;
-            } else {
-                certWrapper.innerHTML = `<span class="text-gray-400 text-xs italic"><i class="fa-solid fa-ban mr-1"></i> Sertifikat belum dapat dilihat, Silahkan ikuti proses ujian terlebih dahulu</span>`;
-            }
-
-            // Panggil popup status setelah 1 detik halaman terbuka
-            setTimeout(() => {
-                tampilkanPopupStatus(dataPeserta.status || 'Pending');
-            }, 1000);
-        }
+                    if (dataTerbaru) {
+                        // Perbarui data di localStorage dan render ulang tampilan status terbaru (Kolom M)
+                        localStorage.setItem('sesiPeserta', JSON.stringify(dataTerbaru));
+                        renderDataKeHalaman(dataTerbaru);
+                        
+                        // Munculkan popup info status berdasarkan data real-time spreadsheet
+                        setTimeout(() => {
+                            tampilkanPopupStatus(dataTerbaru.status);
+                        }, 500);
+                    }
+                }
+            })
+            .catch(err => {
+                console.error("Gagal memperbarui status real-time:", err);
+                // Jika gagal fetch (rto/kendala jaringan), tetap gunakan popup dari data lokal bawaan login
+                setTimeout(() => {
+                    tampilkanPopupStatus(dataPeserta.status || 'Pending');
+                }, 1000);
+            });
     });
 
-    // Penanganan Logout
+    // Fungsi pembantu untuk menaruh text objek ke elemen HTML
+    function renderDataKeHalaman(peserta) {
+        document.getElementById('navNama').innerText = peserta.nama || 'Peserta';
+        document.getElementById('cardNama').innerText = truncateText(peserta.nama || 'Nama Peserta', 22);
+        document.getElementById('cardEmail').innerText = peserta.email || '-';
+        document.getElementById('cardSabuk').innerText = peserta.ujian || peserta.sabuk || '-';
+
+        document.getElementById('detailNama').innerText = peserta.nama || '-';
+        document.getElementById('detailTTL').innerText = peserta.ttl || '-';
+        document.getElementById('detailWA').innerText = peserta.no || peserta.whatsapp || '-';
+        document.getElementById('detailAngkatan').innerText = peserta.angkatan || '-';
+        document.getElementById('detailAlamat').innerText = peserta.alamat || '-';
+
+        // Render Status (Kolom M) secara Akurat dengan Warna Dinamis
+        const statusEl = document.getElementById('detailStatus');
+        const statusTeks = String(peserta.status || 'Pending').trim(); 
+        let colorClass = 'bg-gray-200 text-gray-700 border border-gray-300';
+        let statusLower = statusTeks.toLowerCase();
+
+        if (statusLower.includes('kualifikasi')) {
+            colorClass = 'bg-green-100 text-green-700 border border-green-200';
+        } else if (statusLower.includes('diskualifikasi')) {
+            colorClass = 'bg-red-100 text-red-700 border border-red-200';
+        } else if (statusLower.includes('pending')) {
+            colorClass = 'bg-amber-100 text-amber-700 border border-amber-200';
+        }
+        
+        statusEl.innerHTML = `<span class="px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold ${colorClass}">${statusTeks.toUpperCase()}</span>`;
+
+        // Render Tombol Berkas Dokumen/Sertifikat (Menghindari beda penamaan variabel objek)
+        const certWrapper = document.getElementById('detailSertifikatWrapper');
+        const urlSertifikat = peserta.sertifikat || peserta.sertifikatUrl || '';
+        
+        if (urlSertifikat && urlSertifikat.trim().startsWith('http')) {
+            certWrapper.innerHTML = `<a href="${urlSertifikat.trim()}" target="_blank" class="inline-flex items-center gap-1.5 bg-brand text-white text-xs font-semibold px-3 py-2 rounded-btn hover:bg-brand-dark smooth-transition shadow-sm active:scale-95"><i class="fa-solid fa-file-arrow-down text-sm"></i> View </a>`;
+        } else {
+            certWrapper.innerHTML = `<span class="text-gray-400 text-xs italic"><i class="fa-solid fa-ban mr-1"></i> Sertifikat belum dapat dilihat, Silahkan ikuti proses ujian terlebih dahulu</span>`;
+        }
+    }
+
+    // Penanganan Keluar Sistem (Logout)
     document.getElementById('logoutBtn').addEventListener('click', () => {
-        if (confirm('Apakah Anda yakin ingin keluar dari halaman panel peserta?')) {
-            localStorage.removeItem('sesiPeserta');
-            window.location.href = 'login.html';
-        }
+        Swal.fire({
+            title: 'Keluar Aplikasi?',
+            text: "Apakah Anda yakin ingin keluar dari halaman panel peserta?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Ya, Keluar',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem('sesiPeserta');
+                window.location.href = 'login.html';
+            }
+        });
     });
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Tunggu sebentar sampai skrip utama selesai memuat data ke layar
+    setTimeout(() => {
+        // 2. Ambil teks target sabuk yang tampil di card kiri
+        const cardSabukEl = document.getElementById('cardSabuk');
+        const sabukContainer = document.getElementById('sabukContainer');
+        if (!cardSabukEl || !sabukContainer) return;
+
+        const targetSabukTeks = cardSabukEl.innerText.trim();
+        const sabukLower = targetSabukTeks.toLowerCase();
+        let linkGroup = "";
+
+        // 3. Tentukan Link Berdasarkan Kriteria Anda
+        if (sabukLower.includes('putih') || sabukLower.includes('kuning') || sabukLower.includes('merah')) {
+            linkGroup = "https://chat.whatsapp.com/CoPED7SKvUK2ayPSfZvmNV?mode=gi_t";
+        } else if (sabukLower.includes('biru') || sabukLower.includes('cokelat') || sabukLower.includes('wisuda')) {
+            linkGroup = "https://chat.whatsapp.com/KUYagEr8zn6C0IijVtXdpa?mode=gi_t";
+        }
+
+        // 4. Jika link cocok, buat tombol baru tepat di bawah kotak Target Sabuk
+        if (linkGroup !== "") {
+            // Hapus tombol lama jika sebelumnya sudah terbuat saat render ulang
+            const existingBtn = document.getElementById('waGroupBtnGenerated');
+            if (existingBtn) existingBtn.remove();
+
+            // Buat elemen pembungkus tombol dengan Tailwind CSS
+            const btnWrapper = document.createElement('div');
+            btnWrapper.id = "waGroupBtnGenerated";
+            btnWrapper.className = "mt-4 w-full animate__animated animate__fadeInUp";
+            btnWrapper.innerHTML = `
+                <a href="${linkGroup}" target="_blank" class="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 px-4 rounded-[10px] shadow transition-all duration-200 active:scale-95">
+                    <i class="fa-brands fa-whatsapp text-base"></i> Gabung Grup WhatsApp
+                </a>
+            `;
+            
+            // Masukkan tombol ke dalam struktur card (tepat di bawah container target sabuk)
+            sabukContainer.parentNode.appendChild(btnWrapper);
+        }
+    }, 1200); // Eksekusi berjalan 1.2 detik setelah halaman siap agar tidak bentrok dengan popup utama
+});
 </script>
 </body>
 </html>

@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pendaftaran Peserta - PAC PSNU PAGARNUSA Kecamatan Kemang</title>
+    <title>Formulir Pendaftaran Ujian - PAC PSNU PAGARNUSA Kecamatan Kemang</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -45,10 +46,33 @@
         .smooth-transition {
             transition: all 0.3s ease;
         }
+        input[type="file"]::file-selector-button {
+            background-color: #056839;
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        input[type="file"]::file-selector-button:hover {
+            background-color: #044d2b;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            opacity: 0.6;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator:hover {
+            opacity: 1;
+        }
     </style>
 </head>
-<body class="flex flex-col min-h-screen justify-between">
+<body class="flex flex-col min-h-screen justify-between animate__animated animate__fadeIn">
 
+    <!-- Navbar -->
     <nav class="sticky top-0 z-50 bg-white border-b-2 border-brand shadow-sm smooth-transition">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20">
@@ -59,112 +83,167 @@
                         <span class="block text-xs font-semibold text-brand">Kecamatan Kemang</span>
                     </div>
                 </div>
-                <div class="hidden md:flex items-center space-x-6 text-sm font-medium">
-                    <a href="index.html" class="text-brand-textGray hover:text-brand smooth-transition">Home</a>
-                    <a href="daftar_peserta.html" class="text-brand font-semibold border-b-2 border-brand pb-1">Pendaftaran</a>
-                    <a href="login.html" class="text-brand-textGray hover:text-brand smooth-transition">Login</a>
-                </div>
-                <div class="flex items-center md:hidden">
-                    <button id="mobile-menu-btn" class="text-brand focus:outline-none text-2xl">
-                        <i class="fa-solid fa-bars"></i>
-                    </button>
-                </div>
+<a href="login.html" class="flex items-center text-xs text-brand font-medium hover:text-brand-dark smooth-transition">
+    <i class="fa-solid fa-right-to-bracket mr-1"></i> Login
+</a>
             </div>
-        </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 pt-2 pb-4 space-y-2 shadow-inner">
-                    <a href="index.html" class="text-brand-textGray hover:text-brand smooth-transition">Home</a>
-                    <a href="daftar_peserta.html" class="text-brand font-semibold border-b-2 border-brand pb-1">Pendaftaran</a>
-                    <a href="login.html" class="text-brand-textGray hover:text-brand smooth-transition">Login</a>
         </div>
     </nav>
 
-<main class="flex-grow py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-2xl mx-auto">
-        <div class="text-center flex flex-col items-center">
+    <!-- Main Content -->
+    <main class="flex-grow py-10 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto">
             
-            <img src="https://lh3.googleusercontent.com/d/1yUj5jx3LcZmg_7WGZMawVOPIdeKGJJCu" 
-     alt="Peserta" 
-     class="w-40 h-40 object-contain drop-shadow-2xl z-10 -mb-14">
-            
-            <div class="bg-white rounded-card shadow-md p-6 sm:p-10 w-full pt-20 border border-gray-100">
-                <h1 class="text-2xl sm:text-3xl font-bold text-brand-dark mb-2">Formulir Pendaftaran</h1>
-                <p class="text-sm text-brand-textGray mb-6">
-                    Sudah punya akun? 
-                    <a href="login.html" class="text-green-600 hover:text-green-800 font-semibold transition-all duration-300">Log in disini</a>
-                </p>
-                <div class="w-24 h-1 bg-green-600 mx-auto mb-8 rounded-full"></div>
+            <!-- Header Card -->
+            <div class="bg-white rounded-card shadow-sm p-6 border-l-4 border-brand flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold text-brand-dark">Formulir Biodata Ujian</h1>
+                    <p class="text-xs text-brand-textGray mt-0.5">Silakan lengkapi formulir di bawah ini berdasarkan data asli Anda untuk keperluan verifikasi berkas.</p>
+                </div>
+            </div>
 
-                <form id="registrationForm" class="space-y-6 text-left">
+            <!-- Form Card -->
+            <div class="bg-white rounded-card shadow-sm border border-gray-100 overflow-hidden">
+                <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                    <h3 class="text-sm font-bold text-brand-dark flex items-center gap-2">
+                        <i class="fa-solid fa-user-wpforms"></i> Kelengkapan Data Peserta
+                    </h3>
+                    <span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded uppercase tracking-wider">Wajib Diisi</span>
+                </div>
+                
+                <form id="formPendaftaran" class="p-6 space-y-6">
                     
-                    <div>
-                        <label for="nama" class="block text-sm font-semibold text-brand-dark mb-2">Nama Lengkap (sesuai E-KTP) <span class="text-red-500">*</span></label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                                <i class="fa-solid fa-user text-sm"></i>
-                            </span>
-                            <input type="text" id="nama" name="nama" required placeholder="Masukkan nama lengkap Anda"
-                                class="w-full pl-10 pr-4 py-3 bg-brand-bgLight/50 border border-gray-200 rounded-btn focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 smooth-transition text-sm">
+                    <!-- 1 & 2: Email & Nama Lengkap -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">Email Aktif</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+                                    <i class="fa-solid fa-envelope text-xs"></i>
+                                </span>
+                                <input type="email" id="inputEmail" required placeholder="nama@domain.com" 
+                                    class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">Nama Lengkap</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+                                    <i class="fa-solid fa-user text-xs"></i>
+                                </span>
+                                <input type="text" id="inputNama" required placeholder="Sesuai kartu identitas" 
+                                    class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition">
+                            </div>
                         </div>
                     </div>
 
-                    <div>
-                        <label for="email" class="block text-sm font-semibold text-brand-dark mb-2">Email Aktif <span class="text-red-500">*</span></label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                                <i class="fa-solid fa-envelope text-sm"></i>
-                            </span>
-                            <input type="email" id="email" name="email" required placeholder="contoh@gmail.com"
-                                class="w-full pl-10 pr-4 py-3 bg-brand-bgLight/50 border border-gray-200 rounded-btn focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 smooth-transition text-sm">
+                    <!-- 3 & 4: Tempat Lahir & Tanggal Lahir -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">Tempat Lahir</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+                                    <i class="fa-solid fa-location-dot text-xs"></i>
+                                </span>
+                                <input type="text" id="inputTempatLahir" required placeholder="Contoh: Bogor" 
+                                    class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">Tanggal Lahir</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+                                    <i class="fa-solid fa-calendar text-xs"></i>
+                                </span>
+                                <input type="date" id="inputTanggalLahir" required 
+                                    class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition">
+                            </div>
                         </div>
                     </div>
 
+                    <!-- 5: Alamat Lengkap Sesuai KTP -->
                     <div>
-                        <label for="ttl" class="block text-sm font-semibold text-brand-dark mb-2">Tempat dan Tanggal Lahir <span class="text-red-500">*</span></label>
+                        <label class="block text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">Alamat (Sesuai KTP)</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                                <i class="fa-solid fa-calendar-days text-sm"></i>
+                            <span class="absolute top-3 left-3.5 text-gray-400">
+                                <i class="fa-solid fa-map-marked-alt text-xs"></i>
                             </span>
-                            <input type="text" id="ttl" name="ttl" required placeholder="Contoh: Bogor, 17 Agustus 2005"
-                                class="w-full pl-10 pr-4 py-3 bg-brand-bgLight/50 border border-gray-200 rounded-btn focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 smooth-transition text-sm">
+                            <textarea id="inputAlamat" required rows="3" placeholder="Tuliskan alamat lengkap beserta (Kab/Kota, Prov)" 
+                                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition resize-none"></textarea>
                         </div>
                     </div>
 
+                    <!-- 6: Nomor WhatsApp -->
                     <div>
-                        <label for="alamat" class="block text-sm font-semibold text-brand-dark mb-2">Alamat (sesuai E-KTP) <span class="text-red-500">*</span></label>
+                        <label class="block text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">No WhatsApp</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pt-3 flex items-start pl-3 text-gray-400">
-                                <i class="fa-solid fa-location-dot text-sm"></i>
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+                                <i class="fa-brands fa-whatsapp text-sm font-bold"></i>
                             </span>
-                            <textarea id="alamat" name="alamat" required rows="3" placeholder="Masukkan alamat lengkap (RT/RW, Desa, Kecamatan, Kabupaten)"
-                                class="w-full pl-10 pr-4 py-3 bg-brand-bgLight/50 border border-gray-200 rounded-btn focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 smooth-transition text-sm"></textarea>
+                            <input type="number" id="inputWA" required placeholder="Contoh: 08123456789" 
+                                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition font-mono">
                         </div>
                     </div>
 
-                    <div>
-                        <label for="whatsapp" class="block text-sm font-semibold text-brand-dark mb-2">Nomor WhatsApp <span class="text-red-500">*</span></label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 font-medium text-sm">
-                                +62
-                            </span>
-                            <input type="tel" id="whatsapp" name="whatsapp" required placeholder="8xxxxxxxxxx" pattern="[0-9]{9,13}"
-                                class="w-full pl-12 pr-4 py-3 bg-brand-bgLight/50 border border-gray-200 rounded-btn focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 smooth-transition text-sm">
+                    <!-- 7 & 8: Type Ujian & Angkatan (Pilihan Dropdown) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">Type Ujian</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+                                    <i class="fa-solid fa-graduation-cap text-xs"></i>
+                                </span>
+                                <select id="inputTypeUjian" required 
+                                    class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition appearance-none cursor-pointer">
+                                    <option value="" disabled selected>Pilih tingkatan ujian...</option>
+                                    <option value="Putih">Putih</option>
+                                    <option value="Kuning">Kuning</option>
+                                    <option value="Merah">Merah</option>
+                                    <option value="Biru/ASPEL">Biru/ASPEL</option>
+                                    <option value="Cokelat/PELATIH">Cokelat/PELATIH</option>
+                                </select>
+                                <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
+                                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                                </span>
+                            </div>
                         </div>
-                        <p class="text-xs text-gray-400 mt-1">Gunakan angka saja tanpa spasi atau tanda strip, diawali langsung setelah kode negara (+62).</p>
+
+                        <div>
+                            <label class="block text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">Angkatan</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+                                    <i class="fa-solid fa-users text-xs"></i>
+                                </span>
+                                <select id="inputAngkatan" required 
+                                    class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition appearance-none cursor-pointer">
+                                    <option value="" disabled selected>Pilih tahun angkatan...</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2026">2026</option>
+                                </select>
+                                <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
+                                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                                </span>
+                            </div>
+                        </div>
                     </div>
 
+                    <!-- 11: Pilihan Rayon UNUSIA (Dipindahkan ke atas dekat bagian Pilihan Klub/Rayon organisasi agar serasi secara struktur form) -->
                     <div>
-                        <label for="angkatan" class="block text-sm font-semibold text-brand-dark mb-2">Angkatan <span class="text-red-500">*</span></label>
+                        <label class="block text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">Apakah Anda Anggota PSNU Pagarnusa Rayon UNUSIA?</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                                <i class="fa-solid fa-graduation-cap text-sm"></i>
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+                                <i class="fa-solid fa-building-columns text-xs"></i>
                             </span>
-                            <select id="angkatan" name="angkatan" required
-                                class="w-full pl-10 pr-4 py-3 bg-brand-bgLight/50 border border-gray-200 rounded-btn focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 smooth-transition text-sm appearance-none cursor-pointer">
-                                <option value="" disabled selected>-- Pilih Angkatan --</option>
-                                <option value="2022">2022</option>
-                                <option value="2023">2023</option>
-                                <option value="2024">2024</option>
-                                <option value="2025">2025</option>
+                            <select id="inputRayonUnusia" required 
+                                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition appearance-none cursor-pointer">
+                                <option value="" disabled selected>Pilih salah satu...</option>
+                                <option value="Ya">Ya</option>
+                                <option value="Bukan">Bukan</option>
                             </select>
                             <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
                                 <i class="fa-solid fa-chevron-down text-xs"></i>
@@ -172,203 +251,182 @@
                         </div>
                     </div>
 
+<div>
+    <label class="block text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">
+        Link Bukti Sertifikat Ujian Sebelumnya
+    </label>
+    
+    <div class="bg-amber-50 border border-amber-200 rounded-btn p-3.5 mb-3 text-xs text-amber-900 leading-relaxed">
+        <span class="font-bold block mb-1 text-amber-950"><i class="fa-solid fa-circle-info mr-1"></i> Panduan Pengisian Jawaban:</span>
+        <ol class="list-decimal pl-4 space-y-1 text-gray-700">
+            <li>Klik link folder berikut: 
+                <a href="https://drive.google.com/drive/folders/1-kWl8h3O6yA0H4DfyfucaYosEr7OzE23?usp=drive_link" 
+                   target="_blank" 
+                   class="text-brand font-bold underline hover:text-brand-dark smooth-transition inline-flex items-center gap-1">
+                    Buka Folder Google Drive <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                </a>
+            </li>
+            <li>Upload sertifikat Anda sebelumnya ke dalam folder tersebut.</li>
+            <li>Ganti nama file sertifikat sesuai nama Anda.</li>
+            <li>Salin/copy link file sertifikat yang telah Anda upload.</li>
+            <li>Tempelkan/paste link tersebut ke kolom input di bawah ini.</li>
+        </ol>
+    </div>
+
+    <div class="relative">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+            <i class="fa-solid fa-link text-xs"></i>
+        </span>
+        <input type="url" id="inputSertifikat" required 
+            placeholder="https://drive.google.com/file/d/..." 
+            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition">
+    </div>
+    <p class="text-[11px] text-gray-400 mt-1.5"><i class="fa-solid fa-circle-exclamation"></i> Pastikan status berbagi link file Google Drive Anda disetel ke "Siapa saja yang memiliki link" (Anyone with link).</p>
+</div>
+
+                    <!-- 10: Riwayat Penyakit -->
                     <div>
-                        <label for="ujian" class="block text-sm font-semibold text-brand-dark mb-0.5">Ujian Sabuk yang Diikuti <span class="text-red-500">*</span></label>
+                        <label class="block text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">Riwayat Penyakit</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                                <i class="fa-solid fa-award text-sm"></i>
+                            <span class="absolute top-3 left-3.5 text-gray-400">
+                                <i class="fa-solid fa-notes-medical text-xs"></i>
                             </span>
-                            <select id="ujian" name="ujian" required
-                                class="w-full pl-10 pr-4 py-3 bg-brand-bgLight/50 border border-gray-200 rounded-btn focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 smooth-transition text-sm appearance-none cursor-pointer">
-                                <option value="" disabled selected>-- Pilih Ujian --</option>
-                                <option value="Putih">Putih</option>
-                                <option value="Kuning">Kuning</option>
-                                <option value="Merah">Merah</option>
-                                <option value="Biru">Biru (ASPEL)</option>
-                                <option value="Cokelat">Cokelat (PELATIH)</option>
-                            </select>
-                            <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
-                                <i class="fa-solid fa-chevron-down text-xs"></i>
-                            </span>
-                            <span class="block text-xs font-medium text-amber-600 mb-2 italic"><i class="fa-solid fa-circle-info mr-1"></i>Note: Pilih tingkat/sabuk yang dituju, bukan sabuk yang dipegang sekarang.</span>
+                            <textarea id="inputPenyakit" required rows="2" placeholder="Tulis '-' jika tidak memiliki riwayat penyakit medis" 
+                                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition resize-none"></textarea>
                         </div>
                     </div>
 
-                    <div class="bg-brand/5 p-4 rounded-card border border-brand/10">
-                        <label for="sertifikatFile" class="block text-sm font-semibold text-brand-dark mb-1">Unggah Sertifikat UKT Terakhir <span class="text-gray-400 font-normal">(Opsional)</span></label>
-                        <div class="text-xs text-brand-textGray mb-3 leading-relaxed">
-                            <p class="font-medium text-brand mb-1">Panduan Pengunggahan:</p>
-                            Pilih file sertifikat Anda langsung dari Perangkat (Format Gambar/PDF, Maks. 10MB).
-                        </div>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                                <i class="fa-solid fa-file-arrow-up text-sm"></i>
-                            </span>
-                            <input type="file" id="sertifikatFile" name="sertifikat" accept="image/*,application/pdf"
-                                class="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-btn focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 smooth-transition text-sm cursor-pointer file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-brand/10 file:text-brand file:hover:bg-brand/20">
-                        </div>
+                    <!-- Tombol Aksi -->
+                    <div class="pt-4 border-t border-gray-100 flex items-center justify-end space-x-3">
+                        <button type="reset" class="bg-gray-100 hover:bg-gray-200 text-gray-600 text-xs font-bold py-3 px-6 rounded-btn smooth-transition cursor-pointer">
+                            Reset Form
+                        </button>
+                        <button type="submit" class="bg-brand hover:bg-brand-dark text-white text-xs font-bold py-3 px-8 rounded-btn smooth-transition flex items-center space-x-2 shadow-md cursor-pointer">
+                            <i class="fa-solid fa-paper-plane"></i> <span>Kirim Data</span>
+                        </button>
                     </div>
 
-                    <button type="submit" id="submitBtn"
-                        class="w-full bg-brand hover:bg-brand-dark text-white font-semibold py-3 px-6 rounded-btn shadow-md hover:shadow-lg transform active:scale-[0.98] transition-all duration-150 flex items-center justify-center space-x-2 cursor-pointer">
-                        <i class="fa-solid fa-paper-plane"></i>
-                        <span>Kirim Pendaftaran</span>
-                    </button>
                 </form>
             </div>
-        </div>
-    </div>
-</main>
 
-    <footer class="bg-brand text-white pt-8 pb-6 border-t-4 border-brand-dark">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center border-b border-white/10 pb-6 space-y-4 md:space-y-0">
-                <div>
-                    <h3 class="text-base font-bold tracking-wide text-center md:text-left">PAC PSNU PAGARNUSA Kecamatan Kemang</h3>
-                </div>
-                <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs font-medium">
-                    <a href="mailto:pagarnusatazkemang@gmail.com" class="hover:text-brand-light smooth-transition flex items-center space-x-1">
-                        <i class="fa-solid fa-envelope"></i> <span>Email</span>
-                    </a>
-                    <a href="#" target="_blank" class="hover:text-brand-light smooth-transition flex items-center space-x-1">
-                        <i class="fa-brands fa-instagram"></i> <span>Instagram</span>
-                    </a>
-                    <a href="#" target="_blank" class="hover:text-brand-light smooth-transition flex items-center space-x-1">
-                        <i class="fa-brands fa-tiktok"></i> <span>TikTok</span>
-                    </a>
-                    <a href="#" target="_blank" class="hover:text-brand-light smooth-transition flex items-center space-x-1">
-                        <i class="fa-brands fa-youtube"></i> <span>YouTube</span>
-                    </a>
-                </div>
-            </div>
-            <div class="pt-4 text-center text-xs text-gray-300">
-                <p>© 2026 PAC PSNU PAGARNUSA Kecamatan Kemang. All Rights Reserved.</p>
-            </div>
         </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-4 text-center text-xs text-gray-400">
+        <p>© 2026 PAC PSNU PAGARNUSA Kecamatan Kemang. All Rights Reserved.</p>
     </footer>
 
 <script>
-    // Toggle Mobile Menu
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
+document.getElementById('formPendaftaran').addEventListener('submit', function(e) {
+    e.preventDefault();
 
-    if (mobileMenuBtn && mobileMenu) {
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-    }
+    const URL_WEB_APP = "https://script.google.com/macros/s/AKfycbxUL7aoHX4WWO87mzGKTDB1jZW9g5csu5p0guJvj7sRLeLUqHoj-n69nR8PwARs1x4B/exec"; 
 
-    // URL Integrasi Web App Google Apps Script Yang Baru Di-Deploy
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwAsRT2aHIFB5l0SOSLku3VpPgKCiUyRup1K-XDUadcFgxsOW61DWLNQRSwXUGDhBy-/exec";
+    // Ambil data field
+    const email = document.getElementById('inputEmail').value;
+    const nama = document.getElementById('inputNama').value;
+    const tempatLahir = document.getElementById('inputTempatLahir').value;
+    const tanggalLahir = document.getElementById('inputTanggalLahir').value; 
+    const alamat = document.getElementById('inputAlamat').value;
+    const wa = document.getElementById('inputWA').value;
+    const typeUjian = document.getElementById('inputTypeUjian').value;
+    const angkatan = document.getElementById('inputAngkatan').value;
+    const rayonUnusia = document.getElementById('inputRayonUnusia').value;
+    const linkSertifikat = document.getElementById('inputSertifikat').value;
+    const penyakit = document.getElementById('inputPenyakit').value;
+    
+    // PROSES FORMAT TTL INDONESIA
+    const bulanIndo = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    const parts = tanggalLahir.split('-');
+    const tanggalLahirFormat = parts.length === 3 ? `${parts[2].padStart(2, '0')} ${bulanIndo[parseInt(parts[1], 10) - 1]} ${parts[0]}` : tanggalLahir;
+    const gabungTTL = `${tempatLahir}, ${tanggalLahirFormat}`;
 
-    const form = document.getElementById('registrationForm');
-    const submitBtn = document.getElementById('submitBtn');
-
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        // Mengubah status tombol menjadi Loading animasi spin
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> <span>Loading</span>`;
-        submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
-
-        const formData = new FormData(form);
-        const dataObj = {};
-        
-        // Membaca isi formulir teks reguler
-        formData.forEach((value, key) => {
-            if (key === 'whatsapp') {
-                dataObj[key] = "+62" + value;
-            } else {
-                dataObj[key] = value;
-            }
-        });
-
-        const fileInput = document.getElementById('sertifikatFile');
-        
-        // Fungsi pembantu untuk mengirim payload final setelah file diconvert
-        const sendDataToServer = (payload) => {
-            fetch(WEB_APP_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: new URLSearchParams(payload).toString()
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Jaringan Apps Script terindikasi memblokir koneksi.');
-                return response.json();
-            })
-.then(result => {
-    if (result.status === "success") {
-        form.reset();
-        if (fileInput) fileInput.value = "";
-
-        Swal.fire({
-            title: 'Pendaftaran Berhasil!',
-            text: 'Silahkan cek email untuk mendapatkan Informasi Akun Ujian Anda',
-            imageUrl: 'https://lh3.googleusercontent.com/d/1ACAcv5uqyafVEnVGFvhIOfs8PyqPwa9x',
-            imageWidth: 170,
-            imageHeight: 170,
-            imageAlt: 'Icon Pagar Nusa',
-            showCancelButton: true,
-            confirmButtonText: 'Kembali ke Home',
-            cancelButtonText: 'Daftar Lagi',
-            confirmButtonColor: '#166534', // Sesuaikan warna dengan tema Anda
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = 'index.html';
-            } else {
-                // Jika klik "Daftar Lagi", halaman tidak reload, form sudah di-reset di atas
-                console.log("User memilih daftar lagi");
-            }
-        });
-    } else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Gagal',
-            text: result.message || "Terjadi kesalahan sistem internal."
-        });
-    }
-})
-            .catch(error => {
-                console.error('Error:', error);
-                alert("Terjadi kendala jaringan saat menyambungkan ke server Google Sheets. Harap pastikan Web App sudah di-deploy ulang sebagai 'Anyone'.");
-            })
-            .finally(() => {
-                // Mengembalikan tombol ke keadaan semula
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> <span>Kirim Pendaftaran</span>`;
-                submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
-            });
-        };
-
-        // Cek apakah user melampirkan file sertifikat
-        if (fileInput && fileInput.files.length > 0) {
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-            
-            reader.onload = function(evt) {
-                // SINKRONISASI BACKEND: Mengirimkan string murni dataURL (termasuk header Base64) 
-                // agar dibaca sempurna oleh parameter teks Apps Script.
-                payloadDataUrl = evt.target.result;
-                
-                payloadFileName = dataObj.nama ? dataObj.nama.replace(/[^a-z0-9]/gi, '_').toLowerCase() + "_" + file.name : file.name;
-                
-                // Menambahkan data parameter teks baru ke objek utama agar ikut terkirim via URLSearchParams
-                dataObj.fileUrl = ""; // Nilai default string kosong, nanti diproses di gs
-                dataObj.baseData = payloadDataUrl;
-                dataObj.baseName = payloadFileName;
-                
-                sendDataToServer(dataObj);
-            };
-            reader.readAsDataURL(file);
-        } else {
-            // Jika tidak ada file, langsung kirim data teks pendaftaran saja
-            sendDataToServer(dataObj);
+    // Tampilkan Loading Alert
+    Swal.fire({
+        title: 'Mengirim Data...',
+        text: 'Sistem sedang menyimpan data pendaftaran Anda. Mohon tunggu.',
+        icon: 'info',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+            Swal.showLoading();
         }
     });
+
+    // SOLUSI UTAMA: Gunakan objek FormData asli agar tidak memicu pemblokiran CORS / Failed to Fetch
+    const targetPayload = new FormData();
+    targetPayload.append('nama', nama);
+    targetPayload.append('email', email);
+    targetPayload.append('ttl', gabungTTL); 
+    targetPayload.append('alamat', alamat);
+    targetPayload.append('no', wa.toString());
+    targetPayload.append('ujian', typeUjian);
+    targetPayload.append('angkatan', angkatan);
+    targetPayload.append('rayon', rayonUnusia);
+    targetPayload.append('riwayat', penyakit);
+    targetPayload.append('sertifikatUrl', linkSertifikat); 
+
+    // Eksekusi Ambil Data tanpa memaksakan modifikasi Header Content-Type manual
+    fetch(URL_WEB_APP, {
+        method: 'POST',
+        body: targetPayload
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Respon dari server Apps Script tidak menanggapi dengan baik.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.result === "success") {
+            const payloadSesi = {
+                nama: nama,
+                email: email,
+                password: data.password || '', 
+                sabuk: typeUjian, 
+                status: "Pending / Proses Verifikasi", 
+                ttl: gabungTTL,
+                whatsapp: wa,
+                angkatan: angkatan,
+                alamat: alamat,
+                sertifikat: linkSertifikat, 
+                rayonUnusia: rayonUnusia,
+                riwayatPenyakit: penyakit 
+            };
+            
+            localStorage.setItem('sesiPeserta', JSON.stringify(payloadSesi));
+
+            Swal.fire({
+                title: 'Yey, Berhasil',
+                text: 'Silahkan Cek email anda untuk mendapatkan informasi login',
+                imageUrl: 'https://lh3.googleusercontent.com/d/1ACAcv5uqyafVEnVGFvhIOfs8PyqPwa9x',
+                imageWidth: 120,
+                imageHeight: 120,
+                imageAlt: 'Ikon Berhasil',
+                confirmButtonColor: '#056839',
+                confirmButtonText: 'Login',
+                customClass: {
+                    popup: 'animate__animated animate__zoomIn' 
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'login.html'; 
+                }
+            });
+        } else {
+            throw new Error(data.error || 'Terjadi kesalahan sistem internal pada Google Apps Script.');
+        }
+    })
+    .catch(error => {
+        Swal.fire({
+            title: 'Gagal Mengirim Data!',
+            text: 'Penyebab: ' + error.message + ' (Periksa koneksi internet atau deploy ulang Apps Script Anda)',
+            icon: 'error',
+            confirmButtonColor: '#d33'
+        });
+    });
+});
 </script>
 </body>
 </html>

@@ -86,9 +86,10 @@
     </div>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwAsRT2aHIFB5l0SOSLku3VpPgKCiUyRup1K-XDUadcFgxsOW61DWLNQRSwXUGDhBy-/exec";
+// URL Web App Google Apps Script Anda (Gunakan URL Deployment Aktif Anda)
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxUL7aoHX4WWO87mzGKTDB1jZW9g5csu5p0guJvj7sRLeLUqHoj-n69nR8PwARs1x4B/exec";
 
-// Toggle Password
+// Toggle Visibility Password
 const toggleBtn = document.getElementById('togglePassword');
 const passInput = document.getElementById('password');
 toggleBtn.onclick = () => {
@@ -98,22 +99,18 @@ toggleBtn.onclick = () => {
     toggleBtn.querySelector('i').classList.toggle('fa-eye');
 };
 
-// Cek Admin dari CSV Lokal
+// Cek Login Admin Lokal (CSV)
 async function checkAdminLogin(userInp, passInp) {
     try {
-        // Pastikan nama file sudah diubah menjadi admin.csv
         const response = await fetch('admin.csv');
-        
-// Ganti bagian if (!response.ok) agar lebih informatif
-if (!response.ok) {
-    console.warn("File admin.csv tidak ditemukan, melewati pengecekan admin lokal.");
-    return false; // Lanjut ke pengecekan peserta
-}
+        if (!response.ok) {
+            console.warn("File admin.csv tidak ditemukan, melewati pengecekan admin lokal.");
+            return false;
+        }
 
         const text = await response.text();
         const rows = text.split('\n');
         
-        // Loop mulai dari i=1 untuk melewati header (USERNAME, PASSWORD, redirecturl)
         for (let i = 1; i < rows.length; i++) {
             const cols = rows[i].split(',');
             if (cols.length >= 2) {
@@ -131,45 +128,63 @@ if (!response.ok) {
     }
 }
 
+// Handler Submit Form Login
 document.getElementById('loginForm').onsubmit = async (e) => {
     e.preventDefault();
     const btn = document.getElementById('btnSubmit');
     const errorDiv = document.getElementById('error-message');
-    const userInp = document.getElementById('username').value.trim(); // Ini akan dicocokkan ke Email (Kolom C)
-    const passInp = document.getElementById('password').value.trim(); // Ini akan dicocokkan ke Password (Kolom B)
+    const errorText = document.getElementById('error-text');
+    
+    const userInp = document.getElementById('username').value.trim(); 
+    const passInp = document.getElementById('password').value.trim(); 
 
     btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memeriksa Akun...';
+    errorDiv.classList.add('hidden');
 
-    // 1. Cek Admin
-if (userInp === "pacpagarnusakemang@gmail.com" && passInp === "admin123") {
+    // 1. Jalankan Proteksi Awal: Cek Login Admin Lokal (CSV)
+    if (await checkAdminLogin(userInp, passInp)) {
         window.location.href = "admin.html";
         return;
     }
 
-    // 2. Cek Peserta (Cloud)
+    // 2. LOGIKAL BARU: Validasi Akun Peserta Langsung Ke Google Sheets via Apps Script
     try {
         const response = await fetch(SCRIPT_URL);
-        const res = await response.json();
-        
-        // PENTING: Sesuaikan dengan Apps Script
-        // p.email di Apps Script mengambil data dari row[2] (Kolom C)
-        // p.password di Apps Script mengambil data dari row[1] (Kolom B)
-        const peserta = res.data.find(p => {
-            return String(p.email).trim() === userInp && String(p.password).trim() === passInp;
-        });
+        if (!response.ok) throw new Error("Gagal terhubung ke server pendaftaran.");
 
-        if (peserta) {
-            localStorage.setItem('sesiPeserta', JSON.stringify(peserta));
-const loginTime = new Date().getTime();
-localStorage.setItem('loginTime', loginTime);
-            window.location.href = "panelpeserta.html";
+        const result = await response.json();
+        
+        if (result.status === "success" && result.data) {
+            // Mencari baris data yang Kolom C (Email/Username) dan Kolom D (Password)-nya cocok
+            const akunDitemukan = result.data.find(row => 
+                (String(row.email).toLowerCase().trim() === userInp.toLowerCase() || 
+                 String(row.nama).toLowerCase().trim() === userInp.toLowerCase()) && 
+                String(row.password).trim() === passInp
+            );
+
+            if (akunDitemukan) {
+                // Berhasil Login! Ambil seluruh baris biodatanya untuk sesi dashboard panelpeserta.html
+                localStorage.setItem('sesiPeserta', JSON.stringify(akunDitemukan));
+                
+                // Beri efek loading sukses sebentar sebelum redirect
+                btn.innerHTML = '<i class="fas fa-check-circle"></i> Berhasil Masuk!';
+                btn.classList.replace('bg-primary', 'bg-emerald-600');
+                
+                setTimeout(() => {
+                    window.location.href = "panelpeserta.html";
+                }, 800);
+            } else {
+                throw new Error("Username/Email atau Password Anda salah.");
+            }
         } else {
-            throw new Error("Email atau Password tidak cocok.");
+            throw new Error("Format database dari Google Sheets tidak dikenali.");
         }
+
     } catch (err) {
+        // Tampilkan pesan error secara dinamis ke form
         errorDiv.classList.remove('hidden');
-        document.getElementById('error-text').innerText = err.message;
+        errorText.innerText = err.message;
         btn.disabled = false;
         btn.innerHTML = '<span>MASUK</span><i class="fas fa-sign-in-alt text-sm"></i>';
     }

@@ -8,133 +8,161 @@
     <meta name="author" content="Infokom Pagar Nusa Kemang">
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root { --pn-green: #2d6a4f; --pn-dark: #1b4332; --pn-light: #d8f3dc; }
-        body { font-family: 'Roboto', sans-serif; scroll-behavior: smooth; color: #334155; }
+        :root { 
+            --pn-green-dark: #0f2e22;
+            --pn-green: #1b4d3e; 
+            --pn-green-light: #2c6e59;
+            --pn-gold: #d4af37;
+        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; color: #1e293b; background-color: #f8fafc; }
         .nav-font { font-family: 'Oswald', sans-serif; }
         .bg-pn { background-color: var(--pn-green); }
+        .bg-pn-dark { background-color: var(--pn-green-dark); }
         .text-pn { color: var(--pn-green); }
         .border-pn { border-color: var(--pn-green); }
         
         /* Reveal Animation */
-        .reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
         /* Shimmer loading effect */
         .shimmer { 
-            background: linear-gradient(90deg, #f8fafc 25%, #f1f5f9 50%, #f8fafc 75%); 
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); 
             background-size: 200% 100%; 
-            animation: shimmer 2s infinite ease-out; 
+            animation: shimmer 1.5s infinite linear; 
         }
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f8fafc; }
-        ::-webkit-scrollbar-thumb { background: var(--pn-green); border-radius: 4px; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: var(--pn-green); border-radius: 20px; }
 
-        #mobile-menu { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        #mobile-menu { transition: transform 0.3s ease-in-out; }
         .nav-link-hover { position: relative; }
-        .nav-link-hover::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: white; transition: width 0.3s ease; }
-        .nav-link-hover:hover::after { width: 100%; }
+        .nav-link-hover::after { content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 2px; background: #fcd34d; transition: all 0.3s ease; transform: translateX(-50%); }
+        .nav-link-hover:hover::after { width: 60%; }
 
-        .member-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .member-card:hover { transform: translateY(-10px); }
+        .member-card { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .member-card:hover { transform: translateY(-6px); box-shadow: 0 20px 25px -5px rgb(27 77 62 / 0.1), 0 8px 10px -6px rgb(27 77 62 / 0.1); }
     </style>
 </head>
-<body class="bg-[#fcfdfd] selection:bg-pn selection:text-white">
+<body class="selection:bg-pn selection:text-white">
 
-    <div id="top-bar" class="bg-white py-2.5 text-[10px] text-center uppercase tracking-[0.15em] text-gray-400 font-semibold border-b">
-        Media Resmi PAC Pagar Nusa Kecamatan Kemang - Kabupaten Bogor
+    <!-- TOP BAR (Konsisten dengan index.html) -->
+    <div id="top-bar" class="bg-pn-dark text-white py-2 text-[10px] md:text-xs text-center uppercase tracking-[0.2em] font-medium border-b border-white/10 opacity-95">
+        PAC PSNU PAGARNUSA Kecamatan Kemang - Kabupaten Bogor
     </div>
 
-    <header class="bg-white/95 backdrop-blur-md py-5 border-b border-gray-100 sticky top-0 z-[60] shadow-sm">
-        <div class="container mx-auto px-4 flex justify-between items-center">
-            <div id="menu-toggle" class="p-2 -ml-2 cursor-pointer hover:text-pn transition md:hidden">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
-            </div>
-
-            <div class="flex items-center space-x-4 mx-auto md:mx-0">
-                <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo" class="h-12 md:h-14 drop-shadow-sm">
-                <div class="text-left border-l-2 border-pn/20 pl-4">
-                    <h1 class="text-2xl md:text-3xl font-bold text-pn tracking-tight leading-none nav-font uppercase">Pagar Nusa</h1>
-                    <p class="text-gray-500 font-medium text-xs md:text-sm tracking-wide">Pagar NU dan Bangsa</p>
+    <!-- HEADER (Konsisten dengan index.html) -->
+    <header class="bg-white/90 backdrop-blur-md py-4 sticky top-0 z-[60] shadow-sm border-b border-slate-100">
+        <div class="container mx-auto px-4 md:px-6 flex justify-between items-center">
+            
+            <div class="flex items-center space-x-4 flex-1 md:flex-none">
+                <button id="menu-toggle" class="p-2 -ml-2 cursor-pointer text-slate-700 hover:text-pn transition md:hidden focus:outline-none" aria-label="Toggle Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                </button>
+                <div class="flex items-center space-x-3.5 mx-auto md:mx-0">
+                    <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="h-12 md:h-14 w-auto object-contain drop-shadow-sm">
+                    <div class="text-left border-l-2 border-slate-200 pl-3.5">
+                        <h1 class="text-xl md:text-2xl font-bold text-pn tracking-tight leading-none nav-font uppercase">PAC PSNU PAGARNUSA</h1>
+                        <p class="text-slate-500 font-semibold text-[13px] md:text-sm tracking-wider uppercase mt-1">Kecamatan Kemang, Bogor</p>
+                    </div>
                 </div>
             </div>
 
+            <!-- Tombol Kembali yang Disesuaikan dengan Tema Navigasi Baru -->
             <div class="hidden md:block">
-                <a href="index.html" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-pn transition-all border-2 border-gray-100 px-5 py-2 rounded-full hover:border-pn">Kembali ke Beranda</a>
+                <a href="index.html" class="text-[11px] font-bold uppercase tracking-widest text-slate-500 hover:text-white bg-slate-50 hover:bg-pn transition-all border border-slate-200 px-5 py-2.5 rounded-xl flex items-center gap-2 shadow-sm hover:border-pn">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                    Beranda
+                </a>
             </div>
         </div>
     </header>
 
-    <nav class="bg-pn shadow-md hidden md:block">
-        <div class="container mx-auto">
-            <ul id="main-nav" class="flex flex-wrap justify-center items-center text-white nav-font uppercase tracking-widest text-[13px]">
-                <li class="px-6 py-4 opacity-50">Memuat Menu...</li>
+    <!-- DESKTOP NAVIGATION -->
+    <nav class="bg-pn shadow-md hidden md:block sticky top-[89px] z-50">
+        <div class="container mx-auto px-6">
+            <ul id="main-nav" class="flex flex-wrap justify-start items-center text-white nav-font uppercase tracking-wider text-xs lg:text-[13px]">
+                <li class="py-4 opacity-60 font-medium">Memuat Menu...</li>
             </ul>
         </div>
     </nav>
 
-    <div id="mobile-menu" class="fixed inset-y-0 left-0 w-72 bg-pn z-[70] transform -translate-x-full shadow-2xl md:hidden">
-        <div class="p-8">
-            <div class="flex justify-between items-center border-b border-white/10 pb-6 mb-6">
-                <h2 class="text-white font-bold nav-font text-xl tracking-widest">MENU UTAMA</h2>
-                <div id="close-menu" class="text-white p-2 cursor-pointer hover:bg-white/10 rounded-full transition">✕</div>
+    <!-- MOBILE NAVIGATION SIDEBAR -->
+    <div id="mobile-menu" class="fixed inset-y-0 left-0 w-72 bg-pn-dark z-[70] transform -translate-x-full shadow-2xl md:hidden transition-transform duration-300 ease-in-out">
+        <div class="p-6 flex flex-col h-full">
+            <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-6">
+                <h2 class="text-white font-bold nav-font text-lg tracking-widest uppercase">Navigasi Utama</h2>
+                <button id="close-menu" class="text-white/80 p-2 hover:text-white rounded-full hover:bg-white/5 transition focus:outline-none">✕</button>
             </div>
-            <ul id="mobile-nav-list" class="text-white space-y-5 nav-font uppercase tracking-wider text-lg"></ul>
+            
+            <div class="mb-4 md:hidden">
+                <a href="index.html" class="text-[11px] font-bold uppercase tracking-widest text-amber-300 bg-white/5 border border-white/10 px-4 py-3 rounded-xl flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                    Kembali ke Beranda
+                </a>
+            </div>
+
+            <ul id="mobile-nav-list" class="text-white/90 space-y-4 nav-font uppercase tracking-wider text-base overflow-y-auto flex-1"></ul>
         </div>
     </div>
-    <div id="overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[65] hidden md:hidden"></div>
+    <div id="overlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[65] hidden md:hidden"></div>
 
-    <main class="container mx-auto px-4 py-16">
+    <!-- MAIN STRUKTURAL CONTENT -->
+    <main class="container mx-auto px-4 md:px-6 py-16 max-w-7xl">
         <div class="max-w-4xl mx-auto text-center mb-20 reveal">
-            <h2 class="text-4xl md:text-5xl font-bold nav-font text-pn uppercase mb-4 tracking-tight">Susunan Pengurus</h2>
-            <p class="text-gray-400 uppercase tracking-[0.3em] text-sm font-medium">Masa Khidmat 2024 - 2029</p>
-            <div class="w-20 h-1.5 bg-pn mx-auto mt-6 rounded-full"></div>
+            <h2 class="text-3xl md:text-5xl font-bold nav-font text-slate-800 uppercase mb-3 tracking-tight">Susunan Pengurus</h2>
+            <p class="text-slate-400 uppercase tracking-[0.25em] text-xs md:text-sm font-semibold">Masa Khidmat 2026 - 2031</p>
+            <div class="w-16 h-1 bg-pn mx-auto mt-5 rounded-full"></div>
         </div>
 
         <section class="mb-24">
             <div class="flex items-center justify-center space-x-4 mb-12">
-                <div class="h-[1px] w-12 bg-gray-200"></div>
-                <h3 class="text-xl font-bold nav-font text-center uppercase tracking-[0.2em] text-gray-400">Pengurus Harian</h3>
-                <div class="h-[1px] w-12 bg-gray-200"></div>
+                <div class="h-[1px] w-12 bg-slate-200"></div>
+                <h3 class="text-base md:text-lg font-bold nav-font text-center uppercase tracking-[0.2em] text-slate-400">Pengurus Harian</h3>
+                <div class="h-[1px] w-12 bg-slate-200"></div>
             </div>
             
-            <div id="pengurus-harian-list" class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
-                <div class="h-80 shimmer rounded-3xl"></div>
-                <div class="h-80 shimmer rounded-3xl"></div>
-                <div class="h-80 shimmer rounded-3xl"></div>
+            <div id="pengurus-harian-list" class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <div class="h-80 shimmer rounded-2xl border border-slate-100"></div>
+                <div class="h-80 shimmer rounded-2xl border border-slate-100"></div>
+                <div class="h-80 shimmer rounded-2xl border border-slate-100"></div>
             </div>
         </section>
 
-        <section class="border-t border-gray-100 pt-20">
-            <div class="flex items-center justify-center space-x-4 mb-16">
-                <div class="h-[1px] w-12 bg-gray-200"></div>
-                <h3 class="text-xl font-bold nav-font text-center uppercase tracking-[0.2em] text-gray-400">Anggota Pleno / Bagian</h3>
-                <div class="h-[1px] w-12 bg-gray-200"></div>
+        <section class="border-t border-slate-100 pt-20">
+            <div class="flex items-center justify-center space-x-4 mb-12">
+                <div class="h-[1px] w-12 bg-slate-200"></div>
+                <h3 class="text-base md:text-lg font-bold nav-font text-center uppercase tracking-[0.2em] text-slate-400">Departemen</h3>
+                <div class="h-[1px] w-12 bg-slate-200"></div>
             </div>
 
             <div id="bagian-list" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                <div class="h-48 shimmer rounded-2xl"></div>
-                <div class="h-48 shimmer rounded-2xl"></div>
-                <div class="h-48 shimmer rounded-2xl"></div>
-                <div class="h-48 shimmer rounded-2xl"></div>
-                <div class="h-48 shimmer rounded-2xl"></div>
+                <div class="h-44 shimmer rounded-2xl border border-slate-100"></div>
+                <div class="h-44 shimmer rounded-2xl border border-slate-100"></div>
+                <div class="h-44 shimmer rounded-2xl border border-slate-100"></div>
+                <div class="h-44 shimmer rounded-2xl border border-slate-100"></div>
+                <div class="h-44 shimmer rounded-2xl border border-slate-100"></div>
             </div>
         </section>
     </main>
 
-    <footer class="bg-white border-t border-gray-100 py-16 mt-20">
+    <!-- FOOTER (Konsisten dengan index.html) -->
+    <footer class="bg-white border-t border-slate-100 py-12 mt-24">
         <div class="container mx-auto px-4 text-center">
-            <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" class="h-20 mx-auto mb-8 opacity-90">
-            <p class="font-bold text-pn text-2xl nav-font uppercase mb-4 tracking-[0.2em]">PAC Pagar Nusa Kemang</p>
-            <div id="copyright-text" class="text-gray-400 text-[11px] tracking-widest max-w-md mx-auto leading-relaxed border-t border-gray-50 pt-8">
+            <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa Footer" class="h-16 mx-auto mb-6 opacity-90 object-contain">
+            <p class="font-bold text-pn text-xl md:text-2xl nav-font uppercase mb-2 tracking-[0.15em]">PAC PSNU PAGARNUSA KEMANG</p>
+            <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-6">Pagar NU dan Bangsa</p>
+            <div id="copyright-text" class="text-slate-400 text-[10px] tracking-widest max-w-lg mx-auto leading-relaxed border-t border-slate-100 pt-6 font-medium">
                 © 2026 Lembaga IT & Infokom PAC Pagar Nusa Kecamatan Kemang
             </div>
         </div>
     </footer>
 
+    <!-- LOGIC JAVASCRIPT ASLI (Tanpa Perubahan Variabel / Logika) -->
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbxrjbI6ZzqcX4zurydbnqAo8GvNdsKzQ0nODvelWFJlPJGAjaUPw7u64CdMNaoZTvZ-/exec';
 
@@ -169,13 +197,13 @@
                     res.navigasi.forEach(menuItem => {
                         const label = menuItem[0];
                         const link = menuItem[1];
-                        const isJoin = label.toLowerCase().includes('join');
+                        const isJoin = label.toLowerCase().includes('join') || label.toLowerCase().includes('gabung');
                         
                         // Desktop
-                        navContainer.innerHTML += `<li class="group"><a href="${link}" class="px-6 py-5 block transition-colors nav-link-hover ${isJoin ? 'text-yellow-400 font-bold' : 'hover:bg-white/5'}">${label}</a></li>`;
+                        navContainer.innerHTML += `<li class="group border-r border-white/5 last:border-0"><a href="${link}" class="px-5 py-4 block transition-all duration-200 nav-link-hover ${isJoin ? 'text-amber-300 font-bold bg-white/10' : 'hover:bg-white/5 hover:text-amber-300'}">${label}</a></li>`;
                         
                         // Mobile
-                        mobileNav.innerHTML += `<li class="border-b border-white/5 pb-2"><a href="${link}" class="block py-1 ${isJoin ? 'text-yellow-400' : ''}">${label}</a></li>`;
+                        mobileNav.innerHTML += `<li class="border-b border-white/5 pb-2"><a href="${link}" class="block py-1.5 font-medium transition-colors ${isJoin ? 'text-amber-300 font-bold' : 'hover:text-white'}">${label}</a></li>`;
                     });
                 }
 
@@ -190,7 +218,7 @@
                 
             } catch (error) {
                 console.error("Gagal memuat data:", error);
-                document.getElementById('pengurus-harian-list').innerHTML = `<p class="col-span-full text-center text-red-500">Gagal memuat data struktural.</p>`;
+                document.getElementById('pengurus-harian-list').innerHTML = `<p class="col-span-full text-center text-red-500 font-medium text-sm py-8 bg-red-50 border border-red-100 rounded-xl">Gagal memuat data struktural.</p>`;
             }
         }
 
@@ -207,25 +235,25 @@
 
                 if(member.tipe === "harian") {
                     harianCont.innerHTML += `
-                        <a href="${profilLink}" class="member-card reveal group bg-white p-8 rounded-[2rem] border border-gray-100 shadow-xl shadow-gray-200/40 text-center block relative overflow-hidden">
-                            <div class="absolute top-0 left-0 w-full h-2 bg-pn transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
-                            <div class="w-40 h-40 mx-auto mb-6 overflow-hidden rounded-3xl bg-gray-50 border-4 border-white shadow-inner">
-                                <img src="${fotoImg}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="${member.nama}">
+                        <a href="${profilLink}" class="member-card reveal group bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm text-center block relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-full h-1.5 bg-pn transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+                            <div class="w-36 h-36 mx-auto mb-5 overflow-hidden rounded-2xl bg-slate-50 border-2 border-slate-100 shadow-sm">
+                                <img src="${fotoImg}" class="w-full h-full object-cover transition duration-700 group-hover:scale-105" alt="${member.nama}" loading="lazy">
                             </div>
-                            <h4 class="text-xl font-bold text-gray-800 nav-font uppercase leading-tight mb-2">${member.nama}</h4>
-                            <p class="text-pn font-bold text-xs uppercase tracking-[0.2em] mb-6">${member.jabatan}</p>
-                            <span class="inline-flex items-center justify-center text-[10px] text-gray-400 font-bold tracking-widest border border-gray-100 px-6 py-2 rounded-full group-hover:bg-pn group-hover:text-white group-hover:border-pn transition-all duration-300">
+                            <h4 class="text-lg font-bold text-slate-800 nav-font uppercase leading-tight mb-1.5">${member.nama}</h4>
+                            <p class="text-pn font-bold text-xs uppercase tracking-wider mb-5">${member.jabatan}</p>
+                            <span class="inline-flex items-center justify-center text-[10px] text-slate-400 font-bold tracking-widest border border-slate-100 px-5 py-2 rounded-xl group-hover:bg-pn group-hover:text-white group-hover:border-pn transition-all duration-300">
                                 LIHAT PROFIL
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" /></svg>
                             </span>
                         </a>`;
                 } else {
                     bagianCont.innerHTML += `
-                        <a href="${profilLink}" class="member-card reveal group bg-white p-5 rounded-2xl border border-gray-50 shadow-sm hover:shadow-md text-center block">
-                            <div class="w-20 h-20 mx-auto mb-4 overflow-hidden rounded-full border-2 border-gray-50 shadow-sm">
-                                <img src="${fotoImg}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110" alt="${member.nama}">
+                        <a href="${profilLink}" class="member-card reveal group bg-white p-4 rounded-xl border border-slate-200/60 shadow-sm hover:border-slate-300 text-center block">
+                            <div class="w-16 h-16 mx-auto mb-3 overflow-hidden rounded-full border border-slate-100 shadow-sm">
+                                <img src="${fotoImg}" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="${member.nama}" loading="lazy">
                             </div>
-                            <h4 class="text-[12px] font-bold text-gray-700 nav-font uppercase leading-tight line-clamp-1">${member.nama}</h4>
+                            <h4 class="text-[12px] font-bold text-slate-700 nav-font uppercase leading-tight line-clamp-1">${member.nama}</h4>
                             <p class="text-pn text-[9px] font-bold uppercase mt-1 tracking-wider">${member.jabatan}</p>
                         </a>`;
                 }
@@ -237,7 +265,7 @@
         function initScrollReveal() {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
-            }, { threshold: 0.1 });
+            }, { threshold: 0.05 });
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         }
 

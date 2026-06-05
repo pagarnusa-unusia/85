@@ -1,452 +1,442 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PAGARNUSA UNUSIA - Pencak Silat Nahdlatul Ulama</title>
-    <link rel="icon" href="logopn.png">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#1B7548',
-                        primaryDark: '#145c38',
-                        accent: '#FFB800',
-                        slate900: '#0f172a'
-                    },
-                    animation: {
-                        'bounce-slow': 'bounce 3s infinite',
-                    }
-                }
-            }
-        }
-    </script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAC PSNU PAGARNUSA KECAMATAN KEMANG</title>
+    <meta name="description" content="Media Resmi PAC PSNU PAGARNUSA Kecamatan Kemang - Kabupaten Bogor. Menyajikan berita terkini, info rayon, dan khazanah pencak silat Nahdlatul Ulama.">
+    <meta name="author" content="Infokom PAGARNUSA Kemang">
     
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
-        .hero-gradient { background: linear-gradient(135deg, #1B7548 0%, #064e3b 100%); }
-        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-        .text-gradient { background: linear-gradient(to right, #FFB800, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-thumb { background: #1B7548; border-radius: 10px; }
+        :root { 
+            --pn-green-dark: #0f2e22;
+            --pn-green: #1b4d3e; 
+            --pn-green-light: #2c6e59;
+            --pn-gold: #d4af37;
+        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; color: #1e293b; background-color: #f8fafc; }
+        .nav-font { font-family: 'Oswald', sans-serif; }
+        .bg-pn { background-color: var(--pn-green); }
+        .bg-pn-dark { background-color: var(--pn-green-dark); }
+        .text-pn { color: var(--pn-green); }
+        .border-pn { border-color: var(--pn-green); }
         
-        /* Fix untuk menu mobile agar tidak transparan */
-        nav.mobile-active {
-            display: flex !important;
-            animation: slideDown 0.3s ease-out;
+        .shimmer { 
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); 
+            background-size: 200% 100%; 
+            animation: shimmer 1.5s infinite linear; 
         }
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+        .reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: var(--pn-green); border-radius: 20px; }
+
+        .rayon-card { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .rayon-card:hover { transform: translateY(-6px); box-shadow: 0 20px 25px -5px rgb(27 77 62 / 0.1), 0 8px 10px -6px rgb(27 77 62 / 0.1); }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 overflow-x-hidden">
+<body class="selection:bg-pn selection:text-white">
 
-<div class="bg-slate-900 text-white py-2.5 text-[10px] font-bold tracking-widest hidden md:block border-b border-white/5">
-    <div class="container mx-auto px-6 flex justify-between items-center">
-        <div class="flex items-center space-x-6">
-            <span><i class="fas fa-envelope text-accent mr-2"></i> uktpagarnusa.my.id</span>
-            <span><i class="fas fa-map-marker-alt text-accent mr-2"></i> Jakarta, Indonesia</span>
-        </div>
-        <div class="flex items-center space-x-4">
-            <a href="login.html" class="hover:text-accent transition">Login</a>
-        </div>
+    <div id="top-bar" class="bg-pn-dark text-white py-2 text-[10px] md:text-xs text-center uppercase tracking-[0.2em] font-medium border-b border-white/10 opacity-95">
+        PAC PSNU PAGARNUSA Kecamatan Kemang - Kabupaten Bogor
     </div>
-</div>
 
-    <header class="sticky top-0 z-[100] bg-primary/95 backdrop-blur-md text-white shadow-2xl transition-all duration-300">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="flex items-center space-x-3 group">
-                <div class="bg-white p-1 rounded-lg transform group-hover:rotate-12 transition shrink-0">
-                    <img src="logopn.png" alt="Logo" class="h-10 md:h-12">
-                </div>
-                <div class="leading-tight">
-                    <span class="block text-lg md:text-xl font-black tracking-tighter uppercase">PAGARNUSA</span>
-                    <span class="block text-[9px] uppercase tracking-[0.3em] text-accent font-bold">UNUSIA JAKARTA</span>
-                </div>
-            </a>
+    <header class="bg-white/90 backdrop-blur-md py-4 sticky top-0 z-[60] shadow-sm border-b border-slate-100">
+        <div class="container mx-auto px-4 md:px-6 flex justify-between items-center">
             
-            <nav id="main-nav" class="hidden lg:flex items-center space-x-2 font-bold text-[11px] tracking-widest">
-                <a href="#" class="px-4 py-2 hover:text-accent transition border-b-2 border-transparent hover:border-accent">Beranda</a>
-                <a href="#profil" class="px-4 py-2 hover:text-accent transition border-b-2 border-transparent hover:border-accent">Profil</a>
-                <a href="#informasi" class="px-4 py-2 hover:text-accent transition border-b-2 border-transparent hover:border-accent">Berita</a>
-                <a href="galeri.html" class="px-4 py-2 hover:text-accent transition border-b-2 border-transparent hover:border-accent">Galeri</a>
-                <a href="login.html" class="lg:ml-6 bg-accent text-slate-900 px-7 py-3 rounded-full font-black hover:bg-white hover:scale-105 transition-all shadow-xl shadow-black/20 text-center">Login</a>
-            </nav>
+            <div class="flex items-center space-x-4">
+                <button id="menu-toggle" class="p-2 -ml-2 cursor-pointer text-slate-700 hover:text-pn transition md:hidden focus:outline-none" aria-label="Toggle Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                </button>
+                <div class="flex items-center space-x-3.5">
+                    <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="h-12 md:h-14 w-auto object-contain drop-shadow-sm">
+                    <div class="text-left border-l-2 border-slate-200 pl-3.5">
+                        <h1 class="text-xl md:text-2xl font-bold text-pn tracking-tight leading-none nav-font uppercase">PAC PSNU PAGARNUSA</h1>
+                        <p class="text-slate-500 font-bold text-sm tracking-wider uppercase mt-1">Kecamatan Kemang</p>
+                    </div>
+                </div>
+            </div>
 
-            <button id="mobile-menu-btn" class="lg:hidden text-2xl p-2 hover:text-accent transition">
-                <i class="fas fa-bars-staggered"></i>
-            </button>
+            <div class="relative hidden md:block">
+                <div class="flex items-center bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2 focus-within:ring-2 focus-within:ring-pn/20 focus-within:border-pn transition-all w-72 lg:w-80">
+                    <input id="search-input" type="text" placeholder="Cari berita atau informasi..." class="bg-transparent border-none text-sm outline-none w-full text-slate-700 placeholder-slate-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 flex-shrink-0 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                </div>
+            </div>
         </div>
     </header>
 
-    <div class="bg-white border-b border-slate-200 py-3 relative z-10">
-        <div class="container mx-auto px-4 md:px-6 flex items-center">
-            <div class="bg-primary text-white text-[8px] md:text-[9px] font-black px-3 md:px-4 py-1.5 rounded-full mr-4 shrink-0 shadow-lg shadow-primary/20 animate-pulse">INFO TERBARU</div>
-            <marquee id="marquee-content" class="text-[10px] md:text-xs font-bold italic text-slate-500 tracking-wide">
-                Memuat informasi terbaru dari pusat komando...
-            </marquee>
-        </div>
-    </div>
-
-    <section class="hero-gradient text-white relative overflow-hidden min-h-[70vh] md:min-h-[85vh] flex items-center">
-        <div class="absolute inset-0 opacity-10 pointer-events-none">
-            <img src="https://lh3.googleusercontent.com/d/1yYBrxmsaiilUjKVIismJ3hvjq0RfsvTL" class="w-full h-full object-repeat">
-        </div>
-        <div class="container mx-auto px-6 py-12 md:py-20 relative z-10">
-            <div class="flex flex-col lg:flex-row items-center gap-10 md:gap-16">
-                <div class="w-full lg:w-3/5 space-y-6 md:space-y-10" data-aos="fade-right">
-                    <div class="inline-flex items-center space-x-2 bg-white/10 px-4 py-2 rounded-full border border-white/20">
-                        <span class="w-2 h-2 bg-accent rounded-full animate-ping"></span>
-                        <span class="text-[10px] font-black tracking-widest uppercase">Portal Resmi</span>
-                    </div>
-                    <h2 class="text-4xl md:text-8xl font-black leading-[1] md:leading-[0.9] tracking-tighter">
-                        <span id="hero-1">PSNU PAGARNUSA</span> <br>
-                        <span id="hero-2" class="text-accent drop-shadow-2xl">Ulama & Bangsa.</span>
-                    </h2>
-                    <p id="hero-sub" class="text-base md:text-xl text-emerald-50/80 max-w-2xl font-medium leading-relaxed italic border-l-4 border-accent pl-6">
-                        Pencak Silat Nahdlatul Ulama PAGARNUSA Rayon UNUSIA Jakarta. Mengembangkan tradisi bela diri santri dengan semangat profesionalisme.
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-4 md:gap-5">
-                        <a href="info.html" class="bg-white text-primary px-8 md:px-10 py-4 md:py-5 rounded-2xl font-black hover:bg-accent hover:text-slate-900 transition-all flex justify-center items-center group shadow-2xl shadow-black/30">
-                            Daftar Ujian <i class="fas fa-arrow-right ml-3 group-hover:translate-x-2 transition"></i>
-                        </a>
-                        <a href="https://wa.me/6285715232441" class="bg-primaryDark/50 text-center backdrop-blur-md border-2 border-white/20 px-8 md:px-10 py-4 md:py-5 rounded-2xl font-black hover:bg-white/10 transition">Hubungi</a>
-                    </div>
-                </div>
-                <div class="w-full lg:w-2/5 relative mt-10 lg:mt-0" data-aos="zoom-in">
-                    <div class="relative z-10 rounded-[2rem] md:rounded-[3rem] overflow-hidden border-[8px] md:border-[12px] border-white/10 shadow-full rotate-2 md:rotate-3 hover:rotate-0 transition-all duration-700">
-                        <img id="hero-image" src="https://lh3.googleusercontent.com/d/1yYBrxmsaiilUjKVIismJ3hvjq0RfsvTL" alt="PAGARNUSA UNUSIA JAKARTA" class="w-full h-[300px] md:h-[500px] object-cover scale-110">
-                    </div>
-                    <div class="absolute -bottom-5 -left-5 md:-bottom-10 md:-left-10 bg-accent p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] shadow-3xl text-slate-900 animate-bounce-slow z-20">
-                        <p id="stats-count" class="text-3xl md:text-5xl font-black leading-none">150+</p>
-                        <p class="text-[8px] md:text-[10px] font-black uppercase tracking-widest mt-2">Pendekar Aktif</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-12 md:py-16 bg-white relative z-20 -mt-10 mx-4 md:mx-6 rounded-[2rem] md:rounded-[3rem] shadow-2xl border border-slate-100 container mx-auto">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 px-6 md:px-10">
-            <div class="text-center group">
-                <i class="fas fa-university text-2xl md:text-3xl text-primary/20 mb-3 md:mb-4 group-hover:text-primary transition"></i>
-                <p class="text-2xl md:text-4xl font-black text-primary">04</p>
-                <p class="text-[8px] md:text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1">Rayon Cabang</p>
-            </div>
-            <div class="text-center group border-l border-slate-100">
-                <i class="fas fa-trophy text-2xl md:text-3xl text-primary/20 mb-3 md:mb-4 group-hover:text-accent transition"></i>
-                <p class="text-2xl md:text-4xl font-black text-primary">45+</p>
-                <p class="text-[8px] md:text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1">Medali Emas</p>
-            </div>
-            <div class="text-center group border-l-0 md:border-l border-slate-100">
-                <i class="fas fa-calendar-check text-2xl md:text-3xl text-primary/20 mb-3 md:mb-4 group-hover:text-primary transition"></i>
-                <p class="text-2xl md:text-4xl font-black text-primary">2026</p>
-                <p class="text-[8px] md:text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1">Tahun Berdiri</p>
-            </div>
-            <div class="text-center group border-l border-slate-100">
-                <i class="fas fa-fist-raised text-2xl md:text-3xl text-primary/20 mb-3 md:mb-4 group-hover:text-primary transition"></i>
-                <p class="text-2xl md:text-4xl font-black text-primary">85</p>
-                <p class="text-[8px] md:text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1">Komando Pusat</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="profil" class="py-20 md:py-32 bg-slate-50 overflow-hidden">
+    <nav class="bg-pn shadow-md hidden md:block sticky top-[89px] z-50">
         <div class="container mx-auto px-6">
-            <div class="flex flex-col lg:flex-row gap-12 md:gap-20 items-center">
-                <div class="w-full lg:w-1/2 grid grid-cols-2 gap-4" data-aos="fade-right">
-                    <img src="asets_index/profil1.png" class="rounded-[1.5rem] md:rounded-[2rem] h-48 md:h-64 w-full object-cover shadow-xl mt-8 md:mt-12">
-                    <img src="https://lh3.googleusercontent.com/d/1bQC89wXxY-cE4UBemgVUQxSUm__jS_6V" class="rounded-[1.5rem] md:rounded-[2rem] h-48 md:h-64 w-full object-cover shadow-xl">
-                </div>
-                <div class="w-full lg:w-1/2 space-y-6 md:space-y-8" data-aos="fade-left">
-                    <h5 class="text-primary font-black uppercase tracking-[0.3em] text-xs">Profil</h5>
-                    <h2 class="text-3xl md:text-5xl font-black text-slate-900 leading-tight">PAGARNUSA <span class="text-primary">UNUSIA.</span></h2>
-                    <p class="text-slate-500 leading-relaxed text-sm md:text-base">Pagar Nusa UNUSIA adalah wadah pendekar mahasiswa dalam melestarikan pencak silat warisan ulama sekaligus mencetak generasi yang tangguh secara fisik, mental, dan intelektual. Berlandaskan nilai Aswaja An-Nahdliyah, organisasi ini berkomitmen melahirkan mahasiswa berprestasi di berbagai ajang kompetisi tanpa meninggalkan jati diri sebagai benteng pertahanan ulama dan bangsa.</p>
-                    
-                    <div class="space-y-4">
-                        <div class="flex gap-4 md:gap-5 p-5 md:p-6 bg-white rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition">
-                            <div class="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary shrink-0"><i class="fas fa-shield-alt text-lg md:text-xl"></i></div>
-                            <div>
-                                <h4 class="font-black text-slate-800 uppercase tracking-tighter text-sm md:text-base">Visi Utama</h4>
-                                <p class="text-xs md:text-sm text-slate-500">Terwujudnya pendekar mahasiswa yang berakhlakul karimah, unggul dalam prestasi beladiri, dan setia menjaga kedaulatan ulama serta NKRI.</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-4 md:gap-5 p-5 md:p-6 bg-white rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition">
-                            <div class="w-10 h-10 md:w-12 md:h-12 bg-accent/10 rounded-2xl flex items-center justify-center text-accent shrink-0"><i class="fas fa-pray text-lg md:text-xl"></i></div>
-                            <div>
-                                <h4 class="font-black text-slate-800 uppercase tracking-tighter text-sm md:text-base">Misi Santri</h4>
-                                <p class="text-xs md:text-sm text-slate-500">Mengembangkan potensi minat dan bakat mahasiswa dalam pencak silat melalui pelatihan yang sistematis demi memperkuat ketahanan fisik, mental, dan spiritual di lingkungan kampus.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <ul id="main-nav" class="flex flex-wrap justify-start items-center text-white nav-font uppercase tracking-wider text-xs lg:text-[13px]">
+                <li class="py-4 opacity-60 font-medium">Memuat Navigasi...</li>
+            </ul>
         </div>
-    </section>
+    </nav>
 
-    <section id="informasi" class="py-20 md:py-32 bg-white relative">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row items-start md:items-end justify-between mb-12 md:mb-16 gap-6">
-                <div class="max-w-xl" data-aos="fade-up">
-                    <h2 class="text-3xl md:text-5xl font-black text-slate-900 leading-none uppercase tracking-tighter ">Warta <span class="text-primary">Pendekar</span></h2>
-                    <p class="text-slate-400 mt-4 font-medium uppercase text-[10px] md:text-xs tracking-[0.2em]">Berita Umum</p>
-                </div>
-                <a href="berita.html" class="bg-slate-900 text-white px-8 py-4 rounded-xl font-black text-xs hover:bg-primary transition shadow-xl uppercase tracking-widest w-full md:w-auto text-center">Lihat Semua Berita</a>
-            </div>
-
-            <div id="news-grid-index" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-                </div>
-        </div>
-    </section>
-
-    <section class="py-12 md:py-20">
-        <div class="container mx-auto px-4 md:px-6">
-            <div class="bg-primary rounded-[2rem] md:rounded-[3rem] p-10 md:p-20 text-center relative overflow-hidden shadow-[0_50px_100px_-20px_rgba(27,117,72,0.4)]">
-                <div class="absolute inset-0 opacity-20 pointer-events-none">
-                    <img src="https://www.transparenttextures.com/patterns/az-subtle.png" class="w-full h-full">
-                </div>
-                <div class="relative z-10 space-y-6 md:space-y-8">
-                    <h2 class="text-3xl md:text-6xl font-black text-white leading-tight">Siap Menjadi Bagian Dari <br><span class="text-accent italic">Keluarga Besar Kami?</span></h2>
-                    <p class="text-emerald-100 max-w-2xl mx-auto text-base md:text-lg font-light">menjadi pendekar pencak silat yang berdedikasi membela Nahdlatul Ulama (NU), mengamalkan ajaran Islam Ahlussunnah wal Jamaah (Aswaja), serta menjaga NKRI (Negara Kesatuan Republik Indonesia), yang tidak hanya menguasai bela diri fisik tapi juga menginternalisasi nilai spiritualitas, akhlak mulia, keteladanan, dan jiwa pengabdian kepada guru dan agama.</p>
-                    <div class="flex flex-col sm:flex-row justify-center gap-4">
-                        <a href="info.html" class="bg-accent text-slate-900 px-8 md:px-12 py-4 md:py-5 rounded-2xl font-black text-base md:text-lg hover:bg-white hover:scale-110 transition shadow-2xl uppercase tracking-tighter">Info Pendaftaran</a>
-                        <a href="https://mail.google.com/mail/u/0/#inbox?compose=DmwnWrRtswJqdPgGlqRmWNVzvmwjntcnWbbmPmjkHxZhtDjZCrsBhFnNPbLKqpjLpvPNHpDRlkhl" class="bg-white/10 border border-white/20 text-white px-8 md:px-12 py-4 md:py-5 rounded-2xl font-black text-base md:text-lg hover:bg-white/20 transition backdrop-blur-sm uppercase tracking-tighter">Hubungi Kami</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-slate900 text-white pt-20 md:pt-32 pb-12 relative">
-        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-20">
-            <div class="lg:col-span-1 space-y-8">
-                <div class="flex items-center space-x-4">
-                    <img src="logopn.png" class="h-14 md:h-16 bg-white p-2 rounded-2xl">
-                    <div class="leading-none">
-                        <span class="text-xl md:text-2xl font-black block tracking-tighter uppercase">PAGARNUSA</span>
-                        <span class="text-[9px] text-accent tracking-[0.3em] uppercase font-bold">UNUSIA JAKARTA</span>
-                    </div>
-                </div>
-                <p class="text-slate-400 text-sm leading-relaxed font-medium">"Bela Diri, Bela Bangsa, Bela Agama. Satu Komando di bawah naungan Nahdlatul Ulama."</p>
-                <div class="flex space-x-4">
-                    <a href="https://www.instagram.com/pagarnusaunusia/" class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center hover:bg-primary transition text-xl"><i class="fab fa-instagram"></i></a>
-                    <a href="https://wa.me/6285715232441" class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center hover:bg-primary transition text-xl"><i class="fab fa-whatsapp"></i></a>
-                </div>
+    <div id="mobile-menu" class="fixed inset-y-0 left-0 w-72 bg-pn-dark z-[70] transform -translate-x-full shadow-2xl md:hidden transition-transform duration-300 ease-in-out">
+        <div class="p-6 flex flex-col h-full">
+            <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-6">
+                <h2 class="text-white font-bold nav-font text-lg tracking-widest uppercase">Navigasi Utama</h2>
+                <button id="close-menu" class="text-white/80 p-2 hover:text-white rounded-full hover:bg-white/5 transition focus:outline-none">✕</button>
             </div>
             
-            <div>
-                <h5 class="text-lg font-black mb-6 md:mb-10 flex items-center uppercase tracking-widest"><span class="w-2 h-6 bg-accent mr-3 rounded-full"></span> Pencarian</h5>
-                <ul class="space-y-4 text-sm text-slate-400 font-bold uppercase tracking-tighter">
-                    <li><a href="#" class="hover:text-accent transition">Beranda Utama</a></li>
-                    <li><a href="#profil" class="hover:text-accent transition">Profil Organisasi</a></li>
-                    <li><a href="#informasi" class="hover:text-accent transition">Berita Terkini</a></li>
-                    <li><a href="info.html" class="hover:text-accent transition">Pendaftaran UKT</a></li>
-                </ul>
+            <div class="flex items-center bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 mb-6">
+                <input id="search-input-mobile" type="text" placeholder="Cari..." class="bg-transparent border-none text-sm outline-none w-full text-white placeholder-white/40 focus:ring-0">
             </div>
 
-            <div>
-                <h5 class="text-lg font-black mb-6 md:mb-10 flex items-center uppercase tracking-widest"><span class="w-2 h-6 bg-primary mr-3 rounded-full"></span> Alamat</h5>
-                <p class="text-sm text-slate-400 leading-relaxed font-bold">
-                    Jl. Taman Amir Hamzah No. 5, Pegangsaan, Menteng, Jakarta Pusat, DKI Jakarta 10430<br>
-                    <br>________<br>
-                    Jl. Parung Hijau, Pondok Udik, Kemang, Kabupaten Bogor, Jawa Barat<br>
-                </p>
-            </div>
+            <ul id="mobile-nav-list" class="text-white/90 space-y-4 nav-font uppercase tracking-wider text-base overflow-y-auto flex-1"></ul>
+        </div>
+    </div>
+    <div id="overlay" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[65] hidden md:hidden"></div>
 
-            <div class="bg-white/5 p-6 md:p-8 rounded-[2rem] border border-white/5">
-                <h5 class="text-xs font-black mb-6 uppercase tracking-widest text-accent text-center">Supported By</h5>
-                <div class="grid grid-cols-2 gap-4 opacity-50 grayscale hover:grayscale-0 transition duration-700">
-                    <div class="h-10 md:h-12 bg-white/10 rounded-xl flex items-center justify-center font-black text-[10px]">Mundzir</div>
-                    <div class="h-10 md:h-12 bg-white/10 rounded-xl flex items-center justify-center font-black text-[10px]">Fauzan</div>
+    <main class="container mx-auto px-4 md:px-6 py-8 max-w-7xl">
+        
+        <div id="headline-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+            <div class="h-[380px] md:h-[420px] shimmer rounded-2xl border border-slate-100"></div>
+            <div class="h-[380px] md:h-[420px] shimmer rounded-2xl border border-slate-100"></div>
+        </div>
+<!-- BANNER INFORMASI UJIAN KENAIKAN TINGKAT (UKT) -->
+        <div class="mb-12 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 p-0.5 rounded-2xl shadow-lg shadow-amber-500/10 reveal">
+            <div class="bg-slate-900 rounded-[14px] p-5 md:p-6 flex flex-col md:flex-row items-center justify-between gap-5 border border-slate-800">
+                <div class="flex items-center space-x-4 text-center md:text-left flex-col md:flex-row gap-3 md:gap-0">
+                    <!-- Ikon Notifikasi dengan Efek Pulse -->
+                    <div class="relative flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                        <span class="absolute inline-flex h-full w-full animate-ping rounded-xl bg-amber-400/20 opacity-75"></span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                        </svg>
+                    </div>
+                    <!-- Teks Informasi -->
+                    <div class="border-t md:border-t-0 md:border-l border-slate-800 pt-3 md:pt-0 md:pl-4">
+                        <span class="text-[10px] font-extrabold tracking-widest uppercase bg-amber-500 text-slate-950 px-2 py-0.5 rounded-md mb-1 inline-block">Pengumuman Penting</span>
+                        <h4 class="nav-font text-lg md:text-xl font-bold uppercase tracking-wide text-white leading-tight">Ujian Kenaikan Tingkat</h4>
+                        <p class="text-xs text-slate-400 mt-1 font-medium">Pendaftaran gelombang terbaru telah dibuka s/d tanggal 10 Juli 2026.</p>
+                    </div>
                 </div>
+                <!-- Tombol Aksi Utama -->
+                <a href="daftar_peserta.html" target="_blank" class="w-full md:w-auto flex items-center justify-center px-6 py-3.5 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold rounded-xl text-xs uppercase tracking-widest transition-all shadow-md shadow-amber-500/10 hover:shadow-lg hover:shadow-amber-500/20 transform active:scale-95 flex-shrink-0">
+                    Daftar Sekarang
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+                    </svg>
+                </a>
             </div>
         </div>
-        
-        <div class="container mx-auto px-6 mt-20 md:mt-32 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
-            <p class="text-[9px] md:text-[10px] text-slate-500 font-black tracking-widest">&copy; 2026 PAGARNUSA UNUSIA Jakarta. Hak Cipta Dilindungi.</p>
-            <div class="flex gap-6 text-[9px] md:text-[10px] text-slate-500 font-black uppercase tracking-widest">
-                <a href="#" class="hover:text-white transition">Privacy Policy</a>
-                <a href="#" class="hover:text-white transition">Terms of Service</a>
+        <section class="mb-16 reveal">
+            <div class="flex items-end justify-between border-b border-slate-200 mb-8 pb-3">
+                <h3 class="text-xl md:text-2xl font-bold nav-font tracking-tight border-b-[3px] border-pn -mb-[15px] pb-3 uppercase text-slate-800">
+                    Daftar Rayon Pembinaan
+                </h3>
+                <span class="text-xs text-slate-400 font-semibold tracking-wider uppercase bg-slate-100 px-3 py-1 rounded-full hidden sm:inline-block">5 Rayon Aktif</span>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="rayon-card bg-white border border-slate-200/60 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-50 text-pn rounded-xl flex items-center justify-center font-bold text-lg mb-4 shadow-inner border border-emerald-100/50">01</div>
+                        <h4 class="font-bold text-slate-800 text-lg leading-snug tracking-tight mb-2 uppercase nav-font">Rayon Universitas Nahdlatul Ulama Indonesia</h4>
+                        <p class="text-slate-500 text-xs leading-relaxed">Pusat pengembangan pencak silat prestasi dan khazanah keilmuan bela diri di tingkat perguruan tinggi (Mahasiswa).</p>
+                    </div>
+                    <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-[10px] font-bold text-pn bg-emerald-50 px-2.5 py-1 rounded-md uppercase tracking-wider">Klaster Akademik</span>
+                    </div>
+                </div>
+
+                <div class="rayon-card bg-white border border-slate-200/60 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-50 text-pn rounded-xl flex items-center justify-center font-bold text-lg mb-4 shadow-inner border border-emerald-100/50">02</div>
+                        <h4 class="font-bold text-slate-800 text-lg leading-snug tracking-tight mb-2 uppercase nav-font">Rayon SDN Jampang 01</h4>
+                        <p class="text-slate-500 text-xs leading-relaxed">Fokus pembinaan atlet usia dini sebagai ekstrakurikuler sekolah guna melatih kedisiplinan dan mental sejak belia.</p>
+                    </div>
+                    <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md uppercase tracking-wider">Usia Dini</span>
+                    </div>
+                </div>
+
+                <div class="rayon-card bg-white border border-slate-200/60 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-50 text-pn rounded-xl flex items-center justify-center font-bold text-lg mb-4 shadow-inner border border-emerald-100/50">03</div>
+                        <h4 class="font-bold text-slate-800 text-lg leading-snug tracking-tight mb-2 uppercase nav-font">Rayon SDN Bojong 04</h4>
+                        <p class="text-slate-500 text-xs leading-relaxed">Unit latihan pembibitan generasi muda berakhlakul karimah, melestarikan budaya bangsa melalui silat nasional.</p>
+                    </div>
+                    <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md uppercase tracking-wider">Usia Dini</span>
+                    </div>
+                </div>
+
+                <div class="rayon-card bg-white border border-slate-200/60 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-50 text-pn rounded-xl flex items-center justify-center font-bold text-lg mb-4 shadow-inner border border-emerald-100/50">04</div>
+                        <h4 class="font-bold text-slate-800 text-lg leading-snug tracking-tight mb-2 uppercase nav-font">Rayon SDN Bojong 01</h4>
+                        <p class="text-slate-500 text-xs leading-relaxed">Pusat pelatihan fisik dan karakter tunas bangsa di wilayah Bojong, mencetak generasi pesilat tangguh berprestasi.</p>
+                    </div>
+                    <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md uppercase tracking-wider">Usia Dini</span>
+                    </div>
+                </div>
+
+                <div class="rayon-card bg-white border border-slate-200/60 rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-50 text-pn rounded-xl flex items-center justify-center font-bold text-lg mb-4 shadow-inner border border-emerald-100/50">05</div>
+                        <h4 class="font-bold text-slate-800 text-lg leading-snug tracking-tight mb-2 uppercase nav-font">Rayon Pondok Pesantren Mahasiswa NU</h4>
+                        <p class="text-slate-500 text-xs leading-relaxed">Integrasi harmonis antara tradisi pencak silat, penguatan spiritual santri, nilai kepesantrenan, dan pembelaan ulama.</p>
+                    </div>
+                    <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md uppercase tracking-wider">Pesantren & Santri</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+            
+            <div class="lg:col-span-2">
+                <div class="flex items-end justify-between border-b border-slate-200 mb-8 pb-3">
+                    <h3 id="news-title-trigger" class="text-xl md:text-2xl font-bold nav-font tracking-tight border-b-[3px] border-pn -mb-[15px] pb-3 uppercase text-slate-800">Berita Terkini</h3>
+                    <div id="search-status" class="text-xs text-slate-400 font-semibold mb-1 tracking-wider uppercase"></div>
+                </div>
+                
+                <div id="news-list" class="space-y-6">
+                    <div class="flex flex-col sm:flex-row gap-6 p-4 bg-white border border-slate-100 rounded-2xl shimmer h-40"></div>
+                </div>
+            </div>
+
+            <aside class="space-y-10 lg:sticky lg:top-[160px]">
+                
+                <div class="reveal">
+                    <h3 class="text-lg font-bold border-b border-slate-200 mb-5 pb-3 nav-font tracking-tight uppercase text-slate-800">
+                        <span class="border-b-[3px] border-pn pb-3">Opini & Khazanah</span>
+                    </h3>
+                    <div class="bg-white shadow-sm border border-slate-200/60 rounded-2xl p-5">
+                        <ul id="opinion-list" class="divide-y divide-slate-100">
+                            <li class="py-3 text-sm text-slate-400 font-medium">Memuat data...</li>
+                        </ul>
+                    </div>
+                </div>
+
+<div class="reveal bg-gradient-to-br from-[#1b4d3e] to-[#0f2e22] p-6 text-white rounded-2xl shadow-xl shadow-emerald-950/20 relative overflow-hidden group border border-emerald-800/40">
+    <div class="absolute -right-6 -top-6 opacity-15 transition-transform group-hover:scale-110 duration-500">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-32 w-32" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /></svg>
+    </div>
+    <span class="text-[10px] font-extrabold tracking-widest uppercase bg-amber-500 text-slate-950 px-2.5 py-1 rounded-md mb-4 inline-block shadow-sm">Informasi Lanjut</span>
+    <h4 class="nav-font text-2xl mb-3 font-bold uppercase tracking-wide text-amber-400 drop-shadow-sm">Sekretariat PAC</h4>
+    <p id="alamat-sekre" class="text-sm text-slate-100 leading-relaxed mb-6 font-medium bg-black/10 p-3 rounded-xl border border-white/5">Memuat data alamat...</p>
+    <a id="btn-wa" href="#" target="_blank" class="flex items-center justify-center w-full py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs uppercase tracking-widest transition-all shadow-md hover:shadow-lg transform active:scale-95">
+        Kontak
+    </a>
+</div>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-slate-100 py-12 mt-24">
+        <div class="container mx-auto px-4 text-center">
+            <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa Footer" class="h-16 mx-auto mb-6 opacity-90 object-contain">
+            <p class="font-bold text-pn text-xl md:text-2xl nav-font uppercase mb-2 tracking-[0.15em]">PAC PSNU PAGARNUSA KEMANG</p>
+            <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-6">Pagar NU dan Bangsa</p>
+            <div id="copyright-text" class="text-slate-400 text-[10px] tracking-widest max-w-lg mx-auto leading-relaxed border-t border-slate-100 pt-6 font-medium">
+                © 2026 Lembaga IT & Infokom PAC Pagar Nusa Kecamatan Kemang
             </div>
         </div>
     </footer>
-    <p class="line-clamp-3 text-slate-600">
-    </p>
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
 <script>
-    // 1. KONFIGURASI
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyV0Y4P4HB82MHAjSvNxe4xp7BnpAAaNRumpghQebhVBoNJy6PHuh9LN5i9p6kDMaqBmA/exec";
+    // URL API Tetap Sama Sesuai Milik Anda
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxrjbI6ZzqcX4zurydbnqAo8GvNdsKzQ0nODvelWFJlPJGAjaUPw7u64CdMNaoZTvZ-/exec'; 
+    let allNews = [];
 
-    // Fungsi Pembantu: Membuat Slug dari Judul
-    function createSlug(text) {
-        return text.toString().toLowerCase()
-            .replace(/\s+/g, '-')
-            .replace(/[^\w\-]+/g, '')
-            .replace(/\-\-+/g, '-')
-            .replace(/^-+/, '')
-            .replace(/-+$/, '');
+    const toggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    const overlay = document.getElementById('overlay');
+    const closeBtn = document.getElementById('close-menu');
+
+    function toggleMenu() {
+        menu.classList.toggle('-translate-x-full');
+        overlay.classList.toggle('hidden');
+        document.body.classList.toggle('overflow-hidden');
     }
 
-    // Fungsi Pembantu: Membersihkan Tag HTML dari Quill agar kartu rapi
-    function stripHtml(html) {
-        let tmp = document.createElement("DIV");
-        tmp.innerHTML = html;
-        return tmp.textContent || tmp.innerText || "";
-    }
+    toggle.onclick = toggleMenu;
+    overlay.onclick = toggleMenu;
+    closeBtn.onclick = toggleMenu;
 
-    // Fungsi Loading State
-    function showSkeleton() {
-        const grid = document.getElementById('news-grid-index');
-        if (!grid) return;
-        const skeleton = `
-            <div class="animate-pulse space-y-4">
-                <div class="bg-slate-200 rounded-[2.5rem] h-64 w-full"></div>
-                <div class="h-4 bg-slate-200 rounded w-3/4 mx-auto"></div>
-                <div class="h-4 bg-slate-200 rounded w-1/2 mx-auto"></div>
-            </div>
-        `.repeat(3);
-        grid.innerHTML = skeleton;
-    }
-
-    // 2. MENGAMBIL DATA (Utama)
-    async function loadLiveContent() {
-        showSkeleton(); 
+    async function fetchContent() {
         try {
-            // Menggunakan type=getAllData sesuai struktur admin Anda
-            const response = await fetch(`${SCRIPT_URL}?type=getAllData&nocache=${new Date().getTime()}`);
-            if (!response.ok) throw new Error("Gagal terhubung ke server");
-            const data = await response.json();
-
-            // Simpan & Update Visual
-            if (data.visual) {
-                updateVisualDOM(data.visual);
-                localStorage.setItem('pagarnusa_visual', JSON.stringify(data.visual));
-            }
-
-            // Simpan & Update Berita
-            if (data.berita && data.berita.length > 0) {
-                renderNewsToGrid(data.berita);
-                localStorage.setItem('pagarnusa_news', JSON.stringify(data.berita));
-            } else {
-                syncFromLocalFallback();
-            }
-        } catch (err) {
-            console.error("Mode Offline/Error: Menggunakan data lokal.");
-            syncFromLocalFallback();
-        }
-    }
-
-    // 3. UPDATE VISUAL DOM
-    function updateVisualDOM(visualData) {
-        const mappings = {
-            'hero-1': visualData.hero1,
-            'hero-2': visualData.hero2,
-            'hero-sub': visualData.heroSub || visualData.sub,
-            'marquee-content': visualData.marquee
-        };
-        for (const [id, value] of Object.entries(mappings)) {
-            const el = document.getElementById(id);
-            if (el && value && value.trim() !== "") { 
-                el.innerText = value;
-            }
-        }
-    }
-
-    // 4. RENDER KARTU BERITA
-    function renderNewsToGrid(newsData) {
-        const newsContainer = document.getElementById('news-grid-index');
-        if (!newsContainer) return;
-
-        newsContainer.innerHTML = newsData.map((post, index) => {
-            const postId = index + 1; 
-            const slug = createSlug(post.title);
-            // Bersihkan konten dari tag HTML Quill dan potong jika terlalu panjang
-            const cleanContent = stripHtml(post.content);
+            const response = await fetch(API_URL);
+            const res = await response.json();
+            if (res.status !== "success") throw new Error(res.message);
             
-            return `
-                <div class="news-card bg-white rounded-[2rem] md:rounded-[2.5rem] overflow-hidden shadow-sm border border-slate-100 group hover:shadow-2xl hover:-translate-y-2 transition-all duration-500" 
-                     data-aos="fade-up" data-aos-delay="${(index % 3) * 100}">
-                    <div class="relative h-56 md:h-64 overflow-hidden">
-                        <img src="${post.image || 'logopn.png'}" alt="${post.title}" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
-                        <span class="absolute top-4 left-4 md:top-6 md:left-6 bg-accent text-slate-900 text-[8px] md:text-[9px] font-black px-4 py-1.5 rounded-full uppercase tracking-tighter shadow-lg">
-                            ${post.category || 'Warta Pendekar'}
-                        </span>
-                    </div>
-                    <div class="p-6 md:p-8">
-                        <div class="flex items-center gap-2 mb-4">
-                            <div class="w-1 h-4 bg-primary rounded-full"></div>
-                            <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest">${post.date || ''}</p>
+            allNews = res.berita;
+
+            if(res.profil) {
+                document.getElementById('alamat-sekre').innerHTML = res.profil.alamat || "Alamat belum diatur.";
+                document.getElementById('copyright-text').innerText = res.profil.copyright || `© ${new Date().getFullYear()} PAC Pagar Nusa Kemang`;
+                
+                if(res.profil.wa) {
+                    let waNum = res.profil.wa.toString().replace(/\D/g,'');
+                    if(waNum.startsWith('0')) waNum = '62' + waNum.slice(1);
+                    document.getElementById('btn-wa').href = `https://wa.me/${waNum}`;
+                }
+            }
+
+            const navContainer = document.getElementById('main-nav');
+            const mobileNav = document.getElementById('mobile-nav-list');
+            navContainer.innerHTML = '';
+            mobileNav.innerHTML = '';
+
+            if(res.navigasi) {
+                res.navigasi.forEach(menuItem => {
+                    const label = menuItem[0];
+                    const link = menuItem[1];
+                    const isJoin = label.toLowerCase().includes('join') || label.toLowerCase().includes('gabung');
+                    
+                    const li = document.createElement('li');
+                    li.className = "group border-r border-white/5 last:border-0";
+                    li.innerHTML = `<a href="${link}" class="px-5 py-4 block transition-all duration-200 ${isJoin ? 'text-amber-300 font-bold bg-white/10' : 'hover:bg-white/5 hover:text-amber-300'}">${label}</a>`;
+                    
+                    if(link === '#' || link === '') {
+                        li.onclick = (e) => { e.preventDefault(); filterByCategory(label); };
+                    }
+                    navContainer.appendChild(li);
+
+                    const mLi = document.createElement('li');
+                    mLi.className = "border-b border-white/5 pb-2";
+                    mLi.innerHTML = `<a href="${link}" class="block py-1.5 font-medium transition-colors ${isJoin ? 'text-amber-300 font-bold' : 'hover:text-white'}">${label}</a>`;
+                    if(link === '#' || link === '') {
+                        mLi.onclick = (e) => { e.preventDefault(); toggleMenu(); filterByCategory(label); };
+                    }
+                    mobileNav.appendChild(mLi);
+                });
+            }
+            renderBerita(allNews);
+        } catch (error) { 
+            document.getElementById('news-list').innerHTML = `<div class="p-6 bg-red-50 text-red-600 rounded-xl text-center border border-red-100 font-medium text-sm">Gagal memuat data: ${error.message}</div>`;
+        }
+    }
+
+    function filterByCategory(catName) {
+        const filtered = allNews.filter(n => n.kategori.toUpperCase() === catName.toUpperCase());
+        document.getElementById('news-title-trigger').innerText = catName;
+        renderBerita(filtered, true);
+        window.scrollTo({top: 450, behavior: 'smooth'});
+    }
+
+    function renderBerita(data, isSearch = false) {
+        const headlineGrid = document.getElementById('headline-grid');
+        const newsList = document.getElementById('news-list');
+        const opinionList = document.getElementById('opinion-list');
+        const status = document.getElementById('search-status');
+
+        if(!isSearch) headlineGrid.innerHTML = '';
+        newsList.innerHTML = ''; 
+        opinionList.innerHTML = '';
+        status.innerText = isSearch ? `Ditemukan ${data.length} hasil` : '';
+
+        if (data.length === 0) {
+            newsList.innerHTML = '<div class="text-center py-16 text-slate-400 font-semibold tracking-wider uppercase text-sm border border-dashed border-slate-200 rounded-2xl bg-white">Konten Tidak Ditemukan</div>';
+            return;
+        }
+
+        data.forEach((item, index) => {
+            const detailLink = `detail.html?id=${item.id}`;
+            const imgSrc = item.gambar || 'https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=800'; // Fallback stock photo premium jika kosong
+
+            // Render Headline Baner Utama (2 data teratas)
+            if (!isSearch && index < 2) {
+                headlineGrid.innerHTML += `
+                    <a href="${detailLink}" class="relative h-[380px] md:h-[420px] bg-slate-900 overflow-hidden group rounded-2xl shadow-md reveal border border-slate-800">
+                        <img src="${imgSrc}" class="w-full h-full object-cover opacity-50 transition duration-700 group-hover:scale-102" loading="lazy">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white">
+                            <span class="bg-amber-500 text-slate-950 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-md">${item.kategori}</span>
+                            <h2 class="text-xl md:text-2xl font-bold mt-3 group-hover:text-amber-300 transition-colors leading-tight nav-font uppercase tracking-wide">${item.judul}</h2>
+                            <div class="flex items-center space-x-2 mt-4 text-[10px] text-white/60 uppercase font-bold tracking-widest">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                <span>${item.tanggal}</span>
+                            </div>
                         </div>
-                        <h4 class="font-black text-slate-900 mb-4 line-clamp-2 leading-tight text-lg md:text-xl uppercase tracking-tighter group-hover:text-primary transition italic">
-                            ${post.title}
-                        </h4>
-                        <p class="text-sm text-slate-500 line-clamp-3 mb-6 md:mb-8 font-medium italic">
-                            "${cleanContent}"
-                        </p>
-                        <a href="detail_berita.html?id=${postId}&title=${slug}" class="inline-flex items-center gap-3 text-slate-900 font-black text-[10px] md:text-xs uppercase tracking-widest group/btn">
-                            Baca Selengkapnya 
-                            <span class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover/btn:bg-primary group-hover/btn:text-white transition-all">
-                                <i class="fas fa-arrow-right"></i>
-                            </span>
-                        </a>
-                    </div>
-                </div>
-            `;
-        }).join('');
-    }
+                    </a>`;
+            }
 
-    // 5. FALLBACK LOCAL STORAGE
-    function syncFromLocalFallback() {
-        const visualData = JSON.parse(localStorage.getItem('pagarnusa_visual'));
-        if (visualData) updateVisualDOM(visualData);
-        
-        const newsData = JSON.parse(localStorage.getItem('pagarnusa_news')) || [];
-        if (newsData.length > 0) {
-            renderNewsToGrid(newsData);
-        } else {
-            const grid = document.getElementById('news-grid-index');
-            if (grid) grid.innerHTML = `<p class="text-center col-span-full py-10 opacity-50 font-bold uppercase tracking-widest text-xs">Belum ada berita yang diterbitkan.</p>`;
-        }
-    }
-
-    // 6. INITIALIZATION
-    document.addEventListener('DOMContentLoaded', () => {
-        syncFromLocalFallback(); // Tampilkan cache dulu
-        loadLiveContent();       // Ambil data terbaru dari cloud
-        
-        if (typeof AOS !== 'undefined') {
-            AOS.init({ duration: 1000, once: true, offset: 100 });
-        }
-    });
-
-    // Mobile Menu Logic
-    const mobileBtn = document.getElementById('mobile-menu-btn');
-    const nav = document.getElementById('main-nav');
-    if (mobileBtn && nav) {
-        mobileBtn.addEventListener('click', () => {
-            nav.classList.toggle('hidden');
-            nav.classList.toggle('mobile-active');
-            if (nav.classList.contains('mobile-active')) {
-                nav.className = 'mobile-active absolute top-full left-0 w-full bg-primary p-8 flex flex-col space-y-4 text-center shadow-2xl z-[110] lg:hidden';
+            // Render Opini & Khazanah Sidebar
+            const cat = item.kategori.toLowerCase();
+            if (cat.includes('opini') || cat.includes('khazanah')) {
+                opinionList.innerHTML += `
+                    <li class="py-3.5 group reveal first:pt-0 last:pb-0">
+                        <a href="${detailLink}" class="font-semibold text-sm group-hover:text-pn transition-colors block text-slate-700 leading-snug mb-1.5">${item.judul}</a>
+                        <div class="flex items-center space-x-2 text-[9px] font-bold tracking-wider uppercase text-slate-400">
+                             <span>${item.tanggal}</span>
+                             <span class="text-slate-300">•</span>
+                             <span class="text-pn bg-emerald-50 px-1.5 py-0.5 rounded">${item.kategori}</span>
+                        </div>
+                    </li>`;
+            } 
+            
+            // Render Daftar Berita Horizontal Utama
+            if (isSearch || index >= 2) {
+                newsList.innerHTML += `
+                    <a href="${detailLink}" class="flex gap-4 md:gap-5 items-start group reveal border border-slate-100 bg-white p-4 rounded-2xl shadow-sm hover:border-slate-200 transition-colors">
+                        <div class="w-24 h-20 md:w-36 md:h-24 flex-shrink-0 overflow-hidden rounded-xl bg-slate-50 border border-slate-100">
+                            <img src="${imgSrc}" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" loading="lazy">
+                        </div>
+                        
+                        <div class="flex-1 min-w-0">
+                            <span class="text-[9px] font-bold text-pn uppercase tracking-wider bg-emerald-50 px-2 py-0.5 rounded mb-1.5 inline-block">${item.kategori}</span>
+                            <h4 class="text-sm md:text-base font-bold text-slate-800 leading-snug group-hover:text-pn transition-colors line-clamp-2 uppercase nav-font tracking-tight">
+                                ${item.judul}
+                            </h4>
+                            <div class="flex items-center mt-3 text-slate-400 text-[10px] font-medium uppercase tracking-wider">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-slate-400 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span>${item.tanggal}</span>
+                            </div>
+                        </div>
+                    </a>`;
             }
         });
+
+        // Fallback jika tidak ada konten Opini yang masuk
+        if(opinionList.innerHTML === '') {
+            opinionList.innerHTML = '<li class="py-2 text-xs text-slate-400 font-medium italic">Belum ada konten khazanah.</li>';
+        }
+
+        initScrollReveal();
     }
 
-    // Sync across tabs
-    window.addEventListener('storage', (e) => {
-        if (e.key === 'pagarnusa_news' || e.key === 'pagarnusa_visual') syncFromLocalFallback();
-    });
+    // Event Listener Sync untuk Pencarian Desktop & Mobile
+    const handleSearch = (e) => {
+        const val = e.target.value.toLowerCase();
+        if(val.length > 2) {
+            const filtered = allNews.filter(n => n.judul.toLowerCase().includes(val) || n.kategori.toLowerCase().includes(val));
+            document.getElementById('news-title-trigger').innerText = "Hasil Pencarian";
+            renderBerita(filtered, true);
+        } else if (val.length === 0) {
+            document.getElementById('news-title-trigger').innerText = "Berita Terkini";
+            renderBerita(allNews);
+        }
+    };
+
+    document.getElementById('search-input').addEventListener('input', handleSearch);
+    document.getElementById('search-input-mobile').addEventListener('input', handleSearch);
+
+    function initScrollReveal() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.05 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchContent);
 </script>
 </body>
-
 </html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html><html lang="id"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sejarah</title>
+    <link rel="stylesheet" href="https://pagarnusa-unusia.github.io/kisi-kisi/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Mengaktifkan mode gelap berbasis class
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="logopn.png">
+    <style>
+        :root { 
+            --pn-green-dark: #0f2e22;
+            --pn-green: #1b4d3e; 
+            --pn-green-light: #2c6e59;
+            --pn-gold: #d4af37;
+        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .nav-font { font-family: 'Oswald', sans-serif; }
+        .bg-pn { background-color: var(--pn-green); }
+        .bg-pn-dark { background-color: var(--pn-green-dark); }
+        .text-pn { color: var(--pn-green); }
+        .border-pn { border-color: var(--pn-green); }
+        
+        /* Custom scrollbar mewah */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--pn-green-light); border-radius: 20px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 antialiased selection:bg-pn selection:text-white transition-colors duration-300">
+
+    <div id="mainContent" class="min-h-screen flex flex-col justify-between">
+        
+        <!-- HEADER -->
+        <header class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md sticky top-0 z-50 shadow-sm border-b border-slate-100 dark:border-slate-800 py-4 transition-all duration-300">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center gap-4">
+                
+                <div class="header-left flex items-center space-x-3 w-full">
+                    <img src="logopn.png" alt="Logo PAGARNUSA" class="logo h-10 md:h-12 w-auto object-contain drop-shadow-sm">
+                    <h1 class="site-title text-lg md:text-2xl font-bold text-pn dark:text-emerald-400 tracking-tight leading-none nav-font uppercase border-l-2 border-slate-200 dark:border-slate-700 pl-3">PAC PSNU Pagarnusa <br>Kecamatan Kemang</h1>
+                </div>
+                
+                <div class="header-right flex-shrink-0">
+                    <button id="toggle-dark-mode" aria-label="Aktifkan mode gelap" class="cursor-pointer flex items-center space-x-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 px-3 md:px-4 py-2 rounded-xl text-slate-700 dark:text-slate-300 transition text-xs font-semibold border border-transparent dark:border-slate-700 shadow-sm">
+                        <i id="dark-mode-icon" class="far fa-moon text-pn dark:text-emerald-400" style="font-size:16px"></i>
+                        <span id="dark-mode-text" class="hidden sm:inline">Dark Mode</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- KONTEN UTAMA RESPONSIVE GRID -->
+        <div class="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start relative">
+                
+                <!-- ARTIKEL -->
+                <main class="main-content lg:col-span-2 space-y-8 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700/60 rounded-2xl p-5 md:p-8 shadow-sm transition-colors duration-300">
+                    <article class="prose max-w-none text-slate-700 dark:text-slate-300 leading-relaxed space-y-6">
+                        
+                        <h2 id="sejarah" class="text-xl md:text-2xl font-bold nav-font tracking-tight border-b-2 border-slate-100 dark:border-slate-700 pb-3 uppercase text-slate-800 dark:text-slate-100">Sejarah</h2>
+                        <p class="text-base font-semibold text-pn dark:text-emerald-300 bg-emerald-50/60 dark:bg-emerald-900/30 border-l-4 border-pn dark:border-emerald-500 p-3.5 rounded-r-xl">Pencak Silat Nahdlatul Ulama Pagar Nusa: Pilar Pencak Silat di Lingkungan NU</p>
+                        <p class="text-sm">Pencak Silat Nahdlatul Ulama Pagar Nusa (PSNU PAGARNUSA) adalah organisasi yang menjadi wadah bagi pengembangan pencak silat di bawah naungan Nahdlatul Ulama (NU). Organisasi ini memiliki sejarah yang kaya dan peran penting dalam melestarikan seni bela diri tradisional Indonesia.</p>
+                        
+                        <p class="text-slate-800 dark:text-slate-200 font-bold text-sm tracking-wide border-t border-slate-50 dark:border-slate-700/50 pt-4"><b>Latar Belakang dan Pendirian</b></p>
+                        <p class="text-sm">PSNU PAGARNUSA digagas pada tanggal 12 Muharam 1406 H / 27 September 1985 M di Pondok Pesantren Tebuireng, Jombang, Jawa Timur. Pendiriannya dilatarbelakangi oleh kegelisahan para ulama akan kurangnya wadah yang menyatukan perguruan-perguruan pencak silat di lingkungan NU. Gagasan ini diinisiasi oleh Drs. KH. Muhammad Nur Aziz, seorang pendekar dari Ponorogo, Jawa Timur.</p>
+                        <p class="text-sm">Organisasi ini kemudian resmi berdiri pada tanggal 22 Rabi’ul Akhir 1406 H / 03 Januari 1986 M di Pondok Pesantren Lirboyo, Kediri, Jawa Timur. KH. Abdulloh Maksum Jauhari menjadi Ketua Umum pertama, dengan tujuan menyatukan dan mewadahi berbagai perguruan silat NU yang sebelumnya berjalan sendiri-sendiri.</p>
+                        
+                        <p class="text-slate-800 dark:text-slate-200 font-bold text-sm tracking-wide border-t border-slate-50 dark:border-slate-700/50 pt-4"><b>Peran dan Fungsi</b></p>
+                        <p class="text-sm">PSNU PAGARNUSA berperan sebagai badan otonom di bawah naungan Nahdlatul Ulama. Organisasi ini bergerak dalam melaksanakan kebijakan NU terkait pengembangan seni, budaya, tradisi, olahraga pencak silat, pengobatan alternatif, dan pengabdian masyarakat. Dengan demikian, PSNU PAGARNUSA tidak hanya fokus pada aspek bela diri, tetapi juga memiliki dimensi sosial dan kebudayaan yang luas.</p>
+                        
+                        <div class="my-6 bg-slate-50 dark:bg-slate-800/50 p-2 rounded-2xl border border-slate-100 dark:border-slate-700/60 max-w-sm mx-auto shadow-inner">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0d/Salam_pagarnusa.jpg" alt="Salam PNr" style="width:300px; display:block; margin: 10px auto;" class="rounded-xl object-cover shadow-sm dark:brightness-90">
+                        </div>
+                        
+                        <p class="text-slate-800 dark:text-slate-200 font-bold text-sm tracking-wide border-t border-slate-50 dark:border-slate-700/50 pt-4"><b>Sejarah Perkembangan</b></p>
+                        <ul class="space-y-3 pl-4 list-disc text-sm">
+                            <li><b class="dark:text-slate-200">Pertemuan Pertama (27 September 1985):</b> Pertemuan di Pondok Pesantren Tebuireng yang mengawali gagasan pendirian organisasi pencak silat NU.</li>
+                            <li><b class="dark:text-slate-200">Pendirian Resmi (3 Januari 1986):</b> Pendirian PSNU PAGARNUSA di Pondok Pesantren Lirboyo dan penunjukan KH. Abdulloh Maksum Jauhari sebagai Ketua Umum pertama.</li>
+                            <li><b class="dark:text-slate-200">Perumusan Identitas:</b> Penetapan nama PAGARNUSA dan simbol organisasi. Nama ini diusulkan oleh KH. Anas Thohir dan terinspirasi dari karya KH. Mujib Ridwan, putra pencipta lambang NU.</li>
+                            <li><b class="dark:text-slate-200">Pengesahan dan Pelantikan:</b> Pengesahan nama Ikatan Pencak Silat NU Pagarnusa dan pelantikan pengurus oleh PWNU Jawa Timur pada 26 Maret 1986.</li>
+                            <li><b class="dark:text-slate-200">Peresmian oleh PBNU (16 Juli 1986):</b> Peresmian Lembaga Pencak Silat Nahdhatul Ulama Pagarnusa sebagai bagian dari Jam'iyah Nahdlatul Ulama oleh KH. Ahmad Shidiq dan KH. Abdurrahman Wahid (Gus Dur).</li>
+                            <li><b class="dark:text-slate-200">Munas I di Genggong (1991):</b> Pelaksanaan Musyawarah Nasional (Munas) pertama di Pondok Pesantren Zainul Hasan, Genggong, Kraksaan, Probolinggo.</li>
+                            <li><b class="dark:text-slate-200">Perubahan Status Organisasi:</b> Perubahan status dari lembaga menjadi badan otonom dan kembali menjadi lembaga dalam Muktamar NU.</li>
+                            <li><b class="dark:text-slate-200">Munas II di Jakarta (2001):</b> Pelaksanaan Munas II di Padepokan IPSI Taman Mini Indonesia Indah, Jakarta, yang membahas agenda organisasi, keanggotaan, dan teknik pencak silat.</li>
+                            <li><b class="dark:text-slate-200">Status Badan Otonom (2004):</b> Penetapan PSNU PAGARNUSA sebagai badan otonom di bawah naungan NU hingga saat ini.</li>
+                        </ul>
+                        
+                        <p class="text-slate-800 dark:text-slate-200 font-bold text-sm tracking-wide border-t border-slate-50 dark:border-slate-700/50 pt-4"><b>Keanggotaan</b></p>
+                        <p class="text-sm">PSNU PAGARNUSA memiliki jumlah anggota yang besar. Diperkirakan terdapat sekitar 12.5 juta anggota yang belum memiliki Kartu Tanda Anggota (KTA), dan lebih dari 8.5 juta anggota yang sudah resmi terdaftar dan memiliki KTA. Hal ini menunjukkan bahwa PSNU PAGARNUSA memiliki pengaruh yang signifikan dalam pengembangan pencak silat di Indonesia.</p>
+                        <p class="text-sm">Dengan sejarah yang panjang dan peran yang beragam, PSNU PAGARNUSA terus menjadi pilar penting dalam melestarikan dan mengembangkan pencak silat sebagai bagian dari warisan budaya bangsa, serta berkontribusi dalam pengabdian kepada masyarakat dan negara.</p>
+                        <p class="text-sm bg-amber-50 dark:bg-amber-900/20 text-amber-900 dark:text-amber-200 font-medium p-3 rounded-xl border border-amber-100 dark:border-amber-800/50">Akhirnya pada Muktamar NU ke 31 di Boyolali pada tanggal 28 November - 02 Desember 2004 IPSNU PAGARNUSA jadi Badan Otonom sampai sekarang.</p>
+
+                        <h2 id="hierarki-organisasi" class="text-xl md:text-2xl font-bold nav-font tracking-tight border-b-2 border-slate-100 dark:border-slate-700 pt-6 pb-3 uppercase text-slate-800 dark:text-slate-100">Hierarki Organisasi</h2>
+                        <ol class="space-y-2 pl-5 list-decimal text-sm font-medium">
+                            <li>Pimpinan Pusat (PP) di tingkat nasional;</li>
+                            <li>Pimpinan Wilayah (PW) di tingkat provinsi;</li>
+                            <li>Pimpinan Cabang Istimewa (PCI) berkedudukan di kepengurusan luar negeri;</li>
+                            <li>Pimpinan Cabang (PC) di tingkat kabupaten/kota;</li>
+                            <li>Pimpinan Anak Cabang (PAC) di tingkat kecamatan;</li>
+                            <li>Pimpinan Rayon (Rayon) berkedudukan di pondok pesantren atau lembaga pendidikan;</li>
+                            <li>Pimpinan Ranting (Ranting) di tingkat desa/kelurahan.</li>
+                        </ol>
+
+                        <h2 id="daftar-ketua-umum-pimpinan-pusat-pencak-silat-nu-pagarnusa" class="text-xl md:text-2xl font-bold nav-font tracking-tight border-b-2 border-slate-100 dark:border-slate-700 pt-6 pb-3 uppercase text-slate-800 dark:text-slate-100">Daftar Ketua Umum Pimpinan Pusat Pencak Silat NU Pagarnusa:</h2>
+
+                        <div class="overflow-x-auto border border-slate-200/80 dark:border-slate-700 rounded-2xl shadow-sm bg-white dark:bg-slate-800 my-4">
+                            <table border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse; width: 100%; text-align: center;" class="text-sm w-full">
+                                <thead style="background-color: #e0f2f1;" class="bg-emerald-50 dark:bg-emerald-900/40 text-slate-800 dark:text-emerald-100 font-bold nav-font tracking-wider uppercase text-xs">
+                                    <tr class="border-b border-slate-200 dark:border-slate-700/50">
+                                        <th class="p-3 md:p-4">Potret</th>
+                                        <th class="p-3 md:p-4">Nama</th>
+                                        <th colspan="2" class="p-3 md:p-4">Periode</th>
+                                    </tr>
+                                    <tr class="border-b border-slate-200 dark:border-slate-700/50 bg-emerald-50/50 dark:bg-transparent text-[10px]">
+                                        <th class="p-1"></th>
+                                        <th class="p-1"></th>
+                                        <th class="p-2 border-r border-slate-200/60 dark:border-slate-700/50">Mulai</th>
+                                        <th class="p-2">Selesai</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50 font-medium">
+                                    <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-700/30 transition">
+                                        <td class="p-3 flex justify-center"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d8/Gus_Maksum_Pendiri_Pagar_Nusa.jpg" alt="KH. A. Maksum Jauhari" width="100" class="rounded-lg object-cover border border-slate-100 dark:border-slate-600 shadow-sm max-w-[70px] md:max-w-[100px] dark:brightness-90"></td>
+                                        <td style="color: brown; font-weight: bold;" class="p-3 font-semibold text-amber-800 dark:text-amber-400 text-xs md:text-sm">KH. Abdullah Maksum Jauhari</td>
+                                        <td class="p-3 border-r border-slate-100 dark:border-slate-700/50 text-xs">1986</td>
+                                        <td class="p-3 text-xs">2003</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-700/30 transition">
+                                        <td class="p-3 flex justify-center"><img src="https://upload.wikimedia.org/wikipedia/commons/4/40/KH_SUHARBILLAH.jpg" alt="Dr. KH. Suharbillah" width="100" class="rounded-lg object-cover border border-slate-100 dark:border-slate-600 shadow-sm max-w-[70px] md:max-w-[100px] dark:brightness-90"></td>
+                                        <td class="p-3 text-xs md:text-sm text-slate-800 dark:text-slate-200">Dr. KH. Suharbillah</td>
+                                        <td class="p-3 border-r border-slate-100 dark:border-slate-700/50 text-xs">2003</td>
+                                        <td class="p-3 text-xs">2007</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-700/30 transition">
+                                        <td class="p-3 flex justify-center"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/KH_FUAD_PN.jpg" alt="Drs. KH. Fuad Anwar" width="100" class="rounded-lg object-cover border border-slate-100 dark:border-slate-600 shadow-sm max-w-[70px] md:max-w-[100px] dark:brightness-90"></td>
+                                        <td class="p-3 text-xs md:text-sm text-slate-800 dark:text-slate-200">Drs. KH. Fuad Anwar, M.Si</td>
+                                        <td class="p-3 border-r border-slate-100 dark:border-slate-700/50 text-xs">2007</td>
+                                        <td class="p-3 text-xs">2012</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-700/30 transition">
+                                        <td class="p-3 flex justify-center"><img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/GUS_AIZUDIN_PN.jpg" alt="KH. Aizzudin Abdurrahman" width="100" class="rounded-lg object-cover border border-slate-100 dark:border-slate-600 shadow-sm max-w-[70px] md:max-w-[100px] dark:brightness-90"></td>
+                                        <td class="p-3 text-xs md:text-sm text-slate-800 dark:text-slate-200">KH. Aizzudin Abdurrahman</td>
+                                        <td class="p-3 border-r border-slate-100 dark:border-slate-700/50 text-xs">2012</td>
+                                        <td class="p-3 text-xs">2016</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-700/30 transition">
+                                        <td class="p-3 flex justify-center"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWD-tiJ0c2EdJlTs3mC7NgYtMEBIWUI2JnOg&s" alt="Ajengan Mimih Haeruman" width="100" class="rounded-lg object-cover border border-slate-100 dark:border-slate-600 shadow-sm max-w-[70px] md:max-w-[100px] dark:brightness-90"></td>
+                                        <td class="p-3 text-xs md:text-sm text-slate-800 dark:text-slate-200">Ajengan Mimih Haeruman</td>
+                                        <td class="p-3 border-r border-slate-100 dark:border-slate-700/50 text-xs">2016</td>
+                                        <td class="p-3 text-xs">2017</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-700/30 transition">
+                                        <td class="p-3 flex justify-center"><img src="https://www.risalahnu.com/wp-content/uploads/2022/12/ketua-umum-pagar-nusa-m-nabil-haroen-_170801170003-485.jpg" alt="Muchamad Nabil Haroen" width="100" class="rounded-lg object-cover border border-slate-100 dark:border-slate-600 shadow-sm max-w-[70px] md:max-w-[100px] dark:brightness-90"></td>
+                                        <td class="p-3 text-xs md:text-sm"><a href="https://id.wikipedia.org/wiki/Muchamad_Nabil_Haroen" style="color: blue; font-weight: bold;" class="hover:underline text-blue-500 dark:text-blue-400">Muchamad Nabil Haroen</a></td>
+                                        <td class="p-3 border-r border-slate-100 dark:border-slate-700/50 text-xs">2017</td>
+                                        <td class="p-3 text-xs italic text-emerald-600 dark:text-emerald-400 font-bold"><em>sekarang</em></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <br>
+                        <p style="height: 10px;" class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 nav-font mb-4">Inisiator Pencak Silat NU Pagarnusa</p>
+
+                        <div class="overflow-x-auto border border-slate-200/80 dark:border-slate-700 rounded-2xl shadow-sm bg-white dark:bg-slate-800 max-w-md mx-auto my-6 p-1">
+                            <table border="1" cellpadding="10" cellspacing="0" style="border-collapse: collapse; width: 100%; max-width: 500px; margin: auto; text-align: center;" class="text-sm w-full">
+                                <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50 font-medium">
+                                    <tr class="bg-slate-50/50 dark:bg-slate-800/80">
+                                        <td colspan="2" class="p-5">
+                                            <strong class="text-slate-800 dark:text-slate-200 nav-font uppercase tracking-wide text-sm block mb-3">Sang Inisiator Pencak Silat NU Pagarnusa</strong>
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Inisiator_Pagarnusa.jpg/500px-Inisiator_Pagarnusa.jpg" alt="KH. Muhammad Nur Aziz" width="200" class="rounded-xl mx-auto shadow-sm border border-slate-100 dark:border-slate-600 object-cover dark:brightness-90">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="p-3 text-slate-700 dark:text-slate-300"><strong class="text-xs text-slate-400 dark:text-slate-500 block font-normal uppercase tracking-wider mb-0.5">Petahana</strong>Drs. KH. Muhammad Nur Aziz</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+                                        <td class="p-3 text-left font-semibold text-xs uppercase tracking-wider text-slate-400 dark:text-slate-500 pl-5"><strong>Dibentuk</strong></td>
+                                        <td class="p-3 text-right pr-5 font-bold text-slate-800 dark:text-slate-200">03 Januari 1986</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+                                        <td class="p-3 text-left font-semibold text-xs uppercase tracking-wider text-slate-400 dark:text-slate-500 pl-5"><strong>Pejabat pertama</strong></td>
+                                        <td style="color: brown;" class="p-3 text-right pr-5 font-bold text-amber-800 dark:text-amber-400">KH. Abdullah Maksum Jauhari</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h2 id="tujuan-pagar-nusa" class="text-xl md:text-2xl font-bold nav-font tracking-tight border-b-2 border-slate-100 dark:border-slate-700 pt-6 pb-3 uppercase text-slate-800 dark:text-slate-100">Tujuan Pagar Nusa</h2>
+                        <ol class="space-y-3 pl-5 list-decimal text-sm leading-relaxed">
+                            <li>Pembinaan, pengembangan, pelestarian, dan pendayagunaan profesi seni, budaya, bela diri pencak silat, dan ketabiban dengan segala aspeknya, baik aspek seni, budaya, bela diri pencak silat, dan ketabiban sebagai cabang olahraga maupun seni budaya dan aspek ketabiban (mental spiritual) dalam rangka mewujudkan masyarakat Indonesia yang berbudi luhur dan Pancasilais.</li>
+                            <li>Berlakunya ajaran Islam menurut paham Ahlusunnah wal Jamaah dengan menganut salah satu Mazhab Empat di tengah-tengah kehidupan masyarakat dalam wadah Negara Kesatuan Republik Indonesia yang berdasarkan Pancasila dan Undang-Undang Dasar 1945.</li>
+                        </ol>
+
+                        <h2 id="prasetya-pagar-nusa" class="text-xl md:text-2xl font-bold nav-font tracking-tight border-b-2 border-slate-100 dark:border-slate-700 pt-6 pb-3 uppercase text-slate-800 dark:text-slate-100">Prasetya Pagar Nusa</h2>
+                        <div class="bg-pn-dark dark:bg-slate-900 border border-emerald-950/40 dark:border-emerald-800/50 text-white p-6 rounded-2xl shadow-md text-center space-y-4 my-4">
+                            <p class="text-xl md:text-2xl font-semibold font-serif tracking-wide text-emerald-200" dir="rtl">أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا رَسُوْلُ اللهِ</p>
+                            <div class="h-px bg-white/10 max-w-xs mx-auto"></div>
+                            <p class="text-xs uppercase font-bold tracking-[0.15em] text-amber-400 font-sans">Kami Pesilat Pagar Nusa Sanggup Melaksanakan :</p>
+                        </div>
+                        <ol class="space-y-2 pl-5 list-decimal text-sm font-medium">
+                            <li>Bertaqwa kepada Allah SWT.</li>
+                            <li>Berbakti kepada Nusa dan Bangsa</li>
+                            <li>Menjunjung tinggi persatuan dan kesatuan</li>
+                            <li>Mempertahankan kebenaran dan mencegah kemungkaran</li>
+                            <li>Mempertahankan faham Ahlusunnah wal Jama'ah An Nahdliyah</li>
+                        </ol>
+
+                        <h2 id="perguruan-beladiri-dan-padepokan-yang-bernaung-di-pagar-nusa" class="text-xl md:text-2xl font-bold nav-font tracking-tight border-b-2 border-slate-100 dark:border-slate-700 pt-6 pb-3 uppercase text-slate-800 dark:text-slate-100">Perguruan Beladiri Dan Padepokan yang Bernaung di Pagar Nusa</h2>
+                        <p class="text-sm">PSNU Pagar Nusa di ketahui mewadahi beberapa perguruan beladiri NU yang dahulunya berdiri sendiri, sehingga juga dikenal dengan sebutan "Pagar Nusa IPSI-Nya NU." Karena beragam perguruan beladiri berafiliasi di PSNU Pagar Nusa. Ada ratusan perguruan maupun padepokan Pencak Silat NU yang menjadi bagian dari Pagar Nusa, beberapa diantaranya adalah sebagai berikut.</p>
+                        
+                        <div class="bg-slate-50 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-700 rounded-2xl p-4 md:p-6 my-4">
+                            <ol class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 list-decimal pl-5 text-xs md:text-sm font-medium">
+                                <li>PSHC - 01 Agustus 1828</li>
+                                <li>Cimande Sri Panjalu - Hutan Tasik, 14 September 1835</li>
+                                <li>PPS. Cepedi - Yogyakarta, 17 September 1922</li>
+                                <li>SPKM - Tulungagung, 03 Maret 1933</li>
+                                <li>PS. Garuda Bambu Runcing - Temanggung, 18 Desember 1959</li>
+                                <li>PPS. Ababil Surakarta - Surakarta, 10 Oktober 1961</li>
+                                <li>PPS. Asma' - Purwokerto, 08 Agustus 1962</li>
+                                <li>GASMI - Kediri, 11 Januari 1966</li>
+                                <li>Batara Perkasa - Ponorogo, 09 September 1966</li>
+                                <li>PPS. Maruyung - Purwokerto, 15 Januari 1967</li>
+                                <li>PPS. Kuntu Mancilan - Pasuruan, 27 Januari 1980</li>
+                                <li>PPS. Kuciang Putiah Harimau Campo - Padang panjang, 04 April 1980</li>
+                                <li>PPS. NH Perkasya - Jombang, 02 November 1982</li>
+                                <li>PS. Ababil Jember - Jember, 26 Juni 1984</li>
+                                <li>LBI. Harimau Putih - Kendal, 08 Desember 1987</li>
+                                <li>PS. Bunga Satria - Oku Timur, 01 Januari 1989</li>
+                                <li>PPS Kha Mim Shod (HMS) - Purwokerto, 23 Juli 1990</li>
+                                <li>PS. Al Akhlaqu Ath Thohiroh - Tulungagung, 18 Mei 1991</li>
+                                <li>PPS. Sunan Giri - Tulungagung, 09 Juni 1993</li>
+                                <li>PS. Silambawiqri - Rangkasbitung, 29 Agustus 1993</li>
+                                <li>Peguron Sapu Jagad - Jakarta, 17 Agustus 2003</li>
+                                <li>Padepokan satria agung - Pasuruan, 12 Desember 2012</li>
+                                <li>Padepokan Riyadhoh Al Harakah - Blitar, 20 November 2018</li>
+                                <li>Padepokan Harimau NU - Kab. Malang, 11 Januari 2019</li>
+                                <li>SBS Pencak kejawen - Pacitan, 18 November 2021</li>
+                                <li>Padepokan Nurul Burhan - Ngawi, 1991</li>
+                                <li>PPS. HOKHASITO Garuda Putih - Jember, 1972</li>
+                                <li>Pagar Nusa Tegal Istighfar - Nganjuk, 1994</li>
+                                <li>PSKH (Pencak Suci Kumpulan Hati) - Blitar</li>
+                            </ol>
+                        </div>
+
+                        <h2 id="catatan-kaki" class="text-base font-bold nav-font tracking-tight border-b border-slate-100 dark:border-slate-700 pt-6 pb-2 uppercase text-slate-400 dark:text-slate-500">Catatan kaki</h2>
+                        <ol class="space-y-1.5 pl-4 list-decimal text-[11px] text-slate-500 dark:text-slate-400 font-medium italic">
+                            <li>
+                                <cite class="not-italic">Tobroni, Ahmad. "Pendidikan Pencak Silat Pagar Nusa dan Relevansinya dengan Tujuan Pendidikan Islam" (PDF)</cite>.
+                                <a href="https://pdfs.semanticscholar.org/e8e6/7e7d5f28a4ed18bce42c6bcfd58f2a292202.pdf" target="_blank" rel="noopener noreferrer" class="text-pn dark:text-emerald-400 hover:underline font-semibold">Jurnal Pendidikan Islam</a>.
+                            </li>
+                            <li>
+                                <cite class="not-italic">Arsip, Sejarah (1987-08-03). Sejarah IPSNU PAGARNUSA</cite>. Surabaya: IPSNU.
+                            </li>
+                            <li>
+                                <cite class="not-italic"><a href="https://jabar.nu.or.id/sejarah/mengenal-sejarah-awal-berdirinya-pencak-silat-nahdlatul-ulama-pagar-nusa-JK8B8" target="_blank" rel="noopener noreferrer" class="text-pn dark:text-emerald-400 hover:underline">"Mengenal Sejarah Awal Berdirinya Pencak Silat Nahdlatul Ulama Pagar Nusa"</a></cite>.
+                                <a href="http://www.nu.or.id/" target="_blank" rel="noopener noreferrer" class="text-slate-400 dark:text-slate-500 hover:text-pn dark:hover:text-emerald-400">www.nu.or.id</a>
+                            </li>
+                        </ol>
+                    </article>
+                </main>
+
+                <!-- SIDEBAR INFORMASI (Kanan) -->
+                <div class="info-table-sidebar lg:col-span-1 bg-white dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700 rounded-2xl p-4 shadow-sm lg:sticky top-24 max-h-none lg:max-h-[85vh] overflow-y-auto transition-colors duration-300">
+                    <table border="1" cellspacing="0" cellpadding="5" style="border-collapse: collapse; width: 100%;" class="text-xs w-full">
+                        <tbody>
+                            <tr>
+                                <td colspan="2" align="center" style="padding: 10px;" class="bg-slate-50 dark:bg-slate-800/80 rounded-xl p-4 border border-slate-100 dark:border-slate-700 mb-2 block shadow-inner">
+                                    <img src="logopn.png" alt="Logo PAGARNUSA" style="width: 120px;" class="mx-auto object-contain drop-shadow-sm">
+                                </td>
+                            </tr>
+                            <tr class="border-b border-slate-50 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition"><td class="py-2.5 font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider text-[10px] w-1/3"><strong>Singkatan</strong></td><td class="py-2.5 font-semibold text-slate-700 dark:text-slate-300">PSNU PAGARNUSA</td></tr>
+                            <tr class="border-b border-slate-50 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition"><td class="py-2.5 font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider text-[10px]"><strong>Pendirian</strong></td><td class="py-2.5 font-semibold text-slate-700 dark:text-slate-300">12 Muharam 1406 H / 27 September 1985 M</td></tr>
+                            <tr class="border-b border-slate-50 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition"><td class="py-2.5 font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider text-[10px]"><strong>Lokasi</strong></td><td class="py-2.5 font-semibold text-slate-700 dark:text-slate-300">Jakarta Pusat</td></tr>
+                            <tr class="border-b border-slate-50 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition"><td class="py-2.5 font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider text-[10px]"><strong>Didirikan</strong></td><td class="py-2.5 font-semibold text-slate-700 dark:text-slate-300">Pondok Pesantren Tebuireng, Jombang, Jawa Timur</td></tr>
+                            <tr class="border-b border-slate-50 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition"><td class="py-2.5 font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider text-[10px]"><strong>Status</strong></td><td class="py-2.5 font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 rounded inline-block text-[11px]">Badan Otonom Nahdlatul Ulama</td></tr>
+                            <tr class="border-b border-slate-50 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition"><td class="py-2.5 font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider text-[10px]"><strong>Jenis</strong></td><td class="py-2.5 font-semibold text-slate-700 dark:text-slate-300">Federasi Pencak Silat</td></tr>
+                            <tr class="border-b border-slate-50 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition"><td class="py-2.5 font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider text-[10px]"><strong>Anggota</strong></td><td class="py-2.5 font-semibold text-slate-700 dark:text-slate-300">12,5 Juta</td></tr>
+                            <tr class="border-b border-slate-50 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition"><td class="py-2.5 font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider text-[10px]"><strong>Bahasa</strong></td><td class="py-2.5 font-semibold text-slate-700 dark:text-slate-300">ID & Jawa</td></tr>
+                            <tr class="border-b border-slate-50 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition"><td class="py-2.5 font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider text-[10px]"><strong>Inisiator</strong></td><td class="py-2.5 font-semibold"><span style="color:red;" class="text-red-600 dark:text-red-400 font-bold">KH. Muhammad Nur Aziz</span></td></tr>
+                            <tr class="border-b border-slate-50 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition"><td class="py-2.5 font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider text-[10px]"><strong>Ketua 1</strong></td><td class="py-2.5 font-semibold"><span style="color:red;" class="text-red-600 dark:text-red-400 font-bold">KH. Abdullah Maksum Jauhari</span></td></tr>
+                            <tr class="border-b border-slate-50 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition"><td class="py-2.5 font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider text-[10px]"><strong>Slogan</strong></td><td style="font-size: 12px;" class="py-2.5 font-medium text-slate-700 dark:text-slate-300"><span class="font-serif block text-sm font-semibold text-emerald-800 dark:text-emerald-400" dir="rtl">لا غالب إلا بالله</span><br><em>(Tiada Kemenangan selain Pertolongan dari Allah SWT)</em></td></tr>
+                            <tr class="border-b border-slate-50 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition"><td class="py-2.5 font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider text-[10px]"><strong>Induk</strong></td><td class="py-2.5 font-bold text-pn dark:text-emerald-400">Nahdlatul Ulama</td></tr>
+                            <tr class="border-b border-slate-50 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition"><td class="py-2.5 font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider text-[10px]"><strong>Anak Organisasi</strong></td>
+                                <td class="py-2.5 space-y-1 font-semibold">
+                                    <span style="color:red;" class="text-red-600 dark:text-red-400 block">Pasukan Inti (PASTI)</span>
+                                    <span style="color:red;" class="text-red-600 dark:text-red-400 block">Lembaga Ketabiban dan Pengobatan Alternatif</span>
+                                    <span style="color:red;" class="text-red-600 dark:text-red-400 block">Lembaga Advokasi dan Bantuan Hukum</span>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-slate-50 dark:border-slate-700/50 hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition"><td class="py-2.5 font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider text-[10px]"><strong>Afiliasi</strong></td><td class="py-2.5 font-bold text-slate-700 dark:text-slate-300">IPSI</td></tr>
+                            <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition"><td class="py-2.5 font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider text-[10px]"><strong>Website</strong></td><td class="py-2.5 font-bold"><a href="https://uktpagarnusa.my.id" target="_blank" class="text-blue-600 dark:text-blue-400 hover:underline">packemang.com</a></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 py-8 text-center mt-12 shadow-inner transition-colors duration-300">
+            <p class="text-slate-400 dark:text-slate-500 font-medium text-xs tracking-wider">© 2026 PAC PAGARNUSA KEMANG. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- SCRIPT MODE GELAP -->
+    <script>
+        const htmlElement = document.documentElement;
+        const toggleDarkModeBtn = document.getElementById('toggle-dark-mode');
+        const darkModeIcon = document.getElementById('dark-mode-icon');
+        const darkModeText = document.getElementById('dark-mode-text');
+
+        // Fungsi untuk memperbarui Ikon & Teks Tombol
+        function updateUIMode(isDark) {
+            if (isDark) {
+                darkModeIcon.classList.remove('fa-moon');
+                darkModeIcon.classList.add('fa-sun', 'text-amber-400');
+                darkModeIcon.classList.remove('text-pn');
+                darkModeText.innerText = 'Light Mode';
+            } else {
+                darkModeIcon.classList.remove('fa-sun', 'text-amber-400');
+                darkModeIcon.classList.add('fa-moon', 'text-pn');
+                darkModeText.innerText = 'Dark Mode';
+            }
+        }
+
+        // Mengecek preferensi tema sebelumnya yang tersimpan di browser
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            htmlElement.classList.add('dark');
+            updateUIMode(true);
+        } else {
+            htmlElement.classList.remove('dark');
+            updateUIMode(false);
+        }
+
+        // Listener klik pada tombol toggle mode malam
+        toggleDarkModeBtn.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+            const isDark = htmlElement.classList.contains('dark');
+            
+            // Simpan preferensi mode ke local storage
+            localStorage.theme = isDark ? 'dark' : 'light';
+            
+            updateUIMode(isDark);
+        });
+    </script>
+</body></html>

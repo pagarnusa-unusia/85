@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Konfirmasi Kehadiran Acara - PAC PSNU PAGARNUSA Kecamatan Kemang</title>
+    <title>Konfirmasi Kehadiran Pelantikan - PAC PSNU PAGARNUSA Kecamatan Kemang</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -60,11 +60,11 @@
                 </div>
                 <div class="hidden md:flex items-center space-x-6 text-sm font-medium">
                     <a href="index.html" class="text-brand-textGray hover:text-brand smooth-transition">Home</a>
-                    <a href="#" class="text-brand-textGray hover:text-brand smooth-transition">Profil</a>
-                    <a href="#" class="text-brand-textGray hover:text-brand smooth-transition">Kepengurusan</a>
-                    <a href="#" class="text-brand-textGray hover:text-brand smooth-transition">Berita</a>
-                    <a href="daftar_peserta.html" class="text-brand font-semibold border-b-2 border-brand pb-1">Konfirmasi Kehadiran</a>
-                    <a href="#" class="text-brand-textGray hover:text-brand smooth-transition">Kontak</a>
+                    <a href="https://www.instagram.com/pac_pagarnusakemang" class="text-brand-textGray hover:text-brand smooth-transition">Profil</a>
+                    <a href="struktural.html" class="text-brand-textGray hover:text-brand smooth-transition">Struktural</a>
+                    <a href="detail.html?id=5" class="text-brand-textGray hover:text-brand smooth-transition">Berita</a>
+                    <a href="daftar_peserta.html" class="text-brand font-semibold border-b-2 border-brand pb-1">Daftar Ujian</a>
+                    <a href="https://wa.me/6285715232441" class="text-brand-textGray hover:text-brand smooth-transition">Kontak</a>
                 </div>
                 <div class="flex items-center md:hidden">
                     <button id="mobile-menu-btn" class="text-brand focus:outline-none text-2xl">
@@ -74,12 +74,12 @@
             </div>
         </div>
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 pt-2 pb-4 space-y-2 shadow-inner">
-            <a href="index.html" class="block py-2 px-3 text-brand-textGray hover:bg-brand/10 hover:text-brand rounded-lg smooth-transition">Home</a>
-            <a href="#" class="block py-2 px-3 text-brand-textGray hover:bg-brand/10 hover:text-brand rounded-lg smooth-transition">Profil</a>
-            <a href="#" class="block py-2 px-3 text-brand-textGray hover:bg-brand/10 hover:text-brand rounded-lg smooth-transition">Kepengurusan</a>
-            <a href="#" class="block py-2 px-3 text-brand-textGray hover:bg-brand/10 hover:text-brand rounded-lg smooth-transition">Berita</a>
-            <a href="daftar_peserta.html" class="block py-2 px-3 bg-brand text-white font-medium rounded-lg smooth-transition">Konfirmasi Kehadiran</a>
-            <a href="#" class="block py-2 px-3 text-brand-textGray hover:bg-brand/10 hover:text-brand rounded-lg smooth-transition">Kontak</a>
+                    <a href="index.html" class="text-brand-textGray hover:text-brand smooth-transition">Home</a>
+                    <a href="https://www.instagram.com/pac_pagarnusakemang" class="text-brand-textGray hover:text-brand smooth-transition">Profil</a>
+                    <a href="struktural.html" class="text-brand-textGray hover:text-brand smooth-transition">Struktural</a>
+                    <a href="detail.html?id=5" class="text-brand-textGray hover:text-brand smooth-transition">Berita</a>
+                    <a href="daftar_peserta.html" class="text-brand font-semibold border-b-2 border-brand pb-1">Daftar Ujian</a>
+                    <a href="https://wa.me/6285715232441" class="text-brand-textGray hover:text-brand smooth-transition">Kontak</a>
         </div>
     </nav>
 
@@ -327,7 +327,7 @@
     inputJumlahTamu.addEventListener('change', handleJumlahTamuChange);
 
     // URL Integrasi Web App Google Apps Script
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxgyQYouB1EOAV7oR3mrYRzExjPU3WnIS3bLvBKv_lPMubhHqATD7fMY_ibtOcCb_UY/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxUL7aoHX4WWO87mzGKTDB1jZW9g5csu5p0guJvj7sRLeLUqHoj-n69nR8PwARs1x4B/exec";
 
     const form = document.getElementById('registrationForm');
     const submitBtn = document.getElementById('submitBtn');
@@ -385,6 +385,9 @@
                     alert(`Konfirmasi Berhasil!\n\nData konfirmasi atas nama "${dataObj.nama}" telah tersimpan.`);
                     form.reset();
                     handleStatusKehadiranChange();
+                    
+                    // Redirect ke halaman detail setelah klik OK
+                    window.location.href = "https://uktpagarnusa.my.id/detail.html?id=5";
                 } else {
                     alert("Gagal memproses data: " + (result.message || "Unknown error"));
                 }
@@ -394,6 +397,9 @@
                     alert(`Konfirmasi Berhasil!\n\nTerima kasih, data Anda telah tercatat.`);
                     form.reset();
                     handleStatusKehadiranChange();
+                    
+                    // Redirect ke halaman detail setelah klik OK
+                    window.location.href = "https://uktpagarnusa.my.id/detail.html?id=5";
                 } else {
                     alert("Terjadi kendala pemformatan data dari server.");
                 }

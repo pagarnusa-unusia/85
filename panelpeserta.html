@@ -187,7 +187,7 @@
             text = "Anda dinyatakan Lolos Kualifikasi. Persiapkan diri untuk tahap selanjutnya.";
             icon = "success";
             confirmButtonColor = "#056839";
-        } else if (s.includes('diskualifikasi')) {
+        } else if (s.includes('Inkompetensi')) {
             title = "Mohon Maaf 😔";
             text = "Anda belum lolos kualifikasi kali ini. Tetap sabar dan semangat untuk mencoba kembali di ujian selanjutnya.";
             icon = "error";
@@ -270,7 +270,7 @@
 
         if (statusLower.includes('kualifikasi')) {
             colorClass = 'bg-green-100 text-green-700 border border-green-200';
-        } else if (statusLower.includes('diskualifikasi')) {
+        } else if (statusLower.includes('Inkompetensi')) {
             colorClass = 'bg-red-100 text-red-700 border border-red-200';
         } else if (statusLower.includes('pending')) {
             colorClass = 'bg-amber-100 text-amber-700 border border-amber-200';

@@ -165,12 +165,12 @@
 
                     <!-- 5: Alamat Lengkap Sesuai KTP -->
                     <div>
-                        <label class="block text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">Alamat (Sesuai KTP)</label>
+                        <label class="block text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">Alamat</label>
                         <div class="relative">
                             <span class="absolute top-3 left-3.5 text-gray-400">
                                 <i class="fa-solid fa-map-marked-alt text-xs"></i>
                             </span>
-                            <textarea id="inputAlamat" required rows="3" placeholder="Tuliskan alamat lengkap beserta (Kab/Kota, Prov)" 
+                            <textarea id="inputAlamat" required rows="3" placeholder="Contoh: Bogor, Jawabarat" 
                                 class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition resize-none"></textarea>
                         </div>
                     </div>
@@ -318,6 +318,99 @@
     </footer>
 
 <script>
+window.addEventListener('DOMContentLoaded', (event) => {
+    // Memunculkan Pop-up Alur Pendaftaran Saat Halaman Dibuka
+    Swal.fire({
+        title: '⚠️ INFORMASI PENTING ALUR PENDAFTARAN',
+        html: `
+            <div id="scroll-container" class="text-left text-xs space-y-4 max-h-60 overflow-y-auto border border-gray-200 p-3 rounded-lg bg-gray-50 leading-relaxed">
+                
+                <div class="bg-emerald-50 border-l-4 border-brand p-2.5 rounded-r">
+                    <p class="font-bold text-brand-dark mb-1">🗓 BATAS WAKTU PENTING:</p>
+                    <ul class="list-disc pl-4 text-gray-700 space-y-0.5">
+                        <li><span class="font-semibold">Pendaftaran Database:</span> Maksimal 22 Juni 2026</li>
+                        <li><span class="font-semibold">Pelunasan Pembayaran:</span> Maksimal 9 Juli 2026</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <p class="font-bold text-brand-dark mb-1">📲 ALUR & LANGKAH PENDAFTARAN:</p>
+                    <ol class="list-decimal pl-4 text-gray-700 space-y-1">
+                        <li><span class="font-semibold">Daftar Online:</span> Lakukan pendaftaran melalui situs web 👉 <a href="https://www.uktpagarnusa.my.id" target="_blank" class="text-brand underline font-medium">www.uktpagarnusa.my.id</a></li>
+                        <li><span class="font-semibold">Cek Email:</span> Setelah berhasil mendaftar, cek notifikasi pada email yang didaftarkan (<span class="italic text-amber-700">Kotak Masuk atau Spam</span>) untuk mendapatkan informasi panel login peserta.</li>
+                        <li><span class="font-semibold">Login Peserta:</span> Silakan login menggunakan data dari email tersebut melalui 👉 <a href="https://www.uktpagarnusa.my.id/login" target="_blank" class="text-brand underline font-medium">www.uktpagarnusa.my.id/login</a></li>
+                        <li><span class="font-semibold">Gabung Grup:</span> Setelah berhasil masuk/login, segera bergabung ke grup komunikasi melalui link yang telah dicantumkan di halaman profil masing-masing.</li>
+                    </ol>
+                </div>
+
+                <div class="border-t pt-2 border-gray-200">
+                    <p class="font-bold text-brand-dark mb-1">📌 KETERANGAN STATUS PROFIL:</p>
+                    <ul class="space-y-1 pl-1">
+                        <li>🟡 <span class="font-semibold text-amber-700">Pending</span> = Administrasi belum selesai / Belum melakukan pelunasan.</li>
+                        <li>🟢 <span class="font-semibold text-emerald-700">Kualifikasi</span> = Sudah menyelesaikan administrasi / Sudah lunas (sesuai tingkat ujian yang ditentukan).</li>
+                        <li>🔴 <span class="font-semibold text-rose-700">Diskualifikasi</span> = Tidak memenuhi Ketentuan Khusus (Administrasi, Absensi, Kualifikasi Khusus).</li>
+                    </ul>
+                </div>
+
+<div class="bg-amber-50 border border-amber-200 p-2.5 rounded text-amber-900 text-[11px]">
+    <p class="font-bold mb-0.5"><i class="fa-solid fa-circle-info"></i> Kendala Sistem/Pendaftaran?</p>
+    <p>Segera hubungi Contact Person: <span class="font-bold">Mbak Risna (<a href="https://api.whatsapp.com/send?phone=6285320685598&text=Assalamualaikum%20Mbak%20Risna%0ASalam%20Pagarnusa%0A%0Asaya%20ingin%20melaporkan%20terkait%20teknis%20pendaftaran" target="_blank" class="underline">085320685598</a>)</span></p>
+</div>
+
+                <p class="text-[11px] text-gray-500 italic text-center pt-1 border-t border-gray-100">Mohon kerja samanya untuk segera memproses pendaftaran sebelum batas waktu ditutup agar pendataan dapat berjalan lancar.</p>
+            </div>
+            <p id="scroll-warning" class="text-[11px] text-rose-600 font-medium text-center mt-3 animate__animated animate__pulse animate__infinite">
+                <i class="fa-solid fa-arrow-down"></i> Baca sebelum mengisi.
+            </p>
+        `,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        confirmButtonText: 'Saya Mengerti',
+        confirmButtonColor: '#056839',
+        customClass: {
+            popup: 'rounded-card text-sm',
+            confirmButton: 'w-full py-2.5 text-xs font-bold rounded-btn'
+        },
+        didOpen: () => {
+            const confirmBtn = Swal.getConfirmButton();
+            const scrollContainer = document.getElementById('scroll-container');
+            const scrollWarning = document.getElementById('scroll-warning');
+
+            // Fungsi pembantu untuk mengaktifkan tombol konfirmasi
+            function ukurDanAktifkan() {
+                confirmBtn.disabled = false;
+                confirmBtn.style.opacity = '1';
+                confirmBtn.style.cursor = 'pointer';
+                scrollWarning.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600"></i> Ketentuan telah dibaca. Silakan klik tombol di bawah.';
+                scrollWarning.classList.remove('text-rose-600');
+                scrollWarning.classList.add('text-emerald-700');
+            }
+
+            // Cek kondisi awal: Jika kontainer tidak memiliki scrollbar (langsung muat semua data di layar besar)
+            if (scrollContainer.scrollHeight <= scrollContainer.clientHeight) {
+                ukurDanAktifkan();
+            } else {
+                // Nonaktifkan tombol konfirmasi di awal jika perlu di-scroll
+                confirmBtn.disabled = true;
+                confirmBtn.style.opacity = '0.4';
+                confirmBtn.style.cursor = 'not-allowed';
+
+                // Deteksi fungsi scroll ke bawah
+                scrollContainer.addEventListener('scroll', function() {
+                    // Toleransi 8 pixel untuk kompatibilitas zoom browser & rendering engine mobile
+                    if (scrollContainer.scrollHeight - scrollContainer.scrollTop <= scrollContainer.clientHeight + 8) {
+                        ukurDanAktifkan();
+                    }
+                });
+            }
+        }
+}).then((result) => {
+        if (result.isConfirmed) {
+            // Pop-up otomatis tertutup, user tetap di halaman ini untuk mengisi form
+        }
+    });
+});    
+
 document.getElementById('formPendaftaran').addEventListener('submit', function(e) {
     e.preventDefault();
 

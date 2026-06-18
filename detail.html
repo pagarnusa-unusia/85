@@ -70,10 +70,7 @@
 
         <div id="content" class="hidden">
             <span id="det-cat" class="bg-emerald-50 text-pn px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] rounded-md shadow-sm"></span>
-            
-            <h1 class="text-3xl md:text-5xl font-bold mt-4 nav-font leading-[1.1] tracking-tight uppercase">
-                <a id="det-title" href="#" class="text-slate-800 hover:text-pn hover:underline transition-colors duration-300"></a>
-            </h1>
+            <h1 id="det-title" class="text-3xl md:text-5xl font-bold mt-4 nav-font text-slate-800 leading-[1.1] tracking-tight uppercase"></h1>
             
             <div class="flex items-center justify-between mt-8 border-b border-slate-200 pb-8">
                 <div class="flex items-center space-x-4">
@@ -135,11 +132,9 @@
                 // Update UI
                 document.title = currentArticle.judul + " | PAC Pagar Nusa Kemang";
                 
-                // Menghubungkan ID berita secara eksplisit ke atribut href judul
-                const titleLink = document.getElementById('det-title');
-                titleLink.innerText = currentArticle.judul;
-                titleLink.href = `detail.html?id=${currentArticle.id}`;
-
+                // PERBAIKAN UTAMA: Mengubah isi innerHTML h1 secara dinamis menjadi tag link (<a>) lengkap dengan link aktif dan efek hover
+                document.getElementById('det-title').innerHTML = `<a href="detail.html?id=${currentArticle.id}" class="hover:text-pn hover:underline transition-colors duration-200 block">${currentArticle.judul}</a>`;
+                
                 document.getElementById('det-cat').innerText = currentArticle.kategori;
                 document.getElementById('breadcrumb-cat').innerText = currentArticle.kategori;
                 document.getElementById('det-date').innerText = currentArticle.tanggal;

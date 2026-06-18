@@ -1,14 +1,49 @@
+<?php
+// Ambil data langsung dari API menggunakan PHP sebelum halaman dimuat oleh WhatsApp/Browser
+$API_URL = 'https://script.google.com/macros/s/AKfycbxrjbI6ZzqcX4zurydbnqAo8GvNdsKzQ0nODvelWFJlPJGAjaUPw7u64CdMNaoZTvZ-/exec';
+$id = isset($_GET['id']) ? $_GET['id'] : null;
+
+// Nilai default jika data tidak ditemukan atau ID kosong
+$meta_title = "PAC PSNU PAGARNUSA KEMANG";
+$meta_desc = "Media Resmi PAC PSNU PAGARNUSA Kecamatan Kemang - Kabupaten Bogor.";
+$meta_img = "https://via.placeholder.com/800x600?text=Pagar+Nusa";
+
+if ($id) {
+    // Mengambil data JSON dari Google Apps Script
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $API_URL);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    if ($response) {
+        $res = json_decode($response, true);
+        if (isset($res['berita'])) {
+            foreach ($res['berita'] as $berita) {
+                if ($berita['id'] == $id) {
+                    $meta_title = $berita['judul'];
+                    // Potong isi berita untuk deskripsi singkat (maksimal 160 karakter)
+                    $meta_desc = substr(strip_tags($berita['isi']), 0, 160) . '...';
+                    $meta_img = $berita['gambar'];
+                    break;
+                }
+            }
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memuat Berita... - PAC PSNU PAGARNUSA KEMANG</title>
+    <title><?php echo htmlspecialchars($meta_title); ?> - PAC PSNU PAGARNUSA KEMANG</title>
     
-    <meta property="og:title" id="og-title" content="Pagar Nusa Kemang">
-    <meta property="og:description" id="og-description" content="Media Resmi PAC PSNU PAGARNUSA Kecamatan Kemang - Kabupaten Bogor.">
-    <meta property="og:image" id="og-image" content="https://via.placeholder.com/800x600?text=Pagar+Nusa">
-    <meta property="og:url" id="og-url" content="">
+    <meta property="og:title" id="og-title" content="<?php echo htmlspecialchars($meta_title); ?>">
+    <meta property="og:description" id="og-description" content="<?php echo htmlspecialchars($meta_desc); ?>">
+    <meta property="og:image" id="og-image" content="<?php echo htmlspecialchars($meta_img); ?>">
+    <meta property="og:url" id="og-url" content="https://<?php echo $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>">
     <meta property="og:type" content="article">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -129,11 +164,11 @@
                 currentArticle = res.berita.find(x => x.id == id);
                 if (!currentArticle) throw new Error("Not Found");
 
-                // Update UI
+                // Update UI Browser
                 document.title = currentArticle.judul + " | PAC Pagar Nusa Kemang";
                 
-                // PERBAIKAN UTAMA: Mengubah isi innerHTML h1 secara dinamis menjadi tag link (<a>) lengkap dengan link aktif dan efek hover
-                document.getElementById('det-title').innerHTML = `<a href="detail.html?id=${currentArticle.id}" class="hover:text-pn hover:underline transition-colors duration-200 block">${currentArticle.judul}</a>`;
+                // Menjadikan Judul Berita Utama sebagai Link Aktif secara aman tanpa merusak teks asli
+                document.getElementById('det-title').innerHTML = `<a href="detail.php?id=${currentArticle.id}" class="hover:text-pn hover:underline transition-colors duration-200 block">${currentArticle.judul}</a>`;
                 
                 document.getElementById('det-cat').innerText = currentArticle.kategori;
                 document.getElementById('breadcrumb-cat').innerText = currentArticle.kategori;
@@ -146,10 +181,10 @@
 
                 document.getElementById('read-time').innerText = Math.ceil(currentArticle.isi.split(/\s+/).length / 200);
                 
-                // Related
+                // Related Posts - Diubah juga mengarah ke .php agar sinkron
                 const container = document.getElementById('related-posts');
                 res.berita.filter(n => n.kategori === currentArticle.kategori && n.id != id).slice(0,2).forEach(item => {
-                    container.innerHTML += `<a href="detail.html?id=${item.id}" class="block bg-white p-6 rounded-2xl border border-slate-100 hover:border-pn transition">
+                    container.innerHTML += `<a href="detail.php?id=${item.id}" class="block bg-white p-6 rounded-2xl border border-slate-100 hover:border-pn transition">
                         <span class="text-[9px] font-bold text-pn uppercase tracking-widest">${item.kategori}</span>
                         <h4 class="font-bold text-slate-800 mt-2 line-clamp-2">${item.judul}</h4>
                     </a>`;
@@ -166,9 +201,9 @@
             const url = window.location.href;
             const text = currentArticle.judul;
             const urls = {
-                facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
-                twitter: `https://twitter.com/intent/tweet?text=${text}&url=${url}`,
-                whatsapp: `https://api.whatsapp.com/send?text=${text} - ${url}`
+                facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+                twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
+                whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}%20-%20${encodeURIComponent(url)}`
             };
             window.open(urls[p], '_blank');
         }

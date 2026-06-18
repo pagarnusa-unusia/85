@@ -21,102 +21,144 @@
             --pn-green-light: #2c6e59;
             --pn-gold: #d4af37;
         }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; color: #1e293b; background-color: #f8fafc; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            scroll-behavior: smooth; 
+        }
         .nav-font { font-family: 'Oswald', sans-serif; }
         .bg-pn { background-color: var(--pn-green); }
         .text-pn { color: var(--pn-green); }
         .border-pn { border-color: var(--pn-green); }
         
-        #scroll-progress { position: fixed; top: 0; left: 0; height: 4px; background: var(--pn-gold); z-index: 100; width: 0%; transition: width 0.1s; }
+        #scroll-progress { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            height: 4px; 
+            background: var(--pn-gold); 
+            z-index: 100; 
+            width: 0%; 
+            transition: width 0.1s; 
+        }
         
         .dropcap::first-letter {
             float: left;
             font-family: 'Oswald', sans-serif;
-            font-size: 4rem;
-            line-height: 3.5rem;
-            padding-right: 0.75rem;
+            font-size: 3.5rem;
+            line-height: 3rem;
+            padding-right: 0.6rem;
             font-weight: 700;
             color: var(--pn-green);
         }
+
+        @media (min-width: 768px) {
+            .dropcap::first-letter {
+                font-size: 4rem;
+                line-height: 3.5rem;
+                padding-right: 0.75rem;
+            }
+        }
     </style>
 </head>
-<body class="bg-slate-50">
+<body class="bg-slate-50 text-slate-800 antialiased">
     <div id="scroll-progress"></div>
 
-    <header class="bg-white/90 backdrop-blur-md py-4 sticky top-0 z-[60] shadow-sm border-b border-slate-100">
-        <div class="container mx-auto px-4 md:px-6 flex justify-between items-center">
-            <a href="index.html" class="flex items-center space-x-3.5 group">
-                <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo" class="h-10 md:h-12 w-auto object-contain">
-                <span class="nav-font font-bold text-pn uppercase text-lg md:text-xl tracking-tight">Pagar Nusa Kemang</span>
-            </a>
-            <a href="index.html" class="text-pn font-bold text-xs border border-pn px-5 py-2 rounded-xl hover:bg-pn hover:text-white transition duration-300 uppercase tracking-widest">
-                Beranda
-            </a>
+    <header class="bg-white/90 backdrop-blur-md py-3 md:py-4 sticky top-0 z-[60] shadow-sm border-b border-slate-100">
+        <div class="container mx-auto px-4 md:px-8 flex justify-between items-center max-w-7xl">
+            <div class="flex items-center">
+                <div class="flex items-center space-x-2.5 md:space-x-3.5">
+                    <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="h-10 md:h-14 w-auto object-contain drop-shadow-sm" onerror="this.src='https://via.placeholder.com/150?text=PN'">
+                    <div class="text-left border-l-2 border-slate-200 pl-2.5 md:pl-3.5">
+                        <h1 class="text-base md:text-2xl font-bold text-pn tracking-tight leading-none nav-font uppercase">PAC PSNU PAGARNUSA</h1>
+                        <p class="text-slate-500 font-bold text-[10px] md:text-sm tracking-wider uppercase mt-0.5 md:mt-1">Kecamatan Kemang</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <button onclick="history.length > 1 ? history.back() : window.location.href='index.html'" type="button" class="flex items-center justify-center bg-slate-50 border border-slate-200/80 rounded-xl p-2 md:px-4 md:py-2 hover:bg-slate-100 focus:ring-2 focus:ring-pn/20 focus:border-pn transition-all text-sm font-medium text-slate-600 gap-2 cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    <span class="hidden sm:inline">Kembali</span>
+                </button>
+            </div>
         </div>
     </header>
 
-    <article class="container mx-auto px-4 md:px-6 max-w-4xl py-12">
-        <nav class="flex text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-6">
-            <a href="index.html" class="hover:text-pn">Beranda</a>
-            <span class="mx-2">/</span>
-            <span id="breadcrumb-cat" class="text-pn">Kategori</span>
-        </nav>
+    <article class="container mx-auto px-4 md:px-8 max-w-7xl py-8 md:py-12">
+<nav class="flex text-slate-400 text-[10px] font-bold tracking-widest mb-6">
+    <a href="index.html" class="hover:text-pn">Beranda</a>
+    <span class="mx-2">/</span>
+    <span id="breadcrumb-cat" class="text-pn">Kategori</span>
+</nav>
 
         <div id="loader" class="space-y-6 animate-pulse">
             <div class="h-6 w-24 bg-slate-200 rounded"></div>
             <div class="h-12 w-3/4 bg-slate-200 rounded"></div>
-            <div class="h-[400px] w-full bg-slate-200 rounded-2xl"></div>
+            <div class="h-[300px] md:h-[500px] w-full bg-slate-200 rounded-2xl"></div>
         </div>
 
-        <div id="content" class="hidden">
-            <span id="det-cat" class="bg-emerald-50 text-pn px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] rounded-md shadow-sm"></span>
-            <h1 id="det-title" class="text-3xl md:text-5xl font-bold mt-4 nav-font text-slate-800 leading-[1.1] tracking-tight uppercase"></h1>
+        <div id="content" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
             
-            <div class="flex items-center justify-between mt-8 border-b border-slate-200 pb-8">
-                <div class="flex items-center space-x-4">
-                    <div class="w-10 h-10 bg-pn text-white rounded-full flex items-center justify-center font-bold text-xs nav-font">PN</div>
-                    <div>
-                        <p id="det-date" class="text-slate-500 text-[10px] font-bold uppercase tracking-widest"></p>
-                        <p class="text-pn text-[10px] font-bold mt-0.5 uppercase">Admin PAC Kemang</p>
+            <div class="lg:col-span-2 space-y-6">
+<div>
+    <span id="det-cat" class="bg-emerald-50 text-pn px-3 py-1 text-[10px] font-bold capitalize tracking-[0.2em] rounded-md shadow-sm"></span>
+    <h1 id="det-title" class="text-2xl sm:text-3xl md:text-4xl font-bold mt-4 nav-font text-slate-800 leading-[1.2] tracking-tight"></h1>
+</div>
+                
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 pb-6 gap-4">
+                    <div class="flex items-center space-x-4">
+<div class="w-10 h-10 bg-pn text-white rounded-full flex items-center justify-center font-bold text-xs nav-font shadow-sm flex-shrink-0">
+    PN
+</div>
+                        <div>
+                            <p id="det-date" class="text-slate-500 text-[10px] font-bold uppercase tracking-widest"></p>
+                            <p class="text-pn text-[10px] font-bold mt-0.5 ">Admin PAC Kemang</p>
+                        </div>
+                    </div>
+                    <div class="text-[10px] font-bold text-slate-400 tracking-[0.2em] sm:text-right">
+                        <span id="read-time">0</span> Menit Baca
                     </div>
                 </div>
-                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
-                    <span id="read-time">0</span> Menit Baca
-                </div>
-            </div>
-            
-            <img id="det-img" src="" class="w-full h-auto max-h-[500px] object-cover my-8 rounded-2xl shadow-xl border border-slate-100">
-            
-            <div id="det-text" class="text-slate-700 leading-relaxed text-lg space-y-6 text-justify"></div>
-            
-            <div class="mt-20 border-t border-slate-200 pt-12 text-center">
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6">Bagikan Konten Ini</p>
-                <div class="flex flex-wrap justify-center gap-3">
-                    <button onclick="shareTo('facebook')" class="bg-[#1877F2] text-white px-6 py-2.5 text-[10px] font-bold rounded-xl uppercase tracking-widest hover:opacity-90 transition">Facebook</button>
-                    <button onclick="shareTo('twitter')" class="bg-[#1DA1F2] text-white px-6 py-2.5 text-[10px] font-bold rounded-xl uppercase tracking-widest hover:opacity-90 transition">Twitter</button>
-                    <button onclick="shareTo('whatsapp')" class="bg-[#25D366] text-white px-6 py-2.5 text-[10px] font-bold rounded-xl uppercase tracking-widest hover:opacity-90 transition">WhatsApp</button>
+                
+                <img id="det-img" src="" class="w-full h-auto max-h-[450px] object-cover rounded-2xl shadow-md border border-slate-100 hidden" onload="this.classList.remove('hidden')">
+                
+                <div id="det-text" class="text-slate-700 leading-relaxed text-base sm:text-lg space-y-5 sm:space-y-6 text-justify"></div>
+                
+                <div class="border-t border-slate-200 pt-8 text-center">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Bagikan Konten Ini</p>
+                    <div class="grid grid-cols-3 sm:flex sm:flex-wrap justify-center gap-2 md:gap-3">
+                        <button onclick="shareTo('facebook')" class="bg-[#1877F2] text-white px-3 sm:px-6 py-2.5 text-[9px] sm:text-[10px] font-bold rounded-xl uppercase tracking-widest hover:opacity-90 transition truncate">Facebook</button>
+                        <button onclick="shareTo('twitter')" class="bg-[#1DA1F2] text-white px-3 sm:px-6 py-2.5 text-[9px] sm:text-[10px] font-bold rounded-xl uppercase tracking-widest hover:opacity-90 transition truncate">Twitter</button>
+                        <button onclick="shareTo('whatsapp')" class="bg-[#25D366] text-white px-3 sm:px-6 py-2.5 text-[9px] sm:text-[10px] font-bold rounded-xl uppercase tracking-widest hover:opacity-90 transition truncate">WhatsApp</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="mt-20">
-                <h3 class="nav-font text-xl font-bold text-slate-800 border-l-4 border-pn pl-4 mb-8 uppercase">Berita Terkait</h3>
-                <div id="related-posts" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+            <div class="lg:col-span-1 lg:sticky lg:top-24 space-y-6 mt-6 lg:mt-0">
+                <h3 class="nav-font text-lg md:text-xl font-bold text-slate-800 border-l-4 border-pn pl-4  tracking-tight">Berita Terkait</h3>
+                <div id="related-posts" class="flex flex-col gap-4"></div>
             </div>
+
         </div>
     </article>
 
-    <footer class="bg-white border-t border-slate-100 py-12 mt-24 text-center">
-        <p class="text-[10px] text-slate-400 uppercase tracking-[0.3em] font-bold">© 2026 PAC PSNU PAGARNUSA KECAMATAN KEMANG</p>
+    <footer class="bg-white border-t border-slate-100 py-8 md:py-12 mt-16 md:mt-24 text-center px-4">
+        <div class="container mx-auto max-w-7xl">
+            <p class="text-[9px] md:text-[10px] text-slate-400 uppercase tracking-[0.2em] md:tracking-[0.3em] font-bold leading-relaxed">© 2026 PAC PSNU PAGARNUSA KECAMATAN KEMANG</p>
+        </div>
     </footer>
 
-    <script>
+<script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbxrjbI6ZzqcX4zurydbnqAo8GvNdsKzQ0nODvelWFJlPJGAjaUPw7u64CdMNaoZTvZ-/exec';
         let currentArticle = null;
 
         window.onscroll = () => {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            document.getElementById("scroll-progress").style.width = (winScroll / height) * 100 + "%";
+            const progressEl = document.getElementById("scroll-progress");
+            if(progressEl) progressEl.style.width = (winScroll / height) * 100 + "%";
         };
 
         async function loadDetail() {
@@ -125,52 +167,120 @@
 
             try {
                 const response = await fetch(API_URL);
+                if (!response.ok) throw new Error("Network error");
+                
                 const res = await response.json();
                 currentArticle = res.berita.find(x => x.id == id);
                 if (!currentArticle) throw new Error("Not Found");
 
-                // Update UI
+                // Update UI & Meta tags
                 document.title = currentArticle.judul + " | PAC Pagar Nusa Kemang";
+                document.getElementById('og-title').setAttribute('content', currentArticle.judul);
+                document.getElementById('og-url').setAttribute('content', window.location.href);
+                
                 document.getElementById('det-title').innerText = currentArticle.judul;
                 document.getElementById('det-cat').innerText = currentArticle.kategori;
                 document.getElementById('breadcrumb-cat').innerText = currentArticle.kategori;
-                document.getElementById('det-date').innerText = currentArticle.tanggal;
-                document.getElementById('det-img').src = currentArticle.gambar;
+                
+                // Konversi tanggal Berita Utama ke Bahasa Indonesia
+                if (currentArticle.tanggal) {
+                    const dateObj = new Date(currentArticle.tanggal);
+                    if (!isNaN(dateObj)) {
+                        document.getElementById('det-date').innerText = dateObj.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+                    } else {
+                        document.getElementById('det-date').innerText = currentArticle.tanggal;
+                    }
+                } else {
+                    document.getElementById('det-date').innerText = '';
+                }
+                
+                if (currentArticle.gambar) {
+                    const imgEl = document.getElementById('det-img');
+                    imgEl.src = currentArticle.gambar;
+                    document.getElementById('og-image').setAttribute('content', currentArticle.gambar);
+                }
 
                 const paragraphs = currentArticle.isi.split('\n').filter(t => t.trim() !== '');
                 document.getElementById('det-text').innerHTML = paragraphs.map((p, i) => 
                     `<p class="${i === 0 ? 'dropcap' : ''}">${p.trim()}</p>`).join('');
 
-                document.getElementById('read-time').innerText = Math.ceil(currentArticle.isi.split(/\s+/).length / 200);
+                const wordCount = currentArticle.isi.split(/\s+/).length;
+                document.getElementById('read-time').innerText = Math.ceil(wordCount / 200) || 1;
                 
-                // Related
+                // Related Posts Rendering (Mengambil judul, kategori, tanggal, gambar)
                 const container = document.getElementById('related-posts');
-                res.berita.filter(n => n.kategori === currentArticle.kategori && n.id != id).slice(0,2).forEach(item => {
-                    container.innerHTML += `<a href="detail.html?id=${item.id}" class="block bg-white p-6 rounded-2xl border border-slate-100 hover:border-pn transition">
-                        <span class="text-[9px] font-bold text-pn uppercase tracking-widest">${item.kategori}</span>
-                        <h4 class="font-bold text-slate-800 mt-2 line-clamp-2">${item.judul}</h4>
-                    </a>`;
-                });
+                container.innerHTML = ''; 
+                const related = res.berita.filter(n => n.kategori === currentArticle.kategori && n.id != id).slice(0, 3);
+                
+                if(related.length > 0) {
+                    related.forEach(item => {
+                        const fallBackImg = "https://via.placeholder.com/150?text=Pagar+Nusa";
+                        const itemGambar = item.gambar ? item.gambar : fallBackImg;
+                        
+                        // Konversi tanggal Berita Terkait ke Bahasa Indonesia
+                        let tglIndonesia = '';
+                        if (item.tanggal) {
+                            const tglObj = new Date(item.tanggal);
+                            if (!isNaN(tglObj)) {
+                                tglIndonesia = tglObj.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+                            } else {
+                                tglIndonesia = item.tanggal;
+                            }
+                        }
+                        
+                        container.innerHTML += `
+                        <div class="bg-white overflow-hidden rounded-2xl border border-slate-100 hover:border-pn/40 hover:shadow-md transition duration-300 w-full flex flex-col sm:flex-row lg:flex-col">
+                            <a href="detail.html?id=${item.id}" class="w-full sm:w-36 lg:w-full h-36 object-cover overflow-hidden bg-slate-100 flex-shrink-0 block">
+                                <img src="${itemGambar}" alt="${item.judul}" class="w-full h-full object-cover hover:scale-105 transition duration-500" onerror="this.src='${fallBackImg}'">
+                            </a>
+                            <div class="p-4 flex flex-col justify-between flex-grow">
+                                <div>
+                                    <div class="flex items-center justify-between gap-2">
+                                        <span class="text-[9px] font-bold text-pn uppercase tracking-widest">${item.kategori}</span>
+                                        <span class="text-[9px] font-medium text-slate-400 uppercase">${tglIndonesia}</span>
+                                    </div>
+                                    <h4 class="font-bold text-slate-800 mt-2 line-clamp-2 text-sm leading-snug">
+                                        <a href="detail.html?id=${item.id}" class="hover:text-pn transition-colors block">
+                                            ${item.judul}
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div class="mt-3">
+                                    <a href="detail.html?id=${item.id}" class="inline-block text-[11px] font-bold text-pn hover:underline uppercase tracking-wider">
+                                        Baca Selengkapnya →
+                                    </a>
+                                </div>
+                            </div>
+                        </div>`;
+                    });
+                } else {
+                    container.innerHTML = `<p class="text-slate-400 text-sm italic p-4">Tidak ada berita terkait.</p>`;
+                }
 
                 document.getElementById('loader').classList.add('hidden');
                 document.getElementById('content').classList.remove('hidden');
             } catch (e) {
-                document.getElementById('loader').innerHTML = `<div class='text-center py-20 font-bold'>Berita tidak ditemukan. <a href='index.html' class='text-pn'>Kembali</a></div>`;
+                document.getElementById('loader').innerHTML = `
+                <div class='text-center py-20 font-bold text-slate-600 px-4'>
+                    <p class='mb-4 text-sm md:text-base'>Berita tidak ditemukan atau terjadi kesalahan.</p>
+                    <a href='index.html' class='text-pn border border-pn px-4 py-2 rounded-xl text-sm hover:bg-pn hover:text-white transition inline-block'>Kembali ke Beranda</a>
+                </div>`;
             }
         }
 
         function shareTo(p) {
-            const url = window.location.href;
-            const text = currentArticle.judul;
+            if(!currentArticle) return;
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent(currentArticle.judul);
             const urls = {
                 facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
                 twitter: `https://twitter.com/intent/tweet?text=${text}&url=${url}`,
-                whatsapp: `https://api.whatsapp.com/send?text=${text} - ${url}`
+                whatsapp: `https://api.whatsapp.com/send?text=${text}%20-%20${url}`
             };
             window.open(urls[p], '_blank');
         }
 
         window.onload = loadDetail;
-    </script>
+</script>
 </body>
 </html>

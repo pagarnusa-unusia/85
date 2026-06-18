@@ -321,13 +321,12 @@
         }
     }
 
-function filterByCategory(catName) {
-    // Ditambahkan (n.kategori || '')
-    const filtered = allNews.filter(n => (n.kategori || '').toUpperCase() === catName.toUpperCase());
-    document.getElementById('news-title-trigger').innerText = catName;
-    renderBerita(filtered, true);
-    window.scrollTo({top: 450, behavior: 'smooth'});
-}
+    function filterByCategory(catName) {
+        const filtered = allNews.filter(n => n.kategori.toUpperCase() === catName.toUpperCase());
+        document.getElementById('news-title-trigger').innerText = catName;
+        renderBerita(filtered, true);
+        window.scrollTo({top: 450, behavior: 'smooth'});
+    }
 
     function renderBerita(data, isSearch = false) {
         const headlineGrid = document.getElementById('headline-grid');
@@ -353,7 +352,7 @@ function filterByCategory(catName) {
             if (!isSearch && index < 2) {
                 headlineGrid.innerHTML += `
                     <a href="${detailLink}" class="relative h-[380px] md:h-[420px] bg-slate-900 overflow-hidden group rounded-2xl shadow-md reveal border border-slate-800">
-                        <img src="${imgSrc}" class="w-full h-full object-cover opacity-50 transition duration-700 group-hover:scale-[1.02]" loading="lazy">
+                        <img src="${imgSrc}" class="w-full h-full object-cover opacity-50 transition duration-700 group-hover:scale-102" loading="lazy">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent"></div>
                         <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white">
                             <span class="bg-amber-500 text-slate-950 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-md">${item.kategori}</span>
@@ -367,7 +366,7 @@ function filterByCategory(catName) {
             }
 
             // Render Opini & Khazanah Sidebar
-            const cat = (item.kategori || '').toLowerCase();
+            const cat = item.kategori.toLowerCase();
             if (cat.includes('opini') || cat.includes('khazanah')) {
                 opinionList.innerHTML += `
                     <li class="py-3.5 group reveal first:pt-0 last:pb-0">
@@ -412,26 +411,18 @@ function filterByCategory(catName) {
         initScrollReveal();
     }
 
-const handleSearch = (e) => {
-    const val = e.target.value.toLowerCase();
-
-    // Sinkronisasi nilai input antara desktop dan mobile agar tidak balapan
-    document.getElementById('search-input').value = e.target.value;
-    document.getElementById('search-input-mobile').value = e.target.value;
-
-    if(val.length > 2) {
-        // Ditambahkan proteksi (n.judul || '') dan (n.kategori || '')
-        const filtered = allNews.filter(n => 
-            (n.judul || '').toLowerCase().includes(val) || 
-            (n.kategori || '').toLowerCase().includes(val)
-        );
-        document.getElementById('news-title-trigger').innerText = "Hasil Pencarian";
-        renderBerita(filtered, true);
-    } else if (val.length === 0) {
-        document.getElementById('news-title-trigger').innerText = "Berita Terkini";
-        renderBerita(allNews);
-    }
-};
+    // Event Listener Sync untuk Pencarian Desktop & Mobile
+    const handleSearch = (e) => {
+        const val = e.target.value.toLowerCase();
+        if(val.length > 2) {
+            const filtered = allNews.filter(n => n.judul.toLowerCase().includes(val) || n.kategori.toLowerCase().includes(val));
+            document.getElementById('news-title-trigger').innerText = "Hasil Pencarian";
+            renderBerita(filtered, true);
+        } else if (val.length === 0) {
+            document.getElementById('news-title-trigger').innerText = "Berita Terkini";
+            renderBerita(allNews);
+        }
+    };
 
     document.getElementById('search-input').addEventListener('input', handleSearch);
     document.getElementById('search-input-mobile').addEventListener('input', handleSearch);

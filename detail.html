@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAC PSNU PAGARNUSA KEMANG</title>
+    <title>Memuat Berita... - PAC PSNU PAGARNUSA KEMANG</title>
     
-    <meta property="og:title" id="og-title" content="PAC PSNU PAGARNUSA KEMANG">
+    <meta property="og:title" id="og-title" content="Pagar Nusa Kemang">
     <meta property="og:description" id="og-description" content="Media Resmi PAC PSNU PAGARNUSA Kecamatan Kemang - Kabupaten Bogor.">
     <meta property="og:image" id="og-image" content="https://via.placeholder.com/800x600?text=Pagar+Nusa">
+    <meta property="og:url" id="og-url" content="">
     <meta property="og:type" content="article">
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght=500;600;700&family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -45,7 +46,7 @@
     <header class="bg-white/90 backdrop-blur-md py-4 sticky top-0 z-[60] shadow-sm border-b border-slate-100">
         <div class="container mx-auto px-4 md:px-6 flex justify-between items-center">
             <a href="index.html" class="flex items-center space-x-3.5 group">
-                <img src="logo.png" alt="Logo" class="h-10 md:h-12 w-auto object-contain" onerror="this.src='https://via.placeholder.com/500?text=Logo+Pagar+Nusa'">
+                <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo" class="h-10 md:h-12 w-auto object-contain">
                 <span class="nav-font font-bold text-pn uppercase text-lg md:text-xl tracking-tight">Pagar Nusa Kemang</span>
             </a>
             <a href="index.html" class="text-pn font-bold text-xs border border-pn px-5 py-2 rounded-xl hover:bg-pn hover:text-white transition duration-300 uppercase tracking-widest">
@@ -112,14 +113,6 @@
         const API_URL = 'https://script.google.com/macros/s/AKfycbxrjbI6ZzqcX4zurydbnqAo8GvNdsKzQ0nODvelWFJlPJGAjaUPw7u64CdMNaoZTvZ-/exec';
         let currentArticle = null;
 
-        // Fungsi pembantu untuk membuat teks judul menjadi slug URL yang bersih
-        function slugify(text) {
-            return text.toString().toLowerCase().trim()
-                .replace(/\s+/g, '-')
-                .replace(/[^\w\-]+/g, '')
-                .replace(/\-\-+/g, '-');
-        }
-
         window.onscroll = () => {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -127,66 +120,52 @@
         };
 
         async function loadDetail() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const id = urlParams.get('id');
-            
+            const id = new URLSearchParams(window.location.search).get('id');
             if (!id) { window.location.href = 'index.html'; return; }
 
             try {
-                // Fetch data dari Google Apps Script API langsung lewat Client Browser
                 const response = await fetch(API_URL);
                 const res = await response.json();
-                
                 currentArticle = res.berita.find(x => x.id == id);
                 if (!currentArticle) throw new Error("Not Found");
 
-                // Update Judul Halaman di Tab Browser
+                // Update UI
                 document.title = currentArticle.judul + " | PAC Pagar Nusa Kemang";
-                
-                // Set Judul Utama & jadikan link aktif mengarah ke detail.html dengan slug judul
-                const articleSlug = slugify(currentArticle.judul);
-                document.getElementById('det-title').innerHTML = `<a href="detail.html?id=${currentArticle.id}&title=${articleSlug}" class="hover:text-pn hover:underline transition-colors duration-200 block">${currentArticle.judul}</a>`;
-                
-                // Update Komponen UI Konten
+                document.getElementById('det-title').innerText = currentArticle.judul;
                 document.getElementById('det-cat').innerText = currentArticle.kategori;
                 document.getElementById('breadcrumb-cat').innerText = currentArticle.kategori;
                 document.getElementById('det-date').innerText = currentArticle.tanggal;
                 document.getElementById('det-img').src = currentArticle.gambar;
 
-                // Format paragraf dan dropcap
                 const paragraphs = currentArticle.isi.split('\n').filter(t => t.trim() !== '');
                 document.getElementById('det-text').innerHTML = paragraphs.map((p, i) => 
                     `<p class="${i === 0 ? 'dropcap' : ''}">${p.trim()}</p>`).join('');
 
-                // Hitung estimasi waktu baca
                 document.getElementById('read-time').innerText = Math.ceil(currentArticle.isi.split(/\s+/).length / 200);
                 
-                // Render Berita Terkait (Mengarahkan ke detail.html + slug)
+                // Related
                 const container = document.getElementById('related-posts');
-                container.innerHTML = ''; // bersihkan loader/konten lama jika ada
                 res.berita.filter(n => n.kategori === currentArticle.kategori && n.id != id).slice(0,2).forEach(item => {
-                    const itemSlug = slugify(item.judul);
-                    container.innerHTML += `<a href="detail.html?id=${item.id}&title=${itemSlug}" class="block bg-white p-6 rounded-2xl border border-slate-100 hover:border-pn transition">
+                    container.innerHTML += `<a href="detail.html?id=${item.id}" class="block bg-white p-6 rounded-2xl border border-slate-100 hover:border-pn transition">
                         <span class="text-[9px] font-bold text-pn uppercase tracking-widest">${item.kategori}</span>
                         <h4 class="font-bold text-slate-800 mt-2 line-clamp-2">${item.judul}</h4>
                     </a>`;
                 });
 
-                // Tampilkan Konten & Sembunyikan Loader
                 document.getElementById('loader').classList.add('hidden');
                 document.getElementById('content').classList.remove('hidden');
             } catch (e) {
-                document.getElementById('loader').innerHTML = `<div class='text-center py-20 font-bold'>Berita tidak ditemukan atau gagal dimuat. <a href='index.html' class='text-pn'>Kembali ke Beranda</a></div>`;
+                document.getElementById('loader').innerHTML = `<div class='text-center py-20 font-bold'>Berita tidak ditemukan. <a href='index.html' class='text-pn'>Kembali</a></div>`;
             }
         }
 
         function shareTo(p) {
             const url = window.location.href;
-            const text = currentArticle ? currentArticle.judul : document.title;
+            const text = currentArticle.judul;
             const urls = {
-                facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-                twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
-                whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}%20-%20${encodeURIComponent(url)}`
+                facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+                twitter: `https://twitter.com/intent/tweet?text=${text}&url=${url}`,
+                whatsapp: `https://api.whatsapp.com/send?text=${text} - ${url}`
             };
             window.open(urls[p], '_blank');
         }

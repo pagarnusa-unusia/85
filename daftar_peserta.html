@@ -376,7 +376,7 @@
 
 <script>
 window.addEventListener('DOMContentLoaded', (event) => {
-    
+
     // --- KODE BARU UNTUK FUNGSI HAMBURGER MENU MOBILE ---
     const menuToggle = document.getElementById('menu-toggle');
     const menuClose = document.getElementById('menu-close');
@@ -402,6 +402,31 @@ window.addEventListener('DOMContentLoaded', (event) => {
     menuToggle.addEventListener('click', bukaMenu);
     menuClose.addEventListener('click', tutupMenu);
     menuOverlay.addEventListener('click', tutupMenu);
+    // -----------------------------------------------------
+
+    // --- KODE BARU UNTUK LOGIKA HIDE/SHOW SERTIFIKAT ---
+    const typeUjianInput = document.getElementById('inputTypeUjian');
+    const sertifikatInput = document.getElementById('inputSertifikat');
+
+    if (typeUjianInput && sertifikatInput) {
+        // Memastikan input sertifikat tidak wajib (menghapus validasi bawaan HTML jika ada)
+        sertifikatInput.removeAttribute('required');
+
+        const sertifikatContainer = sertifikatInput.closest('div') || sertifikatInput;
+
+        const toggleSertifikat = () => {
+            if (typeUjianInput.value.toLowerCase().includes('putih')) {
+                sertifikatContainer.style.display = 'none'; 
+                sertifikatInput.value = ''; 
+                sertifikatInput.removeAttribute('required'); 
+            } else {
+                sertifikatContainer.style.display = 'block'; 
+            }
+        };
+
+        toggleSertifikat();
+        typeUjianInput.addEventListener('change', toggleSertifikat);
+    }
     // -----------------------------------------------------
 
     Swal.fire({
@@ -460,7 +485,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
             const scrollContainer = document.getElementById('scroll-container');
             const scrollWarning = document.getElementById('scroll-warning');
 
-            // Fungsi pembantu untuk mengaktifkan tombol konfirmasi
             function ukurDanAktifkan() {
                 confirmBtn.disabled = false;
                 confirmBtn.style.opacity = '1';
@@ -470,25 +494,21 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 scrollWarning.classList.add('text-emerald-700');
             }
 
-            // Cek kondisi awal: Jika kontainer tidak memiliki scrollbar (langsung muat semua data di layar besar)
             if (scrollContainer.scrollHeight <= scrollContainer.clientHeight) {
                 ukurDanAktifkan();
             } else {
-                // Nonaktifkan tombol konfirmasi di awal jika perlu di-scroll
                 confirmBtn.disabled = true;
                 confirmBtn.style.opacity = '0.4';
                 confirmBtn.style.cursor = 'not-allowed';
 
-                // Deteksi fungsi scroll ke bawah
                 scrollContainer.addEventListener('scroll', function() {
-                    // Toleransi 8 pixel untuk kompatibilitas zoom browser & rendering engine mobile
                     if (scrollContainer.scrollHeight - scrollContainer.scrollTop <= scrollContainer.clientHeight + 8) {
                         ukurDanAktifkan();
                     }
                 });
             }
         }
-}).then((result) => {
+    }).then((result) => {
         if (result.isConfirmed) {
             // Pop-up otomatis tertutup, user tetap di halaman ini untuk mengisi form
         }
@@ -510,7 +530,13 @@ document.getElementById('formPendaftaran').addEventListener('submit', function(e
     const typeUjian = document.getElementById('inputTypeUjian').value;
     const angkatan = document.getElementById('inputAngkatan').value;
     const rayonUnusia = document.getElementById('inputRayonUnusia').value;
-    const linkSertifikat = document.getElementById('inputSertifikat').value;
+    
+    // Logika pengkondisian untuk sertifikat agar mengirim '-' jika kosong
+    let linkSertifikat = document.getElementById('inputSertifikat').value;
+    if (!linkSertifikat || linkSertifikat.trim() === '') {
+        linkSertifikat = '-';
+    }
+
     const penyakit = document.getElementById('inputPenyakit').value;
     
     // PROSES FORMAT TTL INDONESIA
@@ -531,7 +557,6 @@ document.getElementById('formPendaftaran').addEventListener('submit', function(e
         }
     });
 
-    // SOLUSI UTAMA: Gunakan objek FormData asli agar tidak memicu pemblokiran CORS / Failed to Fetch
     const targetPayload = new FormData();
     targetPayload.append('nama', nama);
     targetPayload.append('email', email);
@@ -544,7 +569,6 @@ document.getElementById('formPendaftaran').addEventListener('submit', function(e
     targetPayload.append('riwayat', penyakit);
     targetPayload.append('sertifikatUrl', linkSertifikat); 
 
-    // Eksekusi Ambil Data tanpa memaksakan modifikasi Header Content-Type manual
     fetch(URL_WEB_APP, {
         method: 'POST',
         body: targetPayload

@@ -6,7 +6,7 @@
     <title>Formulir Pendaftaran Ujian - PAC PSNU PAGARNUSA Kecamatan Kemang</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
@@ -23,15 +23,16 @@
                             light: '#0b8f4d',
                             white: '#ffffff',
                             bgLight: '#f5f5f5',
-                            textGray: '#555555'
+                            textGray: '#555555',
+                            textDark: '#222222'
                         }
                     },
                     fontFamily: {
-                        sans: ['Poppins', 'sans-serif'],
+                        sans: ['Roboto', 'sans-serif'],
                     },
                     borderRadius: {
-                        'btn': '10px',
-                        'card': '16px',
+                        'btn': '4px',
+                        'card': '8px',
                     }
                 }
             }
@@ -39,9 +40,9 @@
     </script>
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Roboto', sans-serif;
             background-color: #f5f5f5;
-            color: #555555;
+            color: #222222;
         }
         .smooth-transition {
             transition: all 0.3s ease;
@@ -51,11 +52,11 @@
             color: white;
             border: none;
             padding: 6px 16px;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
             margin-right: 12px;
             font-size: 0.75rem;
-            font-weight: 600;
+            font-weight: 500;
             transition: all 0.3s ease;
         }
         input[type="file"]::file-selector-button:hover {
@@ -68,239 +69,179 @@
         input[type="date"]::-webkit-calendar-picker-indicator:hover {
             opacity: 1;
         }
+        /* Styling tambahan untuk input field agar mirip form Shopee dengan warna hijau */
+        .shopee-input:focus {
+            box-shadow: inset 0 -2px 0 0 #056839;
+            border-color: transparent;
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen justify-between animate__animated animate__fadeIn">
 
-
-<header class="bg-white/90 backdrop-blur-md py-4 sticky top-0 z-[60] shadow-sm border-b border-slate-100">
-        <div class="container mx-auto px-4 md:px-6 flex justify-between items-center">
+<header class="bg-white py-3 sticky top-0 z-[60] shadow-sm border-b-4 border-brand">
+    <div class="container mx-auto px-4 md:px-6 flex justify-between items-center">
+        
+        <div class="flex items-center space-x-4">
+            <button id="menu-toggle" class="p-2 -ml-2 cursor-pointer text-gray-700 hover:text-brand transition md:hidden focus:outline-none" aria-label="Toggle Menu">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+            </button>
             
-            <div class="flex items-center space-x-4">
-                <!-- Tombol Menu Mobile (Memicu Sidebar) -->
-                <button id="menu-toggle" class="p-2 -ml-2 cursor-pointer text-slate-700 hover:text-brand transition md:hidden focus:outline-none" aria-label="Toggle Menu">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
-                </button>
-                <div class="flex items-center space-x-3.5">
-                    <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="h-12 md:h-14 w-auto object-contain drop-shadow-sm">
-                    <div class="text-left border-l-2 border-slate-200 pl-3.5">
-                        <h1 class="text-xl md:text-2xl font-bold text-brand tracking-tight leading-none nav-font uppercase">PAC PSNU PAGARNUSA</h1>
-                        <p class="text-slate-500 font-bold text-sm tracking-wider uppercase mt-1">Kecamatan Kemang</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tombol Login Desktop -->
-            <div class="hidden md:block">
-                <a href="login.html" class="flex items-center gap-2 bg-brand hover:bg-brand-dark text-white text-xs font-semibold px-5 py-2.5 rounded-btn shadow-sm transition-all duration-300">
-                    <i class="fa-solid fa-right-to-bracket text-sm"></i>
-                    <span>Login</span>
-                </a>
+            <div class="flex items-center space-x-3.5">
+                <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="h-9 md:h-11 w-auto object-contain">
+                
+<div class="text-left pl-3 border-l-2 border-gray-200">
+    <h1 class="text-base md:text-lg font-black text-brand-dark tracking-tighter leading-none uppercase">PAC PSNU PAGARNUSA</h1>
+    <p class="text-brand text-[10px] md:text-xs font-extrabold tracking-normal uppercase mt-1">Kecamatan Kemang</p>
+</div>
             </div>
         </div>
 
-        <!-- ========================================================= -->
-        <!-- ELEMEN BARU: BACKGROUND OVERLAY DAN SIDEBAR MENU MOBILE -->
-        <!-- ========================================================= -->
-        <!-- Latar belakang gelap saat menu terbuka -->
-        <div id="menu-overlay" class="fixed inset-0 bg-black/40 z-[70] hidden opacity-0 transition-opacity duration-300 md:hidden"></div>
-
-        <!-- Wadah Menu Sidebar Samping -->
-        <div id="mobile-menu" class="fixed top-0 left-0 bottom-0 w-72 bg-white z-[80] shadow-2xl transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden flex flex-col">
-            <!-- Header Sidebar -->
-            <div class="p-5 border-b border-gray-100 flex items-center justify-between bg-gray-50">
-                <div class="flex items-center space-x-2">
-                    <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo" class="h-8 w-auto">
-                    <span class="font-bold text-xs text-brand-dark tracking-wider"></span>
-                </div>
-                <button id="menu-close" class="text-gray-400 hover:text-rose-600 transition p-1 text-lg">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <!-- Isi Pilihan Link Menu -->
-            <div class="p-4 flex flex-col space-y-2 flex-grow">
-                <!-- 1. Tombol Login -->
-                <a href="login.html" class="flex items-center space-x-3 p-3 rounded-xl bg-emerald-50 text-brand font-bold text-sm hover:bg-brand hover:text-white transition-all duration-200">
-                    <i class="fa-solid fa-right-to-bracket text-base"></i>
-                    <span>Login</span>
-                </a>
-
-                <!-- 2. Tombol Pusat Bantuan WhatsApp -->
-                <a href="https://api.whatsapp.com/send?phone=6285320685598&text=Assalamualaikum%20Mbak%20Risna%0ASalam%20Pagarnusa%0A%0Asaya%20ingin%20melaporkan%20terkait%20teknis%20pendaftaran" 
-                   target="_blank" 
-                   class="flex items-center space-x-3 p-3 rounded-xl bg-amber-50 text-amber-800 font-bold text-sm hover:bg-amber-500 hover:text-white transition-all duration-200">
-                    <i class="fa-brands fa-whatsapp text-lg text-emerald-600"></i>
-                    <span>Pusat Bantuan</span>
-                </a>
-            </div>
-
-            <!-- Footer Sidebar -->
-            <div class="p-4 border-t border-gray-100 text-[10px] text-gray-400 text-center">
-                PAC PSNU PAGARNUSA Kemang © 2026
-            </div>
+        <div class="hidden md:block">
+            <a href="login.html" class="flex items-center gap-2 bg-brand hover:bg-brand-dark text-white text-xs font-medium px-5 py-2.5 rounded-btn shadow-sm transition-all duration-300">
+                <i class="fa-solid fa-right-to-bracket text-sm"></i>
+                <span>Login</span>
+            </a>
         </div>
-    </header>
+    </div>
 
-    <!-- Main Content -->
-    <main class="flex-grow py-10 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl mx-auto">
-            
-            <!-- Header Card -->
-            <div class="bg-white rounded-card shadow-sm p-6 border-l-4 border-brand flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-                <div>
-                    <h1 class="text-xl sm:text-2xl font-bold text-brand-dark">Pendaftaran Ujian</h1>
-                    <p class="text-xs text-brand-textGray mt-2 space-y-1">
-                        <span class="font-bold block text-brand-dark mb-1">📝 Panduan Pengisian:</span>
-                        * **Data Asli:** Isi semua kolom sesuai KTP/KK untuk validasi berkas.
-                        * **Simbol Min (-):** Ketik tanda **-** pada kolom Riwayat Penyakit jika tidak ada.
-                        * **Akses Link:** Pastikan link Sertifikat Google Drive diatur ke *Public* (Anyone with link).
+    <div id="menu-overlay" class="fixed inset-0 bg-black/40 z-[70] hidden opacity-0 transition-opacity duration-300 md:hidden"></div>
+
+    <div id="mobile-menu" class="fixed top-0 left-0 bottom-0 w-72 bg-white z-[80] shadow-2xl transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden flex flex-col">
+        <div class="p-5 border-b border-gray-100 flex items-center justify-between bg-brand border-b-4 border-brand-dark">
+            <div class="flex items-center space-x-2">
+                <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo" class="h-7 w-auto object-contain">
+                <span class="font-bold text-xs text-white tracking-widest">MENU</span>
+            </div>
+            <button id="menu-close" class="text-white hover:text-gray-200 transition p-1 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="p-4 flex flex-col space-y-2 flex-grow">
+            <a href="login.html" class="flex items-center space-x-3 p-3 rounded-btn bg-[#f0f9f4] text-brand font-medium text-sm hover:bg-brand hover:text-white transition-all duration-200">
+                <i class="fa-solid fa-right-to-bracket text-base"></i>
+                <span>Login Akun</span>
+            </a>
+
+            <a href="https://api.whatsapp.com/send?phone=6285320685598&text=Assalamualaikum%20Mbak%20Risna%0ASalam%20Pagarnusa%0A%0Asaya%20ingin%20melaporkan%20terkait%20teknis%20pendaftaran" 
+               target="_blank" 
+               class="flex items-center space-x-3 p-3 rounded-btn bg-gray-50 text-gray-700 font-medium text-sm hover:bg-gray-100 transition-all duration-200">
+                <i class="fa-brands fa-whatsapp text-lg text-[#25D366]"></i>
+                <span>Pusat Bantuan</span>
+            </a>
+        </div>
+
+        <div class="p-4 border-t border-gray-100 text-[10px] text-gray-400 text-center uppercase font-medium tracking-wider">
+            PAC PSNU PAGARNUSA © 2026
+        </div>
+    </div>
+</header>
+
+<main class="flex-grow py-6 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto">
+        
+        <div class="bg-white rounded-card shadow-sm p-5 border border-gray-100 mb-4 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 bg-brand"></div>
+            <div class="flex flex-col gap-3">
+                <h1 class="text-lg sm:text-xl font-medium text-brand-textDark">Pendaftaran Ujian</h1>
+                <div class="bg-[#f0f9f4] border border-[#cce8d9] rounded-btn p-3">
+                    <p class="text-xs text-brand-textGray space-y-1.5 leading-relaxed">
+                        <span class="font-medium block text-brand mb-1"><i class="fa-solid fa-bullhorn mr-1"></i> Panduan Pengisian:</span>
+                        <span class="block">• <b>Data Asli:</b> Isi kolom sesuai KTP/KK untuk validasi berkas.</span>
+                        <span class="block">• <b>Simbol Min (-):</b> Ketik tanda <b>-</b> pada Riwayat Penyakit jika tidak ada.</span>
+                        <span class="block">• <b>Akses Link:</b> Pastikan link G-Drive diatur ke <i>Siapa saja yang memiliki link</i>.</span>
                     </p>
                 </div>
             </div>
+        </div>
 
-            <!-- Form Card -->
-            <div class="bg-white rounded-card shadow-sm border border-gray-100 overflow-hidden">
-                <div class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-                    <h3 class="text-sm font-bold text-brand-dark flex items-center gap-2">
-                        <i class="fa-solid fa-user-wpforms"></i> Kelengkapan Data Peserta
-                    </h3>
-                    <span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded uppercase tracking-wider">Wajib Diisi</span>
-                </div>
+        <div class="bg-white rounded-card shadow-sm border border-gray-100 overflow-hidden mb-8">
+            <div class="bg-white px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+                <h3 class="text-sm font-medium text-brand-textDark flex items-center gap-2">
+                    <i class="fa-solid fa-file-lines text-brand text-lg"></i> Rincian Data Peserta
+                </h3>
+                <span class="text-[10px] bg-brand text-white font-medium px-2 py-0.5 rounded uppercase">Wajib</span>
+            </div>
+            
+            <form id="formPendaftaran" class="p-5 sm:p-6 space-y-5">
                 
-                <form id="formPendaftaran" class="p-6 space-y-6">
-                    
-                    <!-- 1 & 2: Email & Nama Lengkap -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <div>
-                            <label class="block text-xs font-bold text-brand-dark tracking-wider mb-2">Email Aktif</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
-                                    <i class="fa-solid fa-envelope text-xs"></i>
-                                </span>
-                                <input type="email" id="inputEmail" required placeholder="pacpagarnusakemang@gmail.com" 
-                                    class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-brand-dark tracking-wider mb-2">Nama Lengkap</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
-                                    <i class="fa-solid fa-user text-xs"></i>
-                                </span>
-                                <input type="text" id="inputNama" required placeholder="Muhammad Naufal Maulana Widodo" 
-                                    class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 3 & 4: Tempat Lahir & Tanggal Lahir -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <div>
-                            <label class="block text-xs font-bold text-brand-dark tracking-wider mb-2">Tempat Lahir</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
-                                    <i class="fa-solid fa-location-dot text-xs"></i>
-                                </span>
-                                <input type="text" id="inputTempatLahir" required placeholder="Contoh: Bogor" 
-                                    class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-brand-dark tracking-wider mb-2">Tanggal Lahir</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
-                                    <i class="fa-solid fa-calendar text-xs"></i>
-                                </span>
-                                <input type="date" id="inputTanggalLahir" required 
-                                    class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 5: Alamat Lengkap Sesuai KTP -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-bold text-brand-dark tracking-wider mb-2">Alamat</label>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Email Aktif</label>
                         <div class="relative">
-                            <span class="absolute top-3 left-3.5 text-gray-400">
-                                <i class="fa-solid fa-map-marked-alt text-xs"></i>
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fa-regular fa-envelope text-xs"></i>
                             </span>
-                            <textarea id="inputAlamat" required rows="3" placeholder="Contoh: Bogor, Jawabarat" 
-                                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition resize-none"></textarea>
+                            <input type="email" id="inputEmail" required placeholder="Contoh: nama@email.com" 
+                                class="shopee-input w-full pl-9 pr-3 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition">
                         </div>
                     </div>
 
-                    <!-- 6: Nomor WhatsApp -->
                     <div>
-                        <label class="block text-xs font-bold text-brand-dark tracking-wider mb-2">No WhatsApp</label>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Nama Lengkap</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
-                                <i class="fa-brands fa-whatsapp text-sm font-bold"></i>
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fa-regular fa-user text-xs"></i>
                             </span>
-                            <input type="number" id="inputWA" required placeholder="Contoh: 08123456789" 
-                                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition font-mono">
+                            <input type="text" id="inputNama" required placeholder="Sesuai Identitas Asli" 
+                                class="shopee-input w-full pl-9 pr-3 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition">
                         </div>
                     </div>
+                </div>
 
-                    <!-- 7 & 8: Type Ujian & Angkatan (Pilihan Dropdown) -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <div>
-                            <label class="block text-xs font-bold text-brand-dark tracking-wider mb-2">Type Ujian</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
-                                    <i class="fa-solid fa-graduation-cap text-xs"></i>
-                                </span>
-                                <select id="inputTypeUjian" required 
-                                    class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition appearance-none cursor-pointer">
-                                    <option value="" disabled selected>Pilih tingkatan ujian...</option>
-                                    <option value="Putih">Putih</option>
-                                    <option value="Kuning">Kuning</option>
-                                    <option value="Merah">Merah</option>
-                                    <option value="Biru/ASPEL">Biru/ASPEL</option>
-                                    <option value="Cokelat/PELATIH">Cokelat/PELATIH</option>
-                                </select>
-                                <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
-                                    <i class="fa-solid fa-chevron-down text-xs"></i>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-bold text-brand-dark tracking-wider mb-2">Angkatan</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
-                                    <i class="fa-solid fa-users text-xs"></i>
-                                </span>
-                                <select id="inputAngkatan" required 
-                                    class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition appearance-none cursor-pointer">
-                                    <option value="" disabled selected>Pilih tahun angkatan...</option>
-                                    <option value="2022">2022</option>
-                                    <option value="2023">2023</option>
-                                    <option value="2024">2024</option>
-                                    <option value="2025">2025</option>
-                                    <option value="2026">2026</option>
-                                </select>
-                                <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
-                                    <i class="fa-solid fa-chevron-down text-xs"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 11: Pilihan Rayon UNUSIA (Dipindahkan ke atas dekat bagian Pilihan Klub/Rayon organisasi agar serasi secara struktur form) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-bold text-brand-dark tracking-wider mb-2">Apakah Anda Santri PSNU Pagarnusa Rayon UNUSIA?</label>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Tempat Lahir</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
-                                <i class="fa-solid fa-building-columns text-xs"></i>
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fa-solid fa-location-dot text-xs"></i>
                             </span>
-                            <select id="inputRayonUnusia" required 
-                                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition appearance-none cursor-pointer">
-                                <option value="" disabled selected>Pilih salah satu...</option>
-                                <option value="Ya">Ya</option>
-                                <option value="Bukan">Bukan</option>
+                            <input type="text" id="inputTempatLahir" required placeholder="Contoh: Bogor" 
+                                class="shopee-input w-full pl-9 pr-3 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Tanggal Lahir</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fa-regular fa-calendar text-xs"></i>
+                            </span>
+                            <input type="date" id="inputTanggalLahir" required 
+                                class="shopee-input w-full pl-9 pr-3 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition text-gray-600">
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Alamat Lengkap</label>
+                    <textarea id="inputAlamat" required rows="2" placeholder="Nama Jalan, RT/RW, Desa/Kelurahan..." 
+                        class="shopee-input w-full px-3 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition resize-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5">No. WhatsApp</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                            <i class="fa-brands fa-whatsapp text-sm"></i>
+                        </span>
+                        <input type="number" id="inputWA" required placeholder="Contoh: 08123456789" 
+                            class="shopee-input w-full pl-9 pr-3 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Tingkat Ujian</label>
+                        <div class="relative">
+                            <select id="inputTypeUjian" required 
+                                class="shopee-input w-full pl-3 pr-8 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition appearance-none cursor-pointer text-gray-600">
+                                <option value="" disabled selected>Pilih tingkatan...</option>
+                                <option value="Putih">Putih</option>
+                                <option value="Kuning">Kuning</option>
+                                <option value="Merah">Merah</option>
+                                <option value="Biru/ASPEL">Biru/ASPEL</option>
+                                <option value="Cokelat/PELATIH">Cokelat/PELATIH</option>
                             </select>
                             <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
                                 <i class="fa-solid fa-chevron-down text-xs"></i>
@@ -308,74 +249,105 @@
                         </div>
                     </div>
 
-<div>
-    <label class="block text-xs font-bold text-brand-dark tracking-wider mb-2">
-        Link Bukti Sertifikat Ujian Sebelumnya
-    </label>
-    
-    <div class="bg-amber-50 border border-amber-200 rounded-btn p-3.5 mb-3 text-xs text-amber-900 leading-relaxed">
-        <span class="font-bold block mb-1 text-amber-950"><i class="fa-solid fa-circle-info mr-1"></i> Panduan Pengisian Jawaban:</span>
-        <ol class="list-decimal pl-4 space-y-1 text-gray-700">
-            <li>Klik link folder berikut: 
-                <a href="https://drive.google.com/drive/folders/1-kWl8h3O6yA0H4DfyfucaYosEr7OzE23?usp=drive_link" 
-                   target="_blank" 
-                   class="text-brand font-bold underline hover:text-brand-dark smooth-transition inline-flex items-center gap-1">
-                    Buka Folder Google Drive <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                </a>
-            </li>
-            <li>Upload sertifikat Anda sebelumnya ke dalam folder tersebut.</li>
-            <li>Ganti nama file sertifikat sesuai nama Anda.</li>
-            <li>Salin/copy link file sertifikat yang telah Anda upload.</li>
-            <li>Tempelkan/paste link tersebut ke kolom input di bawah ini.</li>
-        </ol>
-    </div>
-
-    <div class="relative">
-        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
-            <i class="fa-solid fa-link text-xs"></i>
-        </span>
-        <input type="url" id="inputSertifikat" required 
-            placeholder="https://drive.google.com/file/d/..." 
-            class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition">
-    </div>
-    <p class="text-[11px] text-gray-400 mt-1.5"><i class="fa-solid fa-circle-exclamation"></i> Pastikan status berbagi link file Google Drive Anda disetel ke "Siapa saja yang memiliki link" (Anyone with link).</p>
-</div>
-
-                    <!-- 10: Riwayat Penyakit -->
                     <div>
-                        <label class="block text-xs font-bold text-brand-dark tracking-wider mb-2">Riwayat Penyakit</label>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Tahun Angkatan</label>
                         <div class="relative">
-                            <span class="absolute top-3 left-3.5 text-gray-400">
-                                <i class="fa-solid fa-notes-medical text-xs"></i>
+                            <select id="inputAngkatan" required 
+                                class="shopee-input w-full pl-3 pr-8 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition appearance-none cursor-pointer text-gray-600">
+                                <option value="" disabled selected>Pilih angkatan...</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                            </select>
+                            <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
                             </span>
-                            <textarea id="inputPenyakit" required rows="2" placeholder="Pastikan riwayat penyakit anda memiliki surat keterangan dokter. (ketik - jika tidak memiliki riwayat)" 
-                                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-btn text-sm focus:outline-none focus:border-brand focus:bg-white smooth-transition resize-none"></textarea>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Tombol Aksi -->
-                    <div class="pt-4 border-t border-gray-100 flex items-center justify-end space-x-3">
-                        <button type="reset" class="bg-gray-100 hover:bg-gray-200 text-gray-600 text-xs font-bold py-3 px-6 rounded-btn smooth-transition cursor-pointer">
-                            Reset Form
-                        </button>
-                        <button type="submit" class="bg-brand hover:bg-brand-dark text-white text-xs font-bold py-3 px-8 rounded-btn smooth-transition flex items-center space-x-2 shadow-md cursor-pointer">
-                            <i class="fa-solid fa-paper-plane"></i> <span>Kirim Data</span>
-                        </button>
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Santri Rayon UNUSIA?</label>
+                    <div class="relative">
+                        <select id="inputRayonUnusia" required 
+                            class="shopee-input w-full pl-3 pr-8 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition appearance-none cursor-pointer text-gray-600">
+                            <option value="" disabled selected>Pilih salah satu...</option>
+                            <option value="Ya">Ya</option>
+                            <option value="Bukan">Bukan</option>
+                        </select>
+                        <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
+                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-dashed border-gray-200">
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5 mt-2">
+                        Link Bukti Sertifikat Ujian Sebelumnya
+                    </label>
+                    
+                    <div class="bg-[#f0f9f4] border border-[#cce8d9] rounded-btn p-3 mb-3 text-xs text-gray-600 leading-relaxed">
+                        <span class="font-medium block mb-1 text-brand"><i class="fa-solid fa-circle-info mr-1"></i> Cara Pengisian:</span>
+                        <ol class="list-decimal pl-4 space-y-1">
+                            <li>Klik link folder berikut: 
+                                <a href="https://drive.google.com/drive/folders/1-kWl8h3O6yA0H4DfyfucaYosEr7OzE23?usp=drive_link" 
+                                   target="_blank" 
+                                   class="text-brand font-medium hover:text-brand-dark hover:underline inline-flex items-center gap-1">
+                                   Buka G-Drive <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </a>
+                            </li>
+                            <li>Upload sertifikat Anda & ubah nama file sesuai nama Anda.</li>
+                            <li>Salin link file dan pastikan aksesnya <i>"Siapa saja yang memiliki link"</i>.</li>
+                            <li>Tempel link pada kolom di bawah.</li>
+                        </ol>
                     </div>
 
-                </form>
-            </div>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                            <i class="fa-solid fa-link text-xs"></i>
+                        </span>
+                        <input type="url" id="inputSertifikat" required 
+                            placeholder="https://drive.google.com/file/d/..." 
+                            class="shopee-input w-full pl-9 pr-3 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition">
+                    </div>
+                </div>
 
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Riwayat Penyakit</label>
+                    <textarea id="inputPenyakit" required rows="2" placeholder="Sertakan surat dokter jika ada. (Ketik - jika tidak ada)" 
+                        class="shopee-input w-full px-3 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition resize-none"></textarea>
+                </div>
+
+                <div class="pt-5 border-t border-gray-100 flex items-center justify-end space-x-3">
+                    <button type="reset" class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-600 text-sm font-medium py-2.5 px-5 rounded-btn smooth-transition cursor-pointer">
+                        Reset
+                    </button>
+                    <button type="submit" class="bg-brand hover:bg-brand-dark text-white text-sm font-medium py-2.5 px-8 rounded-btn smooth-transition shadow-sm cursor-pointer w-full sm:w-auto text-center">
+                        Kirim Sekarang
+                    </button>
+                </div>
+
+            </form>
         </div>
-    </main>
 
-<!-- Footer -->
-    <footer class="bg-white border-t border-gray-200 py-4 text-center text-xs text-gray-400">
-        <p>© 2026 PAC PSNU PAGARNUSA Kecamatan Kemang. All Rights Reserved. by: <a href="https://www.instagram.com/munncyy" target="_blank" class="hover:text-brand font-medium underline transition-colors duration-200">ibnu</a></p>
-    </footer>
+    </div>
+</main>
+<a href="https://api.whatsapp.com/send?phone=6285320685598&text=Assalamualaikum%20Mbak%20Risna%0ASalam%20Pagarnusa%0A%0Asaya%20ingin%20melaporkan%20terkait%20teknis%20pendaftaran" 
+   target="_blank" 
+   class="fixed bottom-6 right-6 md:bottom-8 md:right-8 bg-[#25D366] hover:bg-[#1ebe57] text-white py-3 px-4 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 z-[90] flex items-center gap-2 group animate__animated animate__bounceInUp"
+   aria-label="Hubungi Admin via WhatsApp">
+    <i class="fa-brands fa-whatsapp text-2xl md:text-3xl"></i>
+    <span class="font-medium text-sm hidden sm:block pr-1">Hubungi Admin</span>
+</a>
+<footer class="bg-white border-t border-gray-200 py-5 text-center text-xs text-gray-500">
+    <p>© 2026 PAC PSNU PAGARNUSA Kec. Kemang.</p>
+    <p class="mt-1">Dibuat oleh: <a href="https://www.instagram.com/munncyy" target="_blank" class="text-brand hover:underline">ibnu</a></p>
+</footer>
 
 <script>
-window.addEventListener('DOMContentLoaded', (event) => {
+    window.addEventListener('DOMContentLoaded', (event) => {
 
     // --- KODE BARU UNTUK FUNGSI HAMBURGER MENU MOBILE ---
     const menuToggle = document.getElementById('menu-toggle');
@@ -461,10 +433,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
                     </ul>
                 </div>
 
-<div class="bg-amber-50 border border-amber-200 p-2.5 rounded text-amber-900 text-[11px]">
-    <p class="font-bold mb-0.5"><i class="fa-solid fa-circle-info"></i> Kendala Sistem/Pendaftaran?</p>
-    <p>Segera hubungi Contact Person: <span class="font-bold">Mbak Risna (<a href="https://api.whatsapp.com/send?phone=6285320685598&text=Assalamualaikum%20Mbak%20Risna%0ASalam%20Pagarnusa%0A%0Asaya%20ingin%20melaporkan%20terkait%20teknis%20pendaftaran" target="_blank" class="underline">085320685598</a>)</span></p>
-</div>
+                <div class="bg-[#f0f9f4] border border-[#cce8d9] p-2.5 rounded text-brand-dark text-[11px]">
+                    <p class="font-bold mb-0.5"><i class="fa-solid fa-circle-info"></i> Kendala Sistem/Pendaftaran?</p>
+                    <p>Segera hubungi Contact Person: <span class="font-bold">Mbak Risna (<a href="https://api.whatsapp.com/send?phone=6285320685598&text=Assalamualaikum%20Mbak%20Risna%0ASalam%20Pagarnusa%0A%0Asaya%20ingin%20melaporkan%20terkait%20teknis%20pendaftaran" target="_blank" class="underline text-brand">085320685598</a>)</span></p>
+                </div>
 
                 <p class="text-[11px] text-gray-500 italic text-center pt-1 border-t border-gray-100">Mohon kerja samanya untuk segera memproses pendaftaran sebelum batas waktu ditutup agar pendataan dapat berjalan lancar.</p>
             </div>

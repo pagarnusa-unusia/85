@@ -18,137 +18,134 @@
     <style>
         body { 
             font-family: 'Poppins', sans-serif; 
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            background-color: #f8fafc;
             color: #1e293b;
             -webkit-tap-highlight-color: transparent;
         }
 
         nav {
-            backdrop-filter: blur(10px);
-            background-color: rgba(27, 117, 72, 0.9) !important;
+            background-color: #1B7548 !important;
         }
 
         .page { display: none; padding-bottom: 2rem; }
         .page.active { 
             display: block; 
-            animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            animation: fadeIn 0.3s ease-in-out; 
         }
 
-        @keyframes slideUp { 
-            from { opacity: 0; transform: translateY(30px); } 
-            to { opacity: 1; transform: translateY(0); } 
+        @keyframes fadeIn { 
+            from { opacity: 0; } 
+            to { opacity: 1; } 
         }
 
         .cat-card { 
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
-            border: 1px solid rgba(255,255,255,0.8);
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(5px);
+            transition: all 0.2s ease-in-out; 
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
         }
 
         .cat-card:hover { 
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 25px -5px rgba(27, 117, 72, 0.1), 0 10px 10px -5px rgba(27, 117, 72, 0.04);
             border-color: #1B7548;
+            background-color: #f8fafc;
         }
 
         select, input {
-            border: 2px solid #e2e8f0 !important;
-            border-radius: 1rem !important;
-            transition: all 0.3s !important;
+            border: 1px solid #cbd5e1 !important;
+            border-radius: 4px !important;
+            transition: all 0.2s !important;
         }
 
         select:focus, input:focus {
             border-color: #1B7548 !important;
-            box-shadow: 0 0 0 4px rgba(27, 117, 72, 0.15) !important;
+            box-shadow: 0 0 0 3px rgba(27, 117, 72, 0.1) !important;
             background-color: #fff !important;
         }
 
         .overflow-x-auto::-webkit-scrollbar { height: 4px; }
-        .overflow-x-auto::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .overflow-x-auto::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     </style>
 </head>
 <body class="min-h-screen pb-10">
 
-    <div id="popupSukses" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/50 backdrop-blur-sm p-6">
-        <div class="bg-white rounded-3xl p-8 flex flex-col items-center shadow-2xl max-w-xs w-full">
-            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-2xl mb-4">
+    <div id="popupSukses" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/40 p-6">
+        <div class="bg-white rounded border border-slate-200 p-8 flex flex-col items-center shadow-lg max-w-xs w-full">
+            <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded flex items-center justify-center text-xl mb-4">
                 <i class="fas fa-check"></i>
             </div>
-            <h3 class="font-bold text-slate-800 text-lg mt-2">Berhasil Disimpan!</h3>
-            <p class="text-slate-500 text-center text-[10px] mt-2 mb-6">Data telah berhasil tercatat di sistem.</p>
+            <h3 class="font-bold text-slate-800 text-base mt-1">Berhasil Disimpan!</h3>
+            <p class="text-slate-500 text-center text-xs mt-1 mb-6">Data telah berhasil tercatat di sistem.</p>
             
-            <button onclick="tutupPopupDanLanjut()" class="w-full bg-primary text-white font-bold py-3 rounded-xl shadow-lg hover:bg-primaryDark active:scale-95 transition-all text-xs uppercase tracking-wider">
+            <button onclick="tutupPopupDanLanjut()" class="w-full bg-primary text-white font-semibold py-2.5 rounded hover:bg-primaryDark active:scale-[0.98] transition-all text-xs uppercase tracking-wider">
                 Next
             </button>
         </div>
     </div>
 
-    <nav class="bg-primary text-white p-4 shadow-lg sticky top-0 z-50">
+    <nav class="text-white p-4 shadow-sm sticky top-0 z-50">
         <div class="flex items-center justify-between max-w-4xl mx-auto">
             <div class="flex items-center gap-3 cursor-pointer" onclick="goToDashboard()">
-                <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center overflow-hidden shadow-inner">
-                    <img src="logopn.png" alt="Logo Pagar Nusa" class="w-full h-full object-contain p-1">
+                <div class="w-9 h-9 flex items-center justify-center overflow-hidden">
+                    <img src="logopn.png" alt="Logo Pagar Nusa" class="w-full h-full object-contain">
                 </div>
                 <div class="flex flex-col leading-tight">
-                    <span class="font-bold text-[11px] tracking-wider text-white">SISTEM PENILAIAN</span>
-                    <span class="font-medium text-[9px] text-emerald-200 tracking-[0.1em]">PSNU PAGARNUSA UNUSIA</span>
+                    <span class="font-bold text-xs tracking-wider text-white">SISTEM PENILAIAN</span>
+                    <span class="font-medium text-[9px] text-emerald-200 tracking-wider">PAC PSNU PAGARNUSA KEMANG</span>
                 </div>
             </div>
-            <div id="status-badge" class="text-[10px] bg-emerald-500/20 px-3 py-1 rounded-full border border-emerald-500/30 text-emerald-400 font-bold tracking-widest">ONLINE</div>
+            <div id="status-badge" class="text-[10px] bg-emerald-600 px-3 py-1 rounded border border-emerald-500 text-white font-bold tracking-wider">ONLINE</div>
         </div>
     </nav>
 
     <section id="page-dashboard" class="page active p-6">
         <div class="max-w-4xl mx-auto">
-            <div class="mb-8 flex justify-between items-end">
+            <div class="mb-8 flex justify-between items-end border-b border-slate-200 pb-4">
                 <div>
-                    <h1 class="text-2xl font-extrabold text-slate-800 tracking-tight">UKT & DIKLAT</h1>
-                    <p class="text-primary font-medium">PSNU PAGARNUSA PAC CIBUNGBULANG</p>
+                    <h1 class="text-xl font-bold text-slate-800 tracking-tight">UKT & DIKLAT</h1>
+                    <p class="text-primary text-xs font-semibold tracking-wide">Rayon PSNU PAGARNUSA UNUSIA</p>
                 </div>
                 <div class="text-right">
-                    <span class="text-[10px] font-bold text-slate-400 uppercase">Tanggal</span>
-                    <p id="tgl-skrg" class="text-xs font-bold text-slate-700"></p>
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Tanggal</span>
+                    <p id="tgl-skrg" class="text-xs font-bold text-slate-600"></p>
                 </div>
             </div>
 
-            <div class="grid grid-cols-3 gap-3 mb-8">
-                <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-100 text-center">
-                    <p class="text-[10px] text-slate-400 font-bold uppercase">Peserta</p>
-                    <p id="stat-total-peserta" class="text-lg font-bold text-primary">--</p> 
+            <div class="grid grid-cols-3 gap-4 mb-8">
+                <div class="bg-white p-4 rounded border border-slate-200 text-center">
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Peserta</p>
+                    <p id="stat-total-peserta" class="text-xl font-bold text-primary mt-1">--</p> 
                 </div>
-                <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-100 text-center">
-                    <p class="text-[10px] text-slate-400 font-bold uppercase">Tersimpan</p>
-                    <p id="count-lokal" class="text-lg font-bold text-blue-500">0</p>
+                <div class="bg-white p-4 rounded border border-slate-200 text-center">
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Tersimpan</p>
+                    <p id="count-lokal" class="text-xl font-bold text-blue-600 mt-1">0</p>
                 </div>
-                <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-100 text-center">
-                <p class="text-[10px] text-slate-400 font-bold uppercase mb-1">Sinyal</p>
-                <div class="flex items-end justify-center gap-1 h-4" id="signal-container">
-                    <div id="bar-1" class="w-1 h-[25%] rounded-full bg-slate-200 transition-all duration-500"></div>
-                    <div id="bar-2" class="w-1 h-[50%] rounded-full bg-slate-200 transition-all duration-500"></div>
-                    <div id="bar-3" class="w-1 h-[75%] rounded-full bg-slate-200 transition-all duration-500"></div>
-                    <div id="bar-4" class="w-1 h-[100%] rounded-full bg-slate-200 transition-all duration-500"></div>
+                <div class="bg-white p-4 rounded border border-slate-200 text-center flex flex-col justify-center items-center">
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-2">Sinyal</p>
+                    <div class="flex items-end justify-center gap-1 h-3.5" id="signal-container">
+                        <div id="bar-1" class="w-1 h-[25%] rounded-sm bg-slate-200 transition-all duration-300"></div>
+                        <div id="bar-2" class="w-1 h-[50%] rounded-sm bg-slate-200 transition-all duration-300"></div>
+                        <div id="bar-3" class="w-1 h-[75%] rounded-sm bg-slate-200 transition-all duration-300"></div>
+                        <div id="bar-4" class="w-1 h-[100%] rounded-sm bg-slate-200 transition-all duration-300"></div>
+                    </div>
                 </div>
-            </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <button onclick="showPage('page-pilih-kategori')" class="p-8 bg-white rounded-3xl border border-slate-100 shadow-md flex items-center group active:scale-95 transition-all">
-                    <div class="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all shadow-inner">
-                        <i class="fas fa-edit text-2xl"></i>
+                <button onclick="showPage('page-pilih-kategori')" class="p-6 bg-white rounded border border-slate-200 shadow-sm flex items-center hover:border-primary active:bg-slate-50 transition-all group">
+                    <div class="w-12 h-12 bg-emerald-50 rounded flex items-center justify-center text-primary transition-all">
+                        <i class="fas fa-edit text-lg"></i>
                     </div>
-                    <div class="ml-5 text-left">
-                        <h4 class="font-bold text-slate-800 text-lg">Mulai Menilai</h4>
-                        <p class="text-xs text-slate-400">Pilih kategori ujian</p>
+                    <div class="ml-4 text-left">
+                        <h4 class="font-bold text-slate-800 text-sm">Mulai Menilai</h4>
+                        <p class="text-xs text-slate-400 mt-0.5">Pilih kategori ujian peserta</p>
                     </div>
                 </button>
-                <button onclick="loadRekapInternal()" class="p-8 bg-white rounded-3xl border border-slate-100 shadow-md flex items-center group active:scale-95 transition-all">
-                    <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-all shadow-inner">
-                        <i class="fas fa-history text-2xl"></i>
+                <button onclick="loadRekapInternal()" class="p-6 bg-white rounded border border-slate-200 shadow-sm flex items-center hover:border-blue-500 active:bg-slate-50 transition-all group">
+                    <div class="w-12 h-12 bg-blue-50 rounded flex items-center justify-center text-blue-600 transition-all">
+                        <i class="fas fa-history text-lg"></i>
                     </div>
-                    <div class="ml-5 text-left">
-                        <h4 class="font-bold text-slate-800 text-lg">Riwayat Nilai</h4>
-                        <p class="text-xs text-slate-400">Data tersimpan di HP ini</p>
+                    <div class="ml-4 text-left">
+                        <h4 class="font-bold text-slate-800 text-sm">Riwayat Nilai</h4>
+                        <p class="text-xs text-slate-400 mt-0.5">Data rekap di HP ini</p>
                     </div>
                 </button>
             </div>
@@ -156,41 +153,43 @@
     </section>
 
     <section id="page-pilih-kategori" class="page p-6">
-        <div class="max-w-4xl mx-auto text-center">
-            <button onclick="showPage('page-dashboard')" class="mb-6 text-sm font-bold text-primary flex items-center">
-                <i class="fas fa-arrow-left mr-2"></i> Kembali ke Menu
+        <div class="max-w-4xl mx-auto">
+            <button onclick="showPage('page-dashboard')" class="mb-6 text-xs font-bold text-primary flex items-center hover:underline">
+                <i class="fas fa-arrow-left mr-1.5"></i> KEMBALI KE MENU
             </button>
-            <h2 class="text-xl font-bold text-slate-800 mb-2">Pilih Kategori</h2>
-            <p class="text-xs text-slate-400 mb-8">Pilih salah satu materi yang sedang diuji</p>
+            <div class="mb-6">
+                <h2 class="text-lg font-bold text-slate-800">Pilih Kategori Ujian</h2>
+                <p class="text-xs text-slate-400 mt-0.5">Silahkan pilih salah satu materi penilaian berikut</p>
+            </div>
             
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div onclick="initForm('Fisik')" class="cat-card bg-white p-6 rounded-3xl shadow-sm cursor-pointer flex flex-col items-center">
-                    <div class="w-12 h-12 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mb-3"><i class="fas fa-bolt"></i></div>
-                    <span class="font-bold text-sm text-slate-700">Fisik</span>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div onclick="initForm('Fisik')" class="cat-card p-5 rounded cursor-pointer flex flex-col items-center text-center">
+                    <div class="w-10 h-10 bg-slate-50 text-slate-600 rounded flex items-center justify-center mb-3"><i class="fas fa-bolt text-sm"></i></div>
+                    <span class="font-semibold text-xs text-slate-700">Fisik</span>
                 </div>
-                <div onclick="initForm('teknik')" class="cat-card bg-white p-6 rounded-3xl shadow-sm cursor-pointer flex flex-col items-center">
-                    <div class="w-12 h-12 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mb-3"><i class="fas fa-user-ninja"></i></div>
-                    <span class="font-bold text-sm text-slate-700">Teknik</span>
+                <div onclick="initForm('teknik')" class="cat-card p-5 rounded cursor-pointer flex flex-col items-center text-center">
+                    <div class="w-10 h-10 bg-slate-50 text-slate-600 rounded flex items-center justify-center mb-3"><i class="fas fa-user-ninja text-sm"></i></div>
+                    <span class="font-semibold text-xs text-slate-700">Teknik</span>
                 </div>
-                <div onclick="initForm('Mental')" class="cat-card bg-white p-6 rounded-3xl shadow-sm cursor-pointer flex flex-col items-center">
-                    <div class="w-12 h-12 bg-red-50 text-red-500 rounded-full flex items-center justify-center mb-3"><i class="fas fa-heart"></i></div>
-                    <span class="font-bold text-sm text-slate-700">Mental</span>
+                <div onclick="initForm('Mental')" class="cat-card p-5 rounded cursor-pointer flex flex-col items-center text-center">
+                    <div class="w-10 h-10 bg-slate-50 text-slate-600 rounded flex items-center justify-center mb-3"><i class="fas fa-heart text-sm"></i></div>
+                    <span class="font-semibold text-xs text-slate-700">Mental</span>
                 </div>
-                <div onclick="initForm('Jurus')" class="cat-card bg-white p-6 rounded-3xl shadow-sm cursor-pointer flex flex-col items-center">
-                    <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center mb-3"><i class="fas fa-hand-fist"></i></div>
-                    <span class="font-bold text-sm text-slate-700">Jurus</span>
+                <div onclick="initForm('Jurus')" class="cat-card p-5 rounded cursor-pointer flex flex-col items-center text-center">
+                    <div class="w-10 h-10 bg-slate-50 text-slate-600 rounded flex items-center justify-center mb-3"><i class="fas fa-hand-fist text-sm"></i></div>
+                    <span class="font-semibold text-xs text-slate-700">Jurus</span>
                 </div>
-                <div onclick="initForm('Kebangsaan')" class="cat-card bg-white p-6 rounded-3xl shadow-sm cursor-pointer flex flex-col items-center">
-                    <div class="w-12 h-12 bg-purple-50 text-purple-500 rounded-full flex items-center justify-center mb-3"><i class="fas fa-flag"></i></div>
-                    <span class="font-bold text-sm text-slate-700">Kebangsaan</span>
+                <div onclick="initForm('Kebangsaan')" class="cat-card p-5 rounded cursor-pointer flex flex-col items-center text-center">
+                    <div class="w-10 h-10 bg-slate-50 text-slate-600 rounded flex items-center justify-center mb-3"><i class="fas fa-flag text-sm"></i></div>
+                    <span class="font-semibold text-xs text-slate-700">Kebangsaan</span>
                 </div>
-                <div onclick="initForm('Nahdlatul Ulama')" class="cat-card bg-white p-6 rounded-3xl shadow-sm cursor-pointer flex flex-col items-center">
-                    <div class="w-12 h-12 bg-green-50 text-green-600 rounded-full flex items-center justify-center mb-3"><i class="fas fa-mosque"></i></div>
-                    <span class="font-bold text-sm text-slate-700">Ke-NU-an</span>
+                <div onclick="initForm('Nahdlatul Ulama')" class="cat-card p-5 rounded cursor-pointer flex flex-col items-center text-center">
+                    <div class="w-10 h-10 bg-slate-50 text-slate-600 rounded flex items-center justify-center mb-3"><i class="fas fa-mosque text-sm"></i></div>
+                    <span class="font-semibold text-xs text-slate-700">Ke-NU-an</span>
                 </div>
-                <div onclick="initForm('Pagarnusa')" class="cat-card bg-white p-6 rounded-3xl shadow-sm cursor-pointer flex flex-col items-center col-span-2 md:col-span-1">
-                    <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-full flex items-center justify-center mb-3"><i class="fas fa-shield-halved"></i></div>
-                    <span class="font-bold text-sm text-slate-700">Ke-PN-an</span>
+                <div onclick="initForm('Pagarnusa')" class="cat-card p-5 rounded cursor-pointer flex flex-col items-center text-center col-span-2 md:col-span-2">
+                    <div class="w-10 h-10 bg-slate-50 text-slate-600 rounded flex items-center justify-center mb-3"><i class="fas fa-shield-halved text-sm"></i></div>
+                    <span class="font-semibold text-xs text-slate-700">Ke-PN-an</span>
                 </div>
             </div>
         </div>
@@ -198,49 +197,48 @@
 
     <section id="page-penilaian" class="page p-6">
         <div class="max-w-xl mx-auto">
-            <div class="flex justify-between items-center mb-6">
-                <button onclick="showPage('page-pilih-kategori')" class="text-xs font-bold text-slate-400 flex items-center bg-white px-3 py-2 rounded-xl shadow-sm border border-slate-100">
-                    <i class="fas fa-chevron-left mr-2"></i> Ganti Kategori
+            <div class="flex justify-between items-center mb-5">
+                <button onclick="showPage('page-pilih-kategori')" class="text-xs font-semibold text-slate-500 flex items-center bg-white px-3 py-2 rounded border border-slate-200 shadow-sm hover:bg-slate-50">
+                    <i class="fas fa-chevron-left mr-1.5"></i> Ganti Kategori
                 </button>
-                <div class="flex items-center gap-2">
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Materi:</span>
-                    <span id="badgeKategori" class="bg-primary/10 text-primary px-3 py-1 rounded-lg text-xs font-bold uppercase border border-primary/20"></span>
+                <div class="flex items-center gap-1.5">
+                    <span id="badgeKategori" class="bg-primary text-white px-3 py-1 rounded text-xs font-bold uppercase tracking-wider"></span>
                 </div>
             </div>
 
-            <div class="bg-white p-8 rounded-[2rem] shadow-xl border border-slate-50">
-                <form id="nilaiForm" class="space-y-6">
+            <div class="bg-white p-6 rounded border border-slate-200 shadow-sm">
+                <form id="nilaiForm" class="space-y-5">
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-400 mb-2 uppercase tracking-tighter">1. Pilih Kelompok</label>
-                        <select id="kelompok" required class="w-full rounded-2xl border-2 border-slate-100 p-4 text-sm font-semibold outline-none focus:border-primary transition-all">
+                        <label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wide">1. Pilih Kelompok</label>
+                        <select id="kelompok" required class="w-full rounded p-3 text-xs font-medium outline-none focus:border-primary transition-all bg-white">
                             <option value="" disabled selected>Memuat Kelompok...</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-400 mb-2 uppercase tracking-tighter">2. Nama Peserta</label>
-                        <select id="namaPeserta" required disabled class="w-full rounded-2xl border-2 border-slate-100 p-4 text-sm font-semibold outline-none focus:border-primary transition-all disabled:opacity-50">
+                        <label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wide">2. Nama Peserta</label>
+                        <select id="namaPeserta" required disabled class="w-full rounded p-3 text-xs font-medium outline-none focus:border-primary transition-all bg-white disabled:opacity-50">
                             <option value="" disabled selected>Pilih Kelompok Dulu</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-[10px] font-bold text-slate-400 mb-2 uppercase tracking-tighter">3. Skor Akhir</label>
+                        <label class="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wide">3. Skor Akhir</label>
                         <div class="flex gap-3">
-                            <select id="skor" required class="flex-1 rounded-2xl border-2 border-slate-100 p-4 text-sm font-bold outline-none focus:border-primary transition-all">
-                                <option value="" disabled selected>Skor</option>
+                            <select id="skor" required class="flex-1 rounded p-3 text-xs font-bold outline-none focus:border-primary transition-all bg-white">
+                                <option value="" disabled selected>Pilih Skor</option>
                                 <option value="70">70 (C)</option>
                                 <option value="80">80 (B)</option>
                                 <option value="90">90 (A)</option>
                                 <option value="99">99 (S+)</option>
                                 <option value="custom">Manual</option>
                             </select>
-                            <input type="number" id="customSkor" min="0" max="100" placeholder="0-100" class="hidden w-24 rounded-2xl border-2 border-primary/30 p-4 text-sm font-bold outline-none focus:border-primary animate-pulse">
+                            <input type="number" id="customSkor" min="0" max="100" placeholder="0-100" class="hidden w-24 rounded p-3 text-xs font-bold outline-none focus:border-primary">
                         </div>
                     </div>
 
-                    <button type="submit" id="btnSimpan" class="w-full bg-primary text-white font-bold py-5 rounded-2xl shadow-lg shadow-emerald-900/20 hover:bg-primaryDark active:scale-95 transition-all uppercase tracking-widest text-sm">
-                        <i class="fas fa-cloud-arrow-up mr-2"></i> Simpan Penilaian
+                    <button type="submit" id="btnSimpan" class="w-full bg-primary text-white font-semibold py-3.5 rounded hover:bg-primaryDark active:scale-[0.99] transition-all uppercase tracking-wider text-xs">
+                        <i class="fas fa-cloud-arrow-up mr-1.5"></i> Simpan Penilaian
                     </button>
                 </form>
             </div>
@@ -249,27 +247,30 @@
 
     <section id="page-rekap" class="page p-6">
         <div class="max-w-4xl mx-auto">
-            <button onclick="goToDashboard()" class="mb-6 font-bold text-primary flex items-center"><i class="fas fa-arrow-left mr-2"></i> Dashboard</button>
-            <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
-            <div class="flex gap-2">
-                <button onclick="hapusSemuaRiwayatLokal()" class="bg-red-100 text-red-600 px-4 py-2 rounded-xl text-[10px] font-bold uppercase hover:bg-red-200 transition-all">
-                    <i class="fas fa-trash-sweep mr-1"></i> Hapus Semua
-                </button>
-                
-                <button onclick="downloadExcel()" class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-[10px] font-bold uppercase hover:bg-emerald-700 shadow-lg shadow-emerald-200 transition-all">
-                    <i class="fas fa-file-excel mr-1"></i> Export Excel
-                </button>
-            </div>
+            <button onclick="goToDashboard()" class="mb-6 text-xs font-bold text-primary flex items-center hover:underline">
+                <i class="fas fa-arrow-left mr-1.5"></i> KEMBALI KE DASHBOARD
+            </button>
+            
+            <div class="bg-white rounded border border-slate-200 shadow-sm overflow-hidden">
+                <div class="flex gap-2 p-4 bg-slate-50 border-b border-slate-200">
+                    <button onclick="hapusSemuaRiwayatLokal()" class="bg-red-50 text-red-600 px-3 py-1.5 rounded text-[11px] font-semibold uppercase hover:bg-red-100 transition-all">
+                        <i class="fas fa-trash-can mr-1"></i> Hapus Semua
+                    </button>
+                    <button onclick="downloadExcel()" class="bg-emerald-700 text-white px-3 py-1.5 rounded text-[11px] font-semibold uppercase hover:bg-emerald-800 transition-all">
+                        <i class="fas fa-file-excel mr-1"></i> Export Excel
+                    </button>
+                </div>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left">
-                    <thead class="bg-slate-100 text-[10px] uppercase text-slate-400 font-bold">
-                        <tr>
-                            <th class="p-4">Nama Peserta</th>
-                            <th class="p-4">Materi</th>
-                            <th class="p-4">Skor</th>
-                            <th class="p-4 text-center">Aksi</th> </tr>
-                    </thead>
-                        <tbody id="tabel-rekap" class="text-xs text-slate-600"></tbody>
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-slate-100 text-[10px] uppercase text-slate-500 font-bold border-b border-slate-200">
+                            <tr>
+                                <th class="p-3.5">Nama Peserta</th>
+                                <th class="p-3.5">Materi</th>
+                                <th class="p-3.5">Skor</th>
+                                <th class="p-3.5 text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabel-rekap" class="text-xs text-slate-600 divide-y divide-slate-100"></tbody>
                     </table>
                 </div>
             </div>
@@ -279,7 +280,7 @@
 <script>
     // KONFIGURASI
     // PASTIKAN URL INI ADALAH URL DEPLOYMENT APPSCRIPT ANDA
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyj9RdmXWoSUJ1wvwAquHwfiFvUHTBww_6JeJjGjQKCc4bvcReUfNW2B5c7idBZW_8p/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZcZXuH6klJUBAb7wIp9q_x3dQbpI7i6lBSIYYHbdhHutszwaB0DZmwT3jlbrk2FGj2Q/exec";
     let DB_NILAI = {};
     let currentKategori = "";
     let totalPesertaGlobal = 0;
@@ -451,7 +452,7 @@ document.getElementById('nilaiForm').addEventListener('submit', async (e) => {
         if (skorAngka > 100) {
             alert("⚠️ Nilai tidak boleh lebih dari 100!");
             customSkorInput.focus();
-            return; // Berhenti di sini, tidak lanjut mengirim data
+            return; 
         }
 
         // VALIDASI: Cegah input kosong atau tidak valid
@@ -477,16 +478,20 @@ document.getElementById('nilaiForm').addEventListener('submit', async (e) => {
         btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Mengirim...';
 
         try {
+            // PERUBAHAN UTAMA: Menggunakan URLSearchParams agar data terbaca oleh Apps Script tanpa kendala CORS
             await fetch(SCRIPT_URL, {
                 method: "POST",
-                mode: "no-cors", 
+                headers: {
+                    "Content-Type": "text/plain;charset=utf-8"
+                },
                 body: JSON.stringify(payload)
             });
 
-            // Munculkan popup dan biarkan tetap terbuka sampai tombol diklik
+            // Munculkan popup sukses jika berhasil lolos proses fetch
             document.getElementById('popupSukses').style.display = 'flex';
 
         } catch (err) {
+            console.error(err);
             alert("Terjadi gangguan jaringan, namun data aman di memori HP.");
             resetFormSetelahSimpan();
         }
@@ -594,4 +599,3 @@ function loadRekapInternal() {
 </body>
 
 </html>
-

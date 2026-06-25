@@ -136,7 +136,13 @@
         </div>
     </div>
 </header>
-
+<!-- BANNER COUNTDOWN NATIVE (STICKY - IKUT SCROLL SEPERTI HEADER) -->
+<!-- Catatan: Ubah top-[85px] sesuai dengan tinggi asli header Anda jika kurang pas -->
+<div class="sticky top-[85px] z-[49] w-full flex justify-center px-4 py-2 pointer-events-none">
+    <div id="countdown-banner-static" class="w-full max-w-[350px] transition-all duration-300 pointer-events-auto">
+        <!-- Isi banner otomatis di-render oleh JavaScript -->
+    </div>
+</div>
 <main class="flex-grow py-6 px-4 sm:px-6 lg:px-8">
     <div class="max-w-3xl mx-auto">
         
@@ -347,43 +353,135 @@
 </footer>
 
 <script>
-    window.addEventListener('DOMContentLoaded', (event) => {
+// ==========================================
+// CONFIG & HELPER COUNTDOWN FUNCTION
+// ==========================================
+// Target waktu selesai: 26 Juni Jam 23:59 WIB (Zona Waktu Jakarta +07:00)
+const targetDate = new Date("2026-06-26T23:59:00+07:00").getTime();
 
-    // --- KODE BARU UNTUK FUNGSI HAMBURGER MENU MOBILE ---
+// Fungsi pengontrol isi komponen banner (Mengatur kondisi Aktif vs Kedaluwarsa)
+function renderStaticBannerContent() {
+    const cardEl = document.getElementById('countdown-banner-static');
+    if (!cardEl) return;
+
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    // --- JIKA WAKTU HABIS (KONDISI EXPIRED) ---
+    if (distance < 0) {
+        cardEl.className = "bg-rose-50 border-2 border-rose-500 rounded-xl shadow-md p-2.5 w-full select-none animate__animated animate__fadeInUp";
+        cardEl.innerHTML = `
+            <div class="flex flex-col items-center justify-center text-center space-y-2">
+                <div class="text-rose-600 flex items-center space-x-1.5">
+                    <i class="fa-solid fa-circle-xmark text-sm animate__animated animate__pulse animate__infinite"></i>
+                    <span class="font-black text-[11px] md:text-xs tracking-wide uppercase">Pendaftaran Telah Ditutup!</span>
+                </div>
+                <a href="https://api.whatsapp.com/send?phone=6285320685598&text=Assalamualaikum%20Mbak%20Risna%2C%20pendaftaran%20di%20sistem%20sudah%20ditutup%20apakah%20masih%20bisa%20menyusul%3F" 
+                   target="_blank" 
+                   class="w-full flex items-center justify-center space-x-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] md:text-xs py-1.5 px-3 rounded-lg shadow transition-all duration-200">
+                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                    <span>Hubungi Admin (Mbak Risna)</span>
+                </a>
+            </div>
+        `;
+        return;
+    }
+
+    // --- JIKA WAKTU MASIH ADA (KONDISI AKTIF) ---
+    cardEl.className = "bg-amber-50 border-2 border-amber-400 rounded-xl shadow-md p-2 w-full select-none";
+    
+    const hours = Math.floor(distance / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    const cardStyle = "bg-white border border-amber-200 text-rose-600 font-black px-1.5 py-0.5 rounded shadow-sm min-w-[32px] text-center text-xs font-mono block";
+    const labelStyle = "text-[7px] uppercase tracking-wider text-gray-500 block font-bold mb-0.5 text-center";
+    const separatorStyle = "text-amber-500 font-bold px-0.5 text-xs self-end pb-0.5";
+
+    cardEl.innerHTML = `
+        <div class="flex items-center justify-between space-x-1 w-full">
+            <div class="flex items-center space-x-1.5 text-left flex-shrink-0">
+                <div class="flex-shrink-0 text-amber-600 text-sm animate__animated animate__headShake animate__infinite animate__slower">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div>
+                    <h4 class="font-black text-gray-800 text-[10px] leading-tight">Sisa Waktu:</h4>
+                    <p class="text-[7px] text-gray-500 font-semibold leading-none mt-0.5">Form Pendaftaran</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-0.5 flex-shrink-0">
+                <div>
+                    <span class="${labelStyle}">Jam</span>
+                    <span class="${cardStyle}">${hours}</span>
+                </div>
+                <span class="${separatorStyle}">:</span>
+                <div>
+                    <span class="${labelStyle}">Menit</span>
+                    <span class="${cardStyle}">${minutes}</span>
+                </div>
+                <span class="${separatorStyle}">:</span>
+                <div>
+                    <span class="${labelStyle}">Detik</span>
+                    <span class="${cardStyle}">${seconds}</span>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function getCountdownString() {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+    if (distance < 0) return "SUDAH HABIS!";
+    const hours = Math.floor(distance / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    return `${hours} Jam  ${minutes} Menit  ${seconds} Detik`;
+}
+
+// ==========================================
+// MAIN DOM CONTENT LOADED
+// ==========================================
+window.addEventListener('DOMContentLoaded', (event) => {
+
+    // Jalankan timer untuk banner di halaman utama secara realtime
+    renderStaticBannerContent();
+    setInterval(renderStaticBannerContent, 1000);
+
+    // --- KODE UNTUK FUNGSI HAMBURGER MENU MOBILE ---
     const menuToggle = document.getElementById('menu-toggle');
     const menuClose = document.getElementById('menu-close');
     const mobileMenu = document.getElementById('mobile-menu');
     const menuOverlay = document.getElementById('menu-overlay');
 
-    function bukaMenu() {
-        menuOverlay.classList.remove('hidden');
-        setTimeout(() => {
-            menuOverlay.classList.add('opacity-100');
-            mobileMenu.classList.remove('-translate-x-full');
-        }, 10);
+    if (menuToggle && menuClose && mobileMenu && menuOverlay) {
+        function bukaMenu() {
+            menuOverlay.classList.remove('hidden');
+            setTimeout(() => {
+                menuOverlay.classList.add('opacity-100');
+                mobileMenu.classList.remove('-translate-x-full');
+            }, 10);
+        }
+
+        function tutupMenu() {
+            mobileMenu.classList.add('-translate-x-full');
+            menuOverlay.classList.remove('opacity-100');
+            setTimeout(() => {
+                menuOverlay.classList.add('hidden');
+            }, 30);
+        }
+
+        menuToggle.addEventListener('click', bukaMenu);
+        menuClose.addEventListener('click', tutupMenu);
+        menuOverlay.addEventListener('click', tutupMenu);
     }
 
-    function tutupMenu() {
-        mobileMenu.classList.add('-translate-x-full');
-        menuOverlay.classList.remove('opacity-100');
-        setTimeout(() => {
-            menuOverlay.classList.add('hidden');
-        }, 30);
-    }
-
-    menuToggle.addEventListener('click', bukaMenu);
-    menuClose.addEventListener('click', tutupMenu);
-    menuOverlay.addEventListener('click', tutupMenu);
-    // -----------------------------------------------------
-
-    // --- KODE BARU UNTUK LOGIKA HIDE/SHOW SERTIFIKAT ---
+    // --- KODE UNTUK LOGIKA HIDE/SHOW SERTIFIKAT ---
     const typeUjianInput = document.getElementById('inputTypeUjian');
     const sertifikatInput = document.getElementById('inputSertifikat');
 
     if (typeUjianInput && sertifikatInput) {
-        // Memastikan input sertifikat tidak wajib (menghapus validasi bawaan HTML jika ada)
         sertifikatInput.removeAttribute('required');
-
         const sertifikatContainer = sertifikatInput.closest('div') || sertifikatInput;
 
         const toggleSertifikat = () => {
@@ -399,13 +497,17 @@
         toggleSertifikat();
         typeUjianInput.addEventListener('change', toggleSertifikat);
     }
-    // -----------------------------------------------------
 
+    // --- POP-UP MODAL UTAMA ALUR PENDAFTARAN ---
     Swal.fire({
         title: '⚠️ INFORMASI PENTING ALUR PENDAFTARAN',
         html: `
+            <div class="bg-amber-50 border border-amber-300 rounded-lg p-2.5 mb-3 text-center text-xs">
+                <p class="text-[10px] font-bold text-amber-800 uppercase tracking-wider mb-0.5">⏳ SISA WAKTU PENDAFTARAN:</p>
+                <p id="main-countdown" class="text-sm font-black text-rose-600 font-mono">-- : -- : --</p>
+            </div>
+
             <div id="scroll-container" class="text-left text-xs space-y-4 max-h-60 overflow-y-auto border border-gray-200 p-3 rounded-lg bg-gray-50 leading-relaxed">
-                
                 <div class="bg-emerald-50 border-l-4 border-brand p-2.5 rounded-r">
                     <p class="font-bold text-brand-dark mb-1">🗓 BATAS WAKTU PENTING:</p>
                     <ul class="list-disc pl-4 text-gray-700 space-y-0.5">
@@ -433,9 +535,9 @@
                     </ul>
                 </div>
 
-                <div class="bg-[#f0f9f4] border border-[#cce8d9] p-2.5 rounded text-brand-dark text-[11px]">
+                <div class="bg-amber-50 border border-amber-200 p-2.5 rounded text-amber-900 text-[11px]">
                     <p class="font-bold mb-0.5"><i class="fa-solid fa-circle-info"></i> Kendala Sistem/Pendaftaran?</p>
-                    <p>Segera hubungi Contact Person: <span class="font-bold">Mbak Risna (<a href="https://api.whatsapp.com/send?phone=6285320685598&text=Assalamualaikum%20Mbak%20Risna%0ASalam%20Pagarnusa%0A%0Asaya%20ingin%20melaporkan%20terkait%20teknis%20pendaftaran" target="_blank" class="underline text-brand">085320685598</a>)</span></p>
+                    <p>Segera hubungi Contact Person: <span class="font-bold">Mbak Risna (<a href="https://api.whatsapp.com/send?phone=6285320685598&text=Assalamualaikum%20Mbak%20Risna%0ASalam%20Pagarnusa%0A%0Asaya%20ingin%20melaporkan%20terkait%20teknis%20pendaftaran" target="_blank" class="underline">085320685598</a>)</span></p>
                 </div>
 
                 <p class="text-[11px] text-gray-500 italic text-center pt-1 border-t border-gray-100">Mohon kerja samanya untuk segera memproses pendaftaran sebelum batas waktu ditutup agar pendataan dapat berjalan lancar.</p>
@@ -456,6 +558,18 @@
             const confirmBtn = Swal.getConfirmButton();
             const scrollContainer = document.getElementById('scroll-container');
             const scrollWarning = document.getElementById('scroll-warning');
+            const mainCountdownEl = document.getElementById('main-countdown');
+
+            if (mainCountdownEl) {
+                mainCountdownEl.innerText = getCountdownString();
+                const mainTimer = setInterval(() => {
+                    if (!document.getElementById('main-countdown')) {
+                        clearInterval(mainTimer);
+                        return;
+                    }
+                    mainCountdownEl.innerText = getCountdownString();
+                }, 1000);
+            }
 
             function ukurDanAktifkan() {
                 confirmBtn.disabled = false;
@@ -474,18 +588,14 @@
                 confirmBtn.style.cursor = 'not-allowed';
 
                 scrollContainer.addEventListener('scroll', function() {
-                    if (scrollContainer.scrollHeight - scrollContainer.scrollTop <= scrollContainer.clientHeight + 8) {
+                    if (Math.ceil(scrollContainer.scrollTop + scrollContainer.clientHeight) >= scrollContainer.scrollHeight - 15) {
                         ukurDanAktifkan();
                     }
                 });
             }
         }
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Pop-up otomatis tertutup, user tetap di halaman ini untuk mengisi form
-        }
     });
-});    
+});
 
 document.getElementById('formPendaftaran').addEventListener('submit', function(e) {
     e.preventDefault();

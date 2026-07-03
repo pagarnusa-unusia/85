@@ -6,7 +6,7 @@
     <title>Dashboard Divisi Konsumsi - PUDW</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2=family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -85,7 +85,7 @@
                 <!-- Card Total Tamu Undangan -->
                 <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-blue-500 flex items-center justify-between">
                     <div>
-                        <p class="text-sm font-medium text-gray-500 mb-1">Total Porsi Tamu</p>
+                        <p class="text-sm font-medium text-gray-500 mb-1">Total Porsi Tamu (Manual)</p>
                         <h3 class="text-3xl font-bold text-gray-900" id="stat-tamu">0</h3>
                         <p class="text-[11px] text-gray-400 mt-1">Porsi tamu (dari pengisi form)</p>
                     </div>
@@ -108,7 +108,7 @@
             </div>
 
             <!-- Row 2: Peserta UKT, Diklat, Wisuda -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 <!-- Card UKT -->
                 <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-amber-500 flex items-center justify-between">
                     <div>
@@ -139,6 +139,42 @@
                     </div>
                     <div class="w-10 h-10 bg-teal-50 rounded-full flex items-center justify-center text-teal-500 text-lg">
                         <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 3: Panitia, Penguji, Tamu VIP -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card Panitia -->
+                <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-indigo-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500 mb-1">Porsi Panitia</p>
+                        <h3 class="text-2xl font-bold text-gray-900" id="stat-panitia">0</h3>
+                    </div>
+                    <div class="w-10 h-10 bg-indigo-50 rounded-full flex items-center justify-center text-indigo-500 text-lg">
+                        <i class="fa-solid fa-clipboard-list"></i>
+                    </div>
+                </div>
+
+                <!-- Card Penguji -->
+                <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-rose-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500 mb-1">Porsi Penguji</p>
+                        <h3 class="text-2xl font-bold text-gray-900" id="stat-penguji">0</h3>
+                    </div>
+                    <div class="w-10 h-10 bg-rose-50 rounded-full flex items-center justify-center text-rose-500 text-lg">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                </div>
+
+                <!-- Card Tamu VIP -->
+                <div class="bg-white rounded-xl shadow-sm p-5 border-l-4 border-orange-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-500 mb-1">Porsi Tamu VIP</p>
+                        <h3 class="text-2xl font-bold text-gray-900" id="stat-vip">0</h3>
+                    </div>
+                    <div class="w-10 h-10 bg-orange-50 rounded-full flex items-center justify-center text-orange-500 text-lg">
+                        <i class="fa-solid fa-crown"></i>
                     </div>
                 </div>
             </div>
@@ -209,6 +245,9 @@
                         <option value="Peserta Diklat (Manual Konsumsi)">Peserta Diklat</option>
                         <option value="Peserta Wisuda (Manual Konsumsi)">Peserta Wisuda</option>
                         <option value="Tamu Undangan (Manual Konsumsi)">Tamu Undangan (Manual)</option>
+                        <option value="Panitia">Panitia</option>
+                        <option value="Penguji">Penguji</option>
+                        <option value="Tamu VIP">Tamu VIP</option>
                     </select>
                 </div>
                 <div>
@@ -269,12 +308,13 @@ async function loadData() {
         let totalUKT = 0;
         let totalDiklat = 0;
         let totalWisuda = 0;
+        let totalPanitia = 0;
+        let totalPenguji = 0;
+        let totalVIP = 0;
         let totalBerhalangan = 0;
         let rowNumber = 1;
 
         rows.forEach((row) => {
-            // Mapping kolom sesuai image_643635.png
-            // 0: Timestamp, 1: Nama, 2: Asal, 3: Sumber, 4: No HP, 5: Status, 6: Jumlah Undangan
             if (!row.c || row.c.length < 7) return; 
 
             const timestamp = getVal(row, 0);
@@ -288,7 +328,7 @@ async function loadData() {
             let statusLower = String(status).toLowerCase();
             let porsiAngka = 0;
 
-            // Logika Perhitungan (Sesuai kolom F dan G di gambar)
+            // Logika Perhitungan
             if (statusLower.includes('tidak') || statusLower.includes('berhalangan')) {
                 totalBerhalangan++;
             } else if (statusLower.includes('hadir')) {
@@ -301,6 +341,9 @@ async function loadData() {
                     if (sumberLower.includes('ukt')) totalUKT += porsiAngka;
                     else if (sumberLower.includes('diklat')) totalDiklat += porsiAngka;
                     else if (sumberLower.includes('wisuda')) totalWisuda += porsiAngka;
+                    else if (sumberLower.includes('panitia')) totalPanitia += porsiAngka;
+                    else if (sumberLower.includes('penguji')) totalPenguji += porsiAngka;
+                    else if (sumberLower.includes('vip')) totalVIP += porsiAngka;
                     else totalTamu += porsiAngka;
                 }
             }
@@ -317,14 +360,17 @@ async function loadData() {
                 waHTML = `<a href="https://wa.me/${waNumber}?text=${pesanWA}" target="_blank" class="text-xs text-brand hover:bg-green-100 flex items-center bg-green-50 px-2 py-1 rounded w-max mt-1 border border-green-100"><i class="fa-brands fa-whatsapp text-green-500 mr-1.5"></i> Hubungi WA</a>`;
             }
 
-            // Render Baris
+            // Format tanggal yang aman
+            const displayTimestamp = timestamp ? String(timestamp).substring(0, 16) : '-';
+
+            // Render Baris Tabel
             const tr = document.createElement('tr');
             tr.className = "hover:bg-gray-50";
             tr.innerHTML = `
                 <td class="px-6 py-4 text-gray-500">${rowNumber++}</td>
                 <td class="px-6 py-4">
                     <div class="font-bold text-gray-900">${nama}</div>
-                    <div class="text-xs text-gray-400">${timestamp.substring(0, 16)}</div>
+                    <div class="text-xs text-gray-400">${displayTimestamp}</div>
                     <span class="px-2 py-0.5 mt-1 inline-block text-[10px] font-semibold rounded ${statusLower.includes('hadir') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">${status}</span>
                 </td>
                 <td class="px-6 py-4 text-sm">${asal}</td>
@@ -336,19 +382,22 @@ async function loadData() {
                     ${porsiAngka > 0 ? porsiAngka + ' <span class="text-xs font-normal">porsi</span>' : '-'}
                 </td>
                 <td class="px-6 py-4 text-right">
-                    <button onclick="alert('Tidak dapat Menghapus, Buka Sheet Langsung!')" class="text-red-500 p-2"><i class="fa-solid fa-trash-can"></i></button>
+                    <button onclick="infoHapus()" class="text-red-500 p-2 hover:text-red-700 smooth-transition"><i class="fa-solid fa-trash-can"></i></button>
                 </td>
             `;
             tbody.appendChild(tr);
         });
 
-        // Update Statistik
+        // Update Statistik di Dashboard UI
         document.getElementById('stat-keseluruhan').innerText = totalKeseluruhan;
         document.getElementById('stat-tamu').innerText = totalTamu;
         document.getElementById('stat-berhalangan').innerText = totalBerhalangan;
         document.getElementById('stat-ukt').innerText = totalUKT;
         document.getElementById('stat-diklat').innerText = totalDiklat;
         document.getElementById('stat-wisuda').innerText = totalWisuda;
+        document.getElementById('stat-panitia').innerText = totalPanitia;
+        document.getElementById('stat-penguji').innerText = totalPenguji;
+        document.getElementById('stat-vip').innerText = totalVIP;
 
     } catch (error) {
         console.error("Gagal memuat data:", error);
@@ -372,9 +421,9 @@ async function loadData() {
         
         formData.forEach((value, key) => {
             if (key === 'jumlah_tamu') {
-                dataObj[key] = `${value} Porsi (Manual Konsumsi)`; // Appscript tetap mendeteksi angka
+                dataObj[key] = `${value} Porsi (Manual Konsumsi)`; 
             } else if (key === 'whatsapp' && value.trim() === '') {
-                dataObj[key] = '-'; // Handle jika kosong
+                dataObj[key] = '-'; 
             } else {
                 dataObj[key] = value;
             }
@@ -389,7 +438,7 @@ async function loadData() {
             alert("Data konsumsi berhasil ditambahkan!");
             closeModal();
             form.reset();
-            loadData(); // Refresh tabel
+            loadData(); 
         })
         .catch(error => {
             alert("Terjadi kesalahan saat mengirim data. Pastikan koneksi internet stabil.");

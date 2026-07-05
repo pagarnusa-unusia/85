@@ -215,8 +215,7 @@
         <p>© 2026 PAC PSNU PAGARNUSA Kecamatan Kemang. All Rights Reserved.</p>
     </footer>
 
-    <!-- SKRIP UTAMA (Koneksi spreadsheet, tema otomatis, dan kontrol UI) -->
-    <script>
+<script>
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxUL7aoHX4WWO87mzGKTDB1jZW9g5csu5p0guJvj7sRLeLUqHoj-n69nR8PwARs1x4B/exec";
 
         let currentBtnThemeClass = "bg-brand hover:bg-brand-dark focus:ring-green-500/20";
@@ -375,7 +374,7 @@
 
             setelMinimalisAksenTema(targetSabuk);
 
-            // Render Status Pendaftaran secara aman (jika kolom status belum dibuat di spreadsheet, default ke TERDAFTAR)
+            // Render Status Pendaftaran secara aman
             const statusEl = document.getElementById('detailStatus');
             const statusTeks = String(peserta.status || 'Terdaftar').trim(); 
             let badgeColorClass = 'bg-slate-100 text-slate-600 border-slate-200';
@@ -401,19 +400,18 @@
                 let linkMateri = "";
                 const sabukMateriLower = targetSabuk.toLowerCase();
                 
-                // Menyesuaikan tautan materi dengan nama file html
-                if (sabukMateriLower.includes('putih')) linkMateri = "../materi/materi_putih.html";
-                else if (sabukMateriLower.includes('kuning')) linkMateri = "../materi/materi_kuning.html";
-                else if (sabukMateriLower.includes('merah')) linkMateri = "../materi/materi_merah.html";
-                else if (sabukMateriLower.includes('biru') || sabukMateriLower.includes('aspel')) linkMateri = "../materi/materi_biru.html";
-                else if (sabukMateriLower.includes('cokelat') || sabukMateriLower.includes('coklat')) linkMateri = "../materi/materi_cokelat.html";
+                // FIXED: Menggunakan jalur folder maju (materi/...), bukan mundur (../materi)
+                if (sabukMateriLower.includes('putih')) linkMateri = "materi/materi_putih.html";
+                else if (sabukMateriLower.includes('kuning')) linkMateri = "materi/materi_kuning.html";
+                else if (sabukMateriLower.includes('merah')) linkMateri = "materi/materi_merah.html";
+                else if (sabukMateriLower.includes('biru') || sabukMateriLower.includes('aspel')) linkMateri = "materi/materi_biru.html";
+                else if (sabukMateriLower.includes('cokelat') || sabukMateriLower.includes('coklat')) linkMateri = "materi/materi_cokelat.html";
 
                 if (linkMateri !== "") {
                     const btnMateriWrapper = document.createElement('div');
                     btnMateriWrapper.id = "btnMateriGenerated";
                     btnMateriWrapper.className = "mt-3 w-full animate__animated animate__fadeInUp";
                     
-                    // currentBtnThemeClass otomatis mengadopsi warna tema sabuk (sudah di set di fungsi setelMinimalisAksenTema)
                     btnMateriWrapper.innerHTML = `
                         <a href="${linkMateri}" class="w-full flex items-center justify-center gap-2 ${currentBtnThemeClass} font-bold text-xs py-3 px-4 rounded-btn shadow-sm transition-all focus:ring-4 active:scale-95">
                             <i class="fa-solid fa-book-open text-sm"></i> Pelajari Materi Ujian
@@ -422,7 +420,6 @@
                     
                     const sabukContainerEl = document.getElementById('sabukContainer');
                     if (sabukContainerEl && sabukContainerEl.parentNode) {
-                        // Memasukkan tombol ke profil card (tepat di bawah sabuk)
                         sabukContainerEl.parentNode.appendChild(btnMateriWrapper);
                     }
                 }
@@ -500,6 +497,5 @@
         }, 1000);
     });
     </script>
-
 </body>
 </html>

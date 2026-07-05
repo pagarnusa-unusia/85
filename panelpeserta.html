@@ -6,7 +6,7 @@
     <title>Panel Peserta - PAC PSNU PAGARNUSA Kecamatan Kemang</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
@@ -22,16 +22,16 @@
                             dark: '#044d2b',
                             light: '#0b8f4d',
                             white: '#ffffff',
-                            bgLight: '#f5f5f5',
-                            textGray: '#555555'
+                            bgLight: '#f8fafc',
+                            textGray: '#64748b'
                         }
                     },
                     fontFamily: {
                         sans: ['Poppins', 'sans-serif'],
                     },
                     borderRadius: {
-                        'btn': '10px',
-                        'card': '16px',
+                        'btn': '8px',
+                        'card': '12px',
                     }
                 }
             }
@@ -40,14 +40,13 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f5f5f5;
-            color: #555555;
-            -webkit-tap-highlight-color: transparent; /* Optimasi Sentuhan Android */
+            background-color: #f8fafc;
+            color: #334155;
+            -webkit-tap-highlight-color: transparent;
         }
         .smooth-transition {
-            transition: all 0.3s ease;
+            transition: all 0.2s ease-in-out;
         }
-        /* Mencegah teks meluap di layar hp kecil */
         .word-break-android {
             word-break: break-word;
             overflow-wrap: break-word;
@@ -64,96 +63,144 @@
         const dataPeserta = JSON.parse(sesiPeserta);
     </script>
 </head>
-<body class="flex flex-col min-h-screen justify-between bg-[#f5f5f5]">
+<body class="flex flex-col min-h-screen justify-between bg-[#f8fafc]">
 
-    <nav class="sticky top-0 z-50 bg-white border-b-2 border-brand shadow-sm smooth-transition">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20">
+    <!-- NAVBAR -->
+    <nav class="sticky top-0 z-50 bg-white border-b border-slate-200/80 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="flex justify-between h-16 items-center">
                 <div class="flex items-center space-x-3">
-                    <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="w-10 h-10 sm:w-12 sm:h-12 object-contain">
-                    <div class="text-brand-dark tracking-tight leading-tight">
-                        <span class="block text-xs sm:text-sm font-extrabold uppercase">PAC PSNU PAGARNUSA</span>
-                        <span class="block text-[10px] sm:text-xs font-semibold text-brand">Kecamatan Kemang</span>
+                    <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="w-9 h-9 sm:w-10 sm:h-10 object-contain">
+                    <div class="text-left border-l border-slate-200 pl-3">
+                        <!-- id="themeNavTitle" digunakan oleh fungsi tema otomatis -->
+                        <h1 id="themeNavTitle" class="text-xs sm:text-sm font-black text-brand tracking-tighter leading-none uppercase">PAC PSNU PAGARNUSA</h1>
+                        <p class="text-brand text-[9px] sm:text-[10px] font-bold tracking-[0.1em] uppercase mt-0.5">Kecamatan Kemang</p>
                     </div>
                 </div>
-                <div class="flex items-center space-x-2 sm:space-x-4 text-xs sm:text-sm font-medium">
-                    <span class="hidden md:inline-block text-brand-dark font-semibold">Selamat Datang, <span id="navNama" class="text-brand">...</span></span>
-                    <button id="logoutBtn" class="bg-red-600 hover:bg-red-700 text-white text-[11px] sm:text-xs font-bold py-2 px-3 sm:px-4 rounded-btn smooth-transition flex items-center space-x-1 cursor-pointer shadow-sm active:scale-95">
-                        <i class="fa-solid fa-power-off"></i> <span>Keluar</span>
+                <div class="flex items-center space-x-3 text-xs sm:text-sm">
+                    <span class="hidden md:inline-block text-slate-500 font-medium">Selamat Datang, <span id="navNama" class="text-brand-dark font-semibold">...</span></span>
+                    <button id="logoutBtn" class="bg-slate-50 hover:bg-red-50 text-slate-600 hover:text-red-600 border border-slate-200 hover:border-red-200 text-[11px] sm:text-xs font-semibold py-1.5 px-3 rounded-btn smooth-transition flex items-center space-x-1.5 cursor-pointer active:scale-95">
+                        <i class="fa-solid fa-power-off text-[10px]"></i> <span>Keluar</span>
                     </button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <main class="flex-grow py-6 sm:py-10 px-3 sm:px-6 lg:px-8">
-        <div class="max-w-4xl mx-auto">
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow py-6 sm:py-8 px-4 sm:px-6">
+        <div class="max-w-6xl mx-auto">
             
-            <div class="bg-white rounded-card shadow-sm p-4 sm:p-6 border-l-4 border-brand flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6 sm:mb-8 animate__animated animate__fadeIn">
+            <!-- DASHBOARD HEADER -->
+            <!-- id="boxHeader" kelasnya akan dikontrol dinamis sesuai warna sabuk -->
+            <div id="boxHeader" class="bg-white rounded-card shadow-sm p-5 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8 animate__animated animate__fadeIn smooth-transition border-t-4 border-brand">
                 <div>
-                    <h1 class="text-lg sm:text-2xl font-bold text-brand-dark">Dashboard Ujian Kenaikan Tingkat</h1>
-                    <p class="text-[11px] sm:text-xs text-brand-textGray mt-0.5">Pantau dan verifikasi data administrasi profil pendaftaran Anda secara berkala.</p>
+                    <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Dashboard Peserta</h1>
+                    <p class="text-xs text-slate-500 mt-0.5">Sistem Administrasi dan Verifikasi Ujian Kenaikan Tingkat</p>
                 </div>
-                <span class="bg-brand/10 text-brand text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 self-start sm:self-auto">
-                    <span class="w-2 h-2 rounded-full bg-brand animate-pulse"></span> Berlaku Sampai Ujian
+                <span class="bg-slate-50 text-slate-700 text-[11px] font-semibold px-3 py-1 rounded-full border border-slate-200 flex items-center gap-1.5">
+                    <!-- id="dotHeader" warna dot akan mengikuti tema sabuk -->
+                    <span id="dotHeader" class="w-2 h-2 rounded-full bg-brand animate-pulse smooth-transition"></span> Berlaku Sampai Ujian
                 </span>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <!-- GRID CONTAINER -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                 
-                <div class="md:col-span-1 animate__animated animate__fadeInLeft">
-                    <div class="bg-gradient-to-br from-brand-dark to-brand rounded-card shadow-md p-5 sm:p-6 text-white text-center relative overflow-hidden">
-                        <div class="absolute -right-6 -bottom-6 text-white/5 text-9xl font-bold select-none pointer-events-none">PN</div>
-                        <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="w-16 h-16 sm:w-20 sm:h-20 mx-auto object-contain bg-white rounded-full p-2 mb-3 sm:mb-4 shadow-inner">
-                        <h2 id="cardNama" class="text-base sm:text-lg font-bold tracking-tight truncate">Nama Peserta</h2>
-                        <p id="cardEmail" class="text-[11px] sm:text-xs text-white/80 font-light mb-4 truncate word-break-android">email@domain.com</p>
-                        <div id="sabukContainer" class="inline-block bg-white/20 backdrop-blur-sm text-[11px] sm:text-xs font-semibold px-4 py-2 rounded-lg border border-white/20 w-full sm:w-auto">
-                            Target Sabuk: <span id="cardSabuk" class="font-bold text-amber-300">...</span>
+                <!-- LEFT COLUMN: Profile Card -->
+                <div class="lg:col-span-4 animate__animated animate__fadeInLeft">
+                    <!-- id="boxProfileCard" kelasnya dikontrol dinamis sesuai warna sabuk -->
+                    <div id="boxProfileCard" class="bg-white rounded-card shadow-sm p-6 text-center relative smooth-transition border-t-4 border-brand">
+                        
+                        <!-- Avatar Container -->
+                        <div class="relative w-20 h-20 mx-auto mb-4">
+                            <div class="w-full h-full bg-slate-50 border border-slate-100 rounded-full p-2.5 flex items-center justify-center shadow-sm">
+                                <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="w-full h-full object-contain">
+                            </div>
                         </div>
+
+                        <h2 id="cardNama" class="text-base font-bold text-slate-800 tracking-tight truncate">Nama Peserta</h2>
+                        <p id="cardEmail" class="text-xs text-slate-400 font-normal mb-5 truncate word-break-android">email@domain.com</p>
+                        
+                        <!-- Belt Target Badge -->
+                        <div id="sabukContainer" class="bg-slate-50 border border-slate-200/60 rounded-lg py-2.5 px-4 text-xs font-medium text-slate-600">
+                            Target Tingkat: 
+                            <!-- id="cardSabuk" kelasnya dikontrol oleh skrip otomatis -->
+                            <span id="cardSabuk" class="font-extrabold block mt-1 text-sm tracking-wide smooth-transition text-brand">...</span>
+                        </div>
+                        <!-- Tombol WA Group dan Tombol Materi otomatis akan di-generate oleh skrip di bawah sini -->
                     </div>
                 </div>
 
-                <div class="md:col-span-3 animate__animated animate__fadeInRight">
-                    <div class="bg-white rounded-card shadow-sm border border-gray-100 overflow-hidden">
-                        <div class="bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 flex items-center justify-between">
-                            <h3 class="text-xs sm:text-sm font-bold text-brand-dark flex items-center gap-2">
-                                <i class="fa-solid fa-id-card"></i> Biodata Lengkap Peserta
+                <!-- RIGHT COLUMN: Detailed Biodata -->
+                <div class="lg:col-span-8 animate__animated animate__fadeInRight">
+                    <!-- id="boxBiodataCard" kelasnya dikontrol dinamis sesuai warna sabuk -->
+                    <div id="boxBiodataCard" class="bg-white rounded-card shadow-sm overflow-hidden smooth-transition border-t-4 border-brand">
+                        
+                        <!-- Card Title Header -->
+                        <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-white">
+                            <h3 class="text-xs sm:text-sm font-bold text-slate-800 flex items-center gap-2">
+                                <!-- id="themeCardIcon" ikon akan berubah warna dinamis sesuai sabuk -->
+                                <i id="themeCardIcon" class="fa-solid fa-address-card text-base smooth-transition text-brand"></i> Biodata Lengkap
                             </h3>
-                            <span class="text-[10px] sm:text-[11px] bg-gray-200 text-gray-700 font-medium px-2 py-0.5 rounded">Data Terverifikasi</span>
+                            <span class="text-[10px] bg-slate-100 text-slate-600 font-semibold px-2 py-0.5 rounded border border-slate-200/40">Terverifikasi</span>
                         </div>
                         
-                        <div class="px-4 sm:px-6 divide-y divide-gray-100 text-xs sm:text-sm">
-                            <div class="py-3 sm:py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4">
-                                <span class="text-gray-400 font-medium">Nama Lengkap</span>
-                                <span id="detailNama" class="sm:col-span-2 font-semibold text-gray-800 word-break-android">...</span>
+                        <!-- Data Fields List -->
+                        <div class="px-5 divide-y divide-slate-100 text-xs sm:text-sm">
+                            
+                            <!-- Field 1 -->
+                            <div class="py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4 items-baseline">
+                                <span class="text-slate-400 font-medium text-[11px] uppercase tracking-wider">Nama Lengkap</span>
+                                <span id="detailNama" class="sm:col-span-2 font-semibold text-slate-800 word-break-android">...</span>
                             </div>
-                            <div class="py-3 sm:py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4">
-                                <span class="text-gray-400 font-medium">Status Pendaftaran</span>
-                                <span id="detailStatus" class="sm:col-span-2 font-bold uppercase tracking-wide flex items-center">
-                                    <span class="px-2 py-1 rounded-md text-[10px] bg-gray-100 text-gray-500">Memuat...</span>
+                            
+                            <!-- Field 2 -->
+                            <div class="py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4 items-center">
+                                <span class="text-slate-400 font-medium text-[11px] uppercase tracking-wider">Status Pendaftaran</span>
+                                <span id="detailStatus" class="sm:col-span-2 tracking-wide flex items-center">
+                                    <span class="px-2.5 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-500 border border-slate-200">Memuat...</span>
                                 </span>
                             </div>
-                            <div class="py-3 sm:py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4">
-                                <span class="text-gray-400 font-medium">Tempat, Tgl Lahir</span>
-                                <span id="detailTTL" class="sm:col-span-2 text-gray-700 word-break-android">...</span>
+                            
+                            <!-- Field 3 -->
+                            <div class="py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4 items-baseline">
+                                <span class="text-slate-400 font-medium text-[11px] uppercase tracking-wider">Tempat, Tgl Lahir</span>
+                                <span id="detailTTL" class="sm:col-span-2 text-slate-700 font-medium word-break-android">...</span>
                             </div>
-                            <div class="py-3 sm:py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4">
-                                <span class="text-gray-400 font-medium">Nomor WhatsApp</span>
-                                <span id="detailWA" class="sm:col-span-2 text-gray-700 font-mono">...</span>
+                            
+                            <!-- Field 4 -->
+                            <div class="py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4 items-baseline">
+                                <span class="text-slate-400 font-medium text-[11px] uppercase tracking-wider">Nomor WhatsApp</span>
+                                <span id="detailWA" class="sm:col-span-2 text-slate-700 font-mono font-medium">...</span>
                             </div>
-                            <div class="py-3 sm:py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4">
-                                <span class="text-gray-400 font-medium">Angkatan</span>
-                                <span id="detailAngkatan" class="sm:col-span-2 text-gray-700">...</span>
+                            
+                            <!-- Field 5 -->
+                            <div class="py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4 items-baseline">
+                                <span class="text-slate-400 font-medium text-[11px] uppercase tracking-wider">Angkatan</span>
+                                <span id="detailAngkatan" class="sm:col-span-2 text-slate-700 font-medium">...</span>
                             </div>
-                            <div class="py-3 sm:py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4">
-                                <span class="text-gray-400 font-medium">Alamat Lengkap</span>
-                                <span id="detailAlamat" class="sm:col-span-2 text-gray-600 text-xs sm:text-sm leading-relaxed word-break-android">...</span>
+
+                            <!-- Field tambahan wajib: Rayon (Agar fungsi renderDataKeHalaman tidak error) -->
+                            <div class="py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4 items-baseline">
+                                <span class="text-slate-400 font-medium text-[11px] uppercase tracking-wider">Rayon / Tempat Latihan</span>
+                                <span id="detailRayon" class="sm:col-span-2 text-slate-700 font-medium">...</span>
                             </div>
-                            <div class="py-3.5 sm:py-4 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 items-center">
-                                <span class="text-gray-400 font-medium">Sertifikat</span>
+                            
+                            <!-- Field 6 -->
+                            <div class="py-3.5 grid grid-cols-1 sm:grid-cols-3 gap-1 sm:gap-4 items-baseline">
+                                <span class="text-slate-400 font-medium text-[11px] uppercase tracking-wider">Alamat Lengkap</span>
+                                <span id="detailAlamat" class="sm:col-span-2 text-slate-600 font-normal leading-relaxed word-break-android">...</span>
+                            </div>
+                            
+                            <!-- Field 7 -->
+                            <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 items-center">
+                                <span class="text-slate-400 font-medium text-[11px] uppercase tracking-wider">Sertifikat</span>
                                 <div id="detailSertifikatWrapper" class="sm:col-span-2">
-                                    </div>
+                                    <!-- Diisi otomatis oleh JavaScript -->
+                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -163,193 +210,296 @@
         </div>
     </main>
 
-    <footer class="bg-white border-t border-gray-200 py-4 text-center text-[10px] sm:text-xs text-gray-400">
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-[10px] sm:text-xs text-slate-400 font-medium">
         <p>© 2026 PAC PSNU PAGARNUSA Kecamatan Kemang. All Rights Reserved.</p>
     </footer>
 
-<script>
-    // URL Web App Google Apps Script Anda
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxUL7aoHX4WWO87mzGKTDB1jZW9g5csu5p0guJvj7sRLeLUqHoj-n69nR8PwARs1x4B/exec";
+    <!-- SKRIP UTAMA (Koneksi spreadsheet, tema otomatis, dan kontrol UI) -->
+    <script>
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxUL7aoHX4WWO87mzGKTDB1jZW9g5csu5p0guJvj7sRLeLUqHoj-n69nR8PwARs1x4B/exec";
 
-    // 1. Helper Function: Truncate Text
-    function truncateText(str, max) {
-        if (!str) return '-';
-        return (str.length > max) ? str.substr(0, max - 1) + '...' : str;
-    }
+        let currentBtnThemeClass = "bg-brand hover:bg-brand-dark focus:ring-green-500/20";
+        let currentPopupHexColor = "#056839";
 
-    // 2. Fungsi Popup Status dengan Animasi
-    function tampilkanPopupStatus(status) {
-        let title, text, icon, confirmButtonColor;
-        const s = String(status || 'Pending').toLowerCase();
-
-        if (s.includes('kualifikasi')) {
-            title = "Hore! Selamat!";
-            text = "Anda dinyatakan Lolos Kualifikasi. Persiapkan diri untuk tahap selanjutnya.";
-            icon = "success";
-            confirmButtonColor = "#056839";
-        } else if (s.includes('Inkompetensi')) {
-            title = "Mohon Maaf 😔";
-            text = "Anda belum lolos kualifikasi kali ini. Tetap sabar dan semangat untuk mencoba kembali di ujian selanjutnya.";
-            icon = "error";
-            confirmButtonColor = "#dc2626";
-        } else {
-            title = "Menunggu Pembayaran ⏳";
-            text = "Data Anda sedang dalam tahap antrean verifikasi oleh Admin. Silahkan selesaikan pembayaran terlebih dahulu.";
-            icon = "info";
-            confirmButtonColor = "#d97706";
+        function truncateText(str, max) {
+            if (!str) return '-';
+            return (str.length > max) ? str.substr(0, max - 1) + '...' : str;
         }
 
-        Swal.fire({
-            title: title,
-            text: text,
-            icon: icon,
-            confirmButtonText: 'Tutup',
-            confirmButtonColor: confirmButtonColor,
-            background: '#fff',
-            backdrop: true,
-            showClass: { popup: 'animate__animated animate__fadeInDown' }
+        function tampilkanPopupStatus(status) {
+            let title, text, icon, confirmButtonColor;
+            const s = String(status || 'Terdaftar').toLowerCase();
+
+            if (s.includes('kualifikasi') || s.includes('terdaftar')) {
+                title = "Peserta Kualifikasi";
+                text = "Selamat! Data Anda telah terverifikasi di sistem database. Persiapkan diri menuju rangkaian tahapan ujian.";
+                icon = "success";
+                confirmButtonColor = currentPopupHexColor;
+            } else if (s.includes('inkompetensi')) {
+                title = "Diskualifikasi";
+                text = "Mohon maaf, berkas Anda dinyatakan Belum Lolos Kualifikasi pada periode ini. Tetap semangat berlatih untuk kesempatan selanjutnya.";
+                icon = "error";
+                confirmButtonColor = "#ef4444";
+            } else {
+                title = "Menunggu Pembayaran";
+                text = "Data registrasi Anda terdaftar di antrean sistem dan sedang divalidasi oleh Tim Admin. Silahkan Selesaikan Pembayaran anda.";
+                icon = "info";
+                confirmButtonColor = "#f59e0b";
+            }
+
+            Swal.fire({
+                title: title,
+                text: text,
+                icon: icon,
+                confirmButtonText: 'Saya Paham',
+                confirmButtonColor: confirmButtonColor,
+                background: '#ffffff',
+                backdrop: `rgba(15, 23, 42, 0.15)`,
+                showClass: { popup: 'animate__animated animate__fadeInUp animate__faster' }
+            });
+        }
+
+        function setelMinimalisAksenTema(sabukTeks) {
+            const sabuk = String(sabukTeks || '').toLowerCase();
+            
+            const boxHeader = document.getElementById('boxHeader');
+            const boxProfileCard = document.getElementById('boxProfileCard');
+            const boxBiodataCard = document.getElementById('boxBiodataCard');
+            const textNavTitle = document.getElementById('themeNavTitle');
+            const cardSabuk = document.getElementById('cardSabuk');
+            const themeCardIcon = document.getElementById('themeCardIcon');
+            const dotHeader = document.getElementById('dotHeader');
+
+            let borderClass = "border-brand";
+            let textClass = "text-brand";
+            let dotClass = "bg-brand";
+            currentBtnThemeClass = "bg-brand hover:bg-brand-dark focus:ring-green-500/20 text-white";
+            currentPopupHexColor = "#056839";
+
+            if (sabuk.includes('putih')) {
+                borderClass = "border-slate-400";
+                textClass = "text-slate-600";
+                dotClass = "bg-slate-400";
+                currentBtnThemeClass = "bg-slate-600 hover:bg-slate-700 focus:ring-slate-500/20 text-white";
+                currentPopupHexColor = "#475569";
+            } 
+            else if (sabuk.includes('kuning')) {
+                borderClass = "border-amber-400";
+                textClass = "text-amber-500";
+                dotClass = "bg-amber-400";
+                currentBtnThemeClass = "bg-amber-500 hover:bg-amber-600 focus:ring-amber-500/20 text-white";
+                currentPopupHexColor = "#d97706";
+            } 
+            else if (sabuk.includes('merah')) {
+                borderClass = "border-red-500";
+                textClass = "text-red-500";
+                dotClass = "bg-red-500";
+                currentBtnThemeClass = "bg-red-500 hover:bg-red-600 focus:ring-red-500/20 text-white";
+                currentPopupHexColor = "#ef4444";
+            } 
+            else if (sabuk.includes('biru') || sabuk.includes('aspel')) {
+                borderClass = "border-blue-500";
+                textClass = "text-blue-500";
+                dotClass = "bg-blue-500";
+                currentBtnThemeClass = "bg-blue-500 hover:bg-blue-600 focus:ring-blue-500/20 text-white";
+                currentPopupHexColor = "#3b82f6";
+            } 
+            else if (sabuk.includes('cokelat') || sabuk.includes('coklat')) {
+                borderClass = "border-amber-700";
+                textClass = "text-amber-700";
+                dotClass = "bg-amber-700";
+                currentBtnThemeClass = "bg-amber-700 hover:bg-amber-800 focus:ring-amber-700/20 text-white";
+                currentPopupHexColor = "#b45309";
+            }
+
+            boxHeader.className = `bg-white rounded-card shadow-sm p-5 sm:p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8 animate__animated animate__fadeIn smooth-transition border-t-4 ${borderClass}`;
+            boxProfileCard.className = `bg-white rounded-card shadow-sm p-6 text-center relative smooth-transition border-t-4 ${borderClass}`;
+            boxBiodataCard.className = `bg-white rounded-card shadow-sm overflow-hidden smooth-transition border-t-4 ${borderClass}`;
+
+            // DIKUNCI: Judul navigasi dipaksa tetap menggunakan warna hijau brand utama
+            textNavTitle.className = `block text-xs sm:text-sm font-extrabold uppercase smooth-transition text-brand`;
+            
+            cardSabuk.className = `font-extrabold block mt-1 text-sm tracking-wide smooth-transition ${textClass}`;
+            themeCardIcon.className = `fa-solid fa-address-card text-base smooth-transition ${textClass}`;
+            dotHeader.className = `w-2 h-2 rounded-full animate-pulse smooth-transition ${dotClass}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!dataPeserta) return;
+
+            renderDataKeHalaman(dataPeserta);
+
+            // SYNC DATA REAL-TIME DARI GOOGLE SPREADSHEET
+            fetch(WEB_APP_URL)
+                .then(res => res.json())
+                .then(res => {
+                    if (res.status === "success") {
+                        const dataTerbaru = res.data.find(row => 
+                            String(row.email).toLowerCase().trim() === String(dataPeserta.email).toLowerCase().trim()
+                        );
+
+                        if (dataTerbaru) {
+                            localStorage.setItem('sesiPeserta', JSON.stringify(dataTerbaru));
+                            renderDataKeHalaman(dataTerbaru);
+                            
+                            setTimeout(() => {
+                                tampilkanPopupStatus(dataTerbaru.status || 'Terdaftar');
+                            }, 400);
+                        }
+                    }
+                })
+                .catch(err => {
+                    console.error("Gagal sinkronisasi data cloud:", err);
+                    setTimeout(() => {
+                        tampilkanPopupStatus(dataPeserta.status || 'Terdaftar');
+                    }, 800);
+                });
         });
-    }
 
-    // 3. Main Initialization & Fetch Data Real-Time
-    document.addEventListener('DOMContentLoaded', () => {
-        if (!dataPeserta) return;
+        function renderDataKeHalaman(peserta) {
+            // Pemetaan struktur kolom spreadsheet ke UI
+            const targetSabuk = peserta.ujian || peserta.sabuk || '-';
 
-        // Tampilkan data awal dari localStorage agar halaman tidak kosong melompong saat loading
-        renderDataKeHalaman(dataPeserta);
+            document.getElementById('navNama').innerText = peserta.nama || 'Peserta';
+            document.getElementById('cardNama').innerText = truncateText(peserta.nama || 'Nama Peserta', 22);
+            document.getElementById('cardEmail').innerText = peserta.email || '-';
+            document.getElementById('cardSabuk').innerText = targetSabuk;
 
-        // TARIK DATA TERBARU DARI SPREADSHEET (Membaca Kolom M secara Real-Time)
-        fetch(WEB_APP_URL)
-            .then(res => res.json())
-            .then(res => {
-                if (res.status === "success") {
-                    // Cari data di spreadsheet yang email atau namanya cocok dengan user yang sedang login
-                    const dataTerbaru = res.data.find(row => 
-                        String(row.email).toLowerCase().trim() === String(dataPeserta.email).toLowerCase().trim()
-                    );
+            document.getElementById('detailNama').innerText = peserta.nama || '-';
+            document.getElementById('detailTTL').innerText = peserta.ttl || '-';
+            document.getElementById('detailWA').innerText = peserta.no || peserta.whatsapp || '-';
+            document.getElementById('detailAngkatan').innerText = peserta.angkatan || '-';
+            document.getElementById('detailRayon').innerText = peserta.rayon || '-';
+            document.getElementById('detailAlamat').innerText = peserta.alamat || '-';
 
-                    if (dataTerbaru) {
-                        // Perbarui data di localStorage dan render ulang tampilan status terbaru (Kolom M)
-                        localStorage.setItem('sesiPeserta', JSON.stringify(dataTerbaru));
-                        renderDataKeHalaman(dataTerbaru);
-                        
-                        // Munculkan popup info status berdasarkan data real-time spreadsheet
-                        setTimeout(() => {
-                            tampilkanPopupStatus(dataTerbaru.status);
-                        }, 500);
+            setelMinimalisAksenTema(targetSabuk);
+
+            // Render Status Pendaftaran secara aman (jika kolom status belum dibuat di spreadsheet, default ke TERDAFTAR)
+            const statusEl = document.getElementById('detailStatus');
+            const statusTeks = String(peserta.status || 'Terdaftar').trim(); 
+            let badgeColorClass = 'bg-slate-100 text-slate-600 border-slate-200';
+            let statusLower = statusTeks.toLowerCase();
+
+            if (statusLower.includes('kualifikasi') || statusLower.includes('terdaftar')) {
+                badgeColorClass = 'bg-emerald-50 text-emerald-700 border-emerald-200/60';
+            } else if (statusLower.includes('inkompetensi')) {
+                badgeColorClass = 'bg-rose-50 text-rose-700 border-rose-200/60';
+            } else if (statusLower.includes('pending')) {
+                badgeColorClass = 'bg-amber-50 text-amber-700 border-amber-200/60';
+            }
+            
+            statusEl.innerHTML = `<span class="px-3 py-1 rounded-md text-[10px] sm:text-[11px] font-bold tracking-wide border ${badgeColorClass}">${statusTeks.toUpperCase()}</span>`;
+
+            // =========================================================================
+            // TAMBAHAN: Render Tombol Link Materi Jika Status Adalah Kualifikasi
+            // =========================================================================
+            const existingMateriBtn = document.getElementById('btnMateriGenerated');
+            if (existingMateriBtn) existingMateriBtn.remove();
+            
+            if (statusLower.includes('kualifikasi')) {
+                let linkMateri = "";
+                const sabukMateriLower = targetSabuk.toLowerCase();
+                
+                // Menyesuaikan tautan materi dengan nama file html
+                if (sabukMateriLower.includes('putih')) linkMateri = "../materi/materi_putih.html";
+                else if (sabukMateriLower.includes('kuning')) linkMateri = "../materi/materi_kuning.html";
+                else if (sabukMateriLower.includes('merah')) linkMateri = "../materi/materi_merah.html";
+                else if (sabukMateriLower.includes('biru') || sabukMateriLower.includes('aspel')) linkMateri = "../materi/materi_biru.html";
+                else if (sabukMateriLower.includes('cokelat') || sabukMateriLower.includes('coklat')) linkMateri = "../materi/materi_cokelat.html";
+
+                if (linkMateri !== "") {
+                    const btnMateriWrapper = document.createElement('div');
+                    btnMateriWrapper.id = "btnMateriGenerated";
+                    btnMateriWrapper.className = "mt-3 w-full animate__animated animate__fadeInUp";
+                    
+                    // currentBtnThemeClass otomatis mengadopsi warna tema sabuk (sudah di set di fungsi setelMinimalisAksenTema)
+                    btnMateriWrapper.innerHTML = `
+                        <a href="${linkMateri}" class="w-full flex items-center justify-center gap-2 ${currentBtnThemeClass} font-bold text-xs py-3 px-4 rounded-btn shadow-sm transition-all focus:ring-4 active:scale-95">
+                            <i class="fa-solid fa-book-open text-sm"></i> Pelajari Materi Ujian
+                        </a>
+                    `;
+                    
+                    const sabukContainerEl = document.getElementById('sabukContainer');
+                    if (sabukContainerEl && sabukContainerEl.parentNode) {
+                        // Memasukkan tombol ke profil card (tepat di bawah sabuk)
+                        sabukContainerEl.parentNode.appendChild(btnMateriWrapper);
                     }
                 }
-            })
-            .catch(err => {
-                console.error("Gagal memperbarui status real-time:", err);
-                // Jika gagal fetch (rto/kendala jaringan), tetap gunakan popup dari data lokal bawaan login
-                setTimeout(() => {
-                    tampilkanPopupStatus(dataPeserta.status || 'Pending');
-                }, 1000);
-            });
-    });
-
-    // Fungsi pembantu untuk menaruh text objek ke elemen HTML
-    function renderDataKeHalaman(peserta) {
-        document.getElementById('navNama').innerText = peserta.nama || 'Peserta';
-        document.getElementById('cardNama').innerText = truncateText(peserta.nama || 'Nama Peserta', 22);
-        document.getElementById('cardEmail').innerText = peserta.email || '-';
-        document.getElementById('cardSabuk').innerText = peserta.ujian || peserta.sabuk || '-';
-
-        document.getElementById('detailNama').innerText = peserta.nama || '-';
-        document.getElementById('detailTTL').innerText = peserta.ttl || '-';
-        document.getElementById('detailWA').innerText = peserta.no || peserta.whatsapp || '-';
-        document.getElementById('detailAngkatan').innerText = peserta.angkatan || '-';
-        document.getElementById('detailAlamat').innerText = peserta.alamat || '-';
-
-        // Render Status (Kolom M) secara Akurat dengan Warna Dinamis
-        const statusEl = document.getElementById('detailStatus');
-        const statusTeks = String(peserta.status || 'Pending').trim(); 
-        let colorClass = 'bg-gray-200 text-gray-700 border border-gray-300';
-        let statusLower = statusTeks.toLowerCase();
-
-        if (statusLower.includes('kualifikasi')) {
-            colorClass = 'bg-green-100 text-green-700 border border-green-200';
-        } else if (statusLower.includes('Inkompetensi')) {
-            colorClass = 'bg-red-100 text-red-700 border border-red-200';
-        } else if (statusLower.includes('pending')) {
-            colorClass = 'bg-amber-100 text-amber-700 border border-amber-200';
-        }
-        
-        statusEl.innerHTML = `<span class="px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold ${colorClass}">${statusTeks.toUpperCase()}</span>`;
-
-        // Render Tombol Berkas Dokumen/Sertifikat (Menghindari beda penamaan variabel objek)
-        const certWrapper = document.getElementById('detailSertifikatWrapper');
-        const urlSertifikat = peserta.sertifikat || peserta.sertifikatUrl || '';
-        
-        if (urlSertifikat && urlSertifikat.trim().startsWith('http')) {
-            certWrapper.innerHTML = `<a href="${urlSertifikat.trim()}" target="_blank" class="inline-flex items-center gap-1.5 bg-brand text-white text-xs font-semibold px-3 py-2 rounded-btn hover:bg-brand-dark smooth-transition shadow-sm active:scale-95"><i class="fa-solid fa-file-arrow-down text-sm"></i> View </a>`;
-        } else {
-            certWrapper.innerHTML = `<span class="text-gray-400 text-xs italic"><i class="fa-solid fa-ban mr-1"></i> Sertifikat belum dapat dilihat, Silahkan ikuti proses ujian terlebih dahulu</span>`;
-        }
-    }
-
-    // Penanganan Keluar Sistem (Logout)
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-        Swal.fire({
-            title: 'LogOut?',
-            text: "Apakah Anda yakin ingin keluar dari halaman panel peserta?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#dc2626',
-            cancelButtonColor: '#6b7280',
-            confirmButtonText: 'Ya, Keluar',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                localStorage.removeItem('sesiPeserta');
-                window.location.href = 'login.html';
             }
-        });
-    });
-</script>
+            // =========================================================================
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Tunggu sebentar sampai skrip utama selesai memuat data ke layar
-    setTimeout(() => {
-        // 2. Ambil teks target sabuk yang tampil di card kiri
-        const cardSabukEl = document.getElementById('cardSabuk');
-        const sabukContainer = document.getElementById('sabukContainer');
-        if (!cardSabukEl || !sabukContainer) return;
-
-        const targetSabukTeks = cardSabukEl.innerText.trim();
-        const sabukLower = targetSabukTeks.toLowerCase();
-        let linkGroup = "";
-
-        // 3. Tentukan Link Berdasarkan Kriteria Anda
-        if (sabukLower.includes('putih') || sabukLower.includes('kuning') || sabukLower.includes('merah')) {
-            linkGroup = "https://chat.whatsapp.com/CoPED7SKvUK2ayPSfZvmNV?mode=gi_t";
-        } else if (sabukLower.includes('biru') || sabukLower.includes('cokelat') || sabukLower.includes('wisuda')) {
-            linkGroup = "https://chat.whatsapp.com/KUYagEr8zn6C0IijVtXdpa?mode=gi_t";
-        }
-
-        // 4. Jika link cocok, buat tombol baru tepat di bawah kotak Target Sabuk
-        if (linkGroup !== "") {
-            // Hapus tombol lama jika sebelumnya sudah terbuat saat render ulang
-            const existingBtn = document.getElementById('waGroupBtnGenerated');
-            if (existingBtn) existingBtn.remove();
-
-            // Buat elemen pembungkus tombol dengan Tailwind CSS
-            const btnWrapper = document.createElement('div');
-            btnWrapper.id = "waGroupBtnGenerated";
-            btnWrapper.className = "mt-4 w-full animate__animated animate__fadeInUp";
-            btnWrapper.innerHTML = `
-                <a href="${linkGroup}" target="_blank" class="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 px-4 rounded-[10px] shadow transition-all duration-200 active:scale-95">
-                    <i class="fa-brands fa-whatsapp text-base"></i> Gabung Grup WhatsApp
-                </a>
-            `;
+            // Render Tombol Berkas Dokumen Berdasarkan Kolom 'sertifikat'
+            const certWrapper = document.getElementById('detailSertifikatWrapper');
+            const urlSertifikat = peserta.sertifikat || '';
             
-            // Masukkan tombol ke dalam struktur card (tepat di bawah container target sabuk)
-            sabukContainer.parentNode.appendChild(btnWrapper);
+            if (urlSertifikat && urlSertifikat.trim().startsWith('http')) {
+                certWrapper.innerHTML = `
+                    <a href="${urlSertifikat.trim()}" target="_blank" class="inline-flex items-center gap-2 text-xs font-bold py-2.5 px-4 rounded-btn shadow-sm transition-all focus:ring-4 active:scale-95 ${currentBtnThemeClass}">
+                        <i class="fa-solid fa-cloud-arrow-down text-sm"></i> View
+                    </a>`;
+            } else {
+                certWrapper.innerHTML = `
+                    <span class="text-slate-400 text-xs font-medium inline-flex items-center gap-1.5 bg-slate-50 border border-slate-100 px-3 py-2 rounded-xl">
+                        <i class="fa-solid fa-circle-info text-slate-300"></i> Lampiran berkas belum diunggah atau tidak tersedia.
+                    </span>`;
+            }
         }
-    }, 1200); // Eksekusi berjalan 1.2 detik setelah halaman siap agar tidak bentrok dengan popup utama
-});
-</script>
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            Swal.fire({
+                title: 'Konfirmasi Keluar',
+                text: "Apakah Anda ingin menutup sesi panel pendaftaran ini?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#475569',
+                cancelButtonColor: '#cbd5e1',
+                confirmButtonText: 'Ya, Keluar',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.removeItem('sesiPeserta');
+                    window.location.href = 'login.html';
+                }
+            });
+        });
+    </script>
+
+    <!-- SKRIP KEDUA (Generator Tombol Link WhatsApp Group) -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            const cardSabukEl = document.getElementById('cardSabuk');
+            const sabukContainer = document.getElementById('sabukContainer');
+            if (!cardSabukEl || !sabukContainer) return;
+
+            const targetSabukTeks = cardSabukEl.innerText.trim();
+            const sabukLower = targetSabukTeks.toLowerCase();
+            let linkGroup = "";
+
+            if (sabukLower.includes('putih') || sabukLower.includes('kuning') || sabukLower.includes('merah')) {
+                linkGroup = "https://chat.whatsapp.com/CoPED7SKvUK2ayPSfZvmNV?mode=gi_t";
+            } else if (sabukLower.includes('biru') || sabukLower.includes('aspel') || sabukLower.includes('cokelat') || sabukLower.includes('coklat') || sabukLower.includes('wisuda')) {
+                linkGroup = "https://chat.whatsapp.com/KUYagEr8zn6C0IijVtXdpa?mode=gi_t";
+            }
+
+            if (linkGroup !== "") {
+                const existingBtn = document.getElementById('waGroupBtnGenerated');
+                if (existingBtn) existingBtn.remove();
+
+                const btnWrapper = document.createElement('div');
+                btnWrapper.id = "waGroupBtnGenerated";
+                btnWrapper.className = "mt-4 w-full animate__animated animate__fadeInUp";
+                btnWrapper.innerHTML = `
+                    <a href="${linkGroup}" target="_blank" class="w-full flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-3 px-4 rounded-btn shadow-sm transition-all focus:ring-4 focus:ring-slate-900/10 active:scale-95">
+                        <i class="fa-brands fa-whatsapp text-sm text-emerald-400"></i> Gabung
+                    </a>
+                `;
+                sabukContainer.parentNode.appendChild(btnWrapper);
+            }
+        }, 1000);
+    });
+    </script>
+
 </body>
 </html>

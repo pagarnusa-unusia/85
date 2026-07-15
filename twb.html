@@ -15,115 +15,123 @@
             theme: {
                 extend: {
                     colors: { primary: '#1B7548', accent: '#0f172a' },
-                    animation: { 'float': 'float 3s ease-in-out infinite' },
-                    keyframes: { float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } } }
                 }
             }
         }
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #f8fafc; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
-        .glass-card { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); border: 1px solid #e2e8f0; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f8fafc; 
+            overflow-x: hidden; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+        .clean-card { 
+            background: #ffffff; 
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
         .canvas-container { 
-            position: relative; width: 100%; max-width: 450px; aspect-ratio: 1/1; 
-            margin: 0 auto; border-radius: 1.5rem; overflow: hidden; touch-action: none;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); background: #eee; border: 4px solid white;
+            position: relative; width: 100%; max-width: 400px; aspect-ratio: 1/1; 
+            margin: 0 auto; border-radius: 0.75rem; overflow: hidden; touch-action: none;
+            background: #f1f5f9; border: 1px solid #cbd5e1;
         }
         canvas { width: 100% !important; height: auto !important; display: block; }
-        .step-locked { opacity: 0.3; pointer-events: none; filter: grayscale(1) blur(2px); transition: all 0.5s ease; }
+        .step-locked { opacity: 0.4; pointer-events: none; filter: grayscale(1); transition: all 0.3s ease; }
         .step-unlocked { opacity: 1; pointer-events: auto; filter: none; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col select-none" oncontextmenu="return false;">
 
-    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md py-4 px-5 border-b border-slate-100">
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-sm py-3 px-5 border-b border-slate-200">
         <div class="max-w-xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <img src="logopn.png" alt="Logo" class="h-9 animate-float" onerror="this.src='https://via.placeholder.com/50x50?text=PN'">
+                <img src="logopn.png" alt="Logo" class="h-8" onerror="this.src='https://via.placeholder.com/50x50?text=PN'">
                 <div>
-                    <h1 class="text-[11px] font-black text-primary leading-none uppercase">PSNU PAGARNUSA UNUSIA</h1>
-                    <p class="text-[8px] text-slate-400 font-bold tracking-widest uppercase">Pelantikan, Diklat dan Wisuda</p>
+                    <h1 class="text-sm font-bold text-slate-800 leading-tight">PSNU Pagar Nusa Unusia</h1>
+                    <p class="text-[10px] text-slate-500 font-medium">Pelantikan, Diklat & Wisuda</p>
                 </div>
             </div>
-            <button onclick="window.location.reload()" class="w-9 h-9 rounded-2xl bg-slate-50 text-slate-400 flex items-center justify-center active:bg-slate-200 transition-colors">
+            <button onclick="window.location.reload()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center hover:bg-slate-200 active:bg-slate-300 transition-colors">
                 <i class="fas fa-rotate-right text-xs"></i>
             </button>
         </div>
     </header>
 
-    <main class="flex-1 max-w-xl mx-auto w-full px-5 py-8 space-y-12 pb-20">
+    <main class="flex-1 max-w-xl mx-auto w-full px-5 py-8 space-y-8 pb-20">
+        
         <section data-aos="fade-up">
-            <div class="flex items-center gap-3 mb-6">
-                <span class="w-10 h-10 rounded-2xl bg-primary text-white flex items-center justify-center font-bold">1</span>
-                <h2 class="font-bold text-slate-800 text-lg">Atur Foto</h2>
+            <div class="flex items-center gap-3 mb-4">
+                <span class="w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center font-semibold text-sm">1</span>
+                <h2 class="font-semibold text-slate-800 text-base">Atur Foto</h2>
             </div>
-            <div class="glass-card rounded-[2.5rem] p-4 space-y-6">
+            <div class="clean-card rounded-xl p-5 space-y-5">
                 <div class="canvas-container" id="containerCanvas">
                     <canvas id="twibbonCanvas" width="1080" height="1080"></canvas>
                 </div>
-                <div class="grid grid-cols-4 gap-2">
-                    <label class="col-span-4 flex items-center justify-center gap-3 bg-slate-900 text-white py-5 rounded-3xl font-bold text-sm cursor-pointer shadow-xl mb-2 active:scale-95 transition-all">
-                        <i class="fas fa-camera text-lg"></i> PILIH FOTO
+                <div class="grid grid-cols-4 gap-3">
+                    <label class="col-span-4 flex items-center justify-center gap-2 bg-primary hover:bg-[#155b38] text-white py-3 rounded-lg font-medium text-sm cursor-pointer transition-colors">
+                        <i class="fas fa-camera"></i> Pilih Foto
                         <input type="file" id="inputFoto" accept="image/*" class="hidden">
                     </label>
-                    <button onclick="changeZoom(1.1)" class="bg-white border-2 border-slate-50 h-14 rounded-2xl text-slate-600 active:bg-slate-100"><i class="fas fa-plus"></i></button>
-                    <button onclick="changeZoom(0.9)" class="bg-white border-2 border-slate-50 h-14 rounded-2xl text-slate-600 active:bg-slate-100"><i class="fas fa-minus"></i></button>
-                    <button onclick="rotateImg()" class="bg-white border-2 border-slate-50 h-14 rounded-2xl text-slate-600 active:bg-slate-100"><i class="fas fa-sync-alt"></i></button>
-                    <button onclick="resetTransform()" class="bg-red-50 h-14 rounded-2xl text-red-500 active:bg-red-100"><i class="fas fa-trash-can"></i></button>
+                    <button onclick="changeZoom(1.1)" class="bg-slate-50 border border-slate-200 h-11 rounded-lg text-slate-600 hover:bg-slate-100 active:bg-slate-200 transition-colors"><i class="fas fa-plus"></i></button>
+                    <button onclick="changeZoom(0.9)" class="bg-slate-50 border border-slate-200 h-11 rounded-lg text-slate-600 hover:bg-slate-100 active:bg-slate-200 transition-colors"><i class="fas fa-minus"></i></button>
+                    <button onclick="rotateImg()" class="bg-slate-50 border border-slate-200 h-11 rounded-lg text-slate-600 hover:bg-slate-100 active:bg-slate-200 transition-colors"><i class="fas fa-sync-alt"></i></button>
+                    <button onclick="resetTransform()" class="bg-red-50 border border-red-100 h-11 rounded-lg text-red-500 hover:bg-red-100 active:bg-red-200 transition-colors"><i class="fas fa-trash-can"></i></button>
                 </div>
             </div>
         </section>
 
         <section id="sectionNama" class="step-locked" data-aos="fade-up">
-            <div class="flex items-center gap-3 mb-6">
-                <span class="w-10 h-10 rounded-2xl bg-primary text-white flex items-center justify-center font-bold">2</span>
-                <h2 class="font-bold text-slate-800 text-lg">Masukkan Nama</h2>
+            <div class="flex items-center gap-3 mb-4">
+                <span class="w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center font-semibold text-sm">2</span>
+                <h2 class="font-semibold text-slate-800 text-base">Masukkan Nama</h2>
             </div>
-            <div class="glass-card rounded-[2rem] p-6">
-                <input type="text" id="inputNama" oninput="checkFlow()" placeholder="Nama lengkap Anda..." 
-                    class="w-full px-6 py-5 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-primary/30 outline-none text-sm font-bold text-slate-700 uppercase">
+            <div class="clean-card rounded-xl p-5">
+                <input type="text" id="inputNama" oninput="checkFlow()" placeholder="Ketik nama lengkap Anda..." 
+                    class="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-300 focus:border-primary focus:ring-1 focus:ring-primary outline-none text-sm text-slate-700 transition-all">
             </div>
         </section>
 
         <section id="sectionCopy" class="step-locked" data-aos="fade-up">
-            <div class="flex items-center gap-3 mb-6">
-                <span class="w-10 h-10 rounded-2xl bg-primary text-white flex items-center justify-center font-bold">3</span>
-                <h2 class="font-bold text-slate-800 text-lg">Salin Caption</h2>
+            <div class="flex items-center gap-3 mb-4">
+                <span class="w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center font-semibold text-sm">3</span>
+                <h2 class="font-semibold text-slate-800 text-base">Salin Caption</h2>
             </div>
-            <div class="glass-card rounded-[2rem] p-6 space-y-4">
-                <div id="previewText" class="p-4 bg-slate-50 rounded-xl text-[10px] text-slate-600 leading-relaxed border border-slate-100 whitespace-pre-line">
+            <div class="clean-card rounded-xl p-5 space-y-4">
+                <div id="previewText" class="p-4 bg-slate-50 rounded-lg text-xs text-slate-600 leading-relaxed border border-slate-200 whitespace-pre-line font-mono">
                     Lengkapi langkah 1 & 2 untuk melihat caption...
                 </div>
-                <button onclick="copyCaption()" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 active:bg-primary transition-all">
+                <button onclick="copyCaption()" class="w-full bg-slate-800 hover:bg-slate-900 text-white py-3 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-colors">
                     <i class="fas fa-copy"></i>
-                    <span id="btnCopyText">SALIN TEKS</span>
+                    <span id="btnCopyText">Salin Teks</span>
                 </button>
             </div>
         </section>
 
         <section id="sectionDownload" class="step-locked" data-aos="fade-up">
-            <div class="flex items-center gap-3 mb-6">
-                <span class="w-10 h-10 rounded-2xl bg-primary text-white flex items-center justify-center font-bold">4</span>
-                <h2 class="font-bold text-slate-800 text-lg">Unduh Hasil</h2>
+            <div class="flex items-center gap-3 mb-4">
+                <span class="w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center font-semibold text-sm">4</span>
+                <h2 class="font-semibold text-slate-800 text-base">Unduh Hasil</h2>
             </div>
-            <button onclick="downloadTwibbon()" class="w-full bg-primary text-white py-6 rounded-3xl font-bold shadow-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
-                <i class="fas fa-download text-xl"></i>
-                <span>SIMPAN KE GALERI</span>
+            <button onclick="downloadTwibbon()" class="w-full bg-primary hover:bg-[#155b38] text-white py-4 rounded-xl font-semibold shadow-sm flex items-center justify-center gap-2 transition-colors">
+                <i class="fas fa-download"></i>
+                <span>Simpan ke Galeri</span>
             </button>
         </section>
     </main>
 
-    <footer class="py-12 text-center opacity-30">
-        <p class="text-[9px] font-bold text-slate-500 tracking-[0.5em] uppercase">PSNU PAGARNUSA UNUSIA</p>
+    <footer class="py-8 text-center">
+        <p class="text-[11px] font-medium text-slate-400">© 2026 PSNU Pagar Nusa Unusia</p>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 800, once: true });
+        AOS.init({ duration: 600, once: true });
 
         const canvas = document.getElementById('twibbonCanvas');
         const ctx = canvas.getContext('2d');
@@ -184,7 +192,7 @@
         }
 
         function updateCaptionPreview(nama) {
-            const caption = `Lahir untuk Mengabdi, Berdiri untuk Membela. 🦅💚\n\nSaya ${nama.toUpperCase()}, siap menyukseskan dan mengikuti seluruh rangkaian HARLAH & UKT PSNU PAGARNUSA IV. Dengan semangat 'Laa Ghaliba Illa Billah', saya siap  merapatkan barisan di bawah naungan Nahdlatul Ulama.\nNKRI Harga Mati, Pagar Nusa Sampai Mati!\n\n@pagarnusaunusia @unuindonesia @ukm.pencaksilatunusia @pagarnusaindonesia @pagarnusa.or.id\n#PagarNusa #PagarNusaIndonesia #UKTPagarNusa2026 #NahdlatulUlama #SantriPagarNusa #LaaGhalibaIllaBillah`;
+            const caption = `Lahir untuk Mengabdi, Berdiri untuk Membela. 🦅💚\n\nSaya ${nama.toUpperCase()}, siap menyukseskan dan mengikuti seluruh rangkaian HARLAH & UKT PSNU PAGARNUSA IV. Dengan semangat 'Laa Ghaliba Illa Billah', saya siap merapatkan barisan di bawah naungan Nahdlatul Ulama.\nNKRI Harga Mati, Pagar Nusa Sampai Mati!\n\n@pagarnusaunusia @unuindonesia @ukm.pencaksilatunusia @pagarnusaindonesia @pagarnusa.or.id\n#PagarNusa #PagarNusaIndonesia #UKTPagarNusa2026 #NahdlatulUlama #SantriPagarNusa #LaaGhalibaIllaBillah`;
             document.getElementById('previewText').innerText = caption;
         }
 
@@ -246,8 +254,8 @@
             const btnText = document.getElementById('btnCopyText');
             try {
                 await navigator.clipboard.writeText(caption);
-                btnText.innerText = "BERHASIL DISALIN!";
-                setTimeout(() => { btnText.innerText = "SALIN TEKS"; }, 2000);
+                btnText.innerText = "Berhasil Disalin!";
+                setTimeout(() => { btnText.innerText = "Salin Teks"; }, 2000);
             } catch (err) {
                 alert("Gagal menyalin. Silakan tekan lama teks di atas untuk menyalin manual.");
             }

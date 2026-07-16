@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verifikasi Sertifikat | PAGARNUSA UNUSIA</title>
+    <link rel="icon" href="logopn.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #f0fdf4; }
+        .main-card { 
+            background: white; 
+            border-radius: 2.5rem; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); 
+            border-top: 10px solid var(--theme-color, #1B7548); 
+            animation: fadeInUp 0.8s ease-out;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Variabel warna tema */
+        .theme-putih { --theme-color: #94a3b8; --theme-bg: #f8fafc; --theme-text: #475569; }
+        .theme-kuning { --theme-color: #eab308; --theme-bg: #fefce8; --theme-text: #a16207; }
+        .theme-merah { --theme-color: #ef4444; --theme-bg: #fef2f2; --theme-text: #b91c1c; }
+        .theme-biru { --theme-color: #3b82f6; --theme-bg: #eff6ff; --theme-text: #1d4ed8; }
+        .theme-coklat { --theme-color: #8b4513; --theme-bg: #fdf5e6; --theme-text: #5d2e0a; }
+        
+        /* Apply dynamic colors */
+        .dynamic-border { border-top-color: var(--theme-color) !important; }
+        .dynamic-bg-light { background-color: var(--theme-bg) !important; }
+        .dynamic-icon-bg { background-color: var(--theme-bg) !important; color: var(--theme-color) !important; }
+        .dynamic-text-accent { color: var(--theme-color) !important; }
+        .dynamic-main-bg { background-color: var(--theme-color) !important; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div id="card-border" class="main-card w-full max-w-md overflow-hidden relative">
+        <div id="header-bg" class="bg-emerald-50 p-8 text-center border-b border-emerald-100">
+            <div id="icon-circle" class="w-20 h-20 bg-[#1B7548] text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg ring-8 ring-emerald-100/50">
+                <i class="fas fa-medal text-3xl text-yellow-400"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800">Verifikasi Sertifikat</h2>
+            <p id="sub-header" class="text-xs text-emerald-700 font-bold tracking-widest mt-1">Lolos Ujian Kenaikan Tingkat</p>
+        </div>
+
+        <div class="p-8 space-y-6">
+            <!-- NAMA LENGKAP -->
+            <div class="flex items-start space-x-4">
+                <div class="dynamic-icon-bg text-emerald-600 bg-emerald-100 p-3 rounded-2xl"><i class="fas fa-user-circle text-xl"></i></div>
+                <div>
+                    <p class="text-[10px] font-bold text-gray-400 tracking-tighter">Nama Lengkap</p>
+                    <p id="display-nama" class="font-bold text-gray-800 text-lg leading-tight">Memuat...</p>
+                </div>
+            </div>
+
+            <!-- ID PESERTA (Menggantikan TTL karena di sheet adanya ID) -->
+            <div class="flex items-start space-x-4">
+                <div class="dynamic-icon-bg text-emerald-600 bg-emerald-100 p-3 rounded-2xl"><i class="fas fa-id-card text-xl"></i></div>
+                <div>
+                    <p class="text-[10px] font-bold text-gray-400 tracking-tighter">ID / NIA Peserta</p>
+                    <p id="display-id" class="font-semibold text-gray-700">Memuat...</p>
+                </div>
+            </div>
+
+            <!-- KATEGORI UJIAN -->
+            <div class="flex items-start space-x-4">
+                <div class="dynamic-icon-bg text-emerald-600 bg-emerald-100 p-3 rounded-2xl"><i class="fas fa-layer-group text-xl"></i></div>
+                <div>
+                    <p class="text-[10px] font-bold text-gray-400 tracking-tighter">Kategori Ujian</p>
+                    <p id="display-ujian" class="font-semibold text-gray-700">Memuat...</p>
+                </div>
+            </div>
+
+            <!-- TINGKATAN STRIP (STRIP BAWAH) -->
+            <div id="strip-bg" class="bg-emerald-700 p-5 rounded-[1.5rem] text-white shadow-xl flex items-center justify-between">
+                <div>
+                    <p class="text-[9px] font-bold opacity-80 tracking-widest">Tingkatan Strip</p>
+                    <p id="display-tingkatan" class="text-xl font-bold">Memuat...</p>
+                </div>
+                <div class="bg-white/20 p-3 rounded-full">
+                    <i class="fas fa-trophy text-2xl text-yellow-300"></i>
+                </div>
+            </div>
+
+            <div class="bg-slate-800 p-4 rounded-2xl text-center shadow-inner">
+                <p id="footer-note" class="text-[10px] text-emerald-400 font-medium italic">
+                    <i class="fas fa-shield-alt mr-1"></i> Data terverifikasi oleh Sistem Pusat PAGARNUSA UNUSIA
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-8 text-center">
+        <p class="text-[10px] text-gray-400 font-bold tracking-[0.3em]">© 2026 PAGARNUSA UNUSIA</p>
+    </footer>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        
+        function getVal(key) {
+            return params.get(key) ? decodeURIComponent(params.get(key)).replace(/\+/g, ' ') : "Data Tidak Ditemukan";
+        }
+
+        // Penyesuaian mapping berdasarkan parameter QR Code dari Excel
+        const idPeserta = getVal('n');       // 'n' di Excel berisi ID
+        const namaLengkap = getVal('ttl');   // 'ttl' di Excel berisi Nama Lengkap
+        const tingkatan Ujian = getVal('a');  // 'a' di Excel berisi Jenis Ujian/Sabuk
+
+        // Tampilkan ke HTML
+        document.getElementById('display-nama').innerText = namaLengkap;
+        document.getElementById('display-id').innerText = idPeserta;
+        document.getElementById('display-ujian').innerText = tingkatanUjian;
+        document.getElementById('display-tingkatan').innerText = tingkatanUjian;
+
+        // Logika Perubahan Tema Berdasarkan Tingkatan Sabuk
+        const card = document.getElementById('card-border');
+        const header = document.getElementById('header-bg');
+        const iconCircle = document.getElementById('icon-circle');
+        const subHeader = document.getElementById('sub-header');
+        const stripBg = document.getElementById('strip-bg');
+        const footerNote = document.getElementById('footer-note');
+        const icons = document.querySelectorAll('.dynamic-icon-bg');
+
+        let colorClass = "";
+        const t = tingkatanUjian.toLowerCase();
+
+        if (t.includes("putih")) colorClass = "theme-putih";
+        else if (t.includes("kuning")) colorClass = "theme-kuning";
+        else if (t.includes("merah")) colorClass = "theme-merah";
+        else if (t.includes("biru")) colorClass = "theme-biru";
+        else if (t.includes("coklat")) colorClass = "theme-coklat";
+
+        if (colorClass !== "") {
+            card.classList.add(colorClass, "dynamic-border");
+            header.classList.add("dynamic-bg-light");
+            iconCircle.classList.add("dynamic-main-bg");
+            subHeader.classList.add("dynamic-text-accent");
+            stripBg.classList.add("dynamic-main-bg");
+            footerNote.classList.add("dynamic-text-accent");
+            icons.forEach(icon => icon.classList.add("dynamic-icon-bg"));
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Keuangan - PAC PSNU PAGARNUSA</title>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <!-- Tailwind & SweetAlert2 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#056839',
+                            dark: '#044d2b',
+                            light: '#0b8f4d',
+                            white: '#ffffff',
+                            bgLight: '#f5f5f5',
+                            textGray: '#555555',
+                            textDark: '#222222'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Roboto', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'btn': '4px',
+                        'card': '8px',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            color: #222222;
+        }
+        .smooth-transition {
+            transition: all 0.3s ease;
+        }
+        input[type="file"]::file-selector-button {
+            background-color: #056839;
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        input[type="file"]::file-selector-button:hover {
+            background-color: #044d2b;
+        }
+        /* Styling tambahan untuk input field agar mirip form Shopee dengan warna hijau */
+        .shopee-input:focus {
+            box-shadow: inset 0 -2px 0 0 #056839;
+            border-color: transparent;
+        }
+        .readonly-input {
+            background-color: #f3f4f6 !important;
+            color: #6b7280 !important;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen justify-between animate__animated animate__fadeIn">
+
+<!-- HEADER -->
+<header class="bg-white py-3 sticky top-0 z-[60] shadow-sm border-b-4 border-brand">
+    <div class="container mx-auto px-4 md:px-6 flex justify-between items-center">
+        <div class="flex items-center space-x-4">
+            <button id="menu-toggle" class="p-2 -ml-2 cursor-pointer text-gray-700 hover:text-brand transition md:hidden focus:outline-none" aria-label="Toggle Menu">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+            </button>
+            <div class="flex items-center space-x-3.5">
+                <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="h-9 md:h-11 w-auto object-contain">
+                <div class="text-left pl-3 border-l-2 border-gray-200">
+                    <h1 class="text-base md:text-lg font-black text-brand-dark tracking-tighter leading-none uppercase">PAC PSNU PAGARNUSA</h1>
+                    <p class="text-brand text-[10px] md:text-xs font-extrabold tracking-normal uppercase mt-1">Kecamatan Kemang</p>
+                </div>
+            </div>
+        </div>
+        <div class="hidden md:block">
+            <a href="bendum.html" class="flex items-center gap-2 bg-brand hover:bg-brand-dark text-white text-xs font-medium px-5 py-2.5 rounded-btn shadow-sm transition-all duration-300">
+                <i class="fa-solid fa-right-to-bracket text-sm"></i>
+                <span>Catatan Umum</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- MOBILE MENU OVERLAY -->
+    <div id="menu-overlay" class="fixed inset-0 bg-black/40 z-[70] hidden opacity-0 transition-opacity duration-300 md:hidden"></div>
+    <div id="mobile-menu" class="fixed top-0 left-0 bottom-0 w-72 bg-white z-[80] shadow-2xl transform -translate-x-full transition-transform duration-300 ease-in-out md:hidden flex flex-col">
+        <div class="p-5 border-b border-gray-100 flex items-center justify-between bg-brand border-b-4 border-brand-dark">
+            <div class="flex items-center space-x-2">
+                <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo" class="h-7 w-auto object-contain">
+                <span class="font-bold text-xs text-white tracking-widest">MENU</span>
+            </div>
+            <button id="menu-close" class="text-white hover:text-gray-200 transition p-1 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="p-4 flex flex-col space-y-2 flex-grow">
+            <a href="#" class="flex items-center space-x-3 p-3 rounded-btn bg-[#f0f9f4] text-brand font-medium text-sm hover:bg-brand hover:text-white transition-all duration-200">
+                <i class="fa-solid fa-right-to-bracket text-base"></i>
+                <span>Login Akun</span>
+            </a>
+            <a href="https://api.whatsapp.com/send?phone=6285320685598" target="_blank" class="flex items-center space-x-3 p-3 rounded-btn bg-gray-50 text-gray-700 font-medium text-sm hover:bg-gray-100 transition-all duration-200">
+                <i class="fa-brands fa-whatsapp text-lg text-[#25D366]"></i>
+                <span>Pusat Bantuan</span>
+            </a>
+        </div>
+        <div class="p-4 border-t border-gray-100 text-[10px] text-gray-400 text-center uppercase font-medium tracking-wider">
+            PAC PSNU PAGARNUSA © 2026
+        </div>
+    </div>
+</header>
+
+<main class="flex-grow py-6 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto">
+        
+        <!-- INFO BOX -->
+        <div class="bg-white rounded-card shadow-sm p-5 border border-gray-100 mb-4 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 bg-brand"></div>
+            <div class="flex flex-col gap-3">
+                <h1 class="text-lg sm:text-xl font-medium text-brand-textDark">Input Data Keuangan - Fee Pelatih</h1>
+                <div class="bg-[#f0f9f4] border border-[#cce8d9] rounded-btn p-3">
+                    <p class="text-xs text-brand-textGray space-y-1.5 leading-relaxed">
+                        <span class="font-medium block text-brand mb-1"><i class="fa-solid fa-bullhorn mr-1"></i> Panduan Pengisian:</span>
+                        <span class="block">• <b>Perhitungan Otomatis:</b> Gaji Pelatih dan Kas PAC akan dihitung otomatis.</span>
+                        <span class="block">• <b>Nominal Angka:</b> Masukkan angka saja tanpa titik atau koma (Misal: 500000).</span>
+                        <span class="block">• <b>Bukti Pencairan:</b> Wajib melampirkan foto/screenshot bukti transfer.</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORM CARD -->
+        <div class="bg-white rounded-card shadow-sm border border-gray-100 overflow-hidden mb-8">
+            <div class="bg-white px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+                <h3 class="text-sm font-medium text-brand-textDark flex items-center gap-2">
+                    <i class="fa-solid fa-file-invoice-dollar text-brand text-lg"></i> Rincian Data Keuangan
+                </h3>
+                <span class="text-[10px] bg-brand text-white font-medium px-2 py-0.5 rounded uppercase">Wajib</span>
+            </div>
+            
+            <form id="feeForm" class="p-5 sm:p-6 space-y-5">
+                
+                <!-- TIMELINE (Otomatis & Readonly) -->
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Timeline (Waktu & Tanggal)</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                            <i class="fa-regular fa-clock text-xs"></i>
+                        </span>
+                        <input type="text" id="timeline" name="timeline" readonly 
+                            class="shopee-input readonly-input w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- NAMA PELATIH -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Nama Pelatih</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fa-regular fa-user text-xs"></i>
+                            </span>
+                            <input type="text" id="pelatih" name="pelatih" required placeholder="Contoh: Ilham" 
+                                class="shopee-input w-full pl-9 pr-3 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition">
+                        </div>
+                    </div>
+
+                    <!-- RAYON / RANTING -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Nama Rayon / Ranting</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fa-solid fa-school text-xs"></i>
+                            </span>
+                            <input type="text" id="rayon" name="rayon" required placeholder="Contoh: SDN Bojong 04" 
+                                class="shopee-input w-full pl-9 pr-3 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GAJI SD -->
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Gaji Rayon / Ranting (Nominal Murni)</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                            <i class="fa-solid fa-money-bill-wave text-xs"></i>
+                        </span>
+                        <input type="number" id="gajiSD" name="gajiSD" required placeholder="Contoh: 500000" min="0" 
+                            class="shopee-input w-full pl-9 pr-3 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- POTONGAN PAC -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Potongan PAC (%)</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fa-solid fa-percent text-xs"></i>
+                            </span>
+                            <input type="number" id="potonganPAC" name="potonganPAC" value="20" min="0" max="100" required 
+                                class="shopee-input w-full pl-9 pr-3 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition">
+                        </div>
+                    </div>
+
+                    <!-- PENDAPATAN PELATIH -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Pendapatan Pelatih (%)</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fa-solid fa-percent text-xs"></i>
+                            </span>
+                            <input type="number" id="pendapatanPelatih" name="pendapatanPelatih" value="80" readonly 
+                                class="shopee-input readonly-input w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- KAS PAC (Hasil) -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Nominal Kas PAC</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fa-solid fa-wallet text-xs"></i>
+                            </span>
+                            <input type="number" id="kasPAC" name="kasPAC" value="0" readonly 
+                                class="shopee-input readonly-input w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition">
+                        </div>
+                    </div>
+
+                    <!-- GAJI PELATIH (Hasil) -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Nominal Gaji Pelatih</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fa-solid fa-hand-holding-dollar text-xs"></i>
+                            </span>
+                            <input type="number" id="gajiPelatih" name="gajiPelatih" value="0" readonly 
+                                class="shopee-input readonly-input w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- BULAN -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Bulan</label>
+                        <div class="relative">
+                            <select id="bulan" name="bulan" required 
+                                class="shopee-input w-full pl-3 pr-8 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition appearance-none cursor-pointer text-gray-600">
+                                <option value="Januari">Januari</option>
+                                <option value="Februari">Februari</option>
+                                <option value="Maret">Maret</option>
+                                <option value="April">April</option>
+                                <option value="Mei">Mei</option>
+                                <option value="Juni">Juni</option>
+                                <option value="Juli" selected>Juli</option>
+                                <option value="Agustus">Agustus</option>
+                                <option value="September">September</option>
+                                <option value="Oktober">Oktober</option>
+                                <option value="November">November</option>
+                                <option value="Desember">Desember</option>
+                            </select>
+                            <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- KETERANGAN -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Keterangan</label>
+                        <div class="relative">
+                            <select id="keterangan" name="keterangan" required 
+                                class="shopee-input w-full pl-3 pr-8 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition appearance-none cursor-pointer text-gray-600">
+                                <option value="Cair">Cair</option>
+                                <option value="Belum" selected>Belum</option>
+                            </select>
+                            <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BUKTI PENCAIRAN (FILE) -->
+                <div class="pt-2 border-t border-dashed border-gray-200">
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5 mt-2">Upload Bukti Pencairan (Foto/Gambar)</label>
+                    <input type="file" id="buktiPencairan" accept="image/*" class="w-full text-sm text-gray-500">
+                    
+                    <!-- Preview Image -->
+                    <div class="mt-3">
+                        <img id="imgPreview" class="hidden w-40 h-40 object-cover rounded-card border border-gray-200 shadow-sm" alt="Preview Gambar">
+                    </div>
+                </div>
+
+                <!-- TOMBOL SUBMIT -->
+                <div class="pt-5 border-t border-gray-100 flex items-center justify-end space-x-3">
+                    <button type="button" onclick="resetForm()" class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-600 text-sm font-medium py-2.5 px-5 rounded-btn smooth-transition cursor-pointer">
+                        Reset
+                    </button>
+                    <button type="submit" id="btnSubmit" class="bg-brand hover:bg-brand-dark text-white text-sm font-medium py-2.5 px-8 rounded-btn smooth-transition shadow-sm cursor-pointer w-full sm:w-auto text-center">
+                        Kirim ke Google Sheets
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</main>
+
+<!-- FLOATING BUTTON (WHATSAPP) -->
+<a href="https://api.whatsapp.com/send?phone=6285320685598" 
+   target="_blank" 
+   class="fixed bottom-6 right-6 md:bottom-8 md:right-8 bg-[#25D366] hover:bg-[#1ebe57] text-white py-3 px-4 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 z-[90] flex items-center gap-2 group animate__animated animate__bounceInUp"
+   aria-label="Hubungi Admin via WhatsApp">
+    <i class="fa-brands fa-whatsapp text-2xl md:text-3xl"></i>
+    <span class="font-medium text-sm hidden sm:block pr-1">Bantuan Admin</span>
+</a>
+
+<!-- FOOTER -->
+<footer class="bg-white border-t border-gray-200 py-5 text-center text-xs text-gray-500">
+    <p>© 2026 PAC PSNU PAGARNUSA Kec. Kemang.</p>
+    <p class="mt-1">Sistem Input Data Keuangan</p>
+</footer>
+
+<!-- SCRIPT LOGIKA (DIPERTAHANKAN DARI SEBELUMNYA) -->
+<script>
+    // =========================================================================
+    // TEMPELKAN URL WEB APP GOOGLE APPS SCRIPT ANDA DI SINI
+    // =========================================================================
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwG6cwvQb4_vQcrFlx2NjwxMVLYPeSxZegTQaG0F-nHxMKOp09ePhdH1yFOdarfG_Z54A/exec";
+
+    // Toggle Mobile Menu
+    const menuToggle = document.getElementById('menu-toggle');
+    const menuClose = document.getElementById('menu-close');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuOverlay = document.getElementById('menu-overlay');
+
+    function toggleMenu() {
+        const isClosed = mobileMenu.classList.contains('-translate-x-full');
+        if (isClosed) {
+            mobileMenu.classList.remove('-translate-x-full');
+            menuOverlay.classList.remove('hidden');
+            setTimeout(() => menuOverlay.classList.remove('opacity-0'), 10);
+        } else {
+            mobileMenu.classList.add('-translate-x-full');
+            menuOverlay.classList.add('opacity-0');
+            setTimeout(() => menuOverlay.classList.add('hidden'), 300);
+        }
+    }
+
+    menuToggle.addEventListener('click', toggleMenu);
+    menuClose.addEventListener('click', toggleMenu);
+    menuOverlay.addEventListener('click', toggleMenu);
+
+    // Set Timeline Otomatis
+    function setTimeline() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        
+        const day = now.getDate();
+        const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        const monthName = months[now.getMonth()];
+        const year = now.getFullYear();
+
+        document.getElementById('timeline').value = `${hours}:${minutes}:${seconds}/${day} ${monthName} ${year}`;
+    }
+
+    // Hitung Otomatis (Tanpa Format Rupiah)
+    function hitungKeuangan() {
+        const gajiSD = parseFloat(document.getElementById('gajiSD').value) || 0;
+        const pctPAC = parseFloat(document.getElementById('potonganPAC').value) || 0;
+        
+        let pctPelatih = 100 - pctPAC;
+        if (pctPelatih < 0) pctPelatih = 0;
+        
+        document.getElementById('pendapatanPelatih').value = pctPelatih;
+
+        const valKasPAC = (gajiSD * pctPAC) / 100;
+        const valGajiPelatih = (gajiSD * pctPelatih) / 100;
+
+        document.getElementById('kasPAC').value = valKasPAC;
+        document.getElementById('gajiPelatih').value = valGajiPelatih;
+    }
+
+    document.getElementById('gajiSD').addEventListener('input', hitungKeuangan);
+    document.getElementById('potonganPAC').addEventListener('input', hitungKeuangan);
+
+    // Preview Gambar Bukti Pencairan
+    document.getElementById('buktiPencairan').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const preview = document.getElementById('imgPreview');
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                preview.src = evt.target.result;
+                preview.classList.remove('hidden');
+            }
+            reader.readAsDataURL(file);
+        } else {
+            preview.classList.add('hidden');
+            preview.src = '';
+        }
+    });
+
+    // Notifikasi Menggunakan SweetAlert2 (agar sesuai tema)
+    function showAlert(message, type) {
+        Swal.fire({
+            icon: type,
+            title: type === 'success' ? 'Berhasil!' : 'Terjadi Kesalahan',
+            text: message,
+            confirmButtonColor: '#056839'
+        });
+    }
+
+    // Mengubah File ke Format Base64
+    function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            if (!file) {
+                resolve(null);
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = () => {
+                const base64String = reader.result.split(',')[1];
+                resolve({
+                    base64: base64String,
+                    type: file.type,
+                    name: file.name
+                });
+            };
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // Submit ke Apps Script Backend
+    document.getElementById('feeForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.includes("URL_WEB_APP_APPS_SCRIPT_ANDA_DI_SINI")) {
+            showAlert("Harap masukkan URL Web App Apps Script Anda pada variabel APPS_SCRIPT_URL di dalam script HTML!", "error");
+            return;
+        }
+
+        const btnSubmit = document.getElementById('btnSubmit');
+        const originalText = btnSubmit.innerHTML;
+        
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengirim...';
+        btnSubmit.classList.add('opacity-70', 'cursor-not-allowed');
+
+        try {
+            const fileInput = document.getElementById('buktiPencairan');
+            const fileData = fileInput.files.length > 0 ? await fileToBase64(fileInput.files[0]) : null;
+
+            // Mengirim angka nominal murni ke payload
+            const payload = {
+                timeline: document.getElementById('timeline').value,
+                potonganPAC: document.getElementById('potonganPAC').value + "%",
+                pendapatanPelatih: document.getElementById('pendapatanPelatih').value + "%",
+                pelatih: document.getElementById('pelatih').value,
+                rayon: document.getElementById('rayon').value,
+                gajiSD: parseFloat(document.getElementById('gajiSD').value) || 0,
+                kasPAC: parseFloat(document.getElementById('kasPAC').value) || 0,
+                gajiPelatih: parseFloat(document.getElementById('gajiPelatih').value) || 0,
+                bulan: document.getElementById('bulan').value,
+                keterangan: document.getElementById('keterangan').value,
+                fileData: fileData
+            };
+
+            await fetch(APPS_SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+
+            showAlert("Data & Bukti Pencairan berhasil dikirim!", "success");
+            resetForm();
+        } catch (error) {
+            console.error("Error:", error);
+            showAlert("Gagal mengirim data. Silakan periksa koneksi atau URL Apps Script Anda.", "error");
+        } finally {
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = originalText;
+            btnSubmit.classList.remove('opacity-70', 'cursor-not-allowed');
+        }
+    });
+
+    function resetForm() {
+        document.getElementById('feeForm').reset();
+        setTimeline();
+        document.getElementById('potonganPAC').value = 20;
+        document.getElementById('pendapatanPelatih').value = 80;
+        document.getElementById('kasPAC').value = 0;
+        document.getElementById('gajiPelatih').value = 0;
+        document.getElementById('imgPreview').classList.add('hidden');
+        document.getElementById('imgPreview').src = '';
+    }
+
+    // Inisialisasi awal
+    setTimeline();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Keuangan</title>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <!-- Tailwind & SweetAlert2 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#056839',
+                            dark: '#044d2b',
+                            light: '#0b8f4d',
+                            white: '#ffffff',
+                            bgLight: '#f5f5f5',
+                            textGray: '#555555',
+                            textDark: '#222222'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Roboto', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'btn': '4px',
+                        'card': '8px',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            color: #222222;
+        }
+        .smooth-transition {
+            transition: all 0.3s ease;
+        }
+        input[type="file"]::file-selector-button {
+            background-color: #056839;
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        input[type="file"]::file-selector-button:hover {
+            background-color: #044d2b;
+        }
+        .form-input:focus {
+            box-shadow: inset 0 -2px 0 0 #056839;
+            border-color: transparent;
+        }
+        
+        /* Tab active state */
+        .tab-active {
+            color: #056839 !important;
+            border-bottom: 3px solid #056839 !important;
+            font-weight: 700 !important;
+        }
+        
+        /* Custom scrollbar for table */
+        .table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        .table-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen justify-between animate__animated animate__fadeIn">
+
+<!-- HEADER -->
+<header class="bg-white py-3 sticky top-0 z-[60] shadow-sm border-b-4 border-brand">
+    <div class="container mx-auto px-4 md:px-6 flex justify-between items-center">
+        <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-3.5">
+                <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="h-9 md:h-11 w-auto object-contain">
+                <div class="text-left pl-3 border-l-2 border-gray-200">
+                    <h1 class="text-base md:text-lg font-black text-brand-dark tracking-tighter leading-none uppercase">PAC PSNU PAGARNUSA</h1>
+                    <p class="text-brand text-[10px] md:text-xs font-extrabold tracking-normal uppercase mt-1">Kecamatan Kemang</p>
+                </div>
+            </div>
+        </div>
+        <div class="hidden md:flex items-center gap-3">
+            <span class="text-xs font-medium text-brand font-bold bg-[#f0f9f4] px-3 py-1.5 rounded-btn border border-[#cce8d9]">
+                Catatan Bendahara
+            </span>
+        </div>
+    </div>
+</header>
+
+<!-- NAVIGATION TABS -->
+<div class="bg-white border-b border-gray-200 sticky top-[68px] z-[50]">
+    <div class="max-w-4xl mx-auto px-4 flex justify-center space-x-8">
+        <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-active py-3 text-sm font-medium text-gray-500 hover:text-brand smooth-transition">
+            <i class="fa-solid fa-chart-line mr-2"></i>Dashboard & Ringkasan
+        </button>
+        <button onclick="switchTab('input')" id="tab-input" class="py-3 text-sm font-medium text-gray-500 hover:text-brand smooth-transition border-b-3 border-transparent">
+            <i class="fa-solid fa-pen-to-square mr-2"></i>Input Transaksi
+        </button>
+        <button onclick="window.location.href='InputGajiPelatih.html'" id="tab-input-pelatih" class="py-3 text-sm font-medium text-gray-500 hover:text-brand smooth-transition border-b-3 border-transparent">
+            <i class="fa-solid fa-pen-to-square mr-2"></i>Input Fee Pelatih
+        </button>
+    </div>
+</div>
+
+<main class="flex-grow py-6 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto relative min-h-[400px]">
+        
+        <!-- ============================================== -->
+        <!-- MENU 1: DASHBOARD & RINGKASAN                  -->
+        <!-- ============================================== -->
+        <div id="view-dashboard" class="animate__animated animate__fadeIn">
+            
+            <!-- Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <!-- Total Pemasukan -->
+                <div class="bg-white rounded-card shadow-sm border border-gray-100 p-5 border-l-4 border-l-[#25D366]">
+                    <p class="text-xs text-gray-500 font-medium uppercase tracking-wider mb-1">Total Pemasukan</p>
+                    <h2 class="text-xl font-bold text-gray-800" id="summary-pemasukan">Rp 0</h2>
+                </div>
+                <!-- Total Pengeluaran -->
+                <div class="bg-white rounded-card shadow-sm border border-gray-100 p-5 border-l-4 border-l-red-500">
+                    <p class="text-xs text-gray-500 font-medium uppercase tracking-wider mb-1">Total Pengeluaran</p>
+                    <h2 class="text-xl font-bold text-gray-800" id="summary-pengeluaran">Rp 0</h2>
+                </div>
+                <!-- Saldo Akhir -->
+                <div class="bg-brand rounded-card shadow-sm p-5 text-white">
+                    <p class="text-xs text-brand-light font-medium uppercase tracking-wider mb-1">Saldo Kas Saat Ini</p>
+                    <h2 class="text-xl font-bold" id="summary-saldo">Rp 0</h2>
+                </div>
+            </div>
+
+            <!-- Data Table (Membaca Sheet) -->
+            <div class="bg-white rounded-card shadow-sm border border-gray-100 overflow-hidden">
+                <div class="px-5 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                    <h3 class="text-sm font-medium text-brand-textDark flex items-center gap-2">
+                        <i class="fa-solid fa-table-list text-brand"></i> Buku Kas Umum (Periode I)
+                    </h3>
+                    <button onclick="loadDashboardData()" class="text-xs text-white bg-brand hover:bg-brand-dark px-3 py-1.5 rounded smooth-transition">
+                        <i class="fa-solid fa-rotate-right mr-1"></i> Refresh
+                    </button>
+                </div>
+                
+                <div class="p-0 table-container overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[750px]">
+                        <thead>
+                            <tr class="bg-gray-100 text-gray-600 text-[11px] uppercase tracking-wider">
+                                <th class="p-3 border-b font-medium text-center w-12">No</th>
+                                <th class="p-3 border-b font-medium">Timeline (Waktu)</th>
+                                <th class="p-3 border-b font-medium">Uraian Transaksi</th>
+                                <th class="p-3 border-b font-medium text-right">Pemasukan</th>
+                                <th class="p-3 border-b font-medium text-right">Pengeluaran</th>
+                                <th class="p-3 border-b font-medium text-center">Bukti</th>
+                                <th class="p-3 border-b font-medium text-center w-16">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body" class="text-sm text-gray-700">
+                            <!-- Data akan dimuat disini oleh JavaScript -->
+                            <tr>
+                                <td colspan="7" class="p-8 text-center text-gray-400 text-sm">
+                                    <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-brand"></i><br>
+                                    Memuat data....
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- MENU 2: INPUT TRANSAKSI                        -->
+        <!-- ============================================== -->
+        <div id="view-input" class="hidden animate__animated animate__fadeIn max-w-3xl mx-auto">
+            
+            <div class="bg-white rounded-card shadow-sm border border-gray-100 overflow-hidden">
+                <div class="bg-gray-50 px-5 py-4 border-b border-gray-100">
+                    <h3 class="text-sm font-medium text-brand-textDark flex items-center gap-2">
+                        <i class="fa-solid fa-file-invoice-dollar text-brand text-lg"></i> Form Catat Transaksi (Periode I)
+                    </h3>
+                </div>
+                
+                <form id="keuanganForm" class="p-5 sm:p-6 space-y-5">
+                    
+                    <!-- TIMELINE (Bisa Edit, Default Otomatis NOW) -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Timeline (Waktu & Tanggal)</label>
+                        <div class="relative">
+                            <input type="datetime-local" id="timeline" name="timeline" required 
+                                class="form-input w-full px-3 py-2.5 border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition bg-white">
+                        </div>
+                        <p class="text-[10px] text-gray-400 mt-1">Otomatis terisi waktu saat ini, namun dapat diubah jika mencatat transaksi lampau.</p>
+                    </div>
+
+                    <!-- URAIAN -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Uraian Transaksi</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i class="fa-solid fa-pen-to-square text-xs"></i>
+                            </span>
+                            <input type="text" id="uraian" name="uraian" required placeholder="Contoh: Iuran anggota bulan Januari" 
+                                class="form-input w-full pl-9 pr-3 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-gray-100 pt-4 mt-2">
+                        <!-- JENIS TRANSAKSI (Menentukan Pemasukan/Pengeluaran) -->
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Jenis Arus Kas</label>
+                            <div class="relative">
+                                <select id="jenisTransaksi" name="jenisTransaksi" required 
+                                    class="form-input w-full pl-3 pr-8 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition appearance-none cursor-pointer text-gray-700 font-medium">
+                                    <option value="Pemasukan">Dana Masuk (Pemasukan)</option>
+                                    <option value="Pengeluaran">Dana Keluar (Pengeluaran)</option>
+                                </select>
+                                <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-400">
+                                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- NOMINAL -->
+                        <div>
+                            <label class="block text-xs font-medium text-gray-700 mb-1.5">Nominal (Rp)</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                    Rp
+                                </span>
+                                <input type="number" id="nominal" name="nominal" required placeholder="Contoh: 260000" min="1" 
+                                    class="form-input w-full pl-9 pr-3 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BUKTI TRANSAKSI (FILE) -->
+                    <div class="pt-4 border-t border-dashed border-gray-200">
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Bukti Transaksi (Opsional/Wajib)</label>
+                        <input type="file" id="buktiFile" accept="image/*" class="w-full text-sm text-gray-500">
+                        
+                        <!-- Preview Image -->
+                        <div class="mt-3">
+                            <img id="imgPreview" class="hidden w-40 h-40 object-cover rounded-card border border-gray-200 shadow-sm" alt="Preview Bukti">
+                        </div>
+                    </div>
+
+                    <!-- TOMBOL SUBMIT -->
+                    <div class="pt-5 flex items-center justify-end space-x-3">
+                        <button type="button" onclick="resetForm()" class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-600 text-sm font-medium py-2.5 px-5 rounded-btn smooth-transition cursor-pointer">
+                            Batal
+                        </button>
+                        <button type="submit" id="btnSubmit" class="bg-brand hover:bg-brand-dark text-white text-sm font-medium py-2.5 px-8 rounded-btn smooth-transition shadow-sm cursor-pointer w-full sm:w-auto text-center">
+                            <i class="fa-solid fa-save mr-2"></i> Simpan Transaksi
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<!-- FLOATING BUTTON (WHATSAPP) -->
+<a href="https://api.whatsapp.com/send?phone=6285715232441" 
+   target="_blank" 
+   class="fixed bottom-6 right-6 bg-[#25D366] hover:bg-[#1ebe57] text-white p-3 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 z-[90] flex items-center justify-center group"
+   aria-label="Hubungi Admin">
+    <i class="fa-brands fa-whatsapp text-2xl"></i>
+</a>
+
+<!-- FOOTER -->
+<footer class="bg-white border-t border-gray-200 py-4 text-center text-xs text-gray-400">
+    <p>Keuangan © PAC PSNU PAGARNUSA Kec. Kemang.</p>
+</footer>
+
+<!-- SCRIPT LOGIKA -->
+<script>
+    // =========================================================================
+    // URL WEB APP GOOGLE APPS SCRIPT ANDA
+    // =========================================================================
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwG6cwvQb4_vQcrFlx2NjwxMVLYPeSxZegTQaG0F-nHxMKOp09ePhdH1yFOdarfG_Z54A/exec";
+    const SHEET_NAME = "Periode I"; // Sesuaikan jika Anda kemarin mengubahnya jadi "2026"
+
+    // Format Rupiah Helper
+    const formatRupiah = (angka) => {
+        return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(angka);
+    };
+
+    // Fungsi Switch Tab / Menu
+    function switchTab(tabName) {
+        const viewDashboard = document.getElementById('view-dashboard');
+        const viewInput = document.getElementById('view-input');
+        const btnDash = document.getElementById('tab-dashboard');
+        const btnInput = document.getElementById('tab-input');
+
+        if (tabName === 'dashboard') {
+            viewDashboard.classList.remove('hidden');
+            viewInput.classList.add('hidden');
+            btnDash.classList.add('tab-active');
+            btnInput.classList.remove('tab-active');
+            
+            loadDashboardData();
+        } else {
+            viewDashboard.classList.add('hidden');
+            viewInput.classList.remove('hidden');
+            btnDash.classList.remove('tab-active');
+            btnInput.classList.add('tab-active');
+            
+            setTimelineToNow();
+        }
+    }
+
+    // Set Timeline Datetime-Local
+    function setTimelineToNow() {
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        document.getElementById('timeline').value = now.toISOString().slice(0, 16);
+    }
+
+    // Fungsi Mengambil Data dari Sheet (doGet)
+    async function loadDashboardData() {
+        const tableBody = document.getElementById('table-body');
+        tableBody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-gray-400 text-sm"><i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-brand"></i><br>Sinkronisasi data...</td></tr>`;
+        
+        try {
+            const response = await fetch(APPS_SCRIPT_URL + `?action=getData&sheetName=${SHEET_NAME}`);
+            
+            if(!response.ok) throw new Error("Gagal mengambil data");
+            const result = await response.json(); 
+            
+            const data = result.data || [];
+            
+            let totalMasuk = 0;
+            let totalKeluar = 0;
+            let htmlTable = "";
+
+            if(data.length === 0) {
+                htmlTable = `<tr><td colspan="7" class="p-6 text-center text-gray-500 text-sm">Belum ada catatan transaksi.</td></tr>`;
+            } else {
+                data.forEach((row, index) => {
+                    const uangMasuk = parseFloat(row.pemasukan) || 0;
+                    const uangKeluar = parseFloat(row.pengeluaran) || 0;
+                    
+                    totalMasuk += uangMasuk;
+                    totalKeluar += uangKeluar;
+                    
+                    let displayTime = row.timeline ? String(row.timeline).replace('T', ' ') : '-';
+                    let displayBukti = row.bukti ? `<a href="${row.bukti}" target="_blank" class="text-blue-500 hover:underline"><i class="fa-solid fa-image"></i> Lihat</a>` : `<span class="text-gray-300">-</span>`;
+
+                    // index + 2 karena baris 1 di google sheet adalah header (judul kolom), jadi data dimulai dari baris 2
+                    const sheetRowIndex = index + 2; 
+
+                    htmlTable += `
+                        <tr class="border-b border-gray-50 hover:bg-gray-50 smooth-transition">
+                            <td class="p-3 text-center">${index + 1}</td>
+                            <td class="p-3 whitespace-nowrap">${displayTime}</td>
+                            <td class="p-3">${row.uraian || '-'}</td>
+                            <td class="p-3 text-right text-green-600">${uangMasuk > 0 ? formatRupiah(uangMasuk) : '-'}</td>
+                            <td class="p-3 text-right text-red-500">${uangKeluar > 0 ? formatRupiah(uangKeluar) : '-'}</td>
+                            <td class="p-3 text-center text-xs">${displayBukti}</td>
+                            <td class="p-3 text-center">
+                                <button onclick="confirmDelete(${sheetRowIndex})" class="text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 p-1.5 rounded transition-colors" title="Hapus Data">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+            
+            tableBody.innerHTML = htmlTable;
+            
+            const saldoAkhir = totalMasuk - totalKeluar;
+            document.getElementById('summary-pemasukan').innerText = formatRupiah(totalMasuk);
+            document.getElementById('summary-pengeluaran').innerText = formatRupiah(totalKeluar);
+            document.getElementById('summary-saldo').innerText = formatRupiah(saldoAkhir);
+
+        } catch (error) {
+            console.error(error);
+            tableBody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-red-400 text-sm"><i class="fa-solid fa-circle-exclamation text-xl mb-2"></i><br>Gagal memuat data.</td></tr>`;
+        }
+    }
+
+    // ==========================================
+    // FUNGSI BARU: HAPUS DATA
+    // ==========================================
+    function confirmDelete(rowIndex) {
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Data transaksi ini akan dihapus permanen!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#9ca3af',
+            confirmButtonText: '<i class="fa-solid fa-trash mr-1"></i> Ya, hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                executeDelete(rowIndex);
+            }
+        });
+    }
+
+    async function executeDelete(rowIndex) {
+        // Tampilkan loading popup
+        Swal.fire({
+            title: 'Menghapus data...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        try {
+            const payload = {
+                action: "delete",
+                sheetName: SHEET_NAME,
+                row: rowIndex
+            };
+
+            await fetch(APPS_SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors", 
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+
+            // Karena mode no-cors, kita asumsikan request berhasil terkirim ke Apps Script
+            Swal.fire('Terhapus!', 'Data berhasil dihapus.', 'success');
+            
+            // Reload tabel
+            loadDashboardData();
+        } catch (error) {
+            console.error("Error:", error);
+            showAlert("Gagal menghapus data. Periksa koneksi Anda.", "error");
+        }
+    }
+    // ==========================================
+
+    // Preview Gambar Bukti
+    document.getElementById('buktiFile').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        const preview = document.getElementById('imgPreview');
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                preview.src = evt.target.result;
+                preview.classList.remove('hidden');
+            }
+            reader.readAsDataURL(file);
+        } else {
+            preview.classList.add('hidden');
+            preview.src = '';
+        }
+    });
+
+    function showAlert(message, type) {
+        Swal.fire({
+            icon: type,
+            title: type === 'success' ? 'Berhasil!' : 'Peringatan',
+            text: message,
+            confirmButtonColor: '#056839'
+        });
+    }
+
+    function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            if (!file) {
+                resolve(null);
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = () => {
+                const base64String = reader.result.split(',')[1];
+                resolve({
+                    base64: base64String,
+                    type: file.type,
+                    name: file.name
+                });
+            };
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // Submit Form Keuangan (POST)
+    document.getElementById('keuanganForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const btnSubmit = document.getElementById('btnSubmit');
+        const originalText = btnSubmit.innerHTML;
+        
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Memproses...';
+        btnSubmit.classList.add('opacity-70', 'cursor-not-allowed');
+
+        try {
+            const fileInput = document.getElementById('buktiFile');
+            const fileData = fileInput.files.length > 0 ? await fileToBase64(fileInput.files[0]) : null;
+
+            const jenis = document.getElementById('jenisTransaksi').value;
+            const nominalVal = parseFloat(document.getElementById('nominal').value) || 0;
+            
+            const rawTimeline = document.getElementById('timeline').value; 
+            const formattedTimeline = rawTimeline.replace('T', ' ');
+
+            const payload = {
+                action: "insert", // Menandakan bahwa ini operasi simpan data baru
+                sheetName: SHEET_NAME,
+                timeline: formattedTimeline,
+                uraian: document.getElementById('uraian').value,
+                pemasukan: jenis === 'Pemasukan' ? nominalVal : 0,
+                pengeluaran: jenis === 'Pengeluaran' ? nominalVal : 0,
+                fileData: fileData
+            };
+
+            await fetch(APPS_SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+
+            showAlert("Data transaksi berhasil ditambahkan!", "success");
+            resetForm();
+            
+            setTimeout(() => {
+                switchTab('dashboard');
+            }, 1500);
+
+        } catch (error) {
+            console.error("Error:", error);
+            showAlert("Gagal mengirim data. Silakan periksa koneksi internet Anda.", "error");
+        } finally {
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = originalText;
+            btnSubmit.classList.remove('opacity-70', 'cursor-not-allowed');
+        }
+    });
+
+    function resetForm() {
+        document.getElementById('keuanganForm').reset();
+        setTimelineToNow();
+        document.getElementById('imgPreview').classList.add('hidden');
+        document.getElementById('imgPreview').src = '';
+    }
+
+    window.onload = () => {
+        loadDashboardData();
+    };
+</script>
+
+</body>
+</html>

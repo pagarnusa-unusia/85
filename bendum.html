@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Keuangan</title>
+    <title>Sistem Keuangan PAC Pagar Nusa</title>
     
     <!-- Fonts & Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,9 +13,10 @@
     <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     
-    <!-- Tailwind & SweetAlert2 -->
+    <!-- Tailwind, SweetAlert2 & HTML2PDF -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <script>
         tailwind.config = {
@@ -72,21 +73,20 @@
             box-shadow: inset 0 -2px 0 0 #056839;
             border-color: transparent;
         }
-        
-        /* Tab active state */
         .tab-active {
             color: #056839 !important;
             border-bottom: 3px solid #056839 !important;
             font-weight: 700 !important;
         }
-        
-        /* Custom scrollbar for table */
         .table-container::-webkit-scrollbar {
             height: 8px;
         }
         .table-container::-webkit-scrollbar-thumb {
             background: #cbd5e1;
             border-radius: 4px;
+        }
+        .pdf-template {
+            display: none;
         }
     </style>
 </head>
@@ -105,7 +105,7 @@
             </div>
         </div>
         <div class="hidden md:flex items-center gap-3">
-            <span class="text-xs font-medium text-brand font-bold bg-[#f0f9f4] px-3 py-1.5 rounded-btn border border-[#cce8d9]">
+            <span class="text-xs font-bold text-brand bg-[#f0f9f4] px-3 py-1.5 rounded-btn border border-[#cce8d9]">
                 Catatan Bendahara
             </span>
         </div>
@@ -115,13 +115,13 @@
 <!-- NAVIGATION TABS -->
 <div class="bg-white border-b border-gray-200 sticky top-[68px] z-[50]">
     <div class="max-w-4xl mx-auto px-4 flex justify-center space-x-8">
-        <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-active py-3 text-sm font-medium text-gray-500 hover:text-brand smooth-transition">
+        <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-active py-3 text-sm font-medium text-gray-500 hover:text-brand smooth-transition border-b-[3px] border-transparent">
             <i class="fa-solid fa-chart-line mr-2"></i>Dashboard & Ringkasan
         </button>
-        <button onclick="switchTab('input')" id="tab-input" class="py-3 text-sm font-medium text-gray-500 hover:text-brand smooth-transition border-b-3 border-transparent">
+        <button onclick="switchTab('input')" id="tab-input" class="py-3 text-sm font-medium text-gray-500 hover:text-brand smooth-transition border-b-[3px] border-transparent">
             <i class="fa-solid fa-pen-to-square mr-2"></i>Input Transaksi
         </button>
-        <button onclick="window.location.href='InputGajiPelatih.html'" id="tab-input-pelatih" class="py-3 text-sm font-medium text-gray-500 hover:text-brand smooth-transition border-b-3 border-transparent">
+        <button onclick="window.location.href='InputGajiPelatih.html'" id="tab-input-pelatih" class="py-3 text-sm font-medium text-gray-500 hover:text-brand smooth-transition border-b-[3px] border-transparent">
             <i class="fa-solid fa-pen-to-square mr-2"></i>Input Fee Pelatih
         </button>
     </div>
@@ -130,73 +130,64 @@
 <main class="flex-grow py-6 px-4 sm:px-6 lg:px-8">
     <div class="max-w-4xl mx-auto relative min-h-[400px]">
         
-        <!-- ============================================== -->
-        <!-- MENU 1: DASHBOARD & RINGKASAN                  -->
-        <!-- ============================================== -->
+        <!-- MENU 1: DASHBOARD & RINGKASAN -->
         <div id="view-dashboard" class="animate__animated animate__fadeIn">
-            
             <!-- Summary Cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <!-- Total Pemasukan -->
                 <div class="bg-white rounded-card shadow-sm border border-gray-100 p-5 border-l-4 border-l-[#25D366]">
                     <p class="text-xs text-gray-500 font-medium uppercase tracking-wider mb-1">Total Pemasukan</p>
                     <h2 class="text-xl font-bold text-gray-800" id="summary-pemasukan">Rp 0</h2>
                 </div>
-                <!-- Total Pengeluaran -->
                 <div class="bg-white rounded-card shadow-sm border border-gray-100 p-5 border-l-4 border-l-red-500">
                     <p class="text-xs text-gray-500 font-medium uppercase tracking-wider mb-1">Total Pengeluaran</p>
                     <h2 class="text-xl font-bold text-gray-800" id="summary-pengeluaran">Rp 0</h2>
                 </div>
-                <!-- Saldo Akhir -->
                 <div class="bg-brand rounded-card shadow-sm p-5 text-white">
                     <p class="text-xs text-brand-light font-medium uppercase tracking-wider mb-1">Saldo Kas Saat Ini</p>
                     <h2 class="text-xl font-bold" id="summary-saldo">Rp 0</h2>
                 </div>
             </div>
 
-            <!-- Data Table (Membaca Sheet) -->
+            <!-- Data Table -->
             <div class="bg-white rounded-card shadow-sm border border-gray-100 overflow-hidden">
-                <div class="px-5 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                <div class="px-5 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50 flex-wrap gap-3">
                     <h3 class="text-sm font-medium text-brand-textDark flex items-center gap-2">
                         <i class="fa-solid fa-table-list text-brand"></i> Buku Kas Umum (Periode I)
                     </h3>
-                    <button onclick="loadDashboardData()" class="text-xs text-white bg-brand hover:bg-brand-dark px-3 py-1.5 rounded smooth-transition">
-                        <i class="fa-solid fa-rotate-right mr-1"></i> Refresh
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <button onclick="cetakLaporanPDF()" class="text-xs text-white bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded smooth-transition flex items-center shadow-sm cursor-pointer">
+                            <i class="fa-solid fa-file-pdf mr-1"></i> Laporan PDF
+                        </button>
+                        <button onclick="loadDashboardData()" class="text-xs text-white bg-brand hover:bg-brand-dark px-3 py-1.5 rounded smooth-transition flex items-center shadow-sm cursor-pointer">
+                            <i class="fa-solid fa-rotate-right mr-1"></i> Refresh
+                        </button>
+                    </div>
                 </div>
                 
                 <div class="p-0 table-container overflow-x-auto">
-                    <table class="w-full text-left border-collapse min-w-[750px]">
+                    <table class="w-full text-left border-collapse min-w-[850px]">
                         <thead>
                             <tr class="bg-gray-100 text-gray-600 text-[11px] uppercase tracking-wider">
-                                <th class="p-3 border-b font-medium text-center w-12">No</th>
-                                <th class="p-3 border-b font-medium">Timeline (Waktu)</th>
+                                <th class="p-3 border-b font-medium text-center w-10">No</th>
+                                <th class="p-3 border-b font-medium">Timeline</th>
                                 <th class="p-3 border-b font-medium">Uraian Transaksi</th>
                                 <th class="p-3 border-b font-medium text-right">Pemasukan</th>
                                 <th class="p-3 border-b font-medium text-right">Pengeluaran</th>
                                 <th class="p-3 border-b font-medium text-center">Bukti</th>
+                                <th class="p-3 border-b font-medium text-center w-16">Struk</th>
                                 <th class="p-3 border-b font-medium text-center w-16">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="table-body" class="text-sm text-gray-700">
-                            <!-- Data akan dimuat disini oleh JavaScript -->
-                            <tr>
-                                <td colspan="7" class="p-8 text-center text-gray-400 text-sm">
-                                    <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-brand"></i><br>
-                                    Memuat data....
-                                </td>
-                            </tr>
+                            <!-- Data dimuat JavaScript -->
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- ============================================== -->
-        <!-- MENU 2: INPUT TRANSAKSI                        -->
-        <!-- ============================================== -->
+        <!-- MENU 2: INPUT TRANSAKSI -->
         <div id="view-input" class="hidden animate__animated animate__fadeIn max-w-3xl mx-auto">
-            
             <div class="bg-white rounded-card shadow-sm border border-gray-100 overflow-hidden">
                 <div class="bg-gray-50 px-5 py-4 border-b border-gray-100">
                     <h3 class="text-sm font-medium text-brand-textDark flex items-center gap-2">
@@ -205,36 +196,28 @@
                 </div>
                 
                 <form id="keuanganForm" class="p-5 sm:p-6 space-y-5">
-                    
-                    <!-- TIMELINE (Bisa Edit, Default Otomatis NOW) -->
                     <div>
                         <label class="block text-xs font-medium text-gray-700 mb-1.5">Timeline (Waktu & Tanggal)</label>
                         <div class="relative">
-                            <input type="datetime-local" id="timeline" name="timeline" required 
-                                class="form-input w-full px-3 py-2.5 border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition bg-white">
+                            <input type="datetime-local" id="timeline" name="timeline" required class="form-input w-full px-3 py-2.5 border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition bg-white">
                         </div>
-                        <p class="text-[10px] text-gray-400 mt-1">Otomatis terisi waktu saat ini, namun dapat diubah jika mencatat transaksi lampau.</p>
                     </div>
 
-                    <!-- URAIAN -->
                     <div>
                         <label class="block text-xs font-medium text-gray-700 mb-1.5">Uraian Transaksi</label>
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
                                 <i class="fa-solid fa-pen-to-square text-xs"></i>
                             </span>
-                            <input type="text" id="uraian" name="uraian" required placeholder="Contoh: Iuran anggota bulan Januari" 
-                                class="form-input w-full pl-9 pr-3 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition">
+                            <input type="text" id="uraian" name="uraian" required placeholder="Contoh: Iuran anggota bulan Januari" class="form-input w-full pl-9 pr-3 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-gray-100 pt-4 mt-2">
-                        <!-- JENIS TRANSAKSI (Menentukan Pemasukan/Pengeluaran) -->
                         <div>
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Jenis Arus Kas</label>
                             <div class="relative">
-                                <select id="jenisTransaksi" name="jenisTransaksi" required 
-                                    class="form-input w-full pl-3 pr-8 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition appearance-none cursor-pointer text-gray-700 font-medium">
+                                <select id="jenisTransaksi" name="jenisTransaksi" required class="form-input w-full pl-3 pr-8 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition appearance-none cursor-pointer text-gray-700 font-medium">
                                     <option value="Pemasukan">Dana Masuk (Pemasukan)</option>
                                     <option value="Pengeluaran">Dana Keluar (Pengeluaran)</option>
                                 </select>
@@ -244,31 +227,23 @@
                             </div>
                         </div>
 
-                        <!-- NOMINAL -->
                         <div>
                             <label class="block text-xs font-medium text-gray-700 mb-1.5">Nominal (Rp)</label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                                    Rp
-                                </span>
-                                <input type="number" id="nominal" name="nominal" required placeholder="Contoh: 260000" min="1" 
-                                    class="form-input w-full pl-9 pr-3 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">Rp</span>
+                                <input type="number" id="nominal" name="nominal" required placeholder="Contoh: 260000" min="1" class="form-input w-full pl-9 pr-3 py-2.5 bg-white border border-gray-300 rounded-btn text-sm focus:outline-none smooth-transition">
                             </div>
                         </div>
                     </div>
 
-                    <!-- BUKTI TRANSAKSI (FILE) -->
                     <div class="pt-4 border-t border-dashed border-gray-200">
-                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Bukti Transaksi (Opsional/Wajib)</label>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Bukti Transaksi (Opsional)</label>
                         <input type="file" id="buktiFile" accept="image/*" class="w-full text-sm text-gray-500">
-                        
-                        <!-- Preview Image -->
                         <div class="mt-3">
                             <img id="imgPreview" class="hidden w-40 h-40 object-cover rounded-card border border-gray-200 shadow-sm" alt="Preview Bukti">
                         </div>
                     </div>
 
-                    <!-- TOMBOL SUBMIT -->
                     <div class="pt-5 flex items-center justify-end space-x-3">
                         <button type="button" onclick="resetForm()" class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-600 text-sm font-medium py-2.5 px-5 rounded-btn smooth-transition cursor-pointer">
                             Batal
@@ -284,11 +259,8 @@
     </div>
 </main>
 
-<!-- FLOATING BUTTON (WHATSAPP) -->
-<a href="https://api.whatsapp.com/send?phone=6285715232441" 
-   target="_blank" 
-   class="fixed bottom-6 right-6 bg-[#25D366] hover:bg-[#1ebe57] text-white p-3 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 z-[90] flex items-center justify-center group"
-   aria-label="Hubungi Admin">
+<!-- FLOATING BUTTON WHATSAPP -->
+<a href="https://api.whatsapp.com/send?phone=6285715232441" target="_blank" class="fixed bottom-6 right-6 bg-[#25D366] hover:bg-[#1ebe57] text-white p-3 rounded-full shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 z-[90] flex items-center justify-center group" aria-label="Hubungi Admin">
     <i class="fa-brands fa-whatsapp text-2xl"></i>
 </a>
 
@@ -297,20 +269,103 @@
     <p>Keuangan © PAC PSNU PAGARNUSA Kec. Kemang.</p>
 </footer>
 
+<!-- 1. TEMPLATE PDF LAPORAN UTAMA -->
+<div id="pdf-laporan-container" class="pdf-template">
+    <div id="pdf-laporan-content" style="padding: 40px; background: #fff; line-height: 1.5; color:#000;">
+        <div style="text-align: center; border-bottom: 3px solid #000; padding-bottom: 10px; margin-bottom: 20px; font-family: 'Arial', sans-serif;">
+            <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" style="height: 80px; display: block; margin: 0 auto 5px auto;">
+            <h2 style="margin: 0; font-size: 18px; font-weight: bold; line-height: 1.1;">LAPORAN KEUANGAN</h2>
+            <h1 style="margin: 3px 0 0; font-size: 22px; font-weight: bold; color: #056839; line-height: 1.1;">PIMPINAN ANAK CABANG</h1>
+            <h1 style="margin: 3px 0 0; font-size: 22px; font-weight: bold; color: #056839; line-height: 1.1;">PAGARNUSA KECAMATAN KEMANG</h1>
+        </div>
+
+        <div style="margin-bottom: 15px; font-size: 14px; font-family: 'Arial', sans-serif;">
+            <p style="margin: 0;"><b>Periode:</b> Laporan Tahap / Periode I</p>
+            <p style="margin: 0;"><b>Tanggal Cetak:</b> <span id="pdf-tgl-cetak"></span></p>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; font-size: 13px; font-family: 'Arial', sans-serif; margin-bottom: 30px;">
+            <thead>
+                <tr style="background-color: #f0f0f0;">
+                    <th style="border: 1px solid #000; padding: 8px; text-align: center; width: 5%;">No</th>
+                    <th style="border: 1px solid #000; padding: 8px; text-align: left; width: 20%;">Tanggal/Waktu</th>
+                    <th style="border: 1px solid #000; padding: 8px; text-align: left; width: 35%;">Uraian Transaksi</th>
+                    <th style="border: 1px solid #000; padding: 8px; text-align: right; width: 20%;">Pemasukan</th>
+                    <th style="border: 1px solid #000; padding: 8px; text-align: right; width: 20%;">Pengeluaran</th>
+                </tr>
+            </thead>
+            <tbody id="pdf-table-body">
+                <!-- Data List akan dimasukkan via JavaScript -->
+            </tbody>
+            <tfoot>
+                <tr style="font-weight: bold; background-color: #f9f9f9;">
+                    <td colspan="3" style="border: 1px solid #000; padding: 8px; text-align: right;">TOTAL:</td>
+                    <td style="border: 1px solid #000; padding: 8px; text-align: right; color: #056839;" id="pdf-total-pemasukan">Rp 0</td>
+                    <td style="border: 1px solid #000; padding: 8px; text-align: right; color: #b91c1c;" id="pdf-total-pengeluaran">Rp 0</td>
+                </tr>
+                <tr style="font-weight: bold;">
+                    <td colspan="3" style="border: 1px solid #000; padding: 10px; text-align: right; font-size: 15px;">SALDO AKHIR:</td>
+                    <td colspan="2" style="border: 1px solid #000; padding: 10px; text-align: center; font-size: 16px; background-color: #056839; color: #fff;" id="pdf-saldo-akhir">Rp 0</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div style="display: flex; justify-content: flex-end; margin-top: 50px; font-family: 'Arial', sans-serif; font-size: 14px;">
+            <div style="width: 250px; text-align: center;">
+                <p style="margin: 0 0 70px 0;">Kemang, <span id="pdf-tgl-ttd"></span><br>Mengetahui Bendahara,</p>
+                <p style="margin: 0; font-weight: bold; text-decoration: underline;">AMELDA S.HUM</p>
+                <p style="margin: 5px 0 0; font-size: 12px; color: #555;">PAC PSNU Pagar Nusa Kec. Kemang</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 2. TEMPLATE STRUK MINI -->
+<div id="pdf-struk-container" class="pdf-template">
+    <div id="pdf-struk-content" style="width: 80mm; padding: 5mm; font-family: 'Courier New', Courier, monospace; font-size: 12px; color: #000; background: #fff; line-height: 1.4; margin: 0 auto;">
+        <div style="text-align: center; border-bottom: 1px dashed #000; padding-bottom: 10px; margin-bottom: 10px;">
+            <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo" style="height: 45px; display: block; margin: 0 auto 5px auto;">
+            <div style="font-weight: bold; font-size: 14px; font-family: sans-serif;">PAC PAGARNUSA</div>
+            <div style="font-size: 12px; font-family: sans-serif;">Kecamatan Kemang</div>
+            <div style="font-size: 11px; margin-top: 5px; font-weight: bold;">BUKTI TRANSAKSI KAS</div>
+        </div>
+        
+        <div style="margin-bottom: 10px; font-size: 11px;">
+            <div>Waktu: <span id="struk-waktu"></span></div>
+            <div>Status: <span id="struk-tipe" style="font-weight: bold;"></span></div>
+        </div>
+        
+        <div style="border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 10px 0; margin-bottom: 15px;">
+            <div style="font-weight: bold; margin-bottom: 5px;">Uraian Transaksi:</div>
+            <div id="struk-uraian" style="margin-bottom: 10px; line-height: 1.3;"></div>
+            
+            <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 14px; align-items: center; margin-top:15px;">
+                <span>NOMINAL</span>
+                <span id="struk-nominal"></span>
+            </div>
+        </div>
+        
+        <div style="text-align: center; font-size: 10px; margin-top: 20px;">
+            <div style="font-weight:bold;">Terima Kasih</div>
+            <div>Simpan struk ini sebagai bukti sah</div>
+            <div style="margin-top:10px;">- Bendahara: Amelda S.Hum -</div>
+        </div>
+    </div>
+</div>
+
 <!-- SCRIPT LOGIKA -->
 <script>
-    // =========================================================================
-    // URL WEB APP GOOGLE APPS SCRIPT ANDA
-    // =========================================================================
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwG6cwvQb4_vQcrFlx2NjwxMVLYPeSxZegTQaG0F-nHxMKOp09ePhdH1yFOdarfG_Z54A/exec";
-    const SHEET_NAME = "Periode I"; // Sesuaikan jika Anda kemarin mengubahnya jadi "2026"
+    const SHEET_NAME = "Periode I";
 
-    // Format Rupiah Helper
+    let globalDataKeuangan = [];
+    let globalTotalPemasukan = 0;
+    let globalTotalPengeluaran = 0;
+
     const formatRupiah = (angka) => {
         return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(angka);
     };
 
-    // Fungsi Switch Tab / Menu
     function switchTab(tabName) {
         const viewDashboard = document.getElementById('view-dashboard');
         const viewInput = document.getElementById('view-input');
@@ -322,56 +377,50 @@
             viewInput.classList.add('hidden');
             btnDash.classList.add('tab-active');
             btnInput.classList.remove('tab-active');
-            
             loadDashboardData();
         } else {
             viewDashboard.classList.add('hidden');
             viewInput.classList.remove('hidden');
             btnDash.classList.remove('tab-active');
             btnInput.classList.add('tab-active');
-            
             setTimelineToNow();
         }
     }
 
-    // Set Timeline Datetime-Local
     function setTimelineToNow() {
         const now = new Date();
         now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
         document.getElementById('timeline').value = now.toISOString().slice(0, 16);
     }
 
-    // Fungsi Mengambil Data dari Sheet (doGet)
     async function loadDashboardData() {
         const tableBody = document.getElementById('table-body');
-        tableBody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-gray-400 text-sm"><i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-brand"></i><br>Sinkronisasi data...</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-gray-400 text-sm"><i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-brand"></i><br>Sinkronisasi data...</td></tr>`;
         
         try {
             const response = await fetch(APPS_SCRIPT_URL + `?action=getData&sheetName=${SHEET_NAME}`);
-            
             if(!response.ok) throw new Error("Gagal mengambil data");
             const result = await response.json(); 
             
             const data = result.data || [];
-            
-            let totalMasuk = 0;
-            let totalKeluar = 0;
+            globalDataKeuangan = data;
+            globalTotalPemasukan = 0;
+            globalTotalPengeluaran = 0;
+
             let htmlTable = "";
 
             if(data.length === 0) {
-                htmlTable = `<tr><td colspan="7" class="p-6 text-center text-gray-500 text-sm">Belum ada catatan transaksi.</td></tr>`;
+                htmlTable = `<tr><td colspan="8" class="p-6 text-center text-gray-500 text-sm">Belum ada catatan transaksi.</td></tr>`;
             } else {
                 data.forEach((row, index) => {
                     const uangMasuk = parseFloat(row.pemasukan) || 0;
                     const uangKeluar = parseFloat(row.pengeluaran) || 0;
                     
-                    totalMasuk += uangMasuk;
-                    totalKeluar += uangKeluar;
+                    globalTotalPemasukan += uangMasuk;
+                    globalTotalPengeluaran += uangKeluar;
                     
                     let displayTime = row.timeline ? String(row.timeline).replace('T', ' ') : '-';
                     let displayBukti = row.bukti ? `<a href="${row.bukti}" target="_blank" class="text-blue-500 hover:underline"><i class="fa-solid fa-image"></i> Lihat</a>` : `<span class="text-gray-300">-</span>`;
-
-                    // index + 2 karena baris 1 di google sheet adalah header (judul kolom), jadi data dimulai dari baris 2
                     const sheetRowIndex = index + 2; 
 
                     htmlTable += `
@@ -383,7 +432,12 @@
                             <td class="p-3 text-right text-red-500">${uangKeluar > 0 ? formatRupiah(uangKeluar) : '-'}</td>
                             <td class="p-3 text-center text-xs">${displayBukti}</td>
                             <td class="p-3 text-center">
-                                <button onclick="confirmDelete(${sheetRowIndex})" class="text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 p-1.5 rounded transition-colors" title="Hapus Data">
+                                <button onclick="cetakStrukMini(${index})" class="text-gray-600 hover:text-brand bg-gray-100 hover:bg-green-100 p-1.5 px-3 rounded transition-colors text-xs font-medium border border-gray-200 cursor-pointer" title="Cetak Struk">
+                                    <i class="fa-solid fa-receipt mr-1"></i> Struk
+                                </button>
+                            </td>
+                            <td class="p-3 text-center">
+                                <button onclick="confirmDelete(${sheetRowIndex})" class="text-red-400 hover:text-red-600 bg-red-50 hover:bg-red-100 p-1.5 rounded transition-colors cursor-pointer" title="Hapus Data">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>
                             </td>
@@ -394,20 +448,120 @@
             
             tableBody.innerHTML = htmlTable;
             
-            const saldoAkhir = totalMasuk - totalKeluar;
-            document.getElementById('summary-pemasukan').innerText = formatRupiah(totalMasuk);
-            document.getElementById('summary-pengeluaran').innerText = formatRupiah(totalKeluar);
+            const saldoAkhir = globalTotalPemasukan - globalTotalPengeluaran;
+            document.getElementById('summary-pemasukan').innerText = formatRupiah(globalTotalPemasukan);
+            document.getElementById('summary-pengeluaran').innerText = formatRupiah(globalTotalPengeluaran);
             document.getElementById('summary-saldo').innerText = formatRupiah(saldoAkhir);
 
         } catch (error) {
             console.error(error);
-            tableBody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-red-400 text-sm"><i class="fa-solid fa-circle-exclamation text-xl mb-2"></i><br>Gagal memuat data.</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="8" class="p-8 text-center text-red-400 text-sm"><i class="fa-solid fa-circle-exclamation text-xl mb-2"></i><br>Gagal memuat data.</td></tr>`;
         }
     }
 
-    // ==========================================
-    // FUNGSI BARU: HAPUS DATA
-    // ==========================================
+    function cetakLaporanPDF() {
+        if (globalDataKeuangan.length === 0) {
+            showAlert("Data kosong! Tidak ada data untuk dicetak.", "warning");
+            return;
+        }
+
+        Swal.fire({
+            title: 'Menyiapkan Laporan PDF...',
+            allowOutsideClick: false,
+            didOpen: () => { Swal.showLoading(); }
+        });
+
+        const tglConfig = { day: 'numeric', month: 'long', year: 'numeric' };
+        const hariIni = new Date().toLocaleDateString('id-ID', tglConfig);
+        document.getElementById('pdf-tgl-cetak').innerText = hariIni;
+        document.getElementById('pdf-tgl-ttd').innerText = hariIni;
+
+        const pdfTableBody = document.getElementById('pdf-table-body');
+        pdfTableBody.innerHTML = "";
+        
+        globalDataKeuangan.forEach((row, i) => {
+            const masuk = parseFloat(row.pemasukan) || 0;
+            const keluar = parseFloat(row.pengeluaran) || 0;
+            const waktu = row.timeline ? String(row.timeline).replace('T', ' ') : '-';
+            
+            pdfTableBody.innerHTML += `
+                <tr>
+                    <td style="border: 1px solid #000; padding: 6px; text-align: center;">${i + 1}</td>
+                    <td style="border: 1px solid #000; padding: 6px;">${waktu}</td>
+                    <td style="border: 1px solid #000; padding: 6px;">${row.uraian || '-'}</td>
+                    <td style="border: 1px solid #000; padding: 6px; text-align: right;">${masuk > 0 ? formatRupiah(masuk) : '-'}</td>
+                    <td style="border: 1px solid #000; padding: 6px; text-align: right;">${keluar > 0 ? formatRupiah(keluar) : '-'}</td>
+                </tr>
+            `;
+        });
+
+        document.getElementById('pdf-total-pemasukan').innerText = formatRupiah(globalTotalPemasukan);
+        document.getElementById('pdf-total-pengeluaran').innerText = formatRupiah(globalTotalPengeluaran);
+        document.getElementById('pdf-saldo-akhir').innerText = formatRupiah(globalTotalPemasukan - globalTotalPengeluaran);
+
+        const element = document.getElementById('pdf-laporan-content');
+        document.getElementById('pdf-laporan-container').style.display = 'block';
+
+        const opt = {
+            margin:       10,
+            filename:     `Laporan_Keuangan_PagarNusa_${new Date().getTime()}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            document.getElementById('pdf-laporan-container').style.display = 'none';
+            Swal.close();
+        }).catch((err) => {
+            console.error(err);
+            document.getElementById('pdf-laporan-container').style.display = 'none';
+            Swal.fire("Error", "Gagal mencetak laporan PDF", "error");
+        });
+    }
+
+    function cetakStrukMini(index) {
+        const data = globalDataKeuangan[index];
+        if (!data) return;
+
+        Swal.fire({
+            title: 'Membuat Struk Transaksi...',
+            allowOutsideClick: false,
+            didOpen: () => { Swal.showLoading(); }
+        });
+
+        const masuk = parseFloat(data.pemasukan) || 0;
+        const keluar = parseFloat(data.pengeluaran) || 0;
+        
+        const nominal = masuk > 0 ? masuk : keluar;
+        const tipe = masuk > 0 ? 'DANA MASUK' : 'DANA KELUAR';
+        
+        document.getElementById('struk-waktu').innerText = data.timeline ? String(data.timeline).replace('T', ' ') : '-';
+        document.getElementById('struk-tipe').innerText = tipe;
+        document.getElementById('struk-uraian').innerText = data.uraian || '-';
+        document.getElementById('struk-nominal').innerText = formatRupiah(nominal);
+
+        const element = document.getElementById('pdf-struk-content');
+        document.getElementById('pdf-struk-container').style.display = 'block';
+
+        const opt = {
+            margin:       0,
+            filename:     `Struk_Kas_${new Date().getTime()}.pdf`,
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true },
+            jsPDF:        { unit: 'mm', format: [80, 130], orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            document.getElementById('pdf-struk-container').style.display = 'none';
+            Swal.close();
+        }).catch((err) => {
+            console.error(err);
+            document.getElementById('pdf-struk-container').style.display = 'none';
+            Swal.fire("Error", "Gagal mencetak struk kas", "error");
+        });
+    }
+
     function confirmDelete(rowIndex) {
         Swal.fire({
             title: 'Apakah Anda yakin?',
@@ -426,44 +580,27 @@
     }
 
     async function executeDelete(rowIndex) {
-        // Tampilkan loading popup
         Swal.fire({
             title: 'Menghapus data...',
             allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
+            didOpen: () => { Swal.showLoading(); }
         });
 
         try {
-            const payload = {
-                action: "delete",
-                sheetName: SHEET_NAME,
-                row: rowIndex
-            };
-
+            const payload = { action: "delete", sheetName: SHEET_NAME, row: rowIndex };
             await fetch(APPS_SCRIPT_URL, {
-                method: "POST",
-                mode: "no-cors", 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                method: "POST", mode: "no-cors", 
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             });
-
-            // Karena mode no-cors, kita asumsikan request berhasil terkirim ke Apps Script
             Swal.fire('Terhapus!', 'Data berhasil dihapus.', 'success');
-            
-            // Reload tabel
             loadDashboardData();
         } catch (error) {
             console.error("Error:", error);
             showAlert("Gagal menghapus data. Periksa koneksi Anda.", "error");
         }
     }
-    // ==========================================
 
-    // Preview Gambar Bukti
     document.getElementById('buktiFile').addEventListener('change', function(e) {
         const file = e.target.files[0];
         const preview = document.getElementById('imgPreview');
@@ -491,28 +628,16 @@
 
     function fileToBase64(file) {
         return new Promise((resolve, reject) => {
-            if (!file) {
-                resolve(null);
-                return;
-            }
+            if (!file) return resolve(null);
             const reader = new FileReader();
-            reader.onload = () => {
-                const base64String = reader.result.split(',')[1];
-                resolve({
-                    base64: base64String,
-                    type: file.type,
-                    name: file.name
-                });
-            };
+            reader.onload = () => resolve({ base64: reader.result.split(',')[1], type: file.type, name: file.name });
             reader.onerror = error => reject(error);
             reader.readAsDataURL(file);
         });
     }
 
-    // Submit Form Keuangan (POST)
     document.getElementById('keuanganForm').addEventListener('submit', async function(e) {
         e.preventDefault();
-
         const btnSubmit = document.getElementById('btnSubmit');
         const originalText = btnSubmit.innerHTML;
         
@@ -526,12 +651,11 @@
 
             const jenis = document.getElementById('jenisTransaksi').value;
             const nominalVal = parseFloat(document.getElementById('nominal').value) || 0;
-            
             const rawTimeline = document.getElementById('timeline').value; 
             const formattedTimeline = rawTimeline.replace('T', ' ');
 
             const payload = {
-                action: "insert", // Menandakan bahwa ini operasi simpan data baru
+                action: "insert", 
                 sheetName: SHEET_NAME,
                 timeline: formattedTimeline,
                 uraian: document.getElementById('uraian').value,
@@ -541,21 +665,14 @@
             };
 
             await fetch(APPS_SCRIPT_URL, {
-                method: "POST",
-                mode: "no-cors",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                method: "POST", mode: "no-cors",
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             });
 
             showAlert("Data transaksi berhasil ditambahkan!", "success");
             resetForm();
-            
-            setTimeout(() => {
-                switchTab('dashboard');
-            }, 1500);
-
+            setTimeout(() => { switchTab('dashboard'); }, 1500);
         } catch (error) {
             console.error("Error:", error);
             showAlert("Gagal mengirim data. Silakan periksa koneksi internet Anda.", "error");

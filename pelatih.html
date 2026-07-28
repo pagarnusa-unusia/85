@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absensi Pelatih</title>
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ">
+    
+    <!-- Tailwind & SweetAlert2 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#056839',
+                            dark: '#044d2b',
+                            light: '#0b8f4d'
+                        }
+                    },
+                    fontFamily: { sans: ['Roboto', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { background-color: #f5f5f5; color: #222222; }
+        .smooth-transition { transition: all 0.3s ease; }
+        .form-input:focus { box-shadow: inset 0 -2px 0 0 #056839; border-color: transparent; }
+        
+        /* Camera Container Styles */
+        #video-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #000;
+        }
+        #camera-feed {
+            width: 100%;
+            display: block;
+        }
+        #photo-preview {
+            width: 100%;
+            display: none;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen justify-between">
+
+<!-- HEADER -->
+<header class="bg-white py-3 sticky top-0 z-[60] shadow-sm border-b-4 border-brand">
+    <div class="container mx-auto px-4 md:px-6 flex justify-between items-center">
+        <div class="flex items-center space-x-3.5">
+            <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo" class="h-9 md:h-11 w-auto object-contain">
+            <div class="text-left pl-3 border-l-2 border-gray-200">
+                <h1 class="text-base md:text-lg font-black text-brand-dark tracking-tighter leading-none uppercase">PAC PSNU PAGARNUSA</h1>
+                <p class="text-brand text-[10px] md:text-xs font-extrabold tracking-normal uppercase mt-1">Kecamatan Kemang</p>
+            </div>
+        </div>
+        <div class="hidden md:flex items-center gap-3">
+            <span class="text-xs font-medium text-brand font-bold bg-[#f0f9f4] px-3 py-1.5 rounded border border-[#cce8d9]">
+                Absensi Pelatih
+            </span>
+        </div>
+    </div>
+</header>
+
+<main class="flex-grow py-6 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto relative">
+        
+        <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+            <div class="bg-gray-50 px-5 py-4 border-b border-gray-100 flex justify-between items-center">
+                <h3 class="text-sm font-medium text-gray-800 flex items-center gap-2">
+                    <i class="fa-solid fa-clipboard-user text-brand text-lg"></i> Form Absensi Pelatih
+                </h3>
+            </div>
+            
+            <form id="absensiForm" class="p-5 sm:p-6 space-y-5">
+                
+                <!-- TIMELINE (Otomatis) -->
+                <div>
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Waktu Kehadiran</label>
+                    <input type="datetime-local" id="timeline" required readonly
+                        class="form-input w-full px-3 py-2.5 border border-gray-300 rounded text-sm focus:outline-none bg-gray-100 text-gray-500 cursor-not-allowed">
+                </div>
+
+                <!-- PENANGGUNG JAWAB & STRIP -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Penanggung Jawab (Nama Pelatih)</label>
+                        <input type="text" id="penanggungJawab" required placeholder="Masukkan Nama Lengkap" 
+                            class="form-input w-full px-3 py-2.5 border border-gray-300 rounded text-sm focus:outline-none bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Strip</label>
+                        <input type="text" id="strip" required placeholder="Contoh: Strip Putih" 
+                            class="form-input w-full px-3 py-2.5 border border-gray-300 rounded text-sm focus:outline-none bg-white">
+                    </div>
+                </div>
+
+                <!-- RAYON/RANTING & PERTEMUAN KE -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Rayon / Ranting</label>
+                        <input type="text" id="rayon" required placeholder="Contoh: Rayon Kemang" 
+                            class="form-input w-full px-3 py-2.5 border border-gray-300 rounded text-sm focus:outline-none bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-700 mb-1.5">Pertemuan Ke-</label>
+                        <input type="number" id="pertemuan" required placeholder="Contoh: 1" min="1" 
+                            class="form-input w-full px-3 py-2.5 border border-gray-300 rounded text-sm focus:outline-none bg-white">
+                    </div>
+                </div>
+
+                <!-- GPS LOKASI -->
+                <div class="pt-2">
+                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Lokasi Latihan (Otomatis)</label>
+                    <div class="flex items-center space-x-3 bg-gray-50 p-3 rounded border border-gray-200">
+                        <i id="gps-icon" class="fa-solid fa-location-dot text-gray-400 text-lg"></i>
+                        <div class="flex-grow">
+                            <p id="lokasiText" class="text-xs text-gray-600 font-medium">Mendeteksi lokasi...</p>
+                            <input type="hidden" id="mapsLink" required>
+                        </div>
+                        <button type="button" onclick="getLocation()" class="text-xs bg-white border border-gray-300 px-3 py-1.5 rounded hover:bg-gray-100 smooth-transition">
+                            Perbarui
+                        </button>
+                    </div>
+                    <p class="text-[10px] text-gray-400 mt-1">Pastikan Anda mengizinkan akses lokasi pada browser/perangkat Anda.</p>
+                </div>
+
+                <!-- KAMERA BUKTI KEHADIRAN -->
+                <div class="pt-4 border-t border-gray-100">
+                    <label class="block text-xs font-medium text-gray-700 mb-2 text-center">Bukti Kehadiran (Foto Live)</label>
+                    
+                    <div id="video-container" class="border-2 border-gray-300 border-dashed">
+                        <!-- Video Feed -->
+                        <video id="camera-feed" autoplay playsinline></video>
+                        <!-- Image Preview -->
+                        <img id="photo-preview" alt="Preview Foto">
+                    </div>
+                    
+                    <!-- Hidden Canvas for capturing -->
+                    <canvas id="canvas" hidden></canvas>
+
+                    <div class="flex justify-center space-x-3 mt-4">
+                        <button type="button" id="btn-retake" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium py-2 px-4 rounded smooth-transition">
+                            <i class="fa-solid fa-rotate-right mr-1"></i> Ulangi Foto
+                        </button>
+                        <button type="button" id="btn-capture" class="bg-brand text-white text-sm font-medium py-2 px-6 rounded hover:bg-brand-dark smooth-transition">
+                            <i class="fa-solid fa-camera mr-1"></i> Ambil Foto
+                        </button>
+                    </div>
+                    <input type="hidden" id="fotoBase64" required>
+                </div>
+
+                <!-- TOMBOL SUBMIT -->
+                <div class="pt-6 mt-2 border-t border-gray-100">
+                    <button type="submit" id="btnSubmit" class="bg-brand hover:bg-brand-dark text-white text-sm font-medium py-3 px-8 rounded smooth-transition w-full shadow-sm">
+                        <i class="fa-solid fa-paper-plane mr-2"></i> Kirim Absensi
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</main>
+
+<script>
+    // URL WEB APP GOOGLE APPS SCRIPT ANDA
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwHdG4LLop2JB1Y_mYwMA3pIFOuLQUAVEi5xJyQBMWDK3J-FTH0TPD65X0AoCHPLfAq7g/exec";
+    const SHEET_NAME = "Pelatih"; 
+
+    // Elemen Kamera
+    const video = document.getElementById('camera-feed');
+    const canvas = document.getElementById('canvas');
+    const photoPreview = document.getElementById('photo-preview');
+    const btnCapture = document.getElementById('btn-capture');
+    const btnRetake = document.getElementById('btn-retake');
+    const inputFoto = document.getElementById('fotoBase64');
+    let stream = null;
+
+    // Set Timeline ke Waktu Saat Ini
+    function setTimelineToNow() {
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        document.getElementById('timeline').value = now.toISOString().slice(0, 16);
+    }
+
+    // 1. FUNGSI GPS / LOKASI
+    function getLocation() {
+        const lokasiText = document.getElementById('lokasiText');
+        const mapsLinkInput = document.getElementById('mapsLink');
+        const gpsIcon = document.getElementById('gps-icon');
+
+        lokasiText.innerText = "Mendeteksi lokasi...";
+        gpsIcon.className = "fa-solid fa-spinner fa-spin text-brand text-lg";
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    const mapUrl = `https://www.google.com/maps?q=${lat},${lon}`;
+                    
+                    lokasiText.innerText = `Terdeteksi: ${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+                    lokasiText.classList.replace('text-gray-600', 'text-brand-dark');
+                    mapsLinkInput.value = mapUrl;
+                    gpsIcon.className = "fa-solid fa-location-crosshairs text-brand text-lg";
+                },
+                (error) => {
+                    lokasiText.innerText = "Gagal mendeteksi lokasi. Pastikan GPS aktif.";
+                    lokasiText.classList.replace('text-gray-600', 'text-red-500');
+                    gpsIcon.className = "fa-solid fa-location-dot text-red-500 text-lg";
+                    Swal.fire('GPS Gagal', 'Pastikan Anda Absen Di Lokasi Latihan Yaa.', 'warning');
+                },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            );
+        } else {
+            lokasiText.innerText = "Browser tidak mendukung GPS.";
+        }
+    }
+
+    // 2. FUNGSI KAMERA
+    async function startCamera() {
+        try {
+            // Meminta akses kamera belakang (environment) jika tersedia
+            stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { facingMode: "environment" }, 
+                audio: false 
+            });
+            video.srcObject = stream;
+            video.style.display = 'block';
+            photoPreview.style.display = 'none';
+            btnCapture.classList.remove('hidden');
+            btnRetake.classList.add('hidden');
+            inputFoto.value = '';
+        } catch (err) {
+            console.error("Gagal mengakses kamera:", err);
+            Swal.fire('Kamera Gagal', 'Harap izinkan akses kamera pada browser Anda untuk absen.', 'error');
+        }
+    }
+
+    function stopCamera() {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+        }
+    }
+
+    // Ambil Foto
+    btnCapture.addEventListener('click', () => {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const context = canvas.getContext('2d');
+        
+        // Menggambar frame video saat ini ke canvas
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        // Mengubah canvas menjadi base64 image (JPG)
+        const dataURL = canvas.toDataURL('image/jpeg', 0.8);
+        
+        // Tampilkan preview
+        photoPreview.src = dataURL;
+        video.style.display = 'none';
+        photoPreview.style.display = 'block';
+        
+        // Simpan base64 murni (tanpa prefix data:image/jpeg;base64,) ke input hidden
+        inputFoto.value = dataURL.split(',')[1];
+        
+        // Ubah tombol
+        btnCapture.classList.add('hidden');
+        btnRetake.classList.remove('hidden');
+    });
+
+    // Ulangi Foto
+    btnRetake.addEventListener('click', () => {
+        video.style.display = 'block';
+        photoPreview.style.display = 'none';
+        btnCapture.classList.remove('hidden');
+        btnRetake.classList.add('hidden');
+        inputFoto.value = '';
+    });
+
+    // 3. SUBMIT FORM
+document.getElementById('absensiForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        if (!inputFoto.value) {
+            Swal.fire('Peringatan', 'Anda wajib mengambil foto bukti kehadiran terlebih dahulu!', 'warning');
+            return;
+        }
+        if (!document.getElementById('mapsLink').value) {
+            Swal.fire('Peringatan', 'Lokasi GPS belum terdeteksi. Silakan klik Perbarui GPS.', 'warning');
+            return;
+        }
+
+        const btnSubmit = document.getElementById('btnSubmit');
+        const originalText = btnSubmit.innerHTML;
+        
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengirim Data...';
+        btnSubmit.classList.add('opacity-70', 'cursor-not-allowed');
+
+        try {
+            const rawTimeline = document.getElementById('timeline').value; 
+            const formattedTimeline = rawTimeline.replace('T', ' ');
+
+            const payload = {
+                action: "insert",
+                sheetName: SHEET_NAME,
+                timeline: formattedTimeline,
+                penanggungJawab: document.getElementById('penanggungJawab').value,
+                strip: document.getElementById('strip').value,
+                rayon: document.getElementById('rayon').value,
+                pertemuan: document.getElementById('pertemuan').value,
+                lokasi: document.getElementById('mapsLink').value,
+                fileData: {
+                    base64: inputFoto.value,
+                    type: "image/jpeg",
+                    name: "Absensi_" + document.getElementById('penanggungJawab').value.replace(/\s+/g, '_') + ".jpg"
+                }
+            };
+
+            // PERUBAHAN UTAMA: Hapus mode: "no-cors" agar data terkirim sempurna
+            const response = await fetch(APPS_SCRIPT_URL, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil Absen',
+                    text: 'Data dan foto berhasil tersimpan!',
+                    confirmButtonColor: '#056839'
+                }).then(() => {
+                    document.getElementById('absensiForm').reset();
+                    setTimelineToNow();
+                    startCamera();
+                });
+            } else {
+                throw new Error(result.message || 'Gagal menyimpan ke server');
+            }
+            
+        } catch (error) {
+            console.error("Error:", error);
+            Swal.fire('Gagal', 'Terjadi kesalahan: ' + error.message, 'error');
+        } finally {
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = originalText;
+            btnSubmit.classList.remove('opacity-70', 'cursor-not-allowed');
+        }
+    });
+
+    // Inisialisasi saat halaman dimuat
+    window.onload = () => {
+        setTimelineToNow();
+        getLocation(); // Otomatis cari lokasi
+        startCamera(); // Otomatis nyalakan kamera
+    };
+</script>
+
+</body>
+</html>

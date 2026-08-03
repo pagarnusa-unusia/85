@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Planner PAC PSNU Pagar Nusa Kemang</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- FullCalendar Core & Locales -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/locales-all.global.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .fc-event { cursor: pointer; border-radius: 4px; padding: 2px 4px; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        /* Agar judul kalender di mobile tidak terlalu besar dan rapi */
+        @media (max-width: 768px) {
+            .fc-toolbar-title { font-size: 1.25rem !important; }
+            .fc-toolbar { flex-direction: column; gap: 10px; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 flex h-screen overflow-hidden">
+
+    <!-- Overlay untuk Sidebar di Mobile -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black bg-opacity-50 z-20 hidden md:hidden transition-opacity"></div>
+
+    <!-- Sidebar Navigasi -->
+    <aside id="sidebar" class="w-64 bg-white shadow-lg flex flex-col fixed inset-y-0 left-0 z-30 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="h-16 flex items-center px-6 border-b border-gray-100 flex-shrink-0">
+            <i class="fa-solid fa-shield-halved text-green-700 text-2xl mr-3"></i>
+            <div>
+                <span class="text-base font-bold text-gray-800 block leading-tight">PAGAR NUSA</span>
+                <span class="text-xs text-green-700 font-semibold">PAC KEMANG</span>
+            </div>
+            <!-- Tombol Close Sidebar untuk Mobile -->
+            <button onclick="toggleSidebar()" class="ml-auto md:hidden text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+            <button onclick="switchTab('dashboard')" id="btn-dashboard" class="nav-btn w-full flex items-center px-4 py-3 rounded-lg hover:bg-green-50 hover:text-green-700 transition-colors bg-green-50 text-green-700 font-medium">
+                <i class="fa-solid fa-chart-pie w-6"></i> Dashboard
+            </button>
+            <button onclick="switchTab('laporan')" id="btn-laporan" class="nav-btn w-full flex items-center px-4 py-3 text-gray-600 rounded-lg hover:bg-green-50 hover:text-green-700 transition-colors">
+                <i class="fa-solid fa-pen-to-square w-6"></i> Form Laporan
+            </button>
+            <button onclick="switchTab('plan')" id="btn-plan" class="nav-btn w-full flex items-center px-4 py-3 text-gray-600 rounded-lg hover:bg-green-50 hover:text-green-700 transition-colors">
+                <i class="fa-solid fa-calendar-days w-6"></i> Kalender Plan
+            </button>
+        </nav>
+        <div class="p-4 border-t border-gray-100 flex-shrink-0">
+            <button onclick="fetchDataFromPlanSheet()" class="w-full flex items-center justify-center px-4 py-2.5 text-green-700 bg-green-50 hover:bg-green-100 rounded-lg transition-colors text-sm font-semibold">
+                <i class="fa-solid fa-arrows-rotate mr-2"></i> Sync Spreadsheet
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto w-full">
+        <!-- Header -->
+        <header class="h-16 bg-white shadow-sm flex items-center justify-between px-4 md:px-8 border-b border-gray-100 flex-shrink-0 w-full">
+            <div class="flex items-center gap-3 md:gap-0">
+                <!-- Tombol Hamburger (Hanya Tampil di Mobile) -->
+                <button onclick="toggleSidebar()" class="md:hidden text-gray-600 hover:text-green-700 focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <h2 id="page-title" class="text-lg md:text-xl font-bold text-gray-800 truncate">Dashboard Perencanaan Media</h2>
+            </div>
+            <div class="flex items-center space-x-2 md:space-x-4">
+                <button onclick="fetchDataFromPlanSheet()" class="text-gray-600 hover:text-green-700 text-sm flex items-center gap-2 border px-2 md:px-3 py-1.5 rounded-lg bg-white">
+                    <i class="fa-solid fa-arrows-rotate"></i> <span class="hidden sm:inline">Refresh</span>
+                </button>
+                <div class="w-8 h-8 md:w-9 md:h-9 rounded-full bg-green-700 text-white flex items-center justify-center font-bold text-xs md:text-sm flex-shrink-0">
+                    PN
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Body -->
+        <div class="p-4 md:p-8">
+            
+            <!-- TAB 1: DASHBOARD -->
+            <div id="dashboard" class="tab-content active space-y-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                    <div class="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-gray-100">
+                        <div class="text-gray-500 text-[10px] md:text-xs font-semibold uppercase tracking-wider">Total Plan Konten</div>
+                        <div class="text-2xl md:text-3xl font-bold text-gray-800 mt-2" id="stat-total">0</div>
+                    </div>
+                    <div class="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-gray-100">
+                        <div class="text-gray-500 text-[10px] md:text-xs font-semibold uppercase tracking-wider">Instagram</div>
+                        <div class="text-2xl md:text-3xl font-bold text-pink-600 mt-2" id="stat-ig">0</div>
+                    </div>
+                    <div class="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-gray-100">
+                        <div class="text-gray-500 text-[10px] md:text-xs font-semibold uppercase tracking-wider">TikTok</div>
+                        <div class="text-2xl md:text-3xl font-bold text-gray-900 mt-2" id="stat-tt">0</div>
+                    </div>
+                    <div class="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-gray-100">
+                        <div class="text-gray-500 text-[10px] md:text-xs font-semibold uppercase tracking-wider">Facebook / WA</div>
+                        <div class="text-2xl md:text-3xl font-bold text-blue-600 mt-2" id="stat-fb">0</div>
+                    </div>
+                </div>
+                
+                <div class="bg-green-50 p-4 md:p-6 rounded-xl border border-green-200 flex flex-col sm:flex-row items-start space-y-3 sm:space-y-0 sm:space-x-4">
+                    <i class="fa-solid fa-circle-check text-green-600 text-xl md:text-2xl sm:mt-0.5"></i>
+                    <div>
+                        <h4 class="font-bold text-green-900 text-sm md:text-base">Petunjuk Penggunaan Aplikasi</h4>
+                        <p class="text-green-800 text-xs md:text-sm mt-1 leading-relaxed">
+                            • Data yang diisi di <strong>Form Laporan</strong> akan otomatis tersimpan ke Sheet <strong>Laporan Konten</strong> dan <strong>Plan Konten</strong>.<br/>
+                            • Pilih judul konten dari daftar yang tersedia pada Sheet Plan Konten, atau ketik kata kunci untuk mencari judul.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: FORM LAPORAN KONTEN -->
+            <div id="laporan" class="tab-content">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-8 max-w-3xl mx-auto">
+                    <div class="mb-6 border-b border-gray-100 pb-4">
+                        <h3 class="text-base md:text-lg font-bold text-gray-800">Form Laporan Konten PAC Pagar Nusa Kemang</h3>
+                        <p class="text-gray-500 text-xs md:text-sm mt-1">Pilih judul dari Plan Konten atau masukkan data laporan baru.</p>
+                    </div>
+
+                    <form id="formKonten" class="space-y-5">
+                        
+                        <!-- Pilihan Judul Konten dengan Pencarian -->
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">
+                                Judul Konten (Dari Sheet Plan Konten) <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative" id="judulDropdownContainer">
+                                <div class="relative flex items-center">
+                                    <input type="text" id="judul" required autocomplete="off" 
+                                        class="w-full pl-9 md:pl-10 pr-9 md:pr-10 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 outline-none text-sm" 
+                                        placeholder="Pilih atau cari judul dari Plan Konten..." 
+                                        onfocus="showJudulDropdown()" 
+                                        oninput="onJudulInput(this.value)">
+                                    <i class="fa-solid fa-magnifying-glass absolute left-3 text-gray-400 text-sm"></i>
+                                    <button type="button" onclick="toggleJudulDropdown()" class="absolute right-3 text-gray-400 hover:text-gray-600">
+                                        <i class="fa-solid fa-chevron-down text-xs"></i>
+                                    </button>
+                                </div>
+                                
+                                <!-- Dropdown Menu Popover -->
+                                <div id="judulDropdownMenu" class="hidden absolute z-30 left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-xl max-h-64 overflow-y-auto">
+                                    <div class="p-2 border-b border-gray-100 bg-gray-50 sticky top-0 flex items-center gap-2">
+                                        <i class="fa-solid fa-search text-xs text-gray-400 pl-2"></i>
+                                        <input type="text" id="judulSearchBox" placeholder="Cari judul..." 
+                                            class="w-full text-xs py-1.5 px-2 border border-gray-200 rounded outline-none focus:border-green-600 bg-white"
+                                            oninput="filterJudulOptions(this.value)">
+                                    </div>
+                                    <div id="judulOptionsList" class="divide-y divide-gray-50">
+                                        <div class="px-4 py-3 text-xs text-gray-400 text-center">Memuat daftar judul dari Spreadsheet...</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-[11px] md:text-xs text-gray-500 mt-1.5"><i class="fa-solid fa-info-circle mr-1"></i> Mengambil data dari Kolom B pada sheet <strong>Plan Konten</strong>.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Platform <span class="text-red-500">*</span></label>
+                                <select id="platform" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 outline-none bg-white text-sm">
+                                    <option value="" disabled selected>Pilih Platform...</option>
+                                    <option value="Instagram">Instagram</option>
+                                    <option value="TikTok">TikTok</option>
+                                    <option value="Facebook">Facebook</option>
+                                    <option value="Saluran WhatsApp">Saluran WhatsApp</option>
+                                    <option value="YouTube">YouTube</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Tanggal Tayang <span class="text-red-500">*</span></label>
+                                <input type="date" id="tanggal" required class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 outline-none text-sm">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Status Pengerjaan</label>
+                                <select id="status" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 outline-none bg-white text-sm">
+                                    <option value="Ide/Draft">Ide / Draft</option>
+                                    <option value="Dalam Proses">Dalam Proses (Editing)</option>
+                                    <option value="Siap Tayang">Siap Tayang (Scheduled)</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1">Penanggung Jawab (PIC)</label>
+                                <input type="text" id="pic" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 outline-none text-sm" placeholder="Tim Media / Kominfo PAC">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1">Deskripsi / Catatan</label>
+                            <textarea id="deskripsi" rows="3" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-600 outline-none resize-none text-sm" placeholder="Tuliskan isi pesan / caption singkat..."></textarea>
+                        </div>
+
+                        <div class="pt-2 md:pt-4 flex justify-end">
+                            <button type="submit" id="btnSubmit" class="w-full md:w-auto bg-green-700 hover:bg-green-800 text-white font-semibold py-2.5 px-6 rounded-lg shadow-sm transition-colors flex items-center justify-center text-sm">
+                                <i class="fa-solid fa-paper-plane mr-2"></i> Kirim Laporan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- TAB 3: PLAN KONTEN (KALENDER) -->
+            <div id="plan" class="tab-content">
+                <div class="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-gray-100 overflow-x-auto">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
+                        <div>
+                            <h3 class="text-base md:text-lg font-bold text-gray-800">Kalender Plan Konten</h3>
+                            <p class="text-xs md:text-sm text-gray-500 mt-1">Menampilkan seluruh agenda tayang media dari sheet <strong>Plan Konten</strong>.</p>
+                        </div>
+                        <button onclick="fetchDataFromPlanSheet()" class="w-full sm:w-auto text-sm bg-green-50 text-green-700 border border-green-200 px-3.5 py-2 rounded-lg flex items-center justify-center hover:bg-green-100 transition font-medium">
+                            <i class="fa-solid fa-arrows-rotate mr-2"></i> Sync Data Kalender
+                        </button>
+                    </div>
+                    <!-- Container Kalender -->
+                    <div id="calendar" class="min-w-[600px] md:min-w-full" style="min-height: 650px;"></div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // =========================================================================
+        // URL Web App Google Apps Script
+        // =========================================================================
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw2TbdjusbyTMu98Uc7vsx8Wr1SCUib3z8KFBdEZ6ExV4Z4crbwkfZP7npuhZnEiIakaA/exec'; 
+
+        let planData = [];
+        let calendarInstance = null;
+        let allJudulList = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initCalendar();
+            fetchDataFromPlanSheet();
+        });
+
+        // ---------------------------------------------------------
+        // FUNGSI TOGGLE SIDEBAR UNTUK MOBILE
+        // ---------------------------------------------------------
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            sidebar.classList.toggle('-translate-x-full');
+            
+            if (overlay.classList.contains('hidden')) {
+                overlay.classList.remove('hidden');
+                setTimeout(() => { overlay.classList.remove('opacity-0'); }, 10);
+            } else {
+                overlay.classList.add('opacity-0');
+                setTimeout(() => { overlay.classList.add('hidden'); }, 300);
+            }
+        }
+
+        // Helper untuk Konversi Tanggal ke Format YYYY-MM-DD
+        function formatDateToYYYYMMDD(rawDate) {
+            if (!rawDate) return '';
+            let strDate = String(rawDate).trim();
+
+            if (strDate.includes('T')) {
+                strDate = strDate.split('T')[0];
+            }
+
+            if (/^\d{4}-\d{2}-\d{2}$/.test(strDate)) {
+                return strDate;
+            }
+
+            if (strDate.includes('/')) {
+                const parts = strDate.split('/');
+                if (parts.length === 3) {
+                    return `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+                }
+            }
+
+            const d = new Date(rawDate);
+            if (!isNaN(d.getTime())) {
+                const year = d.getFullYear();
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+
+            return strDate;
+        }
+
+        // Ambil Data dari Spreadsheet
+        async function fetchDataFromPlanSheet() {
+            if(!SCRIPT_URL || SCRIPT_URL.trim() === '' || SCRIPT_URL.includes('PASTE_URL_WEB_APP')) {
+                Swal.fire({
+                    title: 'URL Belum Dipasang!',
+                    text: 'Silakan ganti SCRIPT_URL di dalam file HTML dengan URL Web App dari Apps Script Anda.',
+                    icon: 'warning',
+                    confirmButtonColor: '#15803d'
+                });
+                return;
+            }
+
+            document.getElementById('stat-total').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+            try {
+                const response = await fetch(SCRIPT_URL);
+                const result = await response.json();
+
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+
+                planData = result;
+                updateDashboard();
+                updateJudulListFromSheet();
+
+                if(calendarInstance) {
+                    calendarInstance.removeAllEvents();
+                    calendarInstance.addEventSource(formatEventsForCalendar(planData));
+                }
+            } catch (error) {
+                console.error('Gagal mengambil data:', error);
+                document.getElementById('stat-total').innerText = '0';
+                Swal.fire({
+                    title: 'Gagal Memuat Data',
+                    text: 'Error: ' + error.message + '. Pastikan Akses Apps Script sudah diatur ke "Siapa Saja" (Anyone).',
+                    icon: 'error',
+                    confirmButtonColor: '#15803d'
+                });
+            }
+        }
+
+        // Ekstrak Judul dari Sheet Plan Konten & Update Dropdown Options
+        function updateJudulListFromSheet() {
+            if (!Array.isArray(planData)) return;
+            allJudulList = [...new Set(planData.map(item => item.judul).filter(j => j && j.toString().trim() !== ''))];
+            filterJudulOptions('');
+        }
+
+        // Tampilkan/Saring Opsi Judul berdasarkan Pencarian
+        function filterJudulOptions(keyword) {
+            const listContainer = document.getElementById('judulOptionsList');
+            if (!listContainer) return;
+
+            const filtered = allJudulList.filter(judul => 
+                judul.toLowerCase().includes((keyword || '').toLowerCase())
+            );
+
+            if (filtered.length === 0) {
+                listContainer.innerHTML = '<div class="px-4 py-3 text-xs text-gray-400 text-center">Tidak ada judul yang sesuai</div>';
+                return;
+            }
+
+            listContainer.innerHTML = '';
+            filtered.forEach(judul => {
+                const item = document.createElement('div');
+                item.className = 'px-4 py-2.5 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700 cursor-pointer transition-colors flex items-center justify-between border-b border-gray-50 last:border-none';
+                item.innerHTML = `<span>${judul}</span><i class="fa-solid fa-check text-xs text-green-600 opacity-0 hover:opacity-100"></i>`;
+                
+                item.addEventListener('click', () => {
+                    selectJudulOption(judul);
+                });
+
+                listContainer.appendChild(item);
+            });
+        }
+
+        function showJudulDropdown() {
+            document.getElementById('judulDropdownMenu').classList.remove('hidden');
+            const searchVal = document.getElementById('judulSearchBox').value;
+            filterJudulOptions(searchVal || document.getElementById('judul').value);
+        }
+
+        function toggleJudulDropdown() {
+            const menu = document.getElementById('judulDropdownMenu');
+            if (menu.classList.contains('hidden')) {
+                showJudulDropdown();
+            } else {
+                hideJudulDropdown();
+            }
+        }
+
+        function hideJudulDropdown() {
+            document.getElementById('judulDropdownMenu').classList.add('hidden');
+        }
+
+        function onJudulInput(val) {
+            showJudulDropdown();
+            filterJudulOptions(val);
+        }
+
+        function selectJudulOption(judul) {
+            document.getElementById('judul').value = judul;
+            hideJudulDropdown();
+
+            // Otomatis isi Platform dan Tanggal jika judul cocok di data Plan Konten
+            const matchedItem = planData.find(item => item.judul === judul);
+            if (matchedItem) {
+                if (matchedItem.platform && document.getElementById('platform')) {
+                    document.getElementById('platform').value = matchedItem.platform;
+                }
+                if (matchedItem.tanggal && document.getElementById('tanggal')) {
+                    document.getElementById('tanggal').value = formatDateToYYYYMMDD(matchedItem.tanggal);
+                }
+            }
+        }
+
+        // Tutup dropdown jika mengklik di luar area
+        document.addEventListener('click', (e) => {
+            const container = document.getElementById('judulDropdownContainer');
+            if (container && !container.contains(e.target)) {
+                hideJudulDropdown();
+            }
+        });
+
+        // Format data untuk FullCalendar
+        function formatEventsForCalendar(data) {
+            if (!Array.isArray(data)) return [];
+            return data.map(item => {
+                const formattedDate = formatDateToYYYYMMDD(item.tanggal);
+                return {
+                    id: item.id || Math.random(),
+                    title: `[${item.platform || 'General'}] ${item.judul || 'Tanpa Judul'}`,
+                    start: formattedDate,
+                    backgroundColor: getPlatformColor(item.platform),
+                    borderColor: getPlatformColor(item.platform),
+                    extendedProps: {
+                        status: item.status || 'Draft',
+                        platform: item.platform || '-',
+                        judul: item.judul || '-'
+                    }
+                };
+            });
+        }
+
+        // Simpan Data Form Laporan
+        document.getElementById('formKonten').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            if(!SCRIPT_URL || SCRIPT_URL.trim() === '' || SCRIPT_URL.includes('PASTE_URL_WEB_APP')) {
+                Swal.fire('Error', 'URL Web App belum diisi di kode HTML!', 'error');
+                return;
+            }
+
+            const btnSubmit = document.getElementById('btnSubmit');
+            const originalHTML = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Menyimpan...';
+            btnSubmit.disabled = true;
+
+            const payload = {
+                judul: document.getElementById('judul').value,
+                platform: document.getElementById('platform').value,
+                tanggal: document.getElementById('tanggal').value,
+                status: document.getElementById('status').value,
+                pic: document.getElementById('pic').value,
+                deskripsi: document.getElementById('deskripsi').value
+            };
+
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify(payload)
+                });
+
+                Swal.fire({
+                    title: 'Berhasil Disimpan!',
+                    text: 'Laporan telah terkirim ke Google Sheets & ditambahkan ke Kalender.',
+                    icon: 'success',
+                    confirmButtonColor: '#15803d'
+                });
+
+                this.reset();
+                setTimeout(() => fetchDataFromPlanSheet(), 1500);
+
+            } catch(err) {
+                Swal.fire('Gagal!', 'Terjadi kesalahan jaringan saat menyimpan.', 'error');
+            } finally {
+                btnSubmit.innerHTML = originalHTML;
+                btnSubmit.disabled = false;
+            }
+        });
+
+        // Switcher Tab
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => {
+                el.classList.remove('bg-green-50', 'text-green-700', 'font-medium');
+                el.classList.add('text-gray-600');
+            });
+
+            document.getElementById(tabId).classList.add('active');
+
+            const btn = document.getElementById('btn-' + tabId);
+            if (btn) {
+                btn.classList.remove('text-gray-600');
+                btn.classList.add('bg-green-50', 'text-green-700', 'font-medium');
+            }
+
+            const titles = {
+                'dashboard': 'Dashboard Perencanaan Media',
+                'laporan': 'Form Laporan Konten',
+                'plan': 'Kalender Plan Konten'
+            };
+            if (titles[tabId]) {
+                document.getElementById('page-title').innerText = titles[tabId];
+            }
+
+            if(tabId === 'plan' && calendarInstance) {
+                setTimeout(() => {
+                    calendarInstance.updateSize();
+                    calendarInstance.render();
+                }, 100);
+            }
+            
+            // Otomatis menutup sidebar di tampilan mobile setelah menu di-klik
+            if (window.innerWidth < 768) {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebar-overlay');
+                if (sidebar && !sidebar.classList.contains('-translate-x-full')) {
+                    sidebar.classList.add('-translate-x-full');
+                    overlay.classList.add('opacity-0');
+                    setTimeout(() => { overlay.classList.add('hidden'); }, 300);
+                }
+            }
+        }
+
+        // Warna Badge Platform
+        function getPlatformColor(platform) {
+            switch(platform) {
+                case 'Instagram': return '#e1306c'; 
+                case 'TikTok': return '#111827'; 
+                case 'YouTube': return '#dc2626'; 
+                case 'Facebook': return '#2563eb'; 
+                case 'Saluran WhatsApp': return '#16a34a'; 
+                default: return '#4b5563';
+            }
+        }
+
+        // Inisialisasi FullCalendar
+        function initCalendar() {
+            const calendarEl = document.getElementById('calendar');
+            calendarInstance = new FullCalendar.Calendar(calendarEl, {
+                initialView: window.innerWidth < 768 ? 'listMonth' : 'dayGridMonth', // List view agar di mobile lebih nyaman (opsional fallback)
+                locale: 'id',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: window.innerWidth < 768 ? 'dayGridMonth,listMonth' : 'dayGridMonth,timeGridWeek,listMonth'
+                },
+                buttonText: {
+                    today: 'Hari Ini',
+                    month: 'Bulan',
+                    week: 'Minggu',
+                    list: 'Daftar'
+                },
+                events: formatEventsForCalendar(planData),
+                eventClick: function(info) {
+                    const p = info.event.extendedProps;
+                    Swal.fire({
+                        title: p.judul,
+                        html: `
+                            <div class="text-left space-y-2 mt-4 text-sm">
+                                <p><strong>Tanggal Plan:</strong> ${info.event.start ? info.event.start.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) : '-'}</p>
+                                <p><strong>Platform:</strong> ${p.platform}</p>
+                                <p><strong>Status:</strong> <span class="bg-green-100 text-green-800 px-2 py-0.5 rounded text-xs font-semibold">${p.status}</span></p>
+                            </div>
+                        `,
+                        confirmButtonColor: '#15803d',
+                        confirmButtonText: 'Tutup'
+                    });
+                }
+            });
+            calendarInstance.render();
+            
+            // Re-render saat ukuran window berubah (rotate / resize layar HP)
+            window.addEventListener('resize', () => {
+                if (calendarInstance) {
+                    calendarInstance.updateSize();
+                }
+            });
+        }
+
+        // Statistik Dashboard
+        function updateDashboard() {
+            if (!Array.isArray(planData)) return;
+            document.getElementById('stat-total').innerText = planData.length;
+            document.getElementById('stat-ig').innerText = planData.filter(c => c.platform === 'Instagram').length;
+            document.getElementById('stat-tt').innerText = planData.filter(c => c.platform === 'TikTok').length;
+            document.getElementById('stat-fb').innerText = planData.filter(c => c.platform === 'Facebook' || c.platform === 'Saluran WhatsApp').length;
+        }
+    </script>
+</body>
+</html>

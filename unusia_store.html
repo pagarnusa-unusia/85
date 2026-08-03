@@ -1,127 +1,116 @@
-    <!DOCTYPE html>
-    <html lang="id">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
-        <title>Pagar Nusa Store - Official Checkout</title>
-        
-        <meta name="theme-color" content="#1B7548">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-        
-        <link rel="icon" href="logopn.png">
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
+    <title>Pagar Nusa Store - Official Checkout</title>
+    
+    <!-- Meta Tags for Mobile/PWA -->
+    <meta name="theme-color" content="#1B7548">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="Pusat penyedia atribut resmi PSNU PAGARNUSA UNUSIA. Kualitas premium untuk Pendekar.">
+    
+    <link rel="icon" href="logopn.png">
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
-        
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-        <script src="https://cdn.tailwindcss.com"></script>
-        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <!-- Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 
-        <script>
-            tailwind.config = { 
-                theme: { 
-                    extend: { 
-                        colors: { 
-                            primary: '#1B7548', 
-                            primaryDark: '#145c38' 
-                        },
-                        spacing: {
-                            'safe-top': 'env(safe-area-inset-top)',
-                            'safe-bottom': 'env(safe-area-inset-bottom)'
-                        }
-                    } 
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = { 
+            theme: { 
+                extend: { 
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: { 
+                        primary: '#1B7548', 
+                        primaryDark: '#145c38' 
+                    },
+                    spacing: {
+                        'safe-top': 'env(safe-area-inset-top)',
+                        'safe-bottom': 'env(safe-area-inset-bottom)'
+                    }
                 } 
-            }
-        </script>
+            } 
+        }
+    </script>
 
-        <style>
-            /* 1. Global Reset & Base Styles */
-            body { 
-                font-family: 'Poppins', sans-serif; 
-                background-color: #f8fafc; 
-                overflow-x: hidden; 
-                scroll-behavior: smooth;
-                -webkit-tap-highlight-color: transparent;
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
-            }
+    <!-- Custom CSS -->
+    <style>
+        /* Global Reset & Base Styles */
+        body { 
+            background-color: #f8fafc; 
+            overflow-x: hidden; 
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-            [x-cloak] { display: none !important; }
+        [x-cloak] { display: none !important; }
 
-            /* 2. Mobile Specific: Safe Area & Inputs */
-            @media screen and (max-width: 768px) {
-                input, select, textarea { 
-                    font-size: 16px !important; /* Mencegah Auto-zoom iOS */
-                }
+        /* Mobile Specific: Safe Area & Inputs */
+        @media screen and (max-width: 768px) {
+            input, select, textarea { 
+                font-size: 16px !important; /* Mencegah Auto-zoom iOS */
             }
+        }
 
-            /* Handling Safe Area (Notch & Home Indicator) */
-            header { 
-                padding-top: max(1rem, env(safe-area-inset-top)); 
-            }
-            main { 
-                padding-bottom: calc(2rem + env(safe-area-inset-bottom)); 
-            }
+        /* Handling Safe Area (Notch & Home Indicator) */
+        header { 
+            padding-top: max(1rem, env(safe-area-inset-top)); 
+        }
+        main { 
+            padding-bottom: calc(2rem + env(safe-area-inset-bottom)); 
+        }
 
-            /* 3. Animations */
-            .fade-in { animation: fadeIn 0.4s ease-out; }
-            .slide-up { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-            
-            @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-            @keyframes slideUp { 
-                from { opacity: 0; transform: translateY(30px); } 
-                to { opacity: 1; transform: translateY(0); } 
-            }
+        /* Animations */
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        .slide-up { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { 
+            from { opacity: 0; transform: translateY(30px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
 
-            /* 4. Interactive Components */
-            .btn-bounce { transition: transform 0.1s ease; }
-            .btn-bounce:active { transform: scale(0.96); }
-            
-            .cart-item { transition: all 0.2s ease; }
-            
-            /* Reset Input Appearance */
-            input::-webkit-outer-spin-button, 
-            input::-webkit-inner-spin-button { 
-                -webkit-appearance: none; 
-                margin: 0; 
-            }
-            input[type=number] { -moz-appearance: textfield; }
+        /* Reset Input Appearance */
+        input::-webkit-outer-spin-button, 
+        input::-webkit-inner-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] { -moz-appearance: textfield; }
 
-            /* 5. Custom Utilities */
-            .custom-scrollbar {
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: thin;
-                scrollbar-color: #e2e8f0 transparent;
-            }
+        /* Custom Scrollbar */
+        .custom-scrollbar {
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body x-data="checkoutApp()" x-init="init()" class="bg-slate-50 text-slate-900 select-none">
 
-            .table-container {
-                width: 100%;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            .custom-scrollbar::-webkit-scrollbar {
-                width: 4px;
-            }
-            .custom-scrollbar::-webkit-scrollbar-thumb {
-                background: #cbd5e1;
-                border-radius: 10px;
-            }
-
-            /* Smooth shadow for cards */
-            .glass-card {
-                background: rgba(255, 255, 255, 0.8);
-                backdrop-filter: blur(10px);
-                border: 1px solid rgba(255, 255, 255, 0.3);
-            }
-        </style>
-    </head>
-    <body x-data="checkoutApp()" x-init="init()" class="bg-slate-50 font-sans antialiased text-slate-900 select-none">
+    <!-- Loading Overlay -->
     <div x-show="loading" x-cloak 
         x-transition:enter="transition ease-out duration-300"
         x-transition:leave="transition ease-in duration-300"
@@ -132,12 +121,13 @@
         </div>
     </div>
 
+    <!-- Header -->
     <header class="sticky top-0 z-50 bg-white border-b border-slate-100 shadow-sm">
         <div class="container mx-auto px-4 h-16 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <img src="logopn.png" class="h-8 w-8 object-contain" alt="Logo">
+                <img src="logopn.png" onerror="this.src='https://via.placeholder.com/150/1B7548/FFFFFF?text=PN'" class="h-8 w-8 object-contain" alt="Logo">
                 <div class="flex flex-col">
-                    <span class="font-bold text-sm tracking-tight leading-none text-slate-900 uppercase">PAGARNUSA</span>
+                    <span class="font-bold text-sm tracking-tight leading-none uppercase">PAGARNUSA</span>
                     <span class="text-[9px] text-emerald-600 font-bold tracking-widest uppercase">UNUSIA STORE</span>
                 </div>
             </div>
@@ -154,12 +144,14 @@
             </div>
         </div>
     </header>
-    <div class="max-w-md mx-auto px-4 pt-4 fade-in">
+
+    <!-- Product Showcase -->
+    <div x-show="step === 1 || step === 2" class="max-w-md mx-auto px-4 pt-4 fade-in">
         <div class="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100">
             <div class="relative w-full aspect-square bg-[#F9FAFB]"> 
                 <img src="https://lh3.googleusercontent.com/d/13l0_iAgfoXqUq0BB2VdNIM1qau1UdEaD" 
                     alt="Sampel Seragam" 
-                    class="absolute inset-0 w-full h-full object-contain p-4">
+                    class="absolute inset-0 w-full h-full object-contain p-4 mix-blend-multiply">
             </div>
             <div class="p-4 border-t border-gray-50 flex justify-between items-center">
                 <div>
@@ -173,18 +165,22 @@
             </div>
         </div>
     </div>
+
+    <!-- Main Content -->
     <main class="max-w-xl mx-auto p-4 pb-20 relative">
+        
+        <!-- Modal Size Guide -->
         <div x-show="showGuide" x-cloak 
             class="fixed inset-0 z-[60] bg-slate-950/60 backdrop-blur-md flex items-center justify-center p-4">
-            
             <div class="bg-white rounded-3xl w-full max-w-md max-h-[85vh] overflow-hidden shadow-2xl flex flex-col" @click.away="showGuide = false">
                 <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                     <h3 class="font-bold text-xs text-slate-800 uppercase tracking-[0.2em]">Panduan Ukuran</h3>
                     <button @click="showGuide = false" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:bg-red-500 hover:text-white transition-all">
-                        &times;
+                        <i class="fas fa-times"></i>
                     </button>
                 </div>
                 <div class="p-6 overflow-y-auto space-y-10 custom-scrollbar">
+                    <!-- Usia Dini -->
                     <div class="space-y-4">
                         <h4 class="text-[11px] font-bold text-emerald-600 uppercase tracking-widest text-center italic">— Usia Dini —</h4>
                         <div class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
@@ -208,6 +204,7 @@
                         </div>
                     </div>
 
+                    <!-- Dewasa -->
                     <div class="space-y-4 pb-4">
                         <h4 class="text-[11px] font-bold text-emerald-600 uppercase tracking-widest text-center italic">— Dewasa —</h4>
                         <div class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
@@ -240,6 +237,8 @@
         </div>
 
         <div x-show="!isSuccess" class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden mx-1">
+            
+            <!-- STEP 1: Identitas -->
             <div x-show="step === 1" x-transition class="p-8 space-y-10">
                 <div class="space-y-2">
                     <h2 class="text-2xl font-black text-slate-900 tracking-tight">Identitas Pemesan</h2>
@@ -250,32 +249,50 @@
                 </div>
 
                 <div class="space-y-6">
-                    <template x-for="field in [{m:'nama', l:'Nama Lengkap', p:'Nama Sesuai KTP', i:'fa-user', t:'text'}, {m:'email', l:'Email Pemesan', p:'contoh@gmail.com', i:'fa-envelope', t:'email'}, {m:'wa', l:'Nomor Whatsapp', p:'08xxxxxx', i:'fa-whatsapp', t:'tel'}]">
-                        <div class="space-y-1.5">
-                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1" x-text="field.l"></label>
-                            <div class="relative group">
-                                <i :class="'fas ' + field.i" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-emerald-500 transition-colors"></i>
-                                <input :type="field.t" x-model="form[field.m]" :placeholder="field.p" class="w-full pl-11 pr-4 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all text-sm outline-none font-semibold">
-                            </div>
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Nama Lengkap</label>
+                        <div class="relative group">
+                            <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-emerald-500 transition-colors"></i>
+                            <input type="text" x-model="form.nama" placeholder="Nama Sesuai KTP" required class="w-full pl-11 pr-4 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all text-sm outline-none font-semibold">
                         </div>
-                    </template>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Email Pemesan</label>
+                        <div class="relative group">
+                            <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-emerald-500 transition-colors"></i>
+                            <input type="email" x-model="form.email" placeholder="contoh@gmail.com" required class="w-full pl-11 pr-4 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all text-sm outline-none font-semibold">
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Nomor Whatsapp</label>
+                        <div class="relative group">
+                            <i class="fas fa-whatsapp absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-emerald-500 transition-colors"></i>
+                            <input type="tel" x-model="form.wa" placeholder="08xxxxxxxxx" pattern="[0-9]*" required class="w-full pl-11 pr-4 py-4 rounded-2xl border border-slate-200 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/5 transition-all text-sm outline-none font-semibold">
+                        </div>
+                    </div>
 
                     <div class="space-y-1.5">
                         <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Pesan Sebagai</label>
-                        <select x-model="form.sebagai" class="w-full px-4 py-4 rounded-2xl border border-slate-200 bg-white text-sm outline-none focus:border-emerald-500 font-semibold appearance-none">
-                            <option value="Wali Santri">Wali Santri</option>
-                            <option value="Pelatih">Pelatih / Pengurus</option>
-                            <option value="Pribadi">Pribadi / Santri</option>
-                        </select>
+                        <div class="relative">
+                            <select x-model="form.sebagai" class="w-full px-4 py-4 rounded-2xl border border-slate-200 bg-white text-sm outline-none focus:border-emerald-500 font-semibold appearance-none cursor-pointer">
+                                <option value="Wali Santri">Wali Santri</option>
+                                <option value="Pelatih">Pelatih / Pengurus</option>
+                                <option value="Pribadi">Pribadi / Santri</option>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+                        </div>
                     </div>
 
-                    <button @click="step = 2" :disabled="!form.nama || !form.wa || !form.email" class="w-full bg-slate-900 text-white font-bold py-5 rounded-2xl hover:bg-black transition-all disabled:opacity-20 flex items-center justify-center gap-3 text-sm tracking-widest">
+                    <button @click="step = 2" :disabled="!form.nama || !form.wa || !form.email" class="w-full bg-slate-900 text-white font-bold py-5 rounded-2xl hover:bg-black transition-all disabled:opacity-20 flex items-center justify-center gap-3 text-sm tracking-widest mt-4">
                         <span>LANJUTKAN PESANAN</span>
                         <i class="fas fa-chevron-right text-[10px]"></i>
                     </button>
                 </div>
             </div>
 
+            <!-- STEP 2: Detail Pesanan & Pembayaran -->
             <div x-show="step === 2" x-cloak x-transition class="p-8 space-y-8">
                 <div class="flex justify-between items-center">
                     <div class="space-y-1">
@@ -290,7 +307,7 @@
                 <div class="bg-slate-50/80 p-6 rounded-3xl border border-slate-100 space-y-6">
                     <div class="space-y-1.5">
                         <label class="text-[9px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1">Jenjang Lembaga</label>
-                        <select x-model="temp.lembaga" @change="temp.ukuran = ''; temp.qty = 1" class="w-full p-4 rounded-2xl border border-slate-200 text-xs font-bold outline-none bg-white focus:border-emerald-500 shadow-sm transition-all">
+                        <select x-model="temp.lembaga" @change="temp.ukuran = ''; temp.qty = 1" class="w-full p-4 rounded-2xl border border-slate-200 text-xs font-bold outline-none bg-white focus:border-emerald-500 shadow-sm transition-all cursor-pointer">
                             <option value="">-- Pilih Lembaga --</option>
                             <template x-for="l in daftarLembaga"><option :value="l" x-text="l"></option></template>
                         </select>
@@ -317,14 +334,15 @@
                         </div>
                     </div>
 
-                    <button @click="addItem" :disabled="!temp.ukuran || temp.availableLimit <= 0" class="w-full bg-slate-900 text-white text-[10px] font-bold py-4 rounded-2xl shadow-xl hover:bg-black transition-all flex items-center justify-center gap-2 uppercase tracking-widest">
+                    <button @click="addItem" :disabled="!temp.ukuran || temp.availableLimit <= 0" class="w-full bg-slate-900 text-white text-[10px] font-bold py-4 rounded-2xl shadow-xl hover:bg-black transition-all flex items-center justify-center gap-2 uppercase tracking-widest disabled:opacity-50">
                         <i class="fas fa-plus-circle"></i> Tambah Daftar
                     </button>
                 </div>
 
+                <!-- Keranjang List -->
                 <div class="space-y-3">
                     <template x-for="(item, index) in cart" :key="index">
-                        <div class="flex justify-between items-center p-5 bg-white border border-slate-100 rounded-3xl shadow-sm border-l-4 border-l-emerald-500">
+                        <div class="flex justify-between items-center p-5 bg-white border border-slate-100 rounded-3xl shadow-sm border-l-4 border-l-emerald-500 cart-item">
                             <div class="flex items-center gap-4">
                                 <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center font-black text-xs" x-text="item.ukuran"></div>
                                 <div>
@@ -337,22 +355,25 @@
                     </template>
                 </div>
 
-                <div x-show="cart.length > 0" class="pt-6 space-y-6">
-                    <div class="bg-slate-900 text-white p-8 rounded-[2.5rem] space-y-8 relative overflow-hidden">
+                <!-- Box Pembayaran -->
+                <div x-show="cart.length > 0" class="pt-6 space-y-6 fade-in">
+                    <div class="bg-slate-900 text-white p-8 rounded-[2.5rem] space-y-8 relative overflow-hidden shadow-2xl shadow-slate-900/20">
                         <div class="flex justify-between items-start relative z-10">
                             <div class="space-y-1">
                                 <span class="text-[9px] text-white/40 uppercase font-bold tracking-[0.3em]">Total Invoice</span>
                                 <div class="text-3xl font-black text-emerald-400" x-text="formatRupiah(grandTotal)"></div>
                             </div>
-                            <img src="https://images.seeklogo.com/logo-png/62/2/seabank-logo-png_seeklogo-620133.png" class="h-6 brightness-0 invert opacity-40">
+                            <img src="https://images.seeklogo.com/logo-png/62/2/seabank-logo-png_seeklogo-620133.png" alt="SeaBank" class="h-6 brightness-0 invert opacity-40">
                         </div>
 
                         <div class="bg-white/5 border border-white/10 rounded-2xl p-5 space-y-4">
                             <div class="flex justify-between items-center text-[10px] font-bold">
                                 <span class="text-white/30 uppercase tracking-widest">SeaBank (901)</span>
-                                <span class="text-white font-mono tracking-wider">901898555541</span>
+                                <span class="text-white font-mono tracking-wider text-sm">901898555541</span>
                             </div>
-                            <button @click="copyToClipboard('901898555541')" class="w-full bg-white text-slate-900 py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest active:scale-95 transition-all">Salin No. Rekening</button>
+                            <button @click="copyToClipboard('901898555541')" class="w-full bg-white text-slate-900 py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-emerald-50 active:scale-95 transition-all">
+                                <i class="far fa-copy mr-1"></i> Salin No. Rekening
+                            </button>
                             <p class="text-center text-[8px] text-white/30 uppercase tracking-widest">A.N MUHAMMAD IBNU MUNDZIR</p>
                         </div>
 
@@ -361,14 +382,16 @@
                             <div class="relative border-2 border-dashed border-white/10 rounded-2xl p-6 text-center hover:bg-white/[0.03] transition-colors cursor-pointer group">
                                 <input type="file" @change="uploadFile" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-10">
                                 <i class="fas fa-cloud-upload-alt text-xl text-white/10 group-hover:text-emerald-400 transition-colors mb-2"></i>
-                                <p class="text-[10px] font-bold" :class="form.buktiBase64 ? 'text-emerald-400' : 'text-white/20'" x-text="form.buktiBase64 ? '✓ BERKAS SIAP' : 'UPLOAD GAMBAR'"></p>
+                                <p class="text-[10px] font-bold truncate max-w-[200px] mx-auto" 
+                                   :class="form.fileName ? 'text-emerald-400' : 'text-white/20'" 
+                                   x-text="form.fileName ? '✓ ' + form.fileName : 'UPLOAD GAMBAR'"></p>
                             </div>
                         </div>
                     </div>
 
                     <div class="flex gap-4">
-                        <button @click="step = 1" class="flex-1 py-5 text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:text-slate-600 transition-all">Kembali</button>
-                        <button @click="submit" :disabled="loading || cart.length === 0 || !form.buktiBase64" class="flex-[2.5] bg-emerald-600 text-white font-bold py-5 rounded-2xl shadow-xl shadow-emerald-900/10 hover:bg-emerald-700 transition-all uppercase tracking-widest text-[11px] disabled:opacity-30">
+                        <button @click="step = 1" class="flex-1 py-5 text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:text-slate-600 transition-all bg-slate-100 rounded-2xl">Kembali</button>
+                        <button @click="submit" :disabled="loading || cart.length === 0 || !form.buktiBase64" class="flex-[2.5] bg-emerald-600 text-white font-bold py-5 rounded-2xl shadow-xl shadow-emerald-900/10 hover:bg-emerald-700 transition-all uppercase tracking-widest text-[11px] disabled:opacity-30 disabled:cursor-not-allowed">
                             <span x-show="!loading">Konfirmasi Pembayaran</span>
                             <i x-show="loading" class="fas fa-spinner animate-spin"></i>
                         </button>
@@ -377,22 +400,23 @@
             </div>
         </div>
 
+        <!-- SUCCESS PAGE: Invoice & Bukti -->
         <div x-show="isSuccess" x-cloak class="space-y-6 fade-in pb-12">
             <div class="bg-white rounded-[2.5rem] p-10 text-center border border-slate-100 shadow-sm relative overflow-hidden">
                 <div class="w-16 h-16 bg-emerald-500 text-white rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg shadow-emerald-100 rotate-12">
-                    <i class="fas fa-check text-2xl"></i>
+                    <i class="fas fa-check text-2xl -rotate-12"></i>
                 </div>
                 <h2 class="text-2xl font-black text-slate-900 uppercase tracking-tight italic">Berhasil!</h2>
                 <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-2 leading-relaxed">Terimakasih Sudah Belanja</p>
             </div>
 
             <div id="invoice-preview" class="bg-white border border-slate-100 rounded-[2.5rem] overflow-hidden shadow-sm relative">
-                <div class="p-6 border-b-2 border-dashed border-slate-50 bg-slate-50/50 flex justify-between items-center">
+                <div class="p-6 border-b-2 border-dashed border-slate-100 bg-slate-50/50 flex justify-between items-center">
                     <div class="space-y-1">
                         <span class="text-[9px] font-bold text-emerald-600 uppercase tracking-[0.2em]">Digital Receipt</span>
                         <p class="text-[8px] text-slate-400 font-mono" x-text="new Date().toLocaleString('id-ID')"></p>
                     </div>
-                    <span class="text-[10px] font-mono font-bold text-slate-900 bg-white px-3 py-1.5 rounded-lg border border-slate-100 shadow-sm" x-text="finalOrderID"></span>
+                    <span class="text-[10px] font-mono font-bold text-slate-900 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-sm" x-text="finalOrderID"></span>
                 </div>
                 
                 <div class="p-8 space-y-6">
@@ -401,7 +425,7 @@
                         <span class="font-bold text-slate-900 uppercase text-xs" x-text="form.nama"></span>
                     </div>
 
-                    <div class="bg-slate-50 rounded-2xl p-5 space-y-4 shadow-inner">
+                    <div class="bg-slate-50 rounded-2xl p-5 space-y-4 shadow-inner border border-slate-100">
                         <template x-for="item in cart">
                             <div class="flex justify-between text-xs items-center">
                                 <div class="flex flex-col">
@@ -411,39 +435,41 @@
                                 <span class="font-bold text-slate-900 font-mono" x-text="formatRupiah(item.harga * item.qty)"></span>
                             </div>
                         </template>
-                        <div class="border-t border-slate-200 pt-4 flex justify-between items-center">
+                        <div class="border-t border-slate-200 pt-4 flex justify-between items-center mt-2">
                             <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total Bayar</span>
                             <span class="text-xl font-black text-emerald-600 font-mono" x-text="formatRupiah(grandTotal)"></span>
                         </div>
                     </div>
 
                     <div class="text-center py-2 opacity-20 select-none">
-                        <p class="text-[30px] font-black italic tracking-[0.3em]">LUNAS</p>
+                        <p class="text-[30px] font-black italic tracking-[0.3em] text-slate-800 border-4 border-slate-800 inline-block px-4 py-1 rounded-xl transform -rotate-6">LUNAS</p>
                     </div>
                 </div>
             </div>
 
             <div class="grid gap-4 px-2">
-                <button @click="downloadKwitansi()" class="w-full bg-slate-900 text-white font-bold py-5 rounded-2xl text-[11px] uppercase tracking-widest flex items-center justify-center gap-4 active:scale-95 transition-all">
-                    <i class="fas fa-file-pdf text-emerald-400"></i> Unduh Kwitansi
+                <button @click="downloadKwitansi()" class="w-full bg-slate-900 text-white font-bold py-5 rounded-2xl text-[11px] uppercase tracking-widest flex items-center justify-center gap-4 active:scale-95 transition-all shadow-lg shadow-slate-900/20">
+                    <i class="fas fa-file-pdf text-emerald-400 text-lg"></i> Unduh Kwitansi
                 </button>
-                <a :href="waUrl" target="_blank" class="w-full bg-emerald-500 text-white font-bold py-5 rounded-2xl text-[11px] uppercase tracking-widest flex items-center justify-center gap-4 active:scale-95 transition-all">
+                <a :href="waUrl" target="_blank" class="w-full bg-emerald-500 text-white font-bold py-5 rounded-2xl text-[11px] uppercase tracking-widest flex items-center justify-center gap-4 active:scale-95 transition-all shadow-lg shadow-emerald-500/20">
                     <i class="fab fa-whatsapp text-lg"></i> Konfirmasi Admin
                 </a>
-                <button @click="location.reload()" class="w-full py-4 text-[9px] font-bold text-slate-300 tracking-[0.1em]">Pesan Lagi</button>
+                <button @click="location.reload()" class="w-full py-4 text-[10px] font-bold text-slate-400 hover:text-slate-600 tracking-[0.1em] mt-2">← PESAN KEMBALI</button>
             </div>
         </div>
     </main>
 
+    <!-- Toast Notification -->
     <div x-show="copied" x-cloak 
         x-transition:enter="transition duration-300 transform translate-y-0"
-        x-transition:leave="transition duration-300 transform translate-y-20"
-        class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-emerald-400 px-8 py-4 rounded-2xl text-[10px] font-bold tracking-widest uppercase shadow-2xl z-[100] flex items-center gap-3">
+        x-transition:leave="transition duration-300 transform translate-y-20 opacity-0"
+        class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900 text-emerald-400 px-8 py-4 rounded-2xl text-[10px] font-bold tracking-widest uppercase shadow-2xl z-[100] flex items-center gap-3 whitespace-nowrap">
         <i class="fas fa-check-circle"></i> Berhasil Disalin
     </div>
-    <footer class="bg-white border-t border-gray-100 pt-8 pb-12 px-4 mt-12">
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-100 pt-8 pb-12 px-4 mt-12 relative z-10">
         <div class="max-w-md mx-auto text-center">
-            
             <p class="text-xs text-gray-500 mb-6 leading-relaxed">
                 Pusat penyedia atribut resmi PSNU PAGARNUSA UNUSIA. <br>
                 Kualitas premium untuk Pendekar.
@@ -465,7 +491,6 @@
             </div>
 
             <hr class="border-gray-50 mb-6">
-
             <div class="space-y-2">
                 <p class="text-[9px] text-gray-400 tracking-[0px]">
                     &copy; 2024 PRy PSNU Pagarnusa UNUSIA
@@ -473,6 +498,8 @@
             </div>
         </div>
     </footer>
+
+    <!-- Alpine App Data -->
     <script>
         function checkoutApp() {
             return {
@@ -484,7 +511,7 @@
                 showGuide: false, 
                 copied: false,
                 finalOrderID: '',
-                form: { nama: '', email: '', wa: '', sebagai: 'Pribadi', buktiBase64: '' },
+                form: { nama: '', email: '', wa: '', sebagai: 'Pribadi', buktiBase64: '', fileName: '' },
                 temp: { lembaga: '', ukuran: '', harga: 0, qty: 1, availableLimit: 0 },
                 cart: [],
                 dbStok: [
@@ -500,7 +527,7 @@
                     {lembaga: "SMP/SMA/Dewasa", ukuran: "XXXL", stok: 0, harga: 205000}
                 ],
                 scriptUrl: 'https://script.google.com/macros/s/AKfycbyd4YP9wzoBZfNnGiXppOmz0JchJsXP7LFvRYSMPnxlpVgqPDkVk-mf10CQ7h8Siyot/exec',
-                waUrl: '6285715232441',
+                waUrl: '6285715232441', // Diupdate pas submit
 
                 async init() {
                     // 1. Ambil data profil dari memori browser (Anti-Hilang)
@@ -508,7 +535,6 @@
                         const savedProfile = localStorage.getItem('user_profile');
                         if (savedProfile) {
                             const parsed = JSON.parse(savedProfile);
-                            // Gunakan Object.assign agar lebih ringkas dan aman
                             Object.assign(this.form, {
                                 nama: parsed.nama || '',
                                 email: parsed.email || '',
@@ -523,14 +549,10 @@
                     // 2. Ambil data stok terbaru dari Google Sheets
                     this.loadingData = true;
                     try {
-                        // Tambahkan anti-cache agar data stok selalu paling baru
                         const response = await fetch(`${this.scriptUrl}?t=${Date.now()}`);
-                        
                         if (!response.ok) throw new Error("Gagal terhubung ke server");
                         
                         const data = await response.json();
-                        
-                        // Validasi data: pastikan data ada, berbentuk array, dan tidak kosong
                         if (data && Array.isArray(data) && data.length > 0) {
                             this.dbStok = data;
                         }
@@ -597,16 +619,21 @@
                 uploadFile(e) {
                     const file = e.target.files[0];
                     if (!file) return;
+                    
+                    // Batas ukuran 2MB
                     if(file.size > 2 * 1024 * 1024) {
                         alert("Ukuran foto terlalu besar. Maksimal 2MB.");
+                        e.target.value = ''; // Reset input field
                         return;
                     }
+                    
+                    this.form.fileName = file.name; // Simpan nama file untuk UI
                     const reader = new FileReader();
                     reader.onload = (f) => this.form.buktiBase64 = f.target.result.split(',')[1];
                     reader.readAsDataURL(file);
                 },
 
-                // Fungsi Helper untuk membuat konten PDF agar konsisten
+                // Fungsi Generate PDF
                 generatePDFDoc() {
                     const { jsPDF } = window.jspdf;
                     const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
@@ -640,7 +667,7 @@
 
                     const rows = this.cart.map((item, index) => [
                         index + 1,
-                        `Seragam Silat ${item.lembaga}\nSize: ${item.ukuran}`, // TAMBAHKAN "Seragam Silat" DI SINI
+                        `Seragam Silat ${item.lembaga}\nSize: ${item.ukuran}`, 
                         item.qty,
                         `Rp ${item.harga.toLocaleString('id-ID')}`,
                         `Rp ${item.hargaTotal.toLocaleString('id-ID')}`
@@ -660,7 +687,7 @@
                         },
                         columnStyles: { 
                             0: { halign: 'center', cellWidth: 10 }, 
-                            1: { halign: 'left', cellWidth: 'auto' }, // Deskripsi Produk
+                            1: { halign: 'left', cellWidth: 'auto' }, 
                             2: { halign: 'center', cellWidth: 15 }, 
                             3: { halign: 'right', cellWidth: 35 }, 
                             4: { halign: 'right', cellWidth: 35 } 
@@ -677,11 +704,10 @@
                             fontSize: 9, 
                             cellPadding: 4, 
                             valign: 'middle', 
-                            overflow: 'linebreak', // Memastikan teks \n berfungsi sebagai baris baru
+                            overflow: 'linebreak', 
                             rowHeight: 15 
                         },
                         didParseCell: function(data) {
-                            // Memberikan padding ekstra khusus untuk kolom deskripsi agar teks tidak menempel ke garis
                             if (data.column.index === 1 && data.section === 'body') {
                                 data.cell.styles.cellPadding = { top: 4, bottom: 4, left: 3, right: 3 };
                             }
@@ -693,16 +719,14 @@
                     doc.setFontSize(10).text("Bogor, " + new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'}), pageWidth - margin.right - 10, ySign, { align: "center" });
                     const signPos = pageWidth - margin.right - 35;
                     doc.text("Bendahara,", signPos + 25, ySign + 7, { align: "center" });
-                    const urlTtd = "";
+                    const urlTtd = ""; // Kosongkan saja jika TTD belum disiapkan via base64 statis
                     if (urlTtd) {
                         try {
-                            // Parameter: (gambar, tipe, x, y, lebar, tinggi)
-                            doc.addImage(urlTtd, 'https://lh3.googleusercontent.com/d/1Al66aC10I3bZ5qzJMyNzV1OlvNBb08N2', signPos + 10, ySign + 8, 30, 22);
+                            doc.addImage(urlTtd, 'PNG', signPos + 10, ySign + 8, 30, 22);
                         } catch (e) {
                             console.warn("Gagal memuat gambar TTD:", e);
                         }
                     }
-                    // ----------------------------------------------------------
 
                     doc.setFont("helvetica", "bold underline").text("SYIFA ULYA SETIAWAN", signPos + 25, ySign + 33, { align: "center" });
                     doc.setFont("helvetica", "normal").setFontSize(8).text("NIA: 27091985", signPos + 25, ySign + 37, { align: "center" });
@@ -731,7 +755,11 @@
                         // Tahap 3: Menyiapkan Payload
                         this.loadingMsg = "Mengunggah bukti bayar...";
                         const payload = { 
-                            ...this.form, 
+                            nama: this.form.nama, 
+                            email: this.form.email, 
+                            wa: this.form.wa, 
+                            sebagai: this.form.sebagai,
+                            buktiBase64: this.form.buktiBase64, 
                             orderID: this.finalOrderID,
                             items: this.cart, 
                             grandTotal: this.grandTotal,
@@ -749,21 +777,23 @@
                         const text = await res.text();
                         
                         if (text.includes("Success")) {
-                            // === FITUR ANTI-HILANG (LocalStorage) ===
-                            // Simpan identitas agar saat pesan lagi tidak perlu mengetik
-                            const profileToSave = {
-                                nama: this.form.nama,
-                                email: this.form.email,
-                                wa: this.form.wa,
-                                sebagai: this.form.sebagai
-                            };
-                            localStorage.setItem('user_profile', JSON.stringify(profileToSave));
-                            // =========================================
+                            // Simpan ke local storage
+                            try {
+                                const profileToSave = {
+                                    nama: this.form.nama,
+                                    email: this.form.email,
+                                    wa: this.form.wa,
+                                    sebagai: this.form.sebagai
+                                };
+                                localStorage.setItem('user_profile', JSON.stringify(profileToSave));
+                            } catch (lsErr) {
+                                console.warn("Tidak dapat menyimpan profil ke local storage");
+                            }
 
                             this.loadingMsg = "Hampir selesai...";
                             const phone = "6285715232441";
                             const details = this.cart.map(i => `- ${i.lembaga} (${i.ukuran}) x${i.qty}`).join('%0A');
-                            const pesanWA = `Halo Kang/Mbak, Saya *${this.form.nama}*%0A(ID: ${this.finalOrderID})%0A%0APesanan:%0A${details}%0A%0ATotal: ${this.formatRupiah(this.grandTotal)}`;
+                            const pesanWA = `Halo Admin, Saya *${this.form.nama}*%0A(ID: ${this.finalOrderID})%0A%0APesanan:%0A${details}%0A%0ATotal: ${this.formatRupiah(this.grandTotal)}%0A%0ABukti transfer dan data sudah saya input di web. Terima kasih.`;
                             
                             this.waUrl = `https://wa.me/${phone}?text=${pesanWA}`;
                             
@@ -771,18 +801,17 @@
                             window.scrollTo({ top: 0, behavior: 'smooth' });
 
                         } else {
-                            throw new Error("Respon server tidak valid");
+                            throw new Error("Respon server tidak valid: " + text);
                         }
                     } catch (e) { 
                         console.error(e);
-                        alert('Maaf, server sedang sibuk. Coba sesaat lagi atau hubungi admin.'); 
+                        alert('Maaf, sistem/server sedang sibuk. Coba sesaat lagi atau hubungi admin.'); 
                     } finally { 
                         this.loading = false; 
                         this.loadingMsg = '';
                     }
                 },
                 
-
                 async downloadKwitansi() {
                     const doc = this.generatePDFDoc();
                     doc.save(`PN_${this.finalOrderID}_${this.form.nama.replace(/\s+/g, '_')}.pdf`);
@@ -790,5 +819,5 @@
             }
         }
     </script>
-    </body>
-    </html>
+</body>
+</html>

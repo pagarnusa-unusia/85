@@ -153,6 +153,21 @@
                         <img id="photo-preview" alt="Preview Foto">
                     </div>
                     
+                    <!-- PENGATURAN KAMERA (Tampil saat kamera aktif) -->
+                    <div id="camera-controls" class="flex flex-col space-y-3 mt-3 w-full max-w-[400px] mx-auto hidden">
+                        <!-- Zoom Control -->
+                        <div id="zoom-container" class="flex items-center space-x-3 hidden bg-gray-50 p-2 rounded border border-gray-200">
+                            <i class="fa-solid fa-magnifying-glass-minus text-gray-500 text-sm"></i>
+                            <input type="range" id="zoom-slider" class="w-full h-1.5 accent-brand bg-gray-300 rounded-lg appearance-none cursor-pointer">
+                            <i class="fa-solid fa-magnifying-glass-plus text-gray-500 text-sm"></i>
+                        </div>
+                        <!-- Switch Camera -->
+                        <button type="button" id="btn-switch-camera" class="flex items-center justify-center space-x-2 bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded hover:bg-gray-50 smooth-transition text-xs font-medium w-full shadow-sm">
+                            <i class="fa-solid fa-camera-rotate text-brand"></i>
+                            <span>Ganti Kamera Depan/Belakang</span>
+                        </button>
+                    </div>
+                    
                     <!-- Hidden Canvas for capturing -->
                     <canvas id="canvas" hidden></canvas>
 
@@ -181,7 +196,7 @@
 
 <script>
     // URL WEB APP GOOGLE APPS SCRIPT ANDA
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwHdG4LLop2JB1Y_mYwMA3pIFOuLQUAVEi5xJyQBMWDK3J-FTH0TPD65X0AoCHPLfAq7g/exec";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx7fLa4-TmBOHezn3gg98BDF-n2ydMr2phofNNLiKapJlulDD9ngVqea4CVJsBWEXH23g/exec";
     const SHEET_NAME = "Pelatih"; 
 
     // Elemen Kamera
@@ -191,7 +206,16 @@
     const btnCapture = document.getElementById('btn-capture');
     const btnRetake = document.getElementById('btn-retake');
     const inputFoto = document.getElementById('fotoBase64');
+    
+    // Elemen Pengaturan Kamera Baru
+    const cameraControls = document.getElementById('camera-controls');
+    const btnSwitchCamera = document.getElementById('btn-switch-camera');
+    const zoomContainer = document.getElementById('zoom-container');
+    const zoomSlider = document.getElementById('zoom-slider');
+    
     let stream = null;
+    let videoTrack = null;
+    let currentFacingMode = "environment"; // 'environment' = belakang, 'user' = depan
 
     // Set Timeline ke Waktu Saat Ini
     function setTimelineToNow() {
@@ -234,20 +258,49 @@
         }
     }
 
-    // 2. FUNGSI KAMERA
+    // 2. FUNGSI KAMERA (DENGAN ZOOM & SWITCH CAMERA)
     async function startCamera() {
+        stopCamera(); // Hentikan stream sebelumnya jika ada (berguna saat ganti kamera)
+        
         try {
-            // Meminta akses kamera belakang (environment) jika tersedia
             stream = await navigator.mediaDevices.getUserMedia({ 
-                video: { facingMode: "environment" }, 
+                video: { facingMode: currentFacingMode }, 
                 audio: false 
             });
+            
             video.srcObject = stream;
             video.style.display = 'block';
             photoPreview.style.display = 'none';
             btnCapture.classList.remove('hidden');
             btnRetake.classList.add('hidden');
+            cameraControls.classList.remove('hidden'); // Tampilkan panel pengaturan
             inputFoto.value = '';
+
+            // Setup Fitur Zoom
+            videoTrack = stream.getVideoTracks()[0];
+            const capabilities = videoTrack.getCapabilities();
+            
+            // Cek apakah perangkat mendukung zoom
+            if (capabilities.zoom) {
+                zoomContainer.classList.remove('hidden');
+                zoomSlider.min = capabilities.zoom.min;
+                zoomSlider.max = capabilities.zoom.max;
+                zoomSlider.step = capabilities.zoom.step;
+                zoomSlider.value = videoTrack.getSettings().zoom || capabilities.zoom.min;
+                
+                zoomSlider.oninput = async (e) => {
+                    try {
+                        await videoTrack.applyConstraints({
+                            advanced: [{ zoom: e.target.value }]
+                        });
+                    } catch (err) {
+                        console.error("Gagal mengatur zoom:", err);
+                    }
+                };
+            } else {
+                zoomContainer.classList.add('hidden'); // Sembunyikan jika tidak didukung
+            }
+
         } catch (err) {
             console.error("Gagal mengakses kamera:", err);
             Swal.fire('Kamera Gagal', 'Harap izinkan akses kamera pada browser Anda untuk absen.', 'error');
@@ -260,27 +313,28 @@
         }
     }
 
+    // Ganti Kamera Depan/Belakang
+    btnSwitchCamera.addEventListener('click', () => {
+        currentFacingMode = currentFacingMode === "environment" ? "user" : "environment";
+        startCamera();
+    });
+
     // Ambil Foto
     btnCapture.addEventListener('click', () => {
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         const context = canvas.getContext('2d');
         
-        // Menggambar frame video saat ini ke canvas
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        
-        // Mengubah canvas menjadi base64 image (JPG)
         const dataURL = canvas.toDataURL('image/jpeg', 0.8);
         
-        // Tampilkan preview
         photoPreview.src = dataURL;
         video.style.display = 'none';
         photoPreview.style.display = 'block';
+        cameraControls.classList.add('hidden'); // Sembunyikan pengaturan kamera setelah difoto
         
-        // Simpan base64 murni (tanpa prefix data:image/jpeg;base64,) ke input hidden
         inputFoto.value = dataURL.split(',')[1];
         
-        // Ubah tombol
         btnCapture.classList.add('hidden');
         btnRetake.classList.remove('hidden');
     });
@@ -289,13 +343,15 @@
     btnRetake.addEventListener('click', () => {
         video.style.display = 'block';
         photoPreview.style.display = 'none';
+        cameraControls.classList.remove('hidden'); // Tampilkan pengaturan kamera lagi
+        
         btnCapture.classList.remove('hidden');
         btnRetake.classList.add('hidden');
         inputFoto.value = '';
     });
 
     // 3. SUBMIT FORM
-document.getElementById('absensiForm').addEventListener('submit', async function(e) {
+    document.getElementById('absensiForm').addEventListener('submit', async function(e) {
         e.preventDefault();
 
         if (!inputFoto.value) {
@@ -334,7 +390,6 @@ document.getElementById('absensiForm').addEventListener('submit', async function
                 }
             };
 
-            // PERUBAHAN UTAMA: Hapus mode: "no-cors" agar data terkirim sempurna
             const response = await fetch(APPS_SCRIPT_URL, {
                 method: "POST",
                 headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -347,12 +402,12 @@ document.getElementById('absensiForm').addEventListener('submit', async function
                 Swal.fire({
                     icon: 'success',
                     title: 'Berhasil Absen',
-                    text: 'Data dan foto berhasil tersimpan!',
+                    text: 'Semoga makin di seiplin yaaa....!',
                     confirmButtonColor: '#056839'
                 }).then(() => {
                     document.getElementById('absensiForm').reset();
                     setTimelineToNow();
-                    startCamera();
+                    startCamera(); // Nyalakan ulang kamera untuk form baru
                 });
             } else {
                 throw new Error(result.message || 'Gagal menyimpan ke server');
@@ -371,8 +426,8 @@ document.getElementById('absensiForm').addEventListener('submit', async function
     // Inisialisasi saat halaman dimuat
     window.onload = () => {
         setTimelineToNow();
-        getLocation(); // Otomatis cari lokasi
-        startCamera(); // Otomatis nyalakan kamera
+        getLocation(); 
+        startCamera(); 
     };
 </script>
 

@@ -2,8 +2,13 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dalam Pengembangan - PAC PSNU PAGARNUSA KEMANG</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="theme-color" content="#1b4d3e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <title>Sistem Dalam Pembaruan | PAC Pagar Nusa Kemang</title>
+    <meta name="description" content="Website PAC Pagar Nusa Kemang sedang dalam tahap pengembangan dan pemeliharaan sistem.">
     
     <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,74 +22,91 @@
         }
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: #f8fafc;
+            background-color: #f1f5f9; /* Slate 100 untuk kontras yang lebih baik di HP */
+            -webkit-font-smoothing: antialiased;
         }
         .nav-font { font-family: 'Oswald', sans-serif; }
-        .bg-pn { background-color: var(--pn-green); }
         .text-pn { color: var(--pn-green); }
+        .bg-pn { background-color: var(--pn-green); }
         
-        /* Animasi mengambang untuk ornamen */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+        /* Animasi Profesional */
+        .pulse-ring {
+            animation: pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .5; transform: scale(1.05); }
+        }
+        .spin-slow {
+            animation: spin 4s linear infinite;
+        }
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden selection:bg-pn selection:text-white">
+<body class="min-h-[100dvh] flex flex-col items-center justify-center p-4 md:p-6 relative selection:bg-pn selection:text-white">
 
-    <!-- Ornamen Background (Pola dekoratif transparan) -->
-    <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <div class="absolute -top-24 -left-24 w-64 h-64 bg-emerald-900/5 rounded-full blur-3xl"></div>
-        <div class="absolute -bottom-24 -right-24 w-80 h-80 bg-amber-500/5 rounded-full blur-3xl"></div>
+    <!-- Latar Belakang Elegan -->
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden flex justify-center items-center opacity-30">
+        <div class="w-[120vw] h-[120vw] max-w-[800px] max-h-[800px] bg-gradient-to-tr from-emerald-100 to-transparent rounded-full blur-[80px]"></div>
     </div>
-    
-    <!-- Garis atas -->
-    <div class="absolute top-0 left-0 w-full h-1.5 bg-pn z-10"></div>
 
-    <div class="bg-white max-w-md w-full rounded-3xl shadow-xl shadow-slate-200/50 p-8 md:p-10 text-center relative z-10 border border-slate-100">
+    <main class="bg-white max-w-lg w-full rounded-[2rem] shadow-2xl shadow-slate-200/60 p-8 md:p-12 text-center relative z-10 border border-slate-100/50">
         
-        <!-- Logo Pagar Nusa -->
-        <div class="relative inline-block mb-6 animate-float">
-            <div class="absolute inset-0 bg-emerald-100 rounded-full blur-xl opacity-60"></div>
-            <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="relative h-24 mx-auto object-contain drop-shadow-md">
+        <!-- Logo dengan Penanganan Error untuk iOS Safari -->
+        <div class="relative inline-flex items-center justify-center mb-8">
+            <div class="absolute inset-0 bg-emerald-50 rounded-full blur-2xl pulse-ring"></div>
+            <!-- Menggunakan properti onerror agar jika link G-Drive diblokir HP, logo tidak error -->
+            <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" 
+                 alt="Logo Pagar Nusa" 
+                 class="relative h-20 md:h-24 w-auto object-contain drop-shadow-sm"
+                 onerror="this.outerHTML='<div class=\'h-20 w-20 bg-[#1b4d3e] text-white rounded-full flex items-center justify-center font-bold text-2xl nav-font shadow-lg\'>PN</div>'">
         </div>
 
-        <!-- Ikon Peringatan / Pengembangan -->
-        <div class="flex justify-center mb-4">
-            <span class="bg-amber-100 text-amber-600 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
-                </svg>
-                Tahap Pengembangan
-            </span>
+        <!-- Indikator Status Maintenance -->
+        <div class="inline-flex items-center justify-center gap-2 bg-slate-50 border border-slate-100 px-4 py-2 rounded-2xl mb-6 shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-amber-500 spin-slow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span class="text-[11px] font-bold text-slate-600 uppercase tracking-widest">Pembaruan Sistem</span>
         </div>
 
-        <h1 class="nav-font text-2xl md:text-3xl font-bold text-slate-800 uppercase tracking-tight mb-3">
-            Website Sedang Disempurnakan
+        <h1 class="nav-font text-3xl md:text-4xl font-bold text-slate-800 uppercase tracking-tight mb-4 leading-tight">
+            Sedang Dalam <br class="hidden sm:block"><span class="text-pn">Pengembangan</span>
         </h1>
         
-        <p class="text-slate-500 text-sm md:text-base leading-relaxed mb-8">
-            Mohon maaf, halaman yang Anda tuju saat ini sedang dalam tahap perbaikan dan pengembangan oleh tim <strong>IT & Infokom</strong> untuk memberikan pengalaman yang lebih baik.
+        <p class="text-slate-500 text-[13px] md:text-sm leading-relaxed mb-10 px-2 font-medium">
+            Halaman ini sedang disempurnakan oleh tim <strong>IT & Infokom PAC Kemang</strong>. Kami sedang menyiapkan pembaruan fitur untuk kenyamanan akses Anda.
         </p>
 
-        <a href="index.html" class="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-pn hover:bg-[#0f2e22] text-white px-8 py-3.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all shadow-lg shadow-emerald-900/20 transform active:scale-95">
+        <!-- Progress Bar Visual -->
+        <div class="w-full bg-slate-100 rounded-full h-1.5 mb-10 overflow-hidden">
+            <div class="bg-amber-500 h-1.5 rounded-full relative w-full">
+                <div class="absolute inset-0 bg-white/30 w-full h-full animate-[slide_2s_ease-in-out_infinite]"></div>
+            </div>
+        </div>
+
+        <a href="index.html" class="flex items-center justify-center gap-3 w-full bg-pn hover:bg-[#0f2e22] text-white px-6 py-4 md:py-3.5 rounded-2xl text-[11px] md:text-xs font-bold uppercase tracking-[0.2em] transition-all shadow-xl shadow-emerald-900/20 active:scale-95 touch-manipulation">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             Kembali ke Beranda
         </a>
+    </main>
 
-        <!-- Footer Mini -->
-        <div class="mt-8 pt-6 border-t border-slate-100">
-            <p class="text-[10px] text-slate-400 font-semibold tracking-[0.2em] uppercase">
-                © 2026 PAC PSNU PAGARNUSA KEMANG
-            </p>
-        </div>
-    </div>
+    <footer class="mt-8 text-center relative z-10">
+        <p class="text-[10px] text-slate-400 font-bold tracking-[0.3em] uppercase">
+            © 2026 PAC PSNU PAGARNUSA KEMANG
+        </p>
+    </footer>
 
+    <style>
+        @keyframes slide {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+    </style>
 </body>
 </html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baca Artikel - PAC PSNU PAGARNUSA KEMANG</title>
+    <meta name="description" content="Media Resmi PAC PSNU PAGARNUSA Kecamatan Kemang - Kabupaten Bogor.">
+    <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root { 
+            --pn-header-footer: #19183B;
+            --pn-base: #E7F2EF;
+        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--pn-base); color: #1e293b; }
+        .nav-font { font-family: 'Oswald', sans-serif; }
+        .bg-pn-hf { background-color: var(--pn-header-footer); }
+        .wiki-border { border: 1px solid #cbd5e1; }
+        .prose img { max-width: 100%; height: auto; border-radius: 4px; margin: 12px auto; }
+        .prose blockquote { border-left: 4px solid #19183B; padding-left: 12px; font-style: italic; color: #475569; background: #f8fafc; padding-top: 6px; padding-bottom: 6px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between text-slate-800 text-xs md:text-sm">
+
+    <!-- Top Bar Simpel (Sesuai Semula) -->
+    <div class="bg-pn-hf text-white py-1.5 text-[10px] text-center uppercase tracking-widest font-medium border-b border-white/10 px-2">
+        PAC PSNU PAGARNUSA Kecamatan Kemang - Kabupaten Bogor
+    </div>
+
+    <!-- Header Bersih & Profesional (Sesuai Asli) -->
+    <header class="bg-white py-2.5 sticky top-0 z-50 shadow-sm border-b border-slate-200">
+        <div class="max-w-5xl mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2.5">
+                <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="h-8 w-auto object-contain">
+                <div class="text-left border-l-2 border-slate-300 pl-2.5">
+                    <h1 class="text-xs md:text-sm font-bold text-[#19183B] leading-none nav-font uppercase">PAC PSNU PAGARNUSA</h1>
+                    <p class="text-slate-500 font-semibold text-[10px] tracking-wide uppercase mt-0.5">Kecamatan Kemang</p>
+                </div>
+            </div>
+
+            <a href="index.html" class="inline-flex items-center text-xs font-semibold text-slate-700 hover:text-[#19183B] transition bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-sm uppercase tracking-wide nav-font">
+                <i class="fa-solid fa-arrow-left mr-1.5"></i> Beranda
+            </a>
+        </div>
+    </header>
+
+    <!-- Banner / Iklan Atas (Membaca dari Spreadsheet Tab 'Iklan') -->
+    <div class="max-w-5xl mx-auto px-4 pt-4 w-full">
+        <div id="banner-container" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <!-- Dimuat dinamis via JavaScript -->
+        </div>
+    </div>
+
+    <!-- Konten Utama (Fitur Kaya di Bagian Body & Sidebar) -->
+    <main class="max-w-5xl w-full mx-auto px-4 py-6 flex-grow">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-5 items-start">
+            
+            <!-- Area Artikel Utama (3 Kolom) -->
+            <article id="article-detail" class="lg:col-span-3 bg-white wiki-border rounded p-5 md:p-8 shadow-2xs">
+                <div class="text-center py-12 text-slate-500">
+                    <i class="fa-solid fa-spinner fa-spin text-xl mb-2 text-slate-700"></i>
+                    <p class="text-xs">Memuat artikel lengkap...</p>
+                </div>
+            </article>
+
+            <!-- Sidebar Kanan (Fitur Profesional di Body) -->
+            <aside class="lg:col-span-1 space-y-4">
+                
+                <!-- 1. Meta Artikel -->
+                <div class="bg-white wiki-border rounded p-3.5 text-xs space-y-2.5 shadow-2xs">
+                    <h3 class="font-bold text-slate-800 uppercase tracking-wider border-b border-slate-200 pb-1.5 nav-font text-xs flex items-center gap-1.5">
+                        <i class="fa-solid fa-circle-info text-amber-600"></i> Informasi Artikel
+                    </h3>
+                    <div>
+                        <span class="text-slate-400 text-[10px] block">Kategori</span>
+                        <span id="sidebar-kategori" class="font-semibold text-slate-800">-</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 text-[10px] block">Penulis</span>
+                        <span id="sidebar-penulis" class="font-semibold text-slate-800">-</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 text-[10px] block">Tanggal Terbit</span>
+                        <span id="sidebar-tanggal" class="font-semibold text-slate-800">-</span>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 text-[10px] block">Estimasi Baca</span>
+                        <span id="sidebar-reading-time" class="font-semibold text-slate-800">-</span>
+                    </div>
+                </div>
+
+                <!-- 2. Bagikan & Pengaturan Teks -->
+                <div class="bg-white wiki-border rounded p-3.5 text-xs space-y-3 shadow-2xs">
+                    <h3 class="font-bold text-slate-800 uppercase tracking-wider border-b border-slate-200 pb-1.5 nav-font text-xs flex items-center gap-1.5">
+                        <i class="fa-solid fa-share-nodes text-blue-600"></i> Bagikan & Opsi
+                    </h3>
+                    <div class="grid grid-cols-3 gap-1.5">
+                        <button onclick="shareTo('whatsapp')" class="bg-emerald-600 hover:bg-emerald-700 text-white p-2 rounded text-center transition flex flex-col items-center justify-center gap-1">
+                            <i class="fa-brands fa-whatsapp text-sm"></i>
+                            <span class="text-[10px]">WhatsApp</span>
+                        </button>
+                        <button onclick="shareTo('facebook')" class="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded text-center transition flex flex-col items-center justify-center gap-1">
+                            <i class="fa-brands fa-facebook text-sm"></i>
+                            <span class="text-[10px]">Facebook</span>
+                        </button>
+                        <button onclick="copyLink()" class="bg-slate-700 hover:bg-slate-800 text-white p-2 rounded text-center transition flex flex-col items-center justify-center gap-1">
+                            <i class="fa-solid fa-copy text-sm"></i>
+                            <span class="text-[10px]">Salin Link</span>
+                        </button>
+                    </div>
+                    <!-- Kontrol Ukuran Huruf -->
+                    <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-[11px] text-slate-500">Ukuran Teks:</span>
+                        <div class="flex space-x-1">
+                            <button onclick="changeFontSize('sm')" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded font-bold text-[10px]">A-</button>
+                            <button onclick="changeFontSize('base')" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded font-bold text-[10px]">Normal</button>
+                            <button onclick="changeFontSize('lg')" class="px-2 py-1 bg-slate-100 hover:bg-slate-200 rounded font-bold text-[10px]">A+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Berita Populer -->
+                <div class="bg-white wiki-border rounded p-3.5 text-xs space-y-2.5 shadow-2xs">
+                    <h3 class="font-bold text-slate-800 uppercase tracking-wider border-b border-slate-200 pb-1.5 nav-font text-xs flex items-center gap-1.5">
+                        <i class="fa-solid fa-fire text-red-500"></i> Berita Populer
+                    </h3>
+                    <div id="popular-articles-list" class="space-y-2">
+                        <p class="text-[11px] text-slate-400 italic">Memuat berita...</p>
+                    </div>
+                </div>
+
+                <!-- 4. Banner Iklan Sidebar -->
+                <div id="sidebar-banner-container" class="space-y-2">
+                    <!-- Iklan tambahan dari spreadsheet -->
+                </div>
+
+                <!-- 5. Widget Organisasi -->
+                <div class="bg-[#19183B] text-white rounded p-4 text-xs space-y-2 shadow-2xs">
+                    <h3 class="font-bold uppercase tracking-wider border-b border-white/10 pb-1.5 nav-font text-xs text-amber-400">Pagar Nusa Kemang</h3>
+                    <p class="text-[11px] text-slate-300 leading-relaxed">Pusat informasi resmi kegiatan kaderisasi, pencak silat, dan prestasi kontingen PAC Pagar Nusa Kecamatan Kemang, Kabupaten Bogor.</p>
+                    <div class="pt-2 text-[10px] text-amber-300 font-semibold flex items-center gap-1">
+                        <i class="#"></i> #BergerakDenganAksi
+                    </div>
+                </div>
+
+            </aside>
+
+        </div>
+    </main>
+
+    <!-- Footer Standar & Bersih (Sesuai Asli) -->
+    <footer class="bg-pn-hf text-slate-300 py-5 text-xs text-center border-t border-slate-800 mt-10">
+        <div class="max-w-5xl mx-auto px-4">
+            <p class="font-semibold text-white mb-0.5 nav-font uppercase tracking-wide text-xs">PAC PSNU PAGAR NUSA KECAMATAN KEMANG</p>
+            <p class="text-slate-400 text-[11px]">&copy; 2026 Kabupaten Bogor, Jawa Barat. Lembaga IT & Infokom.</p>
+        </div>
+    </footer>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbxLs1nDf7wYLjp_QV0IqT9VSqq4iVTDWy_5fAJShgIzqk5VAJQ9H8Ep7rDrFeoQznuq/exec";
+
+        function formatTanggal(dateString) {
+            if (!dateString) return '-';
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date.getTime())) return dateString;
+                return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+            } catch (e) {
+                return dateString;
+            }
+        }
+
+        // LOAD BANNER DARI SPREADSHEET (Tab: Iklan)
+        async function loadBanners() {
+            try {
+                const res = await fetch(`${API_URL}?action=banners`);
+                const banners = await res.json();
+                
+                const topContainer = document.getElementById("banner-container");
+                const sidebarContainer = document.getElementById("sidebar-banner-container");
+
+                if (Array.isArray(banners) && banners.length > 0) {
+                    topContainer.innerHTML = "";
+                    sidebarContainer.innerHTML = "";
+
+                    banners.forEach((banner, idx) => {
+                        const htmlContent = `
+                            <a href="${banner.link || '#'}" target="_blank" class="block bg-white wiki-border rounded p-2 shadow-2xs hover:opacity-95 transition group">
+                                <div class="relative overflow-hidden rounded">
+                                    <img src="${banner.gambar}" alt="Iklan Banner" class="w-full h-24 md:h-28 object-cover rounded group-hover:scale-105 transition duration-300">
+                                    ${banner.cta ? `<span class="absolute bottom-2 right-2 bg-amber-500 text-slate-900 font-bold text-[10px] px-2 py-0.5 rounded uppercase nav-font">${banner.cta} <i class="fa-solid fa-arrow-right ml-1"></i></span>` : ''}
+                                </div>
+                            </a>
+                        `;
+                        if (idx < 2) {
+                            topContainer.innerHTML += htmlContent;
+                        } else {
+                            sidebarContainer.innerHTML += htmlContent;
+                        }
+                    });
+                } else {
+                    topContainer.style.display = "none";
+                }
+            } catch (err) {
+                console.error("Gagal memuat banner:", err);
+            }
+        }
+
+        // LOAD ARTIKEL & POPULER
+        async function loadSingleArticle() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const slugTarget = urlParams.get('slug');
+            const container = document.getElementById("article-detail");
+
+            if (!slugTarget) {
+                container.innerHTML = `<p class="text-center text-red-600 font-medium text-xs">Parameter artikel tidak valid.</p>`;
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}?action=articles`);
+                const data = await response.json();
+                
+                // Render berita populer di sidebar
+                const popularContainer = document.getElementById("popular-articles-list");
+                popularContainer.innerHTML = "";
+                data.slice(0, 3).forEach(item => {
+                    popularContainer.innerHTML += `
+                        <a href="baca.html?slug=${item.slug}" class="flex items-center gap-2.5 p-1.5 hover:bg-slate-50 rounded transition group">
+                            <img src="${item.gambar_url || 'https://via.placeholder.com/80'}" class="w-12 h-12 object-cover rounded shrink-0 wiki-border">
+                            <div>
+                                <h4 class="font-semibold text-slate-800 text-[11px] line-clamp-2 group-hover:text-amber-600 transition">${item.judul}</h4>
+                                <span class="text-[9px] text-slate-400">${formatTanggal(item.tanggal)}</span>
+                            </div>
+                        </a>
+                    `;
+                });
+
+                const article = data.find(item => String(item.slug) === slugTarget);
+
+                if (article) {
+                    document.title = `${article.judul} - PAC PSNU Pagar Nusa Kemang`;
+                    const tanggalRapi = formatTanggal(article.tanggal);
+
+                    document.getElementById('sidebar-kategori').innerText = article.kategori || '-';
+                    document.getElementById('sidebar-penulis').innerText = article.penulis || '-';
+                    document.getElementById('sidebar-tanggal').innerText = tanggalRapi;
+
+                    const wordCount = (article.konten || "").split(/\s+/).length;
+                    const readTime = Math.ceil(wordCount / 150);
+                    document.getElementById('sidebar-reading-time').innerText = `${readTime} Menit (${wordCount} kata)`;
+
+                    container.innerHTML = `
+                        <div class="mb-3 flex items-center justify-between">
+                            <span class="text-[10px] font-semibold text-slate-700 bg-slate-100 px-2.5 py-1 rounded border border-slate-200 uppercase nav-font">
+                                <i class="fa-solid fa-tag text-amber-600 mr-1"></i> ${article.kategori}
+                            </span>
+                            <span class="text-[10px] text-slate-400">Dilihat: <b class="text-slate-700">142 pembaca</b></span>
+                        </div>
+                        
+                        <h1 class="text-xl md:text-2xl font-bold text-slate-900 mb-3 leading-snug border-b border-slate-200 pb-3 nav-font uppercase">
+                            ${article.judul}
+                        </h1>
+                        
+                        <div class="text-[11px] text-slate-500 mb-5 flex items-center gap-3 bg-slate-50 p-2 rounded wiki-border">
+                            <span><i class="fa-solid fa-user-pen text-slate-700 mr-1"></i> <b>Penulis:</b> ${article.penulis}</span>
+                            <span>•</span>
+                            <span><i class="fa-regular fa-calendar text-slate-700 mr-1"></i> <b>Tanggal:</b> ${tanggalRapi}</span>
+                        </div>
+
+                        ${article.gambar_url ? `
+                            <div class="mb-6 p-2 bg-slate-50 wiki-border rounded">
+                                <img src="${article.gambar_url}" alt="${article.judul}" class="w-full max-h-[360px] object-cover rounded">
+                                <p class="text-[10px] text-slate-500 text-center mt-2 italic"><i class="fa-solid fa-camera mr-1"></i> Dokumentasi: ${article.judul}</p>
+                            </div>
+                        ` : ''}
+
+                        <div id="article-content-body" class="prose max-w-none text-slate-800 leading-relaxed space-y-4 text-xs md:text-sm">
+                            ${article.konten}
+                        </div>
+
+                        <!-- Interaksi Bawah Artikel -->
+                        <div class="mt-8 pt-4 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-3">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-xs font-semibold text-slate-700">Apakah artikel ini bermanfaat?</span>
+                                <button onclick="alert('Terimakasih, ini juga termasuk salahsatu berkhidmat!')" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-3 py-1 rounded text-xs font-bold transition">Ya</button>
+                                <a href="komentar.html" class="bg-red-100 hover:bg-red-200 text-red-800 px-3 py-1 rounded text-xs font-bold transition inline-flex items-center justify-center">Tidak</a>
+                            </div>
+                            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1 rounded text-xs font-semibold  nav-font">
+                                <i class="fa-solid fa-arrow-up mr-1"></i> Ke Atas
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = `<p class="text-center text-red-600 font-medium text-xs">Artikel tidak ditemukan atau sudah dihapus.</p>`;
+                }
+            } catch (error) {
+                container.innerHTML = `<p class="text-center text-red-600 font-medium text-xs">Gagal memuat artikel dari server.</p>`;
+            }
+        }
+
+        function shareTo(platform) {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(document.title);
+            if (platform === 'whatsapp') {
+                window.open(`https://api.whatsapp.com/send?text=${title} - ${url}`, '_blank');
+            } else if (platform === 'facebook') {
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+            }
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert("Tautan artikel berhasil disalin ke clipboard!");
+            });
+        }
+
+        function changeFontSize(size) {
+            const content = document.getElementById('article-content-body');
+            if (!content) return;
+            if (size === 'sm') {
+                content.className = "prose max-w-none text-slate-800 leading-relaxed space-y-4 text-xs";
+            } else if (size === 'base') {
+                content.className = "prose max-w-none text-slate-800 leading-relaxed space-y-4 text-xs md:text-sm";
+            } else if (size === 'lg') {
+                content.className = "prose max-w-none text-slate-800 leading-relaxed space-y-4 text-sm md:text-base";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadBanners();
+            loadSingleArticle();
+        });
+    </script>
+</body>
+</html>

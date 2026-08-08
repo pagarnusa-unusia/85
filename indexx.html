@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAC PSNU PAGARNUSA KECAMATAN KEMANG</title>
+    <meta name="description" content="Media Resmi PAC PSNU PAGARNUSA Kecamatan Kemang - Kabupaten Bogor. Menyajikan berita terkini, info rayon, dan khazanah pencak silat Nahdlatul Ulama.">
+    <meta name="author" content="Infokom PAGARNUSA Kemang">
+    <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --pn-header-footer: #19183B;
+            --pn-base: #E7F2EF;
+            --pn-gold: #d4af37;
+        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; color: #1e293b; background-color: var(--pn-base); overflow-x: hidden; }
+        .nav-font { font-family: 'Oswald', sans-serif; }
+        .bg-pn-hf { background-color: var(--pn-header-footer); }
+        .text-pn-hf { color: var(--pn-header-footer); }
+        .border-pn-hf { border-color: var(--pn-header-footer); }
+        
+        .shimmer { 
+            background: linear-gradient(90deg, #d8ebe7 25%, #c6e3de 50%, #d8ebe7 75%); 
+            background-size: 200% 100%; 
+            animation: shimmer 1.5s infinite linear; 
+        }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+        .morph-reveal {
+            opacity: 0;
+            transform: translateY(40px) scale(0.95);
+            border-radius: 2rem;
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .morph-reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            border-radius: 0.375rem;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--pn-base); }
+        ::-webkit-scrollbar-thumb { background: var(--pn-header-footer); }
+
+        .rayon-card { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .rayon-card:hover { transform: translateY(-5px) scale(1.01); box-shadow: 0 15px 25px -5px rgb(25 24 59 / 0.12); border-color: var(--pn-header-footer); }
+
+        .ad-track {
+            display: flex;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            width: 100%;
+            height: 100%;
+            will-change: transform;
+        }
+        .ad-slide-item {
+            min-width: 100%;
+            height: 100%;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body class="selection:bg-[#19183B] selection:text-white">
+
+    <!-- HEADER UTAMA -->
+    <header class="bg-white py-4 shadow-sm border-b border-slate-200 sticky top-0 z-[60]">
+        <div class="container mx-auto px-4 md:px-6 flex justify-between items-center max-w-7xl">
+            <div class="flex items-center space-x-4">
+                <button id="menu-toggle" class="p-2 -ml-2 cursor-pointer text-slate-700 hover:text-pn-hf transition md:hidden focus:outline-none" aria-label="Toggle Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                </button>
+                <div class="flex items-center space-x-3.5">
+                    <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="h-10 md:h-12 w-auto object-contain">
+                    <div class="text-left border-l-2 border-slate-200 pl-3.5">
+                        <h1 class="text-lg md:text-xl font-bold text-pn-hf tracking-normal leading-none nav-font uppercase">PAC PSNU PAGARNUSA</h1>
+                        <p class="text-slate-500 font-semibold text-xs tracking-wide uppercase mt-1">Kecamatan Kemang</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative hidden md:block">
+                <div class="flex items-center bg-slate-100 border border-slate-200 rounded-full px-4 py-2 focus-within:ring-1 focus-within:ring-[#19183B] focus-within:border-[#19183B] transition-all w-72 lg:w-80">
+                    <input id="search-input" type="text" placeholder="Cari Berita..." class="bg-transparent border-none text-sm outline-none w-full text-slate-700 placeholder-slate-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 flex-shrink-0 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVIGASI UTAMA (STATIS) -->
+    <nav class="bg-pn-hf shadow-md hidden md:block sticky top-[73px] z-50">
+        <div class="container mx-auto px-6 max-w-7xl">
+            <ul id="main-nav" class="flex flex-wrap justify-center items-center text-white nav-font uppercase tracking-wide text-xs lg:text-[13px]">
+                <li><a href="index.html" class="py-3.5 px-5 hover:text-amber-400 transition-colors block">Beranda</a></li>
+                <li><a href="galeri.html" class="py-3.5 px-5 hover:text-amber-400 transition-colors block">Galeri</a></li>
+                <li><a href="struktural.html" class="py-3.5 px-5 hover:text-amber-400 transition-colors block">Struktural</a></li>
+                <li><a href="kegiatan.html" class="py-3.5 px-5 hover:text-amber-400 transition-colors block">Kegiatan</a></li>
+                <li><a href="prestasi.html" class="py-3.5 px-5 hover:text-amber-400 transition-colors block">Prestasi</a></li>
+                <li><a href="super_admin.html" class="py-3.5 px-5 text-amber-400 hover:text-amber-300 transition-colors block font-bold">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- SUB-NAVIGASI DESA -->
+    <div class="bg-white border-b border-slate-200 py-2.5 px-4 md:px-6 shadow-xs">
+        <div class="container mx-auto max-w-7xl flex flex-wrap justify-between items-center text-xs text-slate-600 font-medium">
+            <div class="flex flex-wrap items-center gap-2 md:gap-3 uppercase tracking-wider overflow-x-auto py-1">
+                <span class="text-pn-hf font-bold mr-1">Wilayah Kemang:</span>
+                <a href="#" class="hover:text-pn-hf transition">Atang Senjaya</a>
+                <span class="text-slate-300">•</span>
+                <a href="#" class="hover:text-pn-hf transition">Bojong</a>
+                <span class="text-slate-300">•</span>
+                <a href="#" class="hover:text-pn-hf transition">Jampang</a>
+                <span class="text-slate-300">•</span>
+                <a href="#" class="hover:text-pn-hf transition">Kemang</a>
+                <span class="text-slate-300">•</span>
+                <a href="#" class="hover:text-pn-hf transition">Pabuaran</a>
+                <span class="text-slate-300">•</span>
+                <a href="#" class="hover:text-pn-hf transition">Parakan Jaya</a>
+                <span class="text-slate-300">•</span>
+                <a href="#" class="hover:text-pn-hf transition">Pondok Udik</a>
+                <span class="text-slate-300">•</span>
+                <a href="#" class="hover:text-pn-hf transition">Semplak Barat</a>
+                <span class="text-slate-300">•</span>
+                <a href="#" class="hover:text-pn-hf transition">Tegal</a>
+            </div>
+            <div class="hidden xl:block text-slate-500 font-semibold">Kabupaten Bogor</div>
+        </div>
+    </div>
+
+    <!-- MOBILE MENU SIDEBAR -->
+    <div id="mobile-menu" class="fixed inset-y-0 left-0 w-72 bg-pn-hf z-[70] transform -translate-x-full shadow-lg md:hidden transition-transform duration-300 ease-in-out">
+        <div class="p-6 flex flex-col h-full">
+            <div class="flex justify-between items-center border-b border-white/20 pb-4 mb-6">
+                <h2 class="text-white font-bold nav-font text-lg tracking-widest uppercase">Navigasi Utama</h2>
+                <button id="close-menu" class="text-white/80 p-2 hover:bg-white/10 rounded-sm transition focus:outline-none">✕</button>
+            </div>
+            <div class="flex items-center bg-black/20 border border-white/20 rounded-md px-3 py-2.5 mb-6">
+                <input id="search-input-mobile" type="text" placeholder="Cari..." class="bg-transparent border-none text-sm outline-none w-full text-white placeholder-white/50 focus:ring-0">
+            </div>
+            <ul id="mobile-nav-list" class="text-white/90 space-y-4 nav-font uppercase tracking-wide text-base overflow-y-auto flex-1">
+                <li><a href="index.html" class="block py-2 hover:text-amber-400 transition">Beranda</a></li>
+                <li><a href="galeri.html" class="block py-2 hover:text-amber-400 transition">Galeri</a></li>
+                <li><a href="struktural.html" class="block py-2 hover:text-amber-400 transition">Struktural</a></li>
+                <li><a href="kegiatan.html" class="block py-2 hover:text-amber-400 transition">Kegiatan</a></li>
+                <li><a href="prestasi.html" class="block py-2 hover:text-amber-400 transition">Prestasi</a></li>
+                <li><a href="super_admin.html" class="block py-2 text-amber-400 hover:text-amber-300 transition font-bold">Login</a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[65] hidden md:hidden"></div>
+
+    <main class="container mx-auto px-4 md:px-6 py-8 max-w-7xl">
+    
+        <!-- BANNER IKLAN SLIDE DARI SPREADSHEET -->
+        <section class="mb-10 morph-reveal">
+            <div class="relative bg-pn-hf border border-slate-800 rounded-lg overflow-hidden shadow-md h-40 md:h-52 flex items-center">
+                <div id="ad-track" class="ad-track">
+                    <!-- Slide dimuat via JavaScript dari Sheet Iklan -->
+                </div>
+                <button onclick="prevAd()" class="absolute left-3 bg-black/40 hover:bg-black/70 text-white p-2 rounded-full text-xs transition z-10 focus:outline-none cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></button>
+                <button onclick="nextAd()" class="absolute right-3 bg-black/40 hover:bg-black/70 text-white p-2 rounded-full text-xs transition z-10 focus:outline-none cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button>
+            </div>
+        </section>
+
+        <!-- HEADLINE GRID -->
+        <div id="headline-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+            <div class="h-[380px] md:h-[420px] shimmer rounded-md border border-slate-200"></div>
+            <div class="h-[380px] md:h-[420px] shimmer rounded-md border border-slate-200"></div>
+        </div>
+
+        <!-- RAYON PEMBINAAN -->
+        <section class="mb-16 morph-reveal">
+            <div class="flex items-end justify-between border-b-2 border-slate-300 mb-8 pb-3">
+                <h3 class="text-xl md:text-2xl font-bold nav-font tracking-tight border-b-[3px] border-[#19183B] -mb-[17px] pb-3 uppercase text-slate-800">
+                    Daftar Rayon/Ranting
+                </h3>
+                <span class="text-xs text-slate-600 font-semibold tracking-wide uppercase bg-white border border-slate-300 px-3 py-1 rounded-sm hidden sm:inline-block">Wilayah Kemang</span>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="rayon-card bg-white border border-slate-200 rounded-md p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 bg-[#E7F2EF] text-[#19183B] rounded-sm flex items-center justify-center font-bold text-lg mb-4 border border-slate-200">01</div>
+                        <h4 class="font-bold text-slate-800 text-lg leading-snug mb-2 uppercase nav-font">Rayon Universitas Nahdlatul Ulama Indonesia</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">Pusat pengembangan pencak silat prestasi dan khazanah keilmuan bela diri di tingkat perguruan tinggi.</p>
+                    </div>
+                    <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-[11px] font-bold text-slate-700 bg-[#E7F2EF] border border-slate-200 px-2 py-1 rounded-sm uppercase tracking-wide">Pimpinan Rayon</span>
+                    </div>
+                </div>
+
+                <div class="rayon-card bg-white border border-slate-200 rounded-md p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 bg-[#E7F2EF] text-[#19183B] rounded-sm flex items-center justify-center font-bold text-lg mb-4 border border-slate-200">02</div>
+                        <h4 class="font-bold text-slate-800 text-lg leading-snug mb-2 uppercase nav-font">Rayon SDN Jampang 01</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">Fokus pembinaan atlet usia dini sebagai ekstrakurikuler sekolah guna melatih kedisiplinan dan mental.</p>
+                    </div>
+                    <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-[11px] font-bold text-slate-700 bg-[#E7F2EF] border border-slate-200 px-2 py-1 rounded-sm uppercase tracking-wide">Pimpinan Rayon</span>
+                    </div>
+                </div>
+
+                <div class="rayon-card bg-white border border-slate-200 rounded-md p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 bg-[#E7F2EF] text-[#19183B] rounded-sm flex items-center justify-center font-bold text-lg mb-4 border border-slate-200">03</div>
+                        <h4 class="font-bold text-slate-800 text-lg leading-snug mb-2 uppercase nav-font">Rayon SDN Bojong 04</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">Unit latihan pembibitan generasi muda berakhlakul karimah, melestarikan budaya bangsa melalui silat nasional.</p>
+                    </div>
+                    <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-[11px] font-bold text-slate-700 bg-[#E7F2EF] border border-slate-200 px-2 py-1 rounded-sm uppercase tracking-wide">Pimpinan Rayon</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BERITA TERKINI & SIDEBAR -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+            <div class="lg:col-span-2">
+                <div class="flex items-end justify-between border-b-2 border-slate-300 mb-8 pb-3">
+                    <h3 id="news-title-trigger" class="text-xl md:text-2xl font-bold nav-font tracking-tight border-b-[3px] border-[#19183B] -mb-[17px] pb-3 uppercase text-slate-800">Berita Terkini</h3>
+                    <div id="search-status" class="text-sm text-slate-500 font-medium mb-1 uppercase"></div>
+                </div>
+                <div id="news-list" class="space-y-6">
+                    <div class="flex flex-col sm:flex-row gap-6 p-4 bg-white border border-slate-200 rounded-md shimmer h-40"></div>
+                </div>
+            </div>
+
+            <aside class="space-y-10 lg:sticky lg:top-[140px]">
+                <div class="morph-reveal">
+                    <h3 class="text-lg font-bold border-b-2 border-slate-300 mb-5 pb-3 nav-font uppercase text-slate-800">
+                        <span class="border-b-[3px] border-[#19183B] -mb-[14px] pb-3">Opini & Khazanah</span>
+                    </h3>
+                    <div class="bg-white border border-slate-200 rounded-md p-5 shadow-sm">
+                        <ul id="opinion-list" class="divide-y divide-slate-100">
+                            <li class="py-3 text-sm text-slate-500 font-medium">Memuat data...</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="morph-reveal bg-pn-hf p-6 text-white rounded-md shadow-sm border border-slate-800 relative overflow-hidden">
+                    <span class="text-[11px] font-bold tracking-wide uppercase bg-black/20 border border-white/10 text-white px-3 py-1 rounded-sm mb-4 inline-block">Sekretariat PAC</span>
+                    <h4 class="nav-font text-xl mb-3 font-bold uppercase tracking-wide text-amber-400">Kantor Sekretariat</h4>
+                    <p class="text-sm text-slate-200 leading-relaxed mb-6 bg-black/20 p-4 rounded-sm border border-white/10">
+                        Jl. Raya Kemang, Kabupaten Bogor, Jawa Barat
+                    </p>
+                    <a href="https://maps.app.goo.gl/xwsnyAomkWYM4QKP6" target="_blank" class="flex items-center justify-center w-full py-3 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold rounded-sm text-sm uppercase transition-colors">
+                        Buka Peta
+                    </a>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-pn-hf border-t border-slate-800 py-12 mt-16 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa Footer" class="h-16 mx-auto mb-6 object-contain filter brightness-17">
+            <p class="font-bold text-white text-xl md:text-2xl nav-font uppercase mb-2 tracking-wide">PAC PSNU PAGARNUSA KEMANG</p>
+            <p class="text-slate-300 text-sm font-semibold uppercase tracking-wide mb-6">Pagar NU dan Bangsa</p>
+            <div class="text-slate-400 text-xs tracking-wide max-w-lg mx-auto leading-relaxed border-t border-white/10 pt-6 font-medium">
+                © 2026 Lembaga IT & Infokom PAC Pagar Nusa Kecamatan Kemang
+            </div>
+        </div>
+    </footer>
+
+<script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxLs1nDf7wYLjp_QV0IqT9VSqq4iVTDWy_5fAJShgIzqk5VAJQ9H8Ep7rDrFeoQznuq/exec?action=articles'; 
+    const ADS_API_URL = 'https://script.google.com/macros/s/AKfycbxLs1nDf7wYLjp_QV0IqT9VSqq4iVTDWy_5fAJShgIzqk5VAJQ9H8Ep7rDrFeoQznuq/exec?action=ads';
+    
+    let allNews = [];
+    let adsData = [];
+    let currentAdIndex = 0;
+    let adInterval;
+
+    const toggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('mobile-menu');
+    const overlay = document.getElementById('overlay');
+    const closeBtn = document.getElementById('close-menu');
+
+    function toggleMenu() {
+        menu.classList.toggle('-translate-x-full');
+        overlay.classList.toggle('hidden');
+        document.body.classList.toggle('overflow-hidden');
+    }
+    toggle.onclick = toggleMenu;
+    overlay.onclick = toggleMenu;
+    closeBtn.onclick = toggleMenu;
+
+    function formatTanggal(dateString) {
+        if (!dateString) return '-';
+        try {
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return dateString;
+            return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+        } catch (e) {
+            return dateString;
+        }
+    }
+
+    async function fetchContent() {
+        try {
+            const response = await fetch(API_URL);
+            const res = await response.json();
+            const rawData = Array.isArray(res) ? res : (res.berita || res.data || Object.values(res || {}).find(val => Array.isArray(val)) || []);
+            
+            // Filter hanya artikel dengan status Published
+            allNews = rawData.filter(item => {
+                const status = String(item.status || '').trim().toLowerCase();
+                return status === 'published';
+            });
+
+            renderBerita(allNews);
+        } catch (error) { 
+            document.getElementById('news-list').innerHTML = `<div class="p-6 bg-red-50 text-red-600 rounded-md border border-red-200 font-medium text-sm">Gagal memuat data: ${error.message}</div>`;
+        }
+    }
+
+    async function fetchAds() {
+        try {
+            const response = await fetch(ADS_API_URL);
+            const res = await response.json();
+            
+            const rawAds = Array.isArray(res) ? res : (res.iklan || res.data || Object.values(res || {}).find(val => Array.isArray(val)) || []);
+            
+            if (Array.isArray(rawAds) && rawAds.length > 0) {
+                adsData = rawAds.filter(ad => ad.gambar || ad.link);
+            }
+            
+            if (adsData.length === 0) {
+                adsData = [{
+                    judul: "INFORMASI UTAMA",
+                    deskripsi: "Mari bergabung dan melestarikan budaya bangsa bersama PAC PSNU Pagar Nusa Kemang.",
+                    cta: "Daftar Sekarang",
+                    link: "#",
+                    gambar: "https://storage.nu.or.id/storage/banners/118395_1785118636.webp"
+                }];
+            }
+            initAdsCarousel();
+        } catch (error) {
+            console.error("Gagal memuat iklan:", error);
+            adsData = [{
+                judul: "INFORMASI UTAMA",
+                deskripsi: "Mari bergabung dan melestarikan budaya bangsa bersama PAC PSNU Pagar Nusa Kemang.",
+                cta: "Daftar Sekarang",
+                link: "#",
+                gambar: "https://storage.nu.or.id/storage/banners/118395_1785118636.webp"
+            }];
+            initAdsCarousel();
+        }
+    }
+
+    function initAdsCarousel() {
+        const track = document.getElementById('ad-track');
+        track.innerHTML = '';
+
+        adsData.forEach(ad => {
+            const item = document.createElement('div');
+            item.className = `ad-slide-item bg-slate-900 relative overflow-hidden flex items-center`;
+            const bgImage = ad.gambar || 'https://storage.nu.or.id/storage/banners/118395_1785118636.webp';
+            const ctaText = ad.cta || 'Kunjungi';
+            const linkUrl = ad.link || '#';
+            const titleText = ad.judul || '';
+            
+            item.innerHTML = `
+                <div class="absolute inset-0 z-0">
+                    <img src="${bgImage}" class="w-full h-full object-cover opacity-100" alt="Banner Iklan">
+                    <div class="absolute inset-0 bg-gradient-to-r from-slate-0 via-slate-900/80 to-transparent"></div>
+                </div>
+                <div class="relative z-10 p-6 md:p-8 flex flex-col justify-between w-full h-full">
+                    <div>
+                        <span class="text-[10px] font-bold uppercase tracking-widest bg-amber-500 text-slate-900 px-2 py-0.5 rounded"></span>
+                        <h4 class="text-lg md:text-2xl font-bold nav-font uppercase mt-1 tracking-wide text-amber-400">${titleText}</h4>
+                        <p class="text-xs md:text-sm text-slate-200 mt-1 line-clamp-1">${ad.deskripsi || ''}</p>
+                    </div>
+                    <div class="flex justify-end">
+                        <a href="${linkUrl}" target="_blank" class="text-xs font-bold uppercase tracking-wider bg-amber-500 hover:bg-amber-400 text-slate-900 px-4 py-2 rounded shadow transition flex items-center space-x-1">
+                            <span>${ctaText}</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </a>
+                    </div>
+                </div>
+            `;
+            track.appendChild(item);
+        });
+        updateAdPosition();
+        resetAdTimer();
+    }
+
+    function updateAdPosition() {
+        const track = document.getElementById('ad-track');
+        if (track && adsData.length > 0) {
+            track.style.transform = `translateX(-${currentAdIndex * 100}%)`;
+        }
+    }
+
+    function nextAd() {
+        if (adsData.length === 0) return;
+        currentAdIndex = (currentAdIndex + 1) % adsData.length;
+        updateAdPosition();
+        resetAdTimer();
+    }
+
+    function prevAd() {
+        if (adsData.length === 0) return;
+        currentAdIndex = (currentAdIndex - 1 + adsData.length) % adsData.length;
+        updateAdPosition();
+        resetAdTimer();
+    }
+
+    function resetAdTimer() {
+        clearInterval(adInterval);
+        adInterval = setInterval(nextAd, 5000);
+    }
+
+    function renderBerita(data, isSearch = false) {
+        if (!Array.isArray(data)) data = [];
+        const headlineGrid = document.getElementById('headline-grid');
+        const newsList = document.getElementById('news-list');
+        const opinionList = document.getElementById('opinion-list');
+        const status = document.getElementById('search-status');
+
+        if(!isSearch) headlineGrid.innerHTML = '';
+        newsList.innerHTML = ''; 
+        opinionList.innerHTML = '';
+        status.innerText = isSearch ? `Ditemukan ${data.length} hasil` : '';
+
+        if (data.length === 0) {
+            newsList.innerHTML = '<div class="p-8 text-slate-500 font-medium uppercase text-sm border border-slate-200 rounded-md bg-white">Konten Published Tidak Ditemukan</div>';
+            return;
+        }
+
+        data.forEach((item, index) => {
+            const detailLink = `baca.html?slug=${item.slug || ''}`;
+            const imgSrc = item.gambar_url || item.gambar || 'https://storage.nu.or.id/storage/banners/118395_1785118636.webp'; 
+            const kategori = item.kategori || 'Berita';
+            const judul = item.judul || 'Tanpa Judul';
+            const tanggalRapi = formatTanggal(item.tanggal);
+
+            if (!isSearch && index < 2) {
+                headlineGrid.innerHTML += `
+                    <a href="${detailLink}" class="relative h-[380px] md:h-[420px] bg-slate-900 overflow-hidden group rounded-md shadow-sm morph-reveal border border-slate-800">
+                        <img src="${imgSrc}" class="w-full h-full object-cover opacity-60 transition duration-500 hover:opacity-75" loading="lazy">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8 text-white">
+                            <span class="bg-amber-500 text-slate-900 px-3 py-1 text-xs font-bold uppercase tracking-wide rounded-sm">${kategori}</span>
+                            <h2 class="text-xl md:text-2xl font-bold mt-4 hover:text-amber-400 transition-colors leading-snug nav-font uppercase">${judul}</h2>
+                            <div class="flex items-center space-x-2 mt-4 text-xs text-slate-300 uppercase font-medium"><span>${tanggalRapi}</span></div>
+                        </div>
+                    </a>`;
+            }
+
+            const catLower = kategori.toLowerCase();
+            if (catLower.includes('opini') || catLower.includes('khazanah')) {
+                opinionList.innerHTML += `
+                    <li class="py-4 group morph-reveal first:pt-0 last:pb-0">
+                        <a href="${detailLink}" class="font-semibold text-sm group-hover:text-[#19183B] transition-colors block text-slate-700 leading-snug mb-2">${judul}</a>
+                        <div class="flex items-center space-x-2 text-[10px] font-bold tracking-wide uppercase text-slate-500">
+                             <span>${tanggalRapi}</span><span class="text-slate-300">•</span><span class="text-slate-600 bg-[#E7F2EF] border border-slate-200 px-2 py-0.5 rounded-sm">${kategori}</span>
+                        </div>
+                    </li>`;
+            } 
+            
+            if (isSearch || index >= 2) {
+                newsList.innerHTML += `
+                    <a href="${detailLink}" class="flex gap-4 md:gap-5 items-start group morph-reveal border border-slate-200 bg-white p-5 rounded-md shadow-sm hover:border-[#19183B] transition-colors">
+                        <div class="w-24 h-20 md:w-40 md:h-28 flex-shrink-0 overflow-hidden rounded-sm bg-slate-100 border border-slate-200">
+                            <img src="${imgSrc}" class="w-full h-full object-cover transition duration-300 group-hover:opacity-90" loading="lazy">
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <span class="text-[10px] font-bold text-slate-600 uppercase tracking-wide bg-[#E7F2EF] border border-slate-200 px-2 py-1 rounded-sm mb-2 inline-block">${kategori}</span>
+                            <h4 class="text-base font-bold text-slate-800 leading-snug group-hover:text-[#19183B] transition-colors line-clamp-2 uppercase nav-font">${judul}</h4>
+                            <div class="flex items-center mt-3 text-slate-500 text-xs font-medium uppercase"><span>${tanggalRapi}</span></div>
+                        </div>
+                    </a>`;
+            }
+        });
+
+        if(opinionList.innerHTML === '') opinionList.innerHTML = '<li class="py-2 text-sm text-slate-500 font-medium">Belum ada konten khazanah.</li>';
+        initScrollReveal();
+    }
+
+    const handleSearch = (e) => {
+        const val = e.target.value.toLowerCase();
+        if(val.length > 2) {
+            const filtered = allNews.filter(n => (n.judul && n.judul.toLowerCase().includes(val)) || (n.kategori && n.kategori.toLowerCase().includes(val)));
+            document.getElementById('news-title-trigger').innerText = "Hasil Pencarian";
+            renderBerita(filtered, true);
+        } else if (val.length === 0) {
+            document.getElementById('news-title-trigger').innerText = "Berita Terkini";
+            renderBerita(allNews);
+        }
+    };
+
+    document.getElementById('search-input').addEventListener('input', handleSearch);
+    document.getElementById('search-input-mobile').addEventListener('input', handleSearch);
+
+    function initScrollReveal() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.morph-reveal').forEach(el => observer.observe(el));
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchContent();
+        fetchAds();
+    });
+</script>
+</body>
+</html>

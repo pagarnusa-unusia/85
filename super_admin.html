@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin Dashboard - PAC Pagar Nusa Kemang</title>
+    <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root { 
+            --pn-header-footer: #19183B;
+            --pn-base: #E7F2EF;
+            --pn-gold: #d4af37;
+        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; color: #1e293b; background-color: var(--pn-base); }
+        .nav-font { font-family: 'Oswald', sans-serif; }
+        .bg-pn-hf { background-color: var(--pn-header-footer); }
+        
+        #editor:empty:before {
+            content: attr(placeholder);
+            color: #94a3b8;
+            pointer-events: none;
+            display: block;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--pn-base); }
+        ::-webkit-scrollbar-thumb { background: var(--pn-header-footer); }
+    </style>
+</head>
+<body class="selection:bg-[#19183B] selection:text-white pb-16 min-h-screen flex flex-col">
+
+    <!-- HEADER SUPER ADMIN -->
+    <header class="bg-pn-hf py-4 shadow-md sticky top-0 z-[60] border-b border-slate-800">
+        <div class="container mx-auto px-4 md:px-6 flex justify-between items-center max-w-7xl">
+            <div class="flex items-center space-x-3.5">
+                <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="h-10 md:h-12 w-auto object-contain filter brightness-200">
+                <div class="text-left border-l-2 border-white/20 pl-3.5">
+                    <h1 class="text-lg md:text-xl font-bold text-white tracking-normal leading-none nav-font uppercase">SUPER ADMIN PANEL</h1>
+                    <p class="text-amber-400 font-semibold text-xs tracking-wide uppercase mt-1"><i class="fa-solid fa-crown mr-1"></i> Kontrol Penuh Website</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <a href="index.html" target="_blank" class="bg-amber-500 hover:bg-amber-600 text-slate-900 text-xs px-3.5 py-2 rounded-sm transition font-bold uppercase tracking-wider flex items-center">
+                    <i class="fa-solid fa-globe mr-1.5"></i> Lihat Website
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- TAB NAVIGASI UTAMA -->
+    <div class="bg-white border-b border-slate-200 shadow-sm sticky top-[73px] z-50">
+        <div class="container mx-auto px-4 md:px-6 max-w-7xl flex space-x-4">
+            <button onclick="switchTab('artikel')" id="tab-btn-artikel" class="py-3 px-5 font-bold text-sm border-b-2 border-[#19183B] text-[#19183B] uppercase tracking-wider transition cursor-pointer flex items-center">
+                <i class="fa-solid fa-newspaper mr-2"></i> Kelola Artikel & Publikasi
+            </button>
+            <button onclick="switchTab('iklan')" id="tab-btn-iklan" class="py-3 px-5 font-bold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 uppercase tracking-wider transition cursor-pointer flex items-center">
+                <i class="fa-solid fa-rectangle-ad mr-2"></i> Kelola Iklan / Banner (Max 3)
+            </button>
+        </div>
+    </div>
+
+    <!-- KONTEN UTAMA -->
+    <main class="container mx-auto px-4 md:px-6 py-8 max-w-7xl flex-1 space-y-6">
+
+        <!-- NOTIFIKASI -->
+        <div id="alert-box" class="hidden p-4 rounded-md text-sm font-medium shadow-sm"></div>
+
+        <!-- ================= SECTION 1: KELOLA ARTIKEL ================= -->
+        <section id="section-artikel" class="space-y-8">
+            
+            <!-- Form Tambah / Edit Artikel -->
+            <div class="bg-white p-6 md:p-8 rounded-md shadow-sm border border-slate-200">
+                <h3 id="form-article-title" class="text-lg font-bold text-slate-800 mb-6 flex items-center border-b pb-3 border-slate-200 nav-font uppercase tracking-wide">
+                    <i class="fa-solid fa-pen-to-square text-[#19183B] mr-2"></i> Tambah / Edit Artikel Baru
+                </h3>
+
+                <form id="article-form" onsubmit="handleSaveArticle(event)" class="space-y-6">
+                    <input type="hidden" id="article-id">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Judul Artikel</label>
+                            <input type="text" id="judul" required placeholder="Contoh: Pelantikan Pengurus PAC Kemang" oninput="generateSlug(this.value)" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-sm text-sm focus:outline-none focus:border-[#19183B] bg-slate-50/50">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Slug URL (Otomatis)</label>
+                            <input type="text" id="slug" required placeholder="contoh: pelantikan-pengurus-pac-kemang" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-sm text-sm focus:outline-none focus:border-[#19183B] bg-slate-50/50 font-mono text-xs">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Kategori</label>
+                            <select id="kategori" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-sm text-sm focus:outline-none focus:border-[#19183B] bg-white font-medium">
+                                <option value="Santri">Santri</option>
+                                <option value="MWCNU">MWCNU</option>
+                                <option value="PCNU">PCNU</option>
+                                <option value="Pendekar">Pendekar</option>
+                                <option value="Prestasi">Prestasi</option>
+                                <option value="Berita">Berita</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Tanggal</label>
+                            <input type="date" id="tanggal" required class="w-full px-3.5 py-2.5 border border-slate-300 rounded-sm text-sm focus:outline-none focus:border-[#19183B] bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Status Publikasi</label>
+                            <select id="status" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-sm text-sm focus:outline-none focus:border-[#19183B] bg-white font-medium">
+                                <option value="Draft">Draft</option>
+                                <option value="Kirim">Kirim (Menunggu Konfirmasi)</option>
+                                <option value="Published">Published (Tayang di Website)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Link Gambar Utama (URL)</label>
+                        <input type="url" id="gambar_url" required placeholder="https://lh3.googleusercontent.com/d/ID_FOTO" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-sm text-sm focus:outline-none focus:border-[#19183B] bg-slate-50/50">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Ringkasan Singkat (Deskripsi Card)</label>
+                        <textarea id="ringkasan" rows="2" required placeholder="Ringkasan isi berita..." class="w-full px-3.5 py-2.5 border border-slate-300 rounded-sm text-sm focus:outline-none focus:border-[#19183B] bg-slate-50/50"></textarea>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">Isi Konten Artikel (Visual Editor)</label>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5 p-2 bg-slate-100 border border-slate-300 border-b-0 rounded-t-sm">
+                            <button type="button" onclick="formatText('formatBlock', '<h3>')" class="px-2.5 py-1 bg-white border border-slate-300 text-xs font-bold rounded hover:bg-slate-50 cursor-pointer">H3</button>
+                            <button type="button" onclick="formatText('formatBlock', '<p>')" class="px-2.5 py-1 bg-white border border-slate-300 text-xs font-bold rounded hover:bg-slate-50 cursor-pointer">P</button>
+                            <button type="button" onclick="formatText('bold')" class="px-2.5 py-1 bg-white border border-slate-300 text-xs font-bold rounded hover:bg-slate-50 cursor-pointer"><i class="fa-solid fa-bold"></i></button>
+                            <button type="button" onclick="formatText('italic')" class="px-2.5 py-1 bg-white border border-slate-300 text-xs font-bold rounded hover:bg-slate-50 cursor-pointer"><i class="fa-solid fa-italic"></i></button>
+                            <button type="button" onclick="insertLinkWysiwyg()" class="px-2.5 py-1 bg-white border border-slate-300 text-xs font-bold rounded hover:bg-slate-50 cursor-pointer"><i class="fa-solid fa-link"></i> Link</button>
+                        </div>
+                        <div id="editor" contenteditable="true" placeholder="Tulis isi berita lengkap di sini..." class="w-full min-h-[220px] p-4 border border-slate-300 rounded-b-sm text-sm focus:outline-none focus:border-[#19183B] bg-slate-50/50 leading-relaxed"></div>
+                    </div>
+
+                    <div class="flex space-x-3">
+                        <button type="submit" id="btn-save-art" class="bg-pn-hf hover:bg-slate-800 text-white font-bold px-7 py-3 rounded-sm text-xs uppercase tracking-widest transition shadow-sm cursor-pointer flex items-center justify-center">
+                            <i class="fa-solid fa-floppy-disk mr-2 text-amber-400"></i> Simpan Artikel
+                        </button>
+                        <button type="button" onclick="resetArticleForm()" id="btn-cancel-edit" class="hidden bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-5 py-3 rounded-sm text-xs uppercase tracking-widest transition cursor-pointer">
+                            Batal Edit
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tabel Daftar Artikel & Konfirmasi Status -->
+            <div class="bg-white p-6 md:p-8 rounded-md shadow-sm border border-slate-200">
+                <div class="flex justify-between items-center mb-4 border-b pb-3 border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-800 nav-font uppercase tracking-wide">
+                        <i class="fa-solid fa-list text-[#19183B] mr-2"></i> Konfirmasi & Manajemen Riwayat Artikel
+                    </h3>
+                    <button onclick="loadArticles()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-sm transition font-bold uppercase tracking-wider cursor-pointer">
+                        <i class="fa-solid fa-rotate mr-1"></i> Refresh Data
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-700 text-xs uppercase font-bold tracking-wider border-b border-slate-200 nav-font">
+                                <th class="p-3">Judul</th>
+                                <th class="p-3">Kategori</th>
+                                <th class="p-3">Penulis</th>
+                                <th class="p-3">Status Saat Ini</th>
+                                <th class="p-3 text-center">Konfirmasi / Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="article-table-body">
+                            <tr><td colspan="5" class="p-4 text-center text-slate-400">Memuat artikel...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 2: KELOLA IKLAN (MAX 3) ================= -->
+        <section id="section-iklan" class="hidden space-y-8">
+            <div class="bg-white p-6 md:p-8 rounded-md shadow-sm border border-slate-200">
+                <div class="border-b border-slate-200 pb-4 mb-6">
+                    <h3 class="text-lg font-bold text-[#19183B] nav-font uppercase">
+                        <i class="fa-solid fa-rectangle-ad mr-2"></i> Manajemen 3 Slot Iklan Website
+                    </h3>
+                    <p class="text-sm text-slate-500 mt-1">Sistem ini mengelola maksimal 3 iklan/banner aktif berdasarkan kolom database: <strong>slot</strong>, <strong>gambar</strong>, <strong>cta</strong>, dan <strong>link</strong>.</p>
+                </div>
+
+                <form id="ad-form" onsubmit="submitAd(event)" class="space-y-5">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Pilih Slot Iklan (1 sampai 3)</label>
+                        <select id="ad-slot" required class="w-full border border-slate-300 rounded px-4 py-2.5 text-sm font-semibold bg-slate-50 focus:outline-none focus:border-[#19183B]">
+                            <option value="1">Slot Iklan 1</option>
+                            <option value="2">Slot Iklan 2</option>
+                            <option value="3">Slot Iklan 3</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-700 mb-1">URL Gambar Banner</label>
+                        <input type="url" id="ad-gambar" required placeholder="https://..." class="w-full border border-slate-300 rounded px-4 py-2.5 text-sm focus:outline-none focus:border-[#19183B]">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Teks Tombol (CTA)</label>
+                            <input type="text" id="ad-cta" required placeholder="Contoh: Ikuti Kami" class="w-full border border-slate-300 rounded px-4 py-2.5 text-sm focus:outline-none focus:border-[#19183B]">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Link Tujuan (URL)</label>
+                            <input type="url" id="ad-link" required placeholder="https://..." class="w-full border border-slate-300 rounded px-4 py-2.5 text-sm focus:outline-none focus:border-[#19183B]">
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex justify-end">
+                        <button type="submit" id="btn-submit-ad" class="bg-[#19183B] hover:bg-slate-800 text-white font-bold px-6 py-3 rounded text-sm uppercase tracking-wider transition shadow cursor-pointer flex items-center">
+                            <i class="fa-solid fa-cloud-arrow-up mr-2 text-amber-400"></i> Simpan / Perbarui Iklan Ini
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- List Iklan Saat Ini -->
+            <div class="bg-white p-6 md:p-8 rounded-md shadow-sm border border-slate-200">
+                <div class="flex justify-between items-center mb-4 border-b pb-3 border-slate-200">
+                    <h3 class="text-lg font-bold text-slate-800 nav-font uppercase">Daftar Iklan Aktif Saat Ini</h3>
+                    <button onclick="loadAds()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-sm transition font-bold uppercase tracking-wider cursor-pointer">
+                        <i class="fa-solid fa-rotate mr-1"></i> Refresh Data
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-700 text-xs uppercase font-bold tracking-wider border-b border-slate-200 nav-font">
+                                <th class="p-3">Slot</th>
+                                <th class="p-3">Gambar</th>
+                                <th class="p-3">CTA Tombol</th>
+                                <th class="p-3">Link Tujuan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ads-table-body">
+                            <tr><td colspan="4" class="p-4 text-center text-slate-400">Memuat data iklan...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-pn-hf border-t border-slate-800 py-6 mt-16 text-white text-center text-xs">
+        <div class="container mx-auto px-4">
+            <p class="font-bold tracking-wide uppercase nav-font text-amber-400 mb-1">PAC PSNU PAGARNUSA KEMANG</p>
+            <p class="text-slate-400">© 2026 Lembaga IT & Infokom PAC Pagar Nusa Kecamatan Kemang</p>
+        </div>
+    </footer>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbxLs1nDf7wYLjp_QV0IqT9VSqq4iVTDWy_5fAJShgIzqk5VAJQ9H8Ep7rDrFeoQznuq/exec";
+        const loggedUser = "Super Admin";
+
+        // Navigasi Tab
+        function switchTab(tab) {
+            const secArt = document.getElementById("section-artikel");
+            const secIklan = document.getElementById("section-iklan");
+            const btnArt = document.getElementById("tab-btn-artikel");
+            const btnIklan = document.getElementById("tab-btn-iklan");
+
+            if (tab === 'artikel') {
+                secArt.classList.remove("hidden");
+                secIklan.classList.add("hidden");
+                btnArt.className = "py-3 px-5 font-bold text-sm border-b-2 border-[#19183B] text-[#19183B] uppercase tracking-wider transition cursor-pointer flex items-center";
+                btnIklan.className = "py-3 px-5 font-bold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 uppercase tracking-wider transition cursor-pointer flex items-center";
+                loadArticles();
+            } else {
+                secArt.classList.add("hidden");
+                secIklan.classList.remove("hidden");
+                btnIklan.className = "py-3 px-5 font-bold text-sm border-b-2 border-[#19183B] text-[#19183B] uppercase tracking-wider transition cursor-pointer flex items-center";
+                btnArt.className = "py-3 px-5 font-bold text-sm border-b-2 border-transparent text-slate-500 hover:text-slate-800 uppercase tracking-wider transition cursor-pointer flex items-center";
+                loadAds();
+            }
+        }
+
+        // Auto-isi tanggal hari ini
+        document.getElementById("tanggal").valueAsDate = new Date();
+
+        // Generator slug otomatis
+        function generateSlug(val) {
+            const slug = val.toLowerCase().replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
+            document.getElementById("slug").value = slug;
+        }
+
+        // Editor helper
+        function formatText(command, value = null) {
+            document.execCommand(command, false, value);
+            document.getElementById('editor').focus();
+        }
+        function insertLinkWysiwyg() {
+            const url = prompt("Masukkan URL Link:", "https://");
+            if (url) document.execCommand('createLink', false, url);
+        }
+
+        // 1. Load Artikel
+async function loadArticles() {
+    const tbody = document.getElementById("article-table-body");
+    try {
+        const res = await fetch(`${API_URL}?action=articles`);
+        const articles = await res.json();
+        allArticlesData = articles; // Simpan ke global
+
+        if (!Array.isArray(articles) || articles.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">Belum ada artikel.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = "";
+        articles.slice().reverse().forEach((art, index) => {
+            // Cari index asli di array utama
+            const originalIndex = articles.length - 1 - index;
+            
+            const status = String(art.status || 'Draft').trim();
+            let badgeClass = 'bg-amber-100 text-amber-800 border-amber-200';
+            if (status.toLowerCase() === 'published') badgeClass = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+            else if (status.toLowerCase() === 'kirim') badgeClass = 'bg-blue-100 text-blue-800 border-blue-200';
+
+            tbody.innerHTML += `
+                <tr class="border-b border-slate-100 hover:bg-slate-50 transition">
+                    <td class="p-3 font-semibold text-slate-800 max-w-xs truncate">${art.judul || '-'}</td>
+                    <td class="p-3 text-xs"><span class="bg-[#E7F2EF] px-2 py-1 rounded border border-slate-200 font-medium">${art.kategori || '-'}</span></td>
+                    <td class="p-3 text-xs text-slate-600">${art.penulis || '-'}</td>
+                    <td class="p-3"><span class="px-2 py-1 text-xs rounded font-bold uppercase border ${badgeClass}">${status}</span></td>
+                    <td class="p-3 text-center space-x-1.5 whitespace-nowrap">
+                        ${status !== 'Published' ? `<button onclick="updateStatus('${art.id}', 'Published')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1.5 rounded text-xs font-bold uppercase transition cursor-pointer" title="Konfirmasi & Tayangkan"><i class="fa-solid fa-check"></i> Publish</button>` : ''}
+                        <button onclick="editArticleByIndex(${originalIndex})" class="bg-amber-500 hover:bg-amber-600 text-slate-900 px-2.5 py-1.5 rounded text-xs font-bold uppercase transition cursor-pointer"><i class="fa-solid fa-pen"></i> Edit</button>
+                        <button onclick="deleteArticle('${art.id}')" class="bg-red-600 hover:bg-red-700 text-white px-2.5 py-1.5 rounded text-xs font-bold uppercase transition cursor-pointer"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+            `;
+        });
+    } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-red-500">Gagal memuat artikel: ${err.message}</td></tr>`;
+    }
+}
+
+        // Ubah Status Cepat (Publish / Draft)
+        async function updateStatus(id, newStatus) {
+            const alertBox = document.getElementById("alert-box");
+            try {
+                await fetch(API_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ action: "update_article_status", id: id, status: newStatus })
+                });
+
+                alertBox.className = "p-4 rounded-md text-sm font-medium shadow-sm bg-emerald-50 border border-emerald-200 text-emerald-800 mb-4";
+                alertBox.innerHTML = `<i class="fa-solid fa-circle-check mr-2"></i> Status artikel berhasil diubah menjadi <strong>${newStatus}</strong>!`;
+                alertBox.classList.remove("hidden");
+                
+                setTimeout(loadArticles, 1200);
+            } catch (err) {
+                alertBox.className = "p-4 rounded-md text-sm font-medium shadow-sm bg-red-50 border border-red-200 text-red-800 mb-4";
+                alertBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-2"></i> Kesalahan koneksi: ${err.message}`;
+                alertBox.classList.remove("hidden");
+            }
+        }
+
+        // Edit Artikel (isi form)
+        function editArticle(art) {
+            document.getElementById("article-id").value = art.id || '';
+            document.getElementById("judul").value = art.judul || '';
+            document.getElementById("slug").value = art.slug || '';
+            document.getElementById("kategori").value = art.kategori || 'Santri';
+            document.getElementById("tanggal").value = art.tanggal || new Date().toISOString().split('T')[0];
+            document.getElementById("status").value = art.status || 'Draft';
+            document.getElementById("gambar_url").value = art.gambar_url || '';
+            document.getElementById("ringkasan").value = art.ringkasan || '';
+            document.getElementById("editor").innerHTML = art.konten || '';
+            
+            document.getElementById("form-article-title").innerHTML = `<i class="fa-solid fa-pen-to-square text-[#19183B] mr-2"></i> Edit Artikel (ID: ${art.id})`;
+            document.getElementById("btn-cancel-edit").classList.remove("hidden");
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetArticleForm() {
+            document.getElementById("article-form").reset();
+            document.getElementById("article-id").value = "";
+            document.getElementById("editor").innerHTML = "";
+            document.getElementById("tanggal").valueAsDate = new Date();
+            document.getElementById("form-article-title").innerHTML = `<i class="fa-solid fa-pen-to-square text-[#19183B] mr-2"></i> Tambah / Edit Artikel Baru`;
+            document.getElementById("btn-cancel-edit").classList.add("hidden");
+        }
+
+        // Simpan Artikel (Tambah atau Update)
+        async function handleSaveArticle(e) {
+            e.preventDefault();
+            const id = document.getElementById("article-id").value;
+            const action = id ? "update_article" : "add_article";
+            const alertBox = document.getElementById("alert-box");
+
+            const data = {
+                action: action,
+                id: id || Date.now().toString(),
+                judul: document.getElementById("judul").value,
+                slug: document.getElementById("slug").value,
+                kategori: document.getElementById("kategori").value,
+                tanggal: document.getElementById("tanggal").value,
+                penulis: loggedUser,
+                gambar_url: document.getElementById("gambar_url").value,
+                ringkasan: document.getElementById("ringkasan").value,
+                konten: document.getElementById("editor").innerHTML,
+                status: document.getElementById("status").value
+            };
+
+            try {
+                await fetch(API_URL, { 
+                    method: "POST", 
+                    mode: "no-cors",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data) 
+                });
+                
+                alertBox.className = "p-4 rounded-md text-sm font-medium shadow-sm bg-emerald-50 border border-emerald-200 text-emerald-800 mb-4";
+                alertBox.innerHTML = `<i class="fa-solid fa-circle-check mr-2"></i> Artikel berhasil disimpan ke database!`;
+                alertBox.classList.remove("hidden");
+                resetArticleForm();
+                setTimeout(loadArticles, 1200);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } catch (err) {
+                alert("Gagal menyimpan artikel: " + err.message);
+            }
+        }
+
+        // Hapus Artikel
+        async function deleteArticle(id) {
+            if (!confirm("Yakin ingin menghapus artikel ini?")) return;
+            try {
+                await fetch(API_URL, { 
+                    method: "POST", 
+                    mode: "no-cors",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ action: "delete_article", id: id }) 
+                });
+                setTimeout(loadArticles, 1200);
+            } catch (err) {
+                alert("Gagal menghapus.");
+            }
+        }
+
+        // 2. Load Iklan
+        async function loadAds() {
+            const tbody = document.getElementById("ads-table-body");
+            try {
+                const res = await fetch(`${API_URL}?action=ads`);
+                const ads = await res.json();
+
+                if (!Array.isArray(ads) || ads.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-400">Belum ada iklan tersimpan.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = "";
+                ads.forEach((ad, idx) => {
+                    const slotNum = ad.slot || (idx + 1);
+                    tbody.innerHTML += `
+                        <tr class="border-b border-slate-100 hover:bg-slate-50 transition">
+                            <td class="p-3 font-bold text-[#19183B]">Slot ${slotNum}</td>
+                            <td class="p-3 text-xs text-blue-600 truncate max-w-xs"><a href="${ad.gambar}" target="_blank">${ad.gambar || '-'}</a></td>
+                            <td class="p-3 text-xs"><span class="bg-amber-100 text-amber-900 px-2 py-1 rounded font-bold">${ad.cta || '-'}</span></td>
+                            <td class="p-3 text-xs text-blue-600 truncate max-w-xs"><a href="${ad.link}" target="_blank">${ad.link || '-'}</a></td>
+                        </tr>
+                    `;
+                });
+            } catch (err) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-red-500">Gagal memuat iklan: ${err.message}</td></tr>`;
+            }
+        }
+
+        // Submit / Simpan Iklan Terhubung ke Spreadsheet
+        async function submitAd(e) {
+            e.preventDefault();
+            const btn = document.getElementById("btn-submit-ad");
+            const alertBox = document.getElementById("alert-box");
+
+            btn.disabled = true;
+            btn.innerText = "Menyimpan Iklan...";
+
+            const adData = {
+                action: 'addAd',
+                slot: document.getElementById('ad-slot').value,
+                gambar: document.getElementById('ad-gambar').value,
+                cta: document.getElementById('ad-cta').value,
+                link: document.getElementById('ad-link').value
+            };
+
+            try {
+                await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(adData)
+                });
+
+                alertBox.className = "p-4 rounded-md text-sm font-medium shadow-sm bg-emerald-50 border border-emerald-200 text-emerald-800 mb-4";
+                alertBox.innerHTML = `<i class="fa-solid fa-circle-check mr-2"></i> Iklan slot ${adData.slot} berhasil disimpan ke Spreadsheet!`;
+                alertBox.classList.remove("hidden");
+                document.getElementById('ad-form').reset();
+                setTimeout(loadAds, 1200);
+            } catch (err) {
+                alertBox.className = "p-4 rounded-md text-sm font-medium shadow-sm bg-red-50 border border-red-200 text-red-800 mb-4";
+                alertBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-2"></i> Gagal menyimpan iklan: ${err.message}`;
+                alertBox.classList.remove("hidden");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-2 text-amber-400"></i> Simpan / Perbarui Iklan Ini`;
+            }
+        }
+
+        // Inisialisasi awal saat halaman dibuka
+        loadArticles();
+    </script>
+</body>
+</html>

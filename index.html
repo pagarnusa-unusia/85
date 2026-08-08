@@ -330,10 +330,12 @@ if (res.profil.maps) {
             return;
         }
 
-        data.forEach((item, index) => {
-            const detailLink = `detail.html?id=${item.id}`;
-            const imgSrc = item.gambar || 'https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=800'; // Fallback stock photo premium jika kosong
-
+data.forEach((item, index) => {
+    
+    // UBAH BARIS INI
+    const detailLink = `detail.html?judul=${encodeURIComponent(item.judul)}`;
+    
+    const imgSrc = item.gambar || 'https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=800';
             // Render Headline Baner Utama (2 data teratas)
             if (!isSearch && index < 2) {
                 headlineGrid.innerHTML += `

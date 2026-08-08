@@ -87,11 +87,11 @@
     </header>
 
     <article class="container mx-auto px-4 md:px-8 max-w-7xl py-8 md:py-12">
-<nav class="flex text-slate-400 text-[10px] font-bold tracking-widest mb-6">
-    <a href="index.html" class="hover:text-pn">Beranda</a>
-    <span class="mx-2">/</span>
-    <span id="breadcrumb-cat" class="text-pn">Kategori</span>
-</nav>
+        <nav class="flex text-slate-400 text-[10px] font-bold tracking-widest mb-6">
+            <a href="index.html" class="hover:text-pn">Beranda</a>
+            <span class="mx-2">/</span>
+            <span id="breadcrumb-cat" class="text-pn">Kategori</span>
+        </nav>
 
         <div id="loader" class="space-y-6 animate-pulse">
             <div class="h-6 w-24 bg-slate-200 rounded"></div>
@@ -102,16 +102,16 @@
         <div id="content" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
             
             <div class="lg:col-span-2 space-y-6">
-<div>
-    <span id="det-cat" class="bg-emerald-50 text-pn px-3 py-1 text-[10px] font-bold capitalize tracking-[0.2em] rounded-md shadow-sm"></span>
-    <h1 id="det-title" class="text-2xl sm:text-3xl md:text-4xl font-bold mt-4 nav-font text-slate-800 leading-[1.2] tracking-tight"></h1>
-</div>
+                <div>
+                    <span id="det-cat" class="bg-emerald-50 text-pn px-3 py-1 text-[10px] font-bold capitalize tracking-[0.2em] rounded-md shadow-sm"></span>
+                    <h1 id="det-title" class="text-2xl sm:text-3xl md:text-4xl font-bold mt-4 nav-font text-slate-800 leading-[1.2] tracking-tight"></h1>
+                </div>
                 
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 pb-6 gap-4">
                     <div class="flex items-center space-x-4">
-<div class="w-10 h-10 bg-pn text-white rounded-full flex items-center justify-center font-bold text-xs nav-font shadow-sm flex-shrink-0">
-    PN
-</div>
+                        <div class="w-10 h-10 bg-pn text-white rounded-full flex items-center justify-center font-bold text-xs nav-font shadow-sm flex-shrink-0">
+                            PN
+                        </div>
                         <div>
                             <p id="det-date" class="text-slate-500 text-[10px] font-bold uppercase tracking-widest"></p>
                             <p class="text-pn text-[10px] font-bold mt-0.5 ">Admin PAC Kemang</p>
@@ -137,7 +137,7 @@
             </div>
 
             <div class="lg:col-span-1 lg:sticky lg:top-24 space-y-6 mt-6 lg:mt-0">
-                <h3 class="nav-font text-lg md:text-xl font-bold text-slate-800 border-l-4 border-pn pl-4  tracking-tight">Berita Terkait</h3>
+                <h3 class="nav-font text-lg md:text-xl font-bold text-slate-800 border-l-4 border-pn pl-4 tracking-tight">Berita Terkait</h3>
                 <div id="related-posts" class="flex flex-col gap-4"></div>
             </div>
 
@@ -151,136 +151,110 @@
     </footer>
 
 <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbxrjbI6ZzqcX4zurydbnqAo8GvNdsKzQ0nODvelWFJlPJGAjaUPw7u64CdMNaoZTvZ-/exec';
-        let currentArticle = null;
+    const API_URL = 'https://script.google.com/macros/s/AKfycbxrjbI6ZzqcX4zurydbnqAo8GvNdsKzQ0nODvelWFJlPJGAjaUPw7u64CdMNaoZTvZ-/exec';
+    let currentArticle = null;
 
-        window.onscroll = () => {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const progressEl = document.getElementById("scroll-progress");
-            if(progressEl) progressEl.style.width = (winScroll / height) * 100 + "%";
-        };
+    window.onscroll = () => {
+        const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const progressEl = document.getElementById("scroll-progress");
+        if(progressEl) progressEl.style.width = (winScroll / height) * 100 + "%";
+    };
 
-        async function loadDetail() {
-            const id = new URLSearchParams(window.location.search).get('id');
-            if (!id) { window.location.href = 'index.html'; return; }
+    async function loadDetail() {
+        // Mengambil parameter 'judul' dari URL
+        const judulParam = new URLSearchParams(window.location.search).get('judul');
+        if (!judulParam) { window.location.href = 'index.html'; return; }
 
-            try {
-                const response = await fetch(API_URL);
-                if (!response.ok) throw new Error("Network error");
-                
-                const res = await response.json();
-                currentArticle = res.berita.find(x => x.id == id);
-                if (!currentArticle) throw new Error("Not Found");
+        try {
+            const response = await fetch(API_URL);
+            if (!response.ok) throw new Error("Network error");
+            
+            const res = await response.json();
+            const decodedJudul = decodeURIComponent(judulParam).trim().toLowerCase();
+            
+            // Mencari artikel berdasarkan pencocokan judul
+            currentArticle = res.berita.find(x => x.judul && x.judul.trim().toLowerCase() === decodedJudul);
+            if (!currentArticle) throw new Error("Not Found");
 
-                // Update UI & Meta tags
-                document.title = currentArticle.judul + " | PAC Pagar Nusa Kemang";
-                document.getElementById('og-title').setAttribute('content', currentArticle.judul);
-                document.getElementById('og-url').setAttribute('content', window.location.href);
-                
-                document.getElementById('det-title').innerText = currentArticle.judul;
-                document.getElementById('det-cat').innerText = currentArticle.kategori;
-                document.getElementById('breadcrumb-cat').innerText = currentArticle.kategori;
-                
-                // Konversi tanggal Berita Utama ke Bahasa Indonesia
-                if (currentArticle.tanggal) {
-                    const dateObj = new Date(currentArticle.tanggal);
-                    if (!isNaN(dateObj)) {
-                        document.getElementById('det-date').innerText = dateObj.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
-                    } else {
-                        document.getElementById('det-date').innerText = currentArticle.tanggal;
-                    }
+            // Update UI & Meta tags
+            document.title = currentArticle.judul + " | PAC Pagar Nusa Kemang";
+            document.getElementById('og-title').setAttribute('content', currentArticle.judul);
+            document.getElementById('og-url').setAttribute('content', window.location.href);
+            
+            document.getElementById('det-title').innerText = currentArticle.judul;
+            document.getElementById('det-cat').innerText = currentArticle.kategori;
+            document.getElementById('breadcrumb-cat').innerText = currentArticle.kategori;
+            
+            // Konversi tanggal Berita Utama
+            if (currentArticle.tanggal) {
+                const dateObj = new Date(currentArticle.tanggal);
+                if (!isNaN(dateObj)) {
+                    document.getElementById('det-date').innerText = dateObj.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
                 } else {
-                    document.getElementById('det-date').innerText = '';
+                    document.getElementById('det-date').innerText = currentArticle.tanggal;
                 }
-                
-                if (currentArticle.gambar) {
-                    const imgEl = document.getElementById('det-img');
-                    imgEl.src = currentArticle.gambar;
-                    document.getElementById('og-image').setAttribute('content', currentArticle.gambar);
-                }
-
-                const paragraphs = currentArticle.isi.split('\n').filter(t => t.trim() !== '');
-                document.getElementById('det-text').innerHTML = paragraphs.map((p, i) => 
-                    `<p class="${i === 0 ? 'dropcap' : ''}">${p.trim()}</p>`).join('');
-
-                const wordCount = currentArticle.isi.split(/\s+/).length;
-                document.getElementById('read-time').innerText = Math.ceil(wordCount / 200) || 1;
-                
-                // Related Posts Rendering (Mengambil judul, kategori, tanggal, gambar)
-                const container = document.getElementById('related-posts');
-                container.innerHTML = ''; 
-                const related = res.berita.filter(n => n.kategori === currentArticle.kategori && n.id != id).slice(0, 3);
-                
-                if(related.length > 0) {
-                    related.forEach(item => {
-                        const fallBackImg = "https://via.placeholder.com/150?text=Pagar+Nusa";
-                        const itemGambar = item.gambar ? item.gambar : fallBackImg;
-                        
-                        // Konversi tanggal Berita Terkait ke Bahasa Indonesia
-                        let tglIndonesia = '';
-                        if (item.tanggal) {
-                            const tglObj = new Date(item.tanggal);
-                            if (!isNaN(tglObj)) {
-                                tglIndonesia = tglObj.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
-                            } else {
-                                tglIndonesia = item.tanggal;
-                            }
-                        }
-                        
-                        container.innerHTML += `
-                        <div class="bg-white overflow-hidden rounded-2xl border border-slate-100 hover:border-pn/40 hover:shadow-md transition duration-300 w-full flex flex-col sm:flex-row lg:flex-col">
-                            <a href="detail.html?id=${item.id}" class="w-full sm:w-36 lg:w-full h-36 object-cover overflow-hidden bg-slate-100 flex-shrink-0 block">
-                                <img src="${itemGambar}" alt="${item.judul}" class="w-full h-full object-cover hover:scale-105 transition duration-500" onerror="this.src='${fallBackImg}'">
-                            </a>
-                            <div class="p-4 flex flex-col justify-between flex-grow">
-                                <div>
-                                    <div class="flex items-center justify-between gap-2">
-                                        <span class="text-[9px] font-bold text-pn uppercase tracking-widest">${item.kategori}</span>
-                                        <span class="text-[9px] font-medium text-slate-400 uppercase">${tglIndonesia}</span>
-                                    </div>
-                                    <h4 class="font-bold text-slate-800 mt-2 line-clamp-2 text-sm leading-snug">
-                                        <a href="detail.html?id=${item.id}" class="hover:text-pn transition-colors block">
-                                            ${item.judul}
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div class="mt-3">
-                                    <a href="detail.html?id=${item.id}" class="inline-block text-[11px] font-bold text-pn hover:underline uppercase tracking-wider">
-                                        Baca Selengkapnya →
-                                    </a>
-                                </div>
-                            </div>
-                        </div>`;
-                    });
-                } else {
-                    container.innerHTML = `<p class="text-slate-400 text-sm italic p-4">Tidak ada berita terkait.</p>`;
-                }
-
-                document.getElementById('loader').classList.add('hidden');
-                document.getElementById('content').classList.remove('hidden');
-            } catch (e) {
-                document.getElementById('loader').innerHTML = `
-                <div class='text-center py-20 font-bold text-slate-600 px-4'>
-                    <p class='mb-4 text-sm md:text-base'>Berita tidak ditemukan atau terjadi kesalahan.</p>
-                    <a href='index.html' class='text-pn border border-pn px-4 py-2 rounded-xl text-sm hover:bg-pn hover:text-white transition inline-block'>Kembali ke Beranda</a>
-                </div>`;
             }
-        }
+            
+            // Render Gambar Utama dengan Fallback dan Alt Text
+            if (currentArticle.gambar) {
+                const imgEl = document.getElementById('det-img');
+                imgEl.src = currentArticle.gambar;
+                imgEl.alt = currentArticle.judul;
+                imgEl.onerror = function() {
+                    this.src = 'https://via.placeholder.com/800x600?text=Pagar+Nusa';
+                };
+                document.getElementById('og-image').setAttribute('content', currentArticle.gambar);
+            }
 
-        function shareTo(p) {
-            if(!currentArticle) return;
-            const url = encodeURIComponent(window.location.href);
-            const text = encodeURIComponent(currentArticle.judul);
-            const urls = {
-                facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
-                twitter: `https://twitter.com/intent/tweet?text=${text}&url=${url}`,
-                whatsapp: `https://api.whatsapp.com/send?text=${text}%20-%20${url}`
-            };
-            window.open(urls[p], '_blank');
-        }
+            // Render Teks & Read Time
+            const isiBerita = currentArticle.isi || "";
+            const wordCount = isiBerita.split(/\s+/).length;
+            document.getElementById('read-time').innerText = Math.ceil(wordCount / 200) || 1;
 
-        window.onload = loadDetail;
+            const paragraphs = isiBerita.split('\n').filter(t => t.trim() !== '');
+            document.getElementById('det-text').innerHTML = paragraphs.map((p, i) => 
+                `<p class="${i === 0 ? 'dropcap' : ''}">${p.trim()}</p>`
+            ).join('');
+            
+            // Render Berita Terkait dengan parameter judul
+            const container = document.getElementById('related-posts');
+            const related = res.berita.filter(x => x.judul !== currentArticle.judul).slice(0, 3);
+            container.innerHTML = related.map(item => `
+                <a href="detail.html?judul=${encodeURIComponent(item.judul)}" class="flex gap-3 group bg-white p-3 rounded-xl border border-slate-100 hover:shadow-sm transition">
+                    <img src="${item.gambar || 'https://via.placeholder.com/150'}" class="w-20 h-20 object-cover rounded-lg flex-shrink-0" onerror="this.src='https://via.placeholder.com/150'">
+                    <div>
+                        <span class="text-[9px] font-bold text-pn uppercase tracking-wider">${item.kategori}</span>
+                        <h4 class="text-xs font-bold text-slate-800 group-hover:text-pn line-clamp-2 mt-0.5 leading-snug">${item.judul}</h4>
+                    </div>
+                </a>
+            `).join('');
+
+            document.getElementById('loader').classList.add('hidden');
+            document.getElementById('content').classList.remove('hidden');
+        } catch (e) {
+            console.error(e);
+            document.getElementById('loader').innerHTML = `
+            <div class='text-center py-20 font-bold text-slate-600 px-4'>
+                <p class='mb-4 text-sm md:text-base'>Berita tidak ditemukan atau terjadi kesalahan server.</p>
+                <a href='index.html' class='text-pn border border-pn px-4 py-2 rounded-xl text-sm hover:bg-pn hover:text-white transition inline-block'>Kembali ke Beranda</a>
+            </div>`;
+        }
+    }
+
+    function shareTo(p) {
+        if(!currentArticle) return;
+        const url = encodeURIComponent(window.location.href);
+        const text = encodeURIComponent(currentArticle.judul);
+        const urls = {
+            facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+            twitter: `https://twitter.com/intent/tweet?text=${text}&url=${url}`,
+            whatsapp: `https://api.whatsapp.com/send?text=${text}%20-%20${url}`
+        };
+        window.open(urls[p], '_blank');
+    }
+
+    window.onload = loadDetail;
 </script>
 </body>
 </html>

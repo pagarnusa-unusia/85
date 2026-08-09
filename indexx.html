@@ -46,19 +46,6 @@
 
         .rayon-card { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .rayon-card:hover { transform: translateY(-5px) scale(1.01); box-shadow: 0 15px 25px -5px rgb(25 24 59 / 0.12); border-color: var(--pn-header-footer); }
-
-        .ad-track {
-            display: flex;
-            transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-            width: 100%;
-            height: 100%;
-            will-change: transform;
-        }
-        .ad-slide-item {
-            min-width: 100%;
-            height: 100%;
-            flex-shrink: 0;
-        }
     </style>
 </head>
 <body class="selection:bg-[#19183B] selection:text-white">
@@ -73,8 +60,8 @@
                 <div class="flex items-center space-x-3.5">
                     <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="h-10 md:h-12 w-auto object-contain">
                     <div class="text-left border-l-2 border-slate-200 pl-3.5">
-                        <h1 class="text-lg md:text-xl font-bold text-pn-hf tracking-normal leading-none nav-font uppercase">PAC PSNU PAGARNUSA</h1>
-                        <p class="text-slate-500 font-semibold text-xs tracking-wide uppercase mt-1">Kecamatan Kemang</p>
+<h1 class="text-lg md:text-xl font-bold text-pn-hf tracking-tight leading-none nav-font uppercase">PAC PSNU PAGARNUSA</h1>
+<p class="text-slate-500 font-semibold text-[11px] md:text-[12px] tracking-[0.25em] md:tracking-[0.28em] uppercase mt-0">Kecamatan Kemang</p>
                     </div>
                 </div>
             </div>
@@ -88,7 +75,7 @@
         </div>
     </header>
 
-    <!-- NAVIGASI UTAMA (STATIS) -->
+    <!-- NAVIGASI UTAMA -->
     <nav class="bg-pn-hf shadow-md hidden md:block sticky top-[73px] z-50">
         <div class="container mx-auto px-6 max-w-7xl">
             <ul id="main-nav" class="flex flex-wrap justify-center items-center text-white nav-font uppercase tracking-wide text-xs lg:text-[13px]">
@@ -97,12 +84,12 @@
                 <li><a href="struktural.html" class="py-3.5 px-5 hover:text-amber-400 transition-colors block">Struktural</a></li>
                 <li><a href="kegiatan.html" class="py-3.5 px-5 hover:text-amber-400 transition-colors block">Kegiatan</a></li>
                 <li><a href="prestasi.html" class="py-3.5 px-5 hover:text-amber-400 transition-colors block">Prestasi</a></li>
-                <li><a href="super_admin.html" class="py-3.5 px-5 text-amber-400 hover:text-amber-300 transition-colors block font-bold">Login</a></li>
+                <li><a href="login.html" class="py-3.5 px-5 hover:text-amber-400 transition-colors block">Login</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- SUB-NAVIGASI DESA -->
+    <!-- SUB-NAVIGASI -->
     <div class="bg-white border-b border-slate-200 py-2.5 px-4 md:px-6 shadow-xs">
         <div class="container mx-auto max-w-7xl flex flex-wrap justify-between items-center text-xs text-slate-600 font-medium">
             <div class="flex flex-wrap items-center gap-2 md:gap-3 uppercase tracking-wider overflow-x-auto py-1">
@@ -129,7 +116,7 @@
         </div>
     </div>
 
-    <!-- MOBILE MENU SIDEBAR -->
+    <!-- MOBILE MENU -->
     <div id="mobile-menu" class="fixed inset-y-0 left-0 w-72 bg-pn-hf z-[70] transform -translate-x-full shadow-lg md:hidden transition-transform duration-300 ease-in-out">
         <div class="p-6 flex flex-col h-full">
             <div class="flex justify-between items-center border-b border-white/20 pb-4 mb-6">
@@ -153,14 +140,16 @@
 
     <main class="container mx-auto px-4 md:px-6 py-8 max-w-7xl">
     
-        <!-- BANNER IKLAN SLIDE DARI SPREADSHEET -->
+        <!-- BANNER IKLAN (UTUH & TANPA BUNGKUSAN KOTAK) -->
         <section class="mb-10 morph-reveal">
-            <div class="relative bg-pn-hf border border-slate-800 rounded-lg overflow-hidden shadow-md h-40 md:h-52 flex items-center">
-                <div id="ad-track" class="ad-track">
-                    <!-- Slide dimuat via JavaScript dari Sheet Iklan -->
+            <!-- Container bersih, lebar full, dan mengunci agar gambar tidak tumpah (overflow-hidden) -->
+            <div class="relative w-full overflow-hidden rounded-md shadow-sm group bg-slate-100">
+                <div id="ad-track" class="flex transition-transform duration-700 ease-out w-full">
+                    <!-- Slide dimuat via JavaScript -->
                 </div>
-                <button onclick="prevAd()" class="absolute left-3 bg-black/40 hover:bg-black/70 text-white p-2 rounded-full text-xs transition z-10 focus:outline-none cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></button>
-                <button onclick="nextAd()" class="absolute right-3 bg-black/40 hover:bg-black/70 text-white p-2 rounded-full text-xs transition z-10 focus:outline-none cursor-pointer"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button>
+                <!-- Navigasi -->
+                <button onclick="prevAd()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-2.5 md:p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all z-10 focus:outline-none cursor-pointer backdrop-blur-sm"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg></button>
+                <button onclick="nextAd()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-2.5 md:p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all z-10 focus:outline-none cursor-pointer backdrop-blur-sm"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg></button>
             </div>
         </section>
 
@@ -179,40 +168,51 @@
                 <span class="text-xs text-slate-600 font-semibold tracking-wide uppercase bg-white border border-slate-300 px-3 py-1 rounded-sm hidden sm:inline-block">Wilayah Kemang</span>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="rayon-card bg-white border border-slate-200 rounded-md p-6 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="w-10 h-10 bg-[#E7F2EF] text-[#19183B] rounded-sm flex items-center justify-center font-bold text-lg mb-4 border border-slate-200">01</div>
-                        <h4 class="font-bold text-slate-800 text-lg leading-snug mb-2 uppercase nav-font">Rayon Universitas Nahdlatul Ulama Indonesia</h4>
-                        <p class="text-slate-600 text-sm leading-relaxed">Pusat pengembangan pencak silat prestasi dan khazanah keilmuan bela diri di tingkat perguruan tinggi.</p>
-                    </div>
-                    <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
-                        <span class="text-[11px] font-bold text-slate-700 bg-[#E7F2EF] border border-slate-200 px-2 py-1 rounded-sm uppercase tracking-wide">Pimpinan Rayon</span>
-                    </div>
-                </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+    
+    <!-- Card 01 -->
+    <a href="#" class="rayon-card group block bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between cursor-pointer hover:border-[#19183B] hover:shadow-md transition-all">
+        <div>
+            <div class="w-8 h-8 bg-[#E7F2EF] group-hover:bg-[#19183B] text-[#19183B] group-hover:text-white rounded flex items-center justify-center font-bold text-sm mb-3 border border-slate-200 transition-colors">01</div>
+            <h4 class="font-bold text-slate-800 text-base leading-snug mb-1.5 uppercase nav-font group-hover:text-[#19183B] transition-colors">Rayon Universitas Nahdlatul Ulama Indonesia</h4>
+            <p class="text-slate-500 text-xs leading-relaxed">Pusat pengembangan pencak silat prestasi dan khazanah keilmuan bela diri di tingkat perguruan tinggi.</p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[10px] font-bold text-slate-600 bg-slate-50 border border-slate-200 px-2 py-1 rounded-sm uppercase tracking-wide group-hover:border-slate-300 transition-colors">Pimpinan Rayon</span>
+            <!-- Ikon panah muncul/bergerak saat di-hover -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-300 group-hover:text-[#19183B] transition-all transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+        </div>
+    </a>
 
-                <div class="rayon-card bg-white border border-slate-200 rounded-md p-6 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="w-10 h-10 bg-[#E7F2EF] text-[#19183B] rounded-sm flex items-center justify-center font-bold text-lg mb-4 border border-slate-200">02</div>
-                        <h4 class="font-bold text-slate-800 text-lg leading-snug mb-2 uppercase nav-font">Rayon SDN Jampang 01</h4>
-                        <p class="text-slate-600 text-sm leading-relaxed">Fokus pembinaan atlet usia dini sebagai ekstrakurikuler sekolah guna melatih kedisiplinan dan mental.</p>
-                    </div>
-                    <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
-                        <span class="text-[11px] font-bold text-slate-700 bg-[#E7F2EF] border border-slate-200 px-2 py-1 rounded-sm uppercase tracking-wide">Pimpinan Rayon</span>
-                    </div>
-                </div>
+    <!-- Card 02 -->
+    <a href="#" class="rayon-card group block bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between cursor-pointer hover:border-[#19183B] hover:shadow-md transition-all">
+        <div>
+            <div class="w-8 h-8 bg-[#E7F2EF] group-hover:bg-[#19183B] text-[#19183B] group-hover:text-white rounded flex items-center justify-center font-bold text-sm mb-3 border border-slate-200 transition-colors">02</div>
+            <h4 class="font-bold text-slate-800 text-base leading-snug mb-1.5 uppercase nav-font group-hover:text-[#19183B] transition-colors">Rayon SDN Jampang 01</h4>
+            <p class="text-slate-500 text-xs leading-relaxed">Fokus pembinaan atlet usia dini sebagai ekstrakurikuler sekolah guna melatih kedisiplinan dan mental.</p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[10px] font-bold text-slate-600 bg-slate-50 border border-slate-200 px-2 py-1 rounded-sm uppercase tracking-wide group-hover:border-slate-300 transition-colors">Pimpinan Rayon</span>
+            <!-- Ikon panah -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-300 group-hover:text-[#19183B] transition-all transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+        </div>
+    </a>
 
-                <div class="rayon-card bg-white border border-slate-200 rounded-md p-6 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="w-10 h-10 bg-[#E7F2EF] text-[#19183B] rounded-sm flex items-center justify-center font-bold text-lg mb-4 border border-slate-200">03</div>
-                        <h4 class="font-bold text-slate-800 text-lg leading-snug mb-2 uppercase nav-font">Rayon SDN Bojong 04</h4>
-                        <p class="text-slate-600 text-sm leading-relaxed">Unit latihan pembibitan generasi muda berakhlakul karimah, melestarikan budaya bangsa melalui silat nasional.</p>
-                    </div>
-                    <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
-                        <span class="text-[11px] font-bold text-slate-700 bg-[#E7F2EF] border border-slate-200 px-2 py-1 rounded-sm uppercase tracking-wide">Pimpinan Rayon</span>
-                    </div>
-                </div>
-            </div>
+    <!-- Card 03 -->
+    <a href="#" class="rayon-card group block bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between cursor-pointer hover:border-[#19183B] hover:shadow-md transition-all">
+        <div>
+            <div class="w-8 h-8 bg-[#E7F2EF] group-hover:bg-[#19183B] text-[#19183B] group-hover:text-white rounded flex items-center justify-center font-bold text-sm mb-3 border border-slate-200 transition-colors">03</div>
+            <h4 class="font-bold text-slate-800 text-base leading-snug mb-1.5 uppercase nav-font group-hover:text-[#19183B] transition-colors">Rayon SDN Bojong 04</h4>
+            <p class="text-slate-500 text-xs leading-relaxed">Unit latihan pembibitan generasi muda berakhlakul karimah, melestarikan budaya bangsa melalui silat nasional.</p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[10px] font-bold text-slate-600 bg-slate-50 border border-slate-200 px-2 py-1 rounded-sm uppercase tracking-wide group-hover:border-slate-300 transition-colors">Pimpinan Rayon</span>
+            <!-- Ikon panah -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-300 group-hover:text-[#19183B] transition-all transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+        </div>
+    </a>
+
+</div>
         </section>
 
         <!-- BERITA TERKINI & SIDEBAR -->
@@ -257,10 +257,10 @@
     <footer class="bg-pn-hf border-t border-slate-800 py-12 mt-16 text-white">
         <div class="container mx-auto px-4 text-center">
             <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa Footer" class="h-16 mx-auto mb-6 object-contain filter brightness-17">
-            <p class="font-bold text-white text-xl md:text-2xl nav-font uppercase mb-2 tracking-wide">PAC PSNU PAGARNUSA KEMANG</p>
-            <p class="text-slate-300 text-sm font-semibold uppercase tracking-wide mb-6">Pagar NU dan Bangsa</p>
+            <p class="font-bold text-white text-xl md:text-2xl nav-font uppercase mb-2 tracking-wide">PAC PSNU PAGARNUSA</p>
+            <p class="text-slate-300 text-sm font-semibold uppercase tracking-wide mb-6">Kecamatan Kemang - Kabupaten Bogor</p>
             <div class="text-slate-400 text-xs tracking-wide max-w-lg mx-auto leading-relaxed border-t border-white/10 pt-6 font-medium">
-                © 2026 Lembaga IT & Infokom PAC Pagar Nusa Kecamatan Kemang
+                Karya Santri bukan AI © 2026 
             </div>
         </div>
     </footer>
@@ -305,7 +305,6 @@
             const res = await response.json();
             const rawData = Array.isArray(res) ? res : (res.berita || res.data || Object.values(res || {}).find(val => Array.isArray(val)) || []);
             
-            // Filter hanya artikel dengan status Published
             allNews = rawData.filter(item => {
                 const status = String(item.status || '').trim().toLowerCase();
                 return status === 'published';
@@ -328,22 +327,12 @@
                 adsData = rawAds.filter(ad => ad.gambar || ad.link);
             }
             
-            if (adsData.length === 0) {
-                adsData = [{
-                    judul: "INFORMASI UTAMA",
-                    deskripsi: "Mari bergabung dan melestarikan budaya bangsa bersama PAC PSNU Pagar Nusa Kemang.",
-                    cta: "Daftar Sekarang",
-                    link: "#",
-                    gambar: "https://storage.nu.or.id/storage/banners/118395_1785118636.webp"
-                }];
-            }
+            if (adsData.length === 0) throw new Error("Kosong");
             initAdsCarousel();
         } catch (error) {
-            console.error("Gagal memuat iklan:", error);
+            // Fallback Gambar
             adsData = [{
                 judul: "INFORMASI UTAMA",
-                deskripsi: "Mari bergabung dan melestarikan budaya bangsa bersama PAC PSNU Pagar Nusa Kemang.",
-                cta: "Daftar Sekarang",
                 link: "#",
                 gambar: "https://storage.nu.or.id/storage/banners/118395_1785118636.webp"
             }];
@@ -357,30 +346,16 @@
 
         adsData.forEach(ad => {
             const item = document.createElement('div');
-            item.className = `ad-slide-item bg-slate-900 relative overflow-hidden flex items-center`;
+            // FIX: w-full flex-shrink-0 mengunci lebar item tepat 100% dari container
+            item.className = 'w-full flex-shrink-0 flex items-center justify-center';
             const bgImage = ad.gambar || 'https://storage.nu.or.id/storage/banners/118395_1785118636.webp';
-            const ctaText = ad.cta || 'Kunjungi';
             const linkUrl = ad.link || '#';
-            const titleText = ad.judul || '';
             
+            // FIX: Struktur image block w-full h-auto mencegah render bug pada browser mobile (terutama iPhone/Safari)
             item.innerHTML = `
-                <div class="absolute inset-0 z-0">
-                    <img src="${bgImage}" class="w-full h-full object-cover opacity-100" alt="Banner Iklan">
-                    <div class="absolute inset-0 bg-gradient-to-r from-slate-0 via-slate-900/80 to-transparent"></div>
-                </div>
-                <div class="relative z-10 p-6 md:p-8 flex flex-col justify-between w-full h-full">
-                    <div>
-                        <span class="text-[10px] font-bold uppercase tracking-widest bg-amber-500 text-slate-900 px-2 py-0.5 rounded"></span>
-                        <h4 class="text-lg md:text-2xl font-bold nav-font uppercase mt-1 tracking-wide text-amber-400">${titleText}</h4>
-                        <p class="text-xs md:text-sm text-slate-200 mt-1 line-clamp-1">${ad.deskripsi || ''}</p>
-                    </div>
-                    <div class="flex justify-end">
-                        <a href="${linkUrl}" target="_blank" class="text-xs font-bold uppercase tracking-wider bg-amber-500 hover:bg-amber-400 text-slate-900 px-4 py-2 rounded shadow transition flex items-center space-x-1">
-                            <span>${ctaText}</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                        </a>
-                    </div>
-                </div>
+                <a href="${linkUrl}" target="_blank" class="block w-full h-full">
+                    <img src="${bgImage}" class="w-full h-auto block object-cover" loading="lazy" alt="Banner PAC Pagar Nusa">
+                </a>
             `;
             track.appendChild(item);
         });

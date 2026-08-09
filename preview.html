@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title id="page-title">PAC Pagar Nusa Kemang</title>
+    <meta property="og:title" id="og-title" content="PAC Pagar Nusa Kemang">
+    <meta property="og:description" content="Media Resmi PAC PSNU PAGARNUSA Kecamatan Kemang - Kabupaten Bogor.">
+    <meta property="og:image" id="og-image" content="https://storage.nu.or.id/storage/banners/118395_1785118636.webp">
+    <meta property="og:url" id="og-url" content="https://www.uktpagarnusa.my.id/">
+    <meta property="og:type" content="article">
+</head>
+<body>
+    <p>Memuat berita...</p>
+    <script>
+        // Mengambil parameter slug dari URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const slug = urlParams.get('slug');
+
+        if (slug) {
+            // Ambil data dari Google Apps Script
+            fetch("https://script.google.com/macros/s/AKfycbxLs1nDf7wYLjp_QV0IqT9VSqq4iVTDWy_5fAJShgIzqk5VAJQ9H8Ep7rDrFeoQznuq/exec?action=articles")
+                .then(response => response.json())
+                .then(resJson => {
+                    const data = Array.isArray(resJson) ? resJson : (resJson.berita || resJson.data || []);
+                    const article = data.find(item => String(item.slug || '').trim() === String(slug).trim());
+
+                    if (article) {
+                        // Update meta tags secara dinamis untuk WhatsApp & Browser
+                        document.getElementById('page-title').innerText = article.judul;
+                        document.getElementById('og-title').setAttribute('content', article.judul);
+                        if (article.gambar_url || article.gambar) {
+                            document.getElementById('og-image').setAttribute('content', article.gambar_url || article.gambar);
+                        }
+                        const targetUrl = `baca.html?slug=${slug}`;
+                        document.getElementById('og-url').setAttribute('content', window.location.origin + '/' + targetUrl);
+                        
+                        // Redirect otomatis ke halaman baca asli setelah siap
+                        window.location.replace(targetUrl);
+                    } else {
+                        window.location.replace('index.html');
+                    }
+                })
+                .catch(() => {
+                    window.location.replace('index.html');
+                });
+        } else {
+            window.location.replace('index.html');
+        }
+    </script>
+</body>
+</html>

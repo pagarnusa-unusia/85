@@ -320,9 +320,9 @@ function shareTo(platform) {
     const urlParams = new URLSearchParams(window.location.search);
     const slug = urlParams.get('slug');
     
-    // Mengarahkan link share melalui sistem preview API Vercel
+    // Langsung arahkan ke halaman baca.html agar tidak terjadi error 404
     const shareUrl = slug 
-        ? `https://www.uktpagarnusa.my.id/api/preview?slug=${slug}` 
+        ? `https://www.uktpagarnusa.my.id/baca.html?slug=${slug}` 
         : window.location.href;
 
     const encodedUrl = encodeURIComponent(shareUrl);

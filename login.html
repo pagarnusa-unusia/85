@@ -1,172 +1,96 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Sistem - PAC PSNU PAGARNUSA</title>
-    
-    <!-- Fonts & Icons -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Tailwind & SweetAlert2 -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            DEFAULT: '#056839',
-                            dark: '#044d2b',
-                            light: '#0b8f4d'
-                        }
-                    },
-                    fontFamily: { sans: ['Roboto', 'sans-serif'] }
-                }
-            }
-        }
-    </script>
-    
-    <style>
-        body { background-color: #f5f5f5; color: #222222; }
-        .smooth-transition { transition: all 0.3s ease; }
-        .form-input:focus { box-shadow: inset 0 -2px 0 0 #056839; border-color: transparent; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Dashboard - Pagar Nusa Kemang</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body class="flex flex-col min-h-screen justify-between">
+<body class="bg-slate-100 font-sans flex items-center justify-center min-h-screen">
 
-<!-- HEADER -->
-<header class="bg-white py-3 sticky top-0 z-[60] shadow-sm border-b-4 border-brand">
-    <div class="container mx-auto px-4 md:px-6 flex justify-between items-center">
-        <div class="flex items-center space-x-3.5">
-            <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo" class="h-9 md:h-11 w-auto object-contain">
-            <div class="text-left pl-3 border-l-2 border-gray-200">
-                <h1 class="text-base md:text-lg font-black text-brand-dark tracking-tighter leading-none uppercase">PAC PSNU PAGARNUSA</h1>
-                <p class="text-brand text-[10px] md:text-xs font-extrabold tracking-normal uppercase mt-1">Kecamatan Kemang</p>
-            </div>
-        </div>
-        <div class="hidden md:flex items-center gap-3">
-            <span class="text-xs font-medium text-brand font-bold bg-[#f0f9f4] px-3 py-1.5 rounded border border-[#cce8d9]">
-                Portal Login
-            </span>
-        </div>
+  <div class="bg-white p-8 rounded-2xl shadow-md w-full max-w-md border border-slate-200">
+    <div class="text-center mb-6">
+      <div class="inline-block bg-emerald-700 text-white font-bold p-3 rounded-full text-xl mb-2 shadow-sm">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <h2 class="text-2xl font-bold text-slate-800">Panel Pengurus</h2>
+      <p class="text-slate-500 text-sm mt-1">Silakan masuk untuk mengelola artikel berita</p>
     </div>
-</header>
 
-<!-- MAIN CONTENT -->
-<main class="flex-grow flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full">
-        
-        <div class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-            <div class="bg-gray-50 px-6 py-5 border-b border-gray-100 text-center">
-                <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#f0f9f4] text-brand mb-2 border border-[#cce8d9]">
-                    <i class="fa-solid fa-lock text-xl"></i>
-                </div>
-                <h3 class="text-base font-bold text-gray-800">Login Akses Sistem</h3>
-                <p class="text-xs text-gray-500 mt-1">Masukkan username dan password Anda</p>
-            </div>
-            
-            <form id="loginForm" class="p-6 space-y-4">
-                
-                <!-- USERNAME -->
-                <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Username</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                            <i class="fa-solid fa-user text-xs"></i>
-                        </span>
-                        <input type="text" id="username" required placeholder="Masukkan username" 
-                            class="form-input w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded text-sm focus:outline-none bg-white">
-                    </div>
-                </div>
-
-                <!-- PASSWORD -->
-                <div>
-                    <label class="block text-xs font-medium text-gray-700 mb-1.5">Password</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                            <i class="fa-solid fa-key text-xs"></i>
-                        </span>
-                        <input type="password" id="password" required placeholder="••••••••" 
-                            class="form-input w-full pl-9 pr-3 py-2.5 border border-gray-300 rounded text-sm focus:outline-none bg-white">
-                    </div>
-                </div>
-
-                <!-- TOMBOL SUBMIT -->
-                <div class="pt-2">
-                    <button type="submit" id="btnLogin" class="bg-brand hover:bg-brand-dark text-white text-sm font-medium py-3 px-6 rounded smooth-transition w-full shadow-sm">
-                        <i class="fa-solid fa-right-to-bracket mr-2"></i> Masuk Sistem
-                    </button>
-                </div>
-            </form>
-        </div>
-
-        <p class="text-center text-xs text-gray-400 mt-6">&copy; 2026 PAC PSNU Pagar Nusa Kecamatan Kemang</p>
+    <div id="error-alert" class="hidden bg-red-50 border border-red-200 text-red-600 text-sm p-3 rounded-lg mb-4 text-center">
+      Username atau password salah!
     </div>
-</main>
 
-<script>
-    // URL Web App Apps Script dari spreadsheet "Panel Login" Anda
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8G78gzmwzfNxiE6hS5Mvl3rAdeErCP20-8bIo-XvRwdanKgo-zSPve3I8tTWAlauPZg/exec";
+    <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-1">Username</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-user"></i></span>
+          <input type="text" id="username" required class="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:border-emerald-600 text-sm" placeholder="Masukkan username">
+        </div>
+      </div>
 
-    document.getElementById('loginForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-1">Password</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400"><i class="fa-solid fa-lock"></i></span>
+          <input type="password" id="password" required class="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:border-emerald-600 text-sm" placeholder="••••••••">
+        </div>
+      </div>
 
-        const username = document.getElementById('username').value.trim();
-        const password = document.getElementById('password').value.trim();
+      <button type="submit" id="btn-submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-2.5 rounded-lg transition text-sm shadow-sm">
+        Masuk Sistem
+      </button>
+    </form>
 
-        const btnLogin = document.getElementById('btnLogin');
-        const originalText = btnLogin.innerHTML;
-        
-        btnLogin.disabled = true;
-        btnLogin.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Memeriksa Akses...';
-        btnLogin.classList.add('opacity-70', 'cursor-not-allowed');
+    <div class="mt-6 text-center">
+      <a href="index.html" class="text-xs text-slate-500 hover:text-emerald-700 transition">
+        <i class="fa-solid fa-arrow-left mr-1"></i> Kembali ke Beranda Website
+      </a>
+    </div>
+  </div>
 
-        try {
-            const payload = {
-                action: "login",
-                username: username,
-                password: password
-            };
+  <script>
+    // GANTI dengan URL Web App Google Apps Script Anda yang baru
+    const USERS_API_URL = "https://script.google.com/macros/s/AKfycbxLs1nDf7wYLjp_QV0IqT9VSqq4iVTDWy_5fAJShgIzqk5VAJQ9H8Ep7rDrFeoQznuq/exec?action=users";
 
-            const response = await fetch(APPS_SCRIPT_URL, {
-                method: "POST",
-                headers: { "Content-Type": "text/plain;charset=utf-8" },
-                body: JSON.stringify(payload)
-            });
+    async function handleLogin(event) {
+      event.preventDefault();
+      const userInp = document.getElementById("username").value.trim();
+      const passInp = document.getElementById("password").value.trim();
+      const btn = document.getElementById("btn-submit");
+      const alertBox = document.getElementById("error-alert");
 
-            const result = await response.json();
+      btn.disabled = true;
+      btn.innerText = "Memeriksa...";
+      alertBox.classList.add("hidden");
 
-            if (result.status === "success") {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Login Berhasil',
-                    text: 'Mengalihkan ke halaman...',
-                    timer: 1200,
-                    showConfirmButton: false
-                }).then(() => {
-                    // Mengarahkan ke URL dari Kolom C Spreadsheet secara otomatis
-                    window.location.href = result.redirectUrl; 
-                });
-            } else {
-                throw new Error(result.message || 'Username atau password salah.');
-            }
-            
-        } catch (error) {
-            console.error("Error:", error);
-            Swal.fire('Gagal Login', error.message || 'Terjadi kesalahan jaringan.', 'error');
-        } finally {
-            btnLogin.disabled = false;
-            btnLogin.innerHTML = originalText;
-            btnLogin.classList.remove('opacity-70', 'cursor-not-allowed');
+      try {
+        const response = await fetch(USERS_API_URL);
+        const users = await response.json();
+
+        // Cari user yang cocok
+        const foundUser = users.find(u => u.username === userInp && String(u.password) === passInp);
+
+        if (foundUser) {
+          // Simpan sesi login ke browser (localStorage)
+          localStorage.setItem("pagarnusa_user", foundUser.nama_lengkap);
+          localStorage.setItem("pagarnusa_role", foundUser.role); // 'super_admin' atau 'admin'
+
+          // Lempar ke halaman dashboard admin
+          window.location.href = "admin.html";
+        } else {
+          alertBox.classList.remove("hidden");
+          btn.disabled = false;
+          btn.innerText = "Masuk Sistem";
         }
-    });
-</script>
-
+      } catch (error) {
+        alert("Terjadi kendala koneksi ke server database.");
+        btn.disabled = false;
+        btn.innerText = "Masuk Sistem";
+      }
+    }
+  </script>
 </body>
 </html>

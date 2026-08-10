@@ -57,11 +57,23 @@
 
         .fade-in { animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar {
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body x-data="maintenanceApp()" class="bg-slate-50 text-slate-900 flex flex-col min-h-screen">
 
-    <!-- Header (Dipertahankan) -->
+    <!-- Header -->
     <header class="sticky top-0 z-40 bg-white border-b border-slate-100 shadow-sm">
         <div class="container mx-auto px-4 h-16 flex justify-between items-center">
             <div class="flex items-center gap-3">
@@ -71,7 +83,6 @@
                     <span class="text-[9px] text-emerald-600 font-bold tracking-widest uppercase">UNUSIA STORE</span>
                 </div>
             </div>
-            <!-- Bagian step dihilangkan karena sedang maintenance -->
             <div class="flex items-center">
                 <span class="text-[10px] font-bold text-amber-500 bg-amber-50 px-2 py-1 rounded-md border border-amber-200">
                     <i class="fa-solid fa-tools mr-1"></i> MAINTENANCE
@@ -138,15 +149,29 @@
                     </div>
                     
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">Ukuran Seragam</label>
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="block text-xs font-semibold text-slate-700">Ukuran Seragam</label>
+                            <button type="button" @click="showGuide = true" class="text-[11px] font-semibold text-primary hover:underline">
+                                <i class="fa-solid fa-ruler-combined"></i> Panduan Ukuran
+                            </button>
+                        </div>
                         <select x-model="form.ukuran" required 
                                 class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-white">
                             <option value="" disabled>-- Pilih Ukuran --</option>
-                            <option value="S">Ukuran S</option>
-                            <option value="M">Ukuran M</option>
-                            <option value="L">Ukuran L</option>
-                            <option value="XL">Ukuran XL</option>
-                            <option value="XXL">Ukuran XXL</option>
+                            <optgroup label="Usia Dini">
+                                <option value="S (Usia Dini)">S (Usia Dini)</option>
+                                <option value="M (Usia Dini)">M (Usia Dini)</option>
+                                <option value="L (Usia Dini)">L (Usia Dini)</option>
+                                <option value="XL (Usia Dini)">XL (Usia Dini)</option>
+                            </optgroup>
+                            <optgroup label="Dewasa">
+                                <option value="S (Dewasa)">S (Dewasa)</option>
+                                <option value="M (Dewasa)">M (Dewasa)</option>
+                                <option value="L (Dewasa)">L (Dewasa)</option>
+                                <option value="XL (Dewasa)">XL (Dewasa)</option>
+                                <option value="XXL (Dewasa)">XXL (Dewasa)</option>
+                                <option value="XXXL (Dewasa)">XXXL (Dewasa)</option>
+                            </optgroup>
                         </select>
                     </div>
                 </div>
@@ -163,7 +188,74 @@
         </div>
     </div>
 
-    <!-- Footer (Dipertahankan & Disesuaikan tombolnya) -->
+    <!-- Modal Size Guide -->
+    <div x-show="showGuide" x-cloak 
+        class="fixed inset-0 z-[60] bg-slate-950/60 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-md max-h-[85vh] overflow-hidden shadow-2xl flex flex-col" @click.away="showGuide = false">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                <h3 class="font-bold text-xs text-slate-800 uppercase tracking-[0.2em]">Panduan Ukuran</h3>
+                <button @click="showGuide = false" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-400 hover:bg-red-500 hover:text-white transition-all">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-10 custom-scrollbar">
+                <!-- Usia Dini -->
+                <div class="space-y-4">
+                    <h4 class="text-[11px] font-bold text-emerald-600 uppercase tracking-widest text-center italic">— Usia Dini —</h4>
+                    <div class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
+                        <table class="w-full text-[11px] text-left">
+                            <thead class="bg-slate-900 text-white">
+                                <tr>
+                                    <th class="p-3 font-bold uppercase tracking-widest">Size</th>
+                                    <th class="p-3">Lebar</th>
+                                    <th class="p-3">Atas</th>
+                                    <th class="p-3">Bawah</th>
+                                    <th class="p-3">Berat</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-50 text-slate-600 font-medium">
+                                <tr><td class="p-3 bg-slate-50 font-bold text-slate-900">S</td><td class="p-3">34</td><td class="p-3">48</td><td class="p-3">56</td><td class="p-3 text-red-500 font-bold">10-15kg</td></tr>
+                                <tr><td class="p-3 bg-slate-50 font-bold text-slate-900">M</td><td class="p-3">38</td><td class="p-3">53</td><td class="p-3">62</td><td class="p-3 text-red-500 font-bold">15-20kg</td></tr>
+                                <tr><td class="p-3 bg-slate-50 font-bold text-slate-900">L</td><td class="p-3">40</td><td class="p-3">59</td><td class="p-3">70</td><td class="p-3 text-red-500 font-bold">20-25kg</td></tr>
+                                <tr><td class="p-3 bg-slate-50 font-bold text-slate-900">XL</td><td class="p-3">44</td><td class="p-3">65</td><td class="p-3">78</td><td class="p-3 text-red-500 font-bold">25-30kg</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Dewasa -->
+                <div class="space-y-4 pb-4">
+                    <h4 class="text-[11px] font-bold text-emerald-600 uppercase tracking-widest text-center italic">— Dewasa —</h4>
+                    <div class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
+                        <table class="w-full text-[10px] text-left">
+                            <thead class="bg-slate-900 text-white font-bold">
+                                <tr>
+                                    <th class="p-3 uppercase tracking-widest">Size</th>
+                                    <th class="p-3">Atas</th>
+                                    <th class="p-3">Bawah</th>
+                                    <th class="p-3">LD</th>
+                                    <th class="p-3">Berat</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-50 text-slate-600 font-medium">
+                                <template x-for="sz in [['S','68','83','48','30-45kg'],['M','70','87','51','45-55kg'],['L','71','90','53','55-65kg'],['XL','73','93','56','65-75kg'],['XXL','76','95','60','75-85kg'],['XXXL','82','98','65','85-95kg']]">
+                                    <tr class="hover:bg-emerald-50/50 transition-colors">
+                                        <td class="p-3 bg-slate-50 font-bold text-slate-900" x-text="sz[0]"></td>
+                                        <td class="p-3" x-text="sz[1]"></td>
+                                        <td class="p-3" x-text="sz[2]"></td>
+                                        <td class="p-3" x-text="sz[3]"></td>
+                                        <td class="p-3 text-red-500 font-bold" x-text="sz[4]"></td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
     <footer class="bg-white border-t border-gray-100 pt-8 pb-12 px-4 mt-auto relative z-10">
         <div class="max-w-md mx-auto text-center">
             <p class="text-xs text-gray-500 mb-6 leading-relaxed">
@@ -172,13 +264,15 @@
             </p>
 
             <div class="flex flex-wrap justify-center gap-x-6 gap-y-3 mb-8">
-                <!-- Tombol Pesan Sekarang dialihkan ke Modal Form -->
                 <button @click="bukaFormModal()" class="text-sm font-semibold text-primary hover:text-primaryDark transition-colors">
                     <i class="fa-solid fa-cart-shopping mr-1"></i> Pesan Sekarang
                 </button>
                 <a href="https://wa.me/6285715232441" target="_blank" class="text-sm font-semibold text-gray-600 hover:text-primary transition-colors">
                     <i class="fa-solid fa-headset mr-1"></i> Bantuan Admin
                 </a>
+                <button @click="showGuide = true" class="text-sm font-semibold text-gray-600 hover:text-primary transition-colors">
+                    <i class="fa-solid fa-ruler-combined mr-1"></i> Size Guide
+                </button>
             </div>
 
             <hr class="border-gray-50 mb-6">
@@ -195,33 +289,26 @@
         function maintenanceApp() {
             return {
                 showForm: false,
+                showGuide: false,
                 form: {
                     nama: '',
                     ukuran: ''
                 },
-                nomorAdmin: '6285715232441', // Ganti dengan nomor WhatsApp Admin
+                nomorAdmin: '6285715232441',
 
                 bukaFormModal() {
                     this.showForm = true;
-                    // Reset form setiap kali dibuka
                     this.form.nama = '';
                     this.form.ukuran = '';
                 },
 
                 kirimKeWA() {
-                    // Validasi (meskipun HTML required sudah ada)
                     if (!this.form.nama || !this.form.ukuran) return;
 
-                    // Format pesan sesuai permintaan
                     const text = `Assalamualaikum kak, saya ingin pesan seragam dengan nama ${this.form.nama} ukuran ${this.form.ukuran}`;
-                    
-                    // Encode URL agar spasi dan enter terbaca di WA
                     const url = `https://wa.me/${this.nomorAdmin}?text=${encodeURIComponent(text)}`;
                     
-                    // Buka WhatsApp di tab/aplikasi baru
                     window.open(url, '_blank');
-                    
-                    // Tutup modal setelah klik kirim
                     this.showForm = false;
                 }
             }

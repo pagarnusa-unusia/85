@@ -272,7 +272,7 @@
                             <span class="text-[10px] font-semibold text-slate-700 bg-slate-100 px-2.5 py-1 rounded border border-slate-200 uppercase nav-font">
                                 <i class="fa-solid fa-tag text-amber-600 mr-1"></i> ${article.kategori}
                             </span>
-                            <span class="text-[10px] text-slate-400">Dilihat: <b class="text-slate-700">142 pembaca</b></span>
+                            <span class="text-[10px] text-slate-400">Dilihat: <b id="view-count" class="text-slate-700">${article.views || 0} pembaca</b></span>
                         </div>
                         
                         <h1 class="text-xl md:text-2xl font-bold text-slate-900 mb-3 leading-snug border-b border-slate-200 pb-3 nav-font uppercase">
@@ -308,6 +308,31 @@
                             </button>
                         </div>
                     `;
+
+                    // ====================================================================
+                    // INI ADALAH KODE LANGKAH 2 (PENAMBAHAN JUMLAH VIEW OTOMATIS)
+                    // ====================================================================
+                    if (article && (article.slug || article.id)) {
+                      fetch(API_URL, {
+                        method: "POST",
+                        body: JSON.stringify({
+                          action: "increment_views",
+                          slug: article.slug,
+                          id: article.id
+                        })
+                      })
+                      .then(res => res.json())
+                      .then(resData => {
+                        if (resData.status === "success" && resData.views !== undefined) {
+                          // Update angka pembaca secara langsung di layar
+                          const viewElem = document.getElementById("view-count");
+                          if (viewElem) viewElem.innerText = `${resData.views} pembaca`;
+                        }
+                      })
+                      .catch(err => console.error("Error increment views:", err));
+                    }
+                    // ====================================================================
+
                 } else {
                     container.innerHTML = `<p class="text-center text-red-600 font-medium text-xs">Artikel tidak ditemukan atau sudah dihapus.</p>`;
                 }

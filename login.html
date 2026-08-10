@@ -110,6 +110,7 @@
 
     <script>
         const USERS_API_URL = "https://script.google.com/macros/s/AKfycbxLs1nDf7wYLjp_QV0IqT9VSqq4iVTDWy_5fAJShgIzqk5VAJQ9H8Ep7rDrFeoQznuq/exec?action=users";
+        const POST_API_URL = "https://script.google.com/macros/s/AKfycbxLs1nDf7wYLjp_QV0IqT9VSqq4iVTDWy_5fAJShgIzqk5VAJQ9H8Ep7rDrFeoQznuq/exec";
 
         // Logika Login Manual
         async function handleLogin(event) {
@@ -160,7 +161,7 @@
             return JSON.parse(jsonPayload);
         }
 
-        // Logika Login Google (Mencocokkan email Google dengan kolom username di Spreadsheet)
+        // Logika Login & Auto-Register Google
         async function handleGoogleLogin(response) {
             const alertBox = document.getElementById("error-alert");
             alertBox.classList.add("hidden");
@@ -168,19 +169,36 @@
             try {
                 const responsePayload = decodeJwtResponse(response.credential);
                 const userEmail = responsePayload.email;
+                const userName = responsePayload.name; // Nama lengkap dari akun Google
 
                 const res = await fetch(USERS_API_URL);
                 const users = await res.json();
 
-                const foundUser = users.find(u => String(u.username).toLowerCase() === String(userEmail).toLowerCase());
+                let foundUser = users.find(u => String(u.username).toLowerCase() === String(userEmail).toLowerCase());
 
+                // Jika email BELUM terdaftar, otomatis daftarkan ke spreadsheet melalui action=register
+                if (!foundUser) {
+                    await fetch(POST_API_URL, {
+                        method: "POST",
+                        body: JSON.stringify({
+                            action: "register",
+                            email: userEmail,
+                            nama_lengkap: userName
+                        })
+                    });
+
+                    // Set session lokal untuk langsung masuk ke dashboard admin
+                    localStorage.setItem("pagarnusa_user", userName);
+                    localStorage.setItem("pagarnusa_role", "admin");
+                    window.location.href = "admin.html";
+                    return;
+                }
+
+                // Jika sudah terdaftar, langsung masuk ke admin
                 if (foundUser) {
                     localStorage.setItem("pagarnusa_user", foundUser.nama_lengkap);
                     localStorage.setItem("pagarnusa_role", foundUser.role);
                     window.location.href = "admin.html";
-                } else {
-                    alertBox.innerText = `Email (${userEmail}) tidak terdaftar sebagai pengurus!`;
-                    alertBox.classList.remove("hidden");
                 }
             } catch (error) {
                 alertBox.innerText = "Terjadi kendala koneksi ke server database.";

@@ -216,7 +216,7 @@
             }
         }
 
-        // LOAD ARTIKEL & POPULER
+// LOAD ARTIKEL & POPULER
         async function loadSingleArticle() {
             const urlParams = new URLSearchParams(window.location.search);
             const slugTarget = urlParams.get('slug');
@@ -231,17 +231,14 @@
                 const response = await fetch(`${API_URL}?action=articles`);
                 const data = await response.json();
                 
-                // Render berita populer di sidebar
+                // Render berita populer di sidebar secara benar
                 const popularContainer = document.getElementById("popular-articles-list");
                 popularContainer.innerHTML = "";
                 data.slice(0, 3).forEach(item => {
                     popularContainer.innerHTML += `
-                        <a href="baca.html?slug=${item.slug}" class="flex items-center gap-2.5 p-1.5 hover:bg-slate-50 rounded transition group">
-                            <img src="${item.gambar_url || 'https://via.placeholder.com/80'}" class="w-12 h-12 object-cover rounded shrink-0 wiki-border">
-                            <div>
-                                <h4 class="font-semibold text-slate-800 text-[11px] line-clamp-2 group-hover:text-amber-600 transition">${item.judul}</h4>
-                                <span class="text-[9px] text-slate-400">${formatTanggal(item.tanggal)}</span>
-                            </div>
+                        <a href="baca.html?slug=${item.slug}" class="block group p-1.5 hover:bg-slate-50 rounded transition">
+                            <span class="text-[11px] font-semibold text-slate-800 group-hover:text-[#19183B] line-clamp-2 leading-snug block">${item.judul}</span>
+                            <span class="text-[10px] text-slate-400 mt-0.5 block"><i class="fa-regular fa-calendar mr-1"></i>${formatTanggal(item.tanggal)}</span>
                         </a>
                     `;
                 });
@@ -319,15 +316,24 @@
             }
         }
 
-        function shareTo(platform) {
-            const url = encodeURIComponent(window.location.href);
-            const title = encodeURIComponent(document.title);
-            if (platform === 'whatsapp') {
-                window.open(`https://api.whatsapp.com/send?text=${title} - ${url}`, '_blank');
-            } else if (platform === 'facebook') {
-                window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
-            }
-        }
+function shareTo(platform) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const slug = urlParams.get('slug');
+    
+    // Mengarahkan link share melalui sistem preview API Vercel
+    const shareUrl = slug 
+        ? `https://www.uktpagarnusa.my.id/api/preview?slug=${slug}` 
+        : window.location.href;
+
+    const encodedUrl = encodeURIComponent(shareUrl);
+    const title = encodeURIComponent(document.title);
+
+    if (platform === 'whatsapp') {
+        window.open(`https://api.whatsapp.com/send?text=${title} - ${encodedUrl}`, '_blank');
+    } else if (platform === 'facebook') {
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`, '_blank');
+    }
+}
 
         function copyLink() {
             navigator.clipboard.writeText(window.location.href).then(() => {

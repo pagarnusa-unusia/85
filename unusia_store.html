@@ -500,7 +500,7 @@
     </footer>
 
     <!-- Alpine App Data -->
-    <script>
+<script>
         function checkoutApp() {
             return {
                 step: 1, 
@@ -527,10 +527,10 @@
                     {lembaga: "SMP/SMA/Dewasa", ukuran: "XXXL", stok: 0, harga: 205000}
                 ],
                 scriptUrl: 'https://script.google.com/macros/s/AKfycby3JH2N1mcJ-Hup1SaMkV0bIrRpwtJCfGKQO8S0Ga3kL67ggfuMXQ6kB1WnpJHSx2Cj8g/exec',
-                waUrl: '6285715232441', // Diupdate pas submit
+                waUrl: '6285715232441',
 
                 async init() {
-                    // 1. Ambil data profil dari memori browser (Anti-Hilang)
+                    // 1. Ambil data profil dari memori browser
                     try {
                         const savedProfile = localStorage.getItem('user_profile');
                         if (savedProfile) {
@@ -546,7 +546,7 @@
                         console.error("Gagal memuat profil tersimpan:", err);
                     }
 
-                    // 2. Ambil data stok terbaru dari Google Sheets
+                    // 2. Ambil data stok terbaru dari Google Sheets dengan sanitasi string (.trim())
                     this.loadingData = true;
                     try {
                         const response = await fetch(`${this.scriptUrl}?t=${Date.now()}`);
@@ -554,26 +554,37 @@
                         
                         const data = await response.json();
                         if (data && Array.isArray(data) && data.length > 0) {
-                            this.dbStok = data;
+                            // Bersihkan spasi tak terlihat dari server (Sanitize)
+                            this.dbStok = data.map(item => ({
+                                lembaga: item.lembaga ? item.lembaga.trim() : "",
+                                ukuran: item.ukuran ? item.ukuran.trim() : "",
+                                stok: parseInt(item.stok) || 0,
+                                harga: parseInt(item.harga) || 0
+                            }));
                         }
                     } catch (e) { 
                         console.warn("Mode Offline: Menggunakan data stok default di script."); 
                     } finally {
                         this.loadingData = false;
+                        // Set default pilihan lembaga pertama jika belum ada
+                        if (!this.temp.lembaga && this.daftarLembaga.length > 0) {
+                            this.temp.lembaga = this.daftarLembaga[0];
+                        }
                     }
                 },
 
                 get daftarLembaga() { 
-                    return [...new Set(this.dbStok.map(i => i.lembaga))]; 
+                    return [...new Set(this.dbStok.map(i => i.lembaga))].filter(Boolean); 
                 },
 
                 get listUkuranTersedia() {
-                    return this.dbStok.filter(i => i.lembaga === this.temp.lembaga);
+                    if (!this.temp.lembaga) return [];
+                    return this.dbStok.filter(i => i.lembaga.toLowerCase() === this.temp.lembaga.toLowerCase());
                 },
 
                 getRemainingStock(item) {
                     const inCart = this.cart
-                        .filter(c => c.lembaga === item.lembaga && c.ukuran === item.ukuran)
+                        .filter(c => c.lembaga.toLowerCase() === item.lembaga.toLowerCase() && c.ukuran.toLowerCase() === item.ukuran.toLowerCase())
                         .reduce((sum, c) => sum + c.qty, 0);
                     return Math.max(0, item.stok - inCart);
                 },
@@ -620,20 +631,18 @@
                     const file = e.target.files[0];
                     if (!file) return;
                     
-                    // Batas ukuran 2MB
                     if(file.size > 2 * 1024 * 1024) {
                         alert("Ukuran foto terlalu besar. Maksimal 2MB.");
-                        e.target.value = ''; // Reset input field
+                        e.target.value = '';
                         return;
                     }
                     
-                    this.form.fileName = file.name; // Simpan nama file untuk UI
+                    this.form.fileName = file.name;
                     const reader = new FileReader();
                     reader.onload = (f) => this.form.buktiBase64 = f.target.result.split(',')[1];
                     reader.readAsDataURL(file);
                 },
 
-                // Fungsi Generate PDF
                 generatePDFDoc() {
                     const { jsPDF } = window.jspdf;
                     const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
@@ -649,7 +658,7 @@
                     doc.text("PIMPINAN ANAK CABANG", 50, margin.top + 7);
                     doc.setFontSize(18).setTextColor(27, 117, 72).text("PSNU PAGARNUSA KEMANG", 50, margin.top + 15);
                     doc.setFontSize(9).setTextColor(100).setFont("helvetica", "normal");
-                    doc.text("Jl. Parung Hijau Desa Tegal Jampang Hambulu No.2, Pd. Udik, Kec. Kemang. | pacpagarnusakemang@gmail.com", 50, margin.top + 20);
+                    doc.text("Jl. Parung Hijau Desa Tegal No.2. | pacpagarnusakemang@gmail.com", 50, margin.top + 20);
 
                     doc.setLineWidth(0.8).setDrawColor(0, 0, 0).line(margin.left, margin.top + 25, pageWidth - margin.right, margin.top + 25);
                     doc.setLineWidth(0.2).line(margin.left, margin.top + 26.5, pageWidth - margin.right, margin.top + 26.5);
@@ -706,11 +715,6 @@
                             valign: 'middle', 
                             overflow: 'linebreak', 
                             rowHeight: 15 
-                        },
-                        didParseCell: function(data) {
-                            if (data.column.index === 1 && data.section === 'body') {
-                                data.cell.styles.cellPadding = { top: 4, bottom: 4, left: 3, right: 3 };
-                            }
                         }
                     });
 
@@ -719,14 +723,6 @@
                     doc.setFontSize(10).text("Bogor, " + new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'}), pageWidth - margin.right - 10, ySign, { align: "center" });
                     const signPos = pageWidth - margin.right - 35;
                     doc.text("Bendahara,", signPos + 25, ySign + 7, { align: "center" });
-                    const urlTtd = ""; // Kosongkan saja jika TTD belum disiapkan via base64 statis
-                    if (urlTtd) {
-                        try {
-                            doc.addImage(urlTtd, 'PNG', signPos + 10, ySign + 8, 30, 22);
-                        } catch (e) {
-                            console.warn("Gagal memuat gambar TTD:", e);
-                        }
-                    }
 
                     doc.setFont("helvetica", "bold underline").text("Amelda, S.Hum", signPos + 25, ySign + 33, { align: "center" });
                     doc.setFont("helvetica", "normal").setFontSize(8).text("NIA: 86120406000293", signPos + 25, ySign + 37, { align: "center" });
@@ -742,17 +738,14 @@
                     this.loading = true;
                     
                     try {
-                        // Tahap 1: Inisialisasi & Generate ID
                         this.loadingMsg = "Menyiapkan sistem...";
                         this.finalOrderID = `KWS1985${Math.floor(100 + Math.random() * 899)}`;
-                        await new Promise(r => setTimeout(r, 100)); // Memberi jeda render UI
+                        await new Promise(r => setTimeout(r, 100));
 
-                        // Tahap 2: Generate PDF (Proses Berat)
                         this.loadingMsg = "Membangun berkas PDF...";
                         const doc = this.generatePDFDoc();
                         const pdfBase64 = doc.output('datauristring').split(',')[1];
 
-                        // Tahap 3: Menyiapkan Payload
                         this.loadingMsg = "Mengunggah bukti bayar...";
                         const payload = { 
                             nama: this.form.nama, 
@@ -767,7 +760,6 @@
                             tanggal: new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })
                         };
 
-                        // Tahap 4: Pengiriman ke Google Sheets
                         this.loadingMsg = "Pesanan Diproses...";
                         const res = await fetch(this.scriptUrl, { 
                             method: 'POST', 
@@ -777,7 +769,6 @@
                         const text = await res.text();
                         
                         if (text.includes("Success")) {
-                            // Simpan ke local storage
                             try {
                                 const profileToSave = {
                                     nama: this.form.nama,

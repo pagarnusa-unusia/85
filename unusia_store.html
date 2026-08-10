@@ -2,82 +2,230 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Sedang Maintenance</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover">
+    <title>Pagar Nusa Store - Maintenance</title>
+    
+    <!-- Meta Tags for Mobile/PWA -->
+    <meta name="theme-color" content="#1B7548">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="Pusat penyedia atribut resmi PSNU PAGARNUSA UNUSIA. Kualitas premium untuk Pendekar.">
+    
+    <link rel="icon" href="logopn.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = { 
+            theme: { 
+                extend: { 
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: { 
+                        primary: '#1B7548', 
+                        primaryDark: '#145c38' 
+                    }
+                } 
+            } 
+        }
+    </script>
+
+    <!-- Custom CSS -->
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        body { 
+            background-color: #f8fafc; 
+            overflow-x: hidden; 
+            -webkit-tap-highlight-color: transparent;
         }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: #f8fafc;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
-            padding: 20px;
+        [x-cloak] { display: none !important; }
+        
+        @media screen and (max-width: 768px) {
+            input, select { font-size: 16px !important; } /* Mencegah Auto-zoom iOS */
         }
-        .container {
-            max-width: 600px;
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .icon {
-            font-size: 64px;
-            margin-bottom: 20px;
-        }
-        h1 {
-            font-size: 28px;
-            margin-bottom: 15px;
-            color: #f1f5f9;
-        }
-        p {
-            font-size: 16px;
-            color: #94a3b8;
-            line-height: 1.6;
-            margin-bottom: 25px;
-        }
-        .badge {
-            display: inline-block;
-            background: #3b82f6;
-            color: white;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .contact {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #64748b;
-        }
-        .contact a {
-            color: #3b82f6;
-            text-decoration: none;
-        }
-        .contact a:hover {
-            text-decoration: underline;
-        }
+
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="icon">🛠️</div>
-        <h1>Situs Sedang Dalam Pemeliharaan</h1>
-        <p>Mohon maaf atas ketidaknyamanan ini. Saat ini kami sedang melakukan peningkatan dan perbaikan sistem secara menyeluruh. Karena pemeliharaan ini bersifat mendalam, durasi pengerjaan belum dapat ditentukan hingga seluruh proses selesai dengan optimal.</p>
-        <div class="badge">Segera Kembali dengan Wajah Baru</div>
-        <div class="contact">
-            Butuh bantuan mendesak? Hubungi kami di <a href="mailto:pacpagarnusakemang@gmail.com">pacpagarnusakemang@gmail.com</a>
+<body x-data="maintenanceApp()" class="bg-slate-50 text-slate-900 flex flex-col min-h-screen">
+
+    <!-- Header (Dipertahankan) -->
+    <header class="sticky top-0 z-40 bg-white border-b border-slate-100 shadow-sm">
+        <div class="container mx-auto px-4 h-16 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <img src="logopn.png" onerror="this.src='https://via.placeholder.com/150/1B7548/FFFFFF?text=PN'" class="h-8 w-8 object-contain" alt="Logo">
+                <div class="flex flex-col">
+                    <span class="font-bold text-sm tracking-tight leading-none uppercase">PAGARNUSA</span>
+                    <span class="text-[9px] text-emerald-600 font-bold tracking-widest uppercase">UNUSIA STORE</span>
+                </div>
+            </div>
+            <!-- Bagian step dihilangkan karena sedang maintenance -->
+            <div class="flex items-center">
+                <span class="text-[10px] font-bold text-amber-500 bg-amber-50 px-2 py-1 rounded-md border border-amber-200">
+                    <i class="fa-solid fa-tools mr-1"></i> MAINTENANCE
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content: Maintenance Notice -->
+    <main class="flex-grow container mx-auto px-4 py-12 flex flex-col items-center justify-center fade-in">
+        <div class="max-w-md w-full bg-white rounded-2xl shadow-sm border border-slate-100 p-8 text-center">
+            
+            <div class="w-20 h-20 bg-amber-100 text-amber-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fa-solid fa-person-digging text-4xl"></i>
+            </div>
+            
+            <h1 class="text-2xl font-bold text-slate-800 mb-2">Website Sedang Maintenance</h1>
+            <p class="text-sm text-slate-500 mb-6 leading-relaxed">
+                Mohon maaf, sistem pemesanan kami sedang dalam perbaikan sampai waktu yang tidak ditentukan.
+            </p>
+
+            <div class="bg-emerald-50 rounded-xl p-4 mb-6 border border-emerald-100">
+                <p class="text-sm text-emerald-800 font-medium mb-3">
+                    Untuk pemesanan seragam sementara, silakan melalui link di bawah ini:
+                </p>
+                <button @click="bukaFormModal()" class="w-full bg-primary hover:bg-primaryDark text-white font-semibold py-3 px-4 rounded-xl transition-colors shadow-md shadow-emerald-200 flex justify-center items-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> Pesan Disini
+                </button>
+            </div>
+            
+        </div>
+    </main>
+
+    <!-- Modal Form Pemesanan WA -->
+    <div x-show="showForm" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <!-- Backdrop -->
+        <div x-show="showForm" x-transition.opacity class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" @click="showForm = false"></div>
+        
+        <!-- Modal Content -->
+        <div x-show="showForm" 
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 translate-y-8"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 translate-y-0"
+             x-transition:leave-end="opacity-0 translate-y-8"
+             class="relative bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 overflow-hidden">
+            
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="text-lg font-bold text-slate-800">Detail Pemesanan</h3>
+                <button @click="showForm = false" class="text-slate-400 hover:text-red-500 transition-colors">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <p class="text-xs text-slate-500 mb-5">Silakan isi form berikut, sistem akan otomatis membuatkan pesan WhatsApp untuk Anda.</p>
+
+            <form @submit.prevent="kirimKeWA">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Lengkap</label>
+                        <input type="text" x-model="form.nama" required placeholder="Contoh: Ahmad" 
+                               class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Ukuran Seragam</label>
+                        <select x-model="form.ukuran" required 
+                                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-white">
+                            <option value="" disabled>-- Pilih Ukuran --</option>
+                            <option value="S">Ukuran S</option>
+                            <option value="M">Ukuran M</option>
+                            <option value="L">Ukuran L</option>
+                            <option value="XL">Ukuran XL</option>
+                            <option value="XXL">Ukuran XXL</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex gap-3">
+                    <button type="button" @click="showForm = false" class="flex-1 py-3 px-4 bg-slate-100 text-slate-600 font-semibold rounded-xl hover:bg-slate-200 transition-colors">
+                        Batal
+                    </button>
+                    <button type="submit" class="flex-1 py-3 px-4 bg-primary text-white font-semibold rounded-xl hover:bg-primaryDark transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-regular fa-paper-plane"></i> Kirim
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
+
+    <!-- Footer (Dipertahankan & Disesuaikan tombolnya) -->
+    <footer class="bg-white border-t border-gray-100 pt-8 pb-12 px-4 mt-auto relative z-10">
+        <div class="max-w-md mx-auto text-center">
+            <p class="text-xs text-gray-500 mb-6 leading-relaxed">
+                Pusat penyedia atribut resmi PSNU PAGARNUSA UNUSIA. <br>
+                Kualitas premium untuk Pendekar.
+            </p>
+
+            <div class="flex flex-wrap justify-center gap-x-6 gap-y-3 mb-8">
+                <!-- Tombol Pesan Sekarang dialihkan ke Modal Form -->
+                <button @click="bukaFormModal()" class="text-sm font-semibold text-primary hover:text-primaryDark transition-colors">
+                    <i class="fa-solid fa-cart-shopping mr-1"></i> Pesan Sekarang
+                </button>
+                <a href="https://wa.me/6285715232441" target="_blank" class="text-sm font-semibold text-gray-600 hover:text-primary transition-colors">
+                    <i class="fa-solid fa-headset mr-1"></i> Bantuan Admin
+                </a>
+            </div>
+
+            <hr class="border-gray-50 mb-6">
+            <div class="space-y-2">
+                <p class="text-[9px] text-gray-400 tracking-[0px]">
+                    &copy; 2024 PRy PSNU Pagarnusa UNUSIA
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Alpine.js Logic -->
+    <script>
+        function maintenanceApp() {
+            return {
+                showForm: false,
+                form: {
+                    nama: '',
+                    ukuran: ''
+                },
+                nomorAdmin: '6285715232441', // Ganti dengan nomor WhatsApp Admin
+
+                bukaFormModal() {
+                    this.showForm = true;
+                    // Reset form setiap kali dibuka
+                    this.form.nama = '';
+                    this.form.ukuran = '';
+                },
+
+                kirimKeWA() {
+                    // Validasi (meskipun HTML required sudah ada)
+                    if (!this.form.nama || !this.form.ukuran) return;
+
+                    // Format pesan sesuai permintaan
+                    const text = `Assalamualaikum kak, saya ingin pesan seragam dengan nama ${this.form.nama} ukuran ${this.form.ukuran}`;
+                    
+                    // Encode URL agar spasi dan enter terbaca di WA
+                    const url = `https://wa.me/${this.nomorAdmin}?text=${encodeURIComponent(text)}`;
+                    
+                    // Buka WhatsApp di tab/aplikasi baru
+                    window.open(url, '_blank');
+                    
+                    // Tutup modal setelah klik kirim
+                    this.showForm = false;
+                }
+            }
+        }
+    </script>
 </body>
 </html>

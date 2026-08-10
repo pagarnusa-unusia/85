@@ -160,7 +160,7 @@
             return JSON.parse(jsonPayload);
         }
 
-        // Logika Login Google
+        // Logika Login Google (Mencocokkan email Google dengan kolom username di Spreadsheet)
         async function handleGoogleLogin(response) {
             const alertBox = document.getElementById("error-alert");
             alertBox.classList.add("hidden");
@@ -172,7 +172,7 @@
                 const res = await fetch(USERS_API_URL);
                 const users = await res.json();
 
-                const foundUser = users.find(u => String(u.email).toLowerCase() === String(userEmail).toLowerCase());
+                const foundUser = users.find(u => String(u.username).toLowerCase() === String(userEmail).toLowerCase());
 
                 if (foundUser) {
                     localStorage.setItem("pagarnusa_user", foundUser.nama_lengkap);

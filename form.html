@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Pendataan Database - PAC Pagarnusa Kemang</title>
+    <link rel="icon" href="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Pengaturan warna custom dari kelas yang ada di footer Anda */
+        .bg-pn-hf {
+            background-color: #0f172a; /* Slate 900 sebagai contoh gelap */
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col font-sans">
+
+    <!-- Header Bersih & Profesional -->
+    <header class="bg-white py-2.5 sticky top-0 z-50 shadow-sm border-b border-slate-200">
+        <div class="max-w-5xl mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2.5">
+                <img src="https://lh3.googleusercontent.com/d/1drM76LlU3sdqpwo-Urq7ZULoyORC0UMQ" alt="Logo Pagar Nusa" class="h-8 w-auto object-contain">
+                <div class="text-left border-l-2 border-slate-300 pl-2.5">
+                    <h1 class="text-xs md:text-sm font-bold text-[#19183B] leading-none nav-font uppercase">PAC PSNU PAGARNUSA</h1>
+                    <p class="text-slate-500 font-semibold text-[10px] tracking-wide uppercase mt-0.5">Kecamatan Kemang</p>
+                </div>
+            </div>
+
+            <a href="index.html" class="inline-flex items-center text-xs font-semibold text-slate-700 hover:text-[#19183B] transition bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-sm uppercase tracking-wide nav-font">
+                <i class="fa-solid fa-arrow-left mr-1.5"></i> Beranda
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Form -->
+    <main class="flex-grow max-w-2xl mx-auto w-full px-4 py-8">
+        <!-- MODIFIKASI: Penambahan border-t-4 dan shadow-md pada card -->
+        <div class="bg-white border border-slate-200 border-t-4 border-t-[#19183B] rounded-lg shadow-md p-6 md:p-8">
+            
+            <div class="flex justify-center mb-2">
+                <div class="bg-slate-100 p-3 rounded-full text-[#19183B]">
+                    <i class="fa-solid fa-user-plus text-xl"></i>
+                </div>
+            </div>
+            <h2 class="text-xl font-bold text-[#19183B] mb-1 uppercase text-center">Pendaftaran Santri</h2>
+            <p class="text-sm text-slate-500 text-center mb-8">Silakan lengkapi data di bawah ini dengan benar.</p>
+
+            <!-- Form dimulai di sini -->
+            <!-- Nantinya atribut 'action' akan diisi dengan URL Google Apps Script Anda -->
+            <form id="databaseForm" class="space-y-6">
+                
+                <!-- Input Nama -->
+                <div>
+                    <label for="nama" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                        <i class="fa-regular fa-address-card text-[#19183B] opacity-80 mr-1"></i> Nama Lengkap
+                    </label>
+                    <input type="text" id="nama" name="nama" required placeholder="Masukkan nama lengkap" 
+                        class="w-full border border-slate-300 rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#19183B] focus:border-[#19183B] focus:bg-slate-50 transition-all">
+                </div>
+
+                <!-- Input Kelas/Semester -->
+                <div>
+                    <label for="kelas_semester" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                        <i class="fa-solid fa-graduation-cap text-[#19183B] opacity-80 mr-1"></i> Kelas/Semester
+                    </label>
+                    <select id="kelas_semester" name="kelas_semester" required
+                        class="w-full border border-slate-300 rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#19183B] focus:bg-slate-50 transition-all bg-white cursor-pointer">
+                        <option value="" disabled selected>-- Pilih Kelas / Semester --</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                    </select>
+                </div>
+
+                <!-- Pilihan Rayon / Ranting (Radio Button) -->
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                    <label class="block text-sm font-semibold text-slate-700 mb-3">
+                        <i class="fa-solid fa-sitemap text-[#19183B] opacity-80 mr-1"></i> Pilih Kategori Utusan
+                    </label>
+                    <div class="flex space-x-6">
+                        <label class="flex items-center space-x-2 cursor-pointer hover:bg-slate-200 px-3 py-1.5 rounded-md transition-colors border border-transparent hover:border-slate-300">
+                            <input type="radio" name="kategori" value="Rayon" id="radioRayon" required class="w-4 h-4 text-[#19183B] focus:ring-[#19183B]">
+                            <span class="text-sm font-medium text-slate-700">Rayon</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer hover:bg-slate-200 px-3 py-1.5 rounded-md transition-colors border border-transparent hover:border-slate-300">
+                            <input type="radio" name="kategori" value="Ranting" id="radioRanting" required class="w-4 h-4 text-[#19183B] focus:ring-[#19183B]">
+                            <span class="text-sm font-medium text-slate-700">Ranting</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Pilihan Nama Rayon (Disembunyikan secara default) -->
+                <div id="wrapRayon" class="hidden animate-[fadeIn_0.3s_ease-in-out]">
+                    <label for="pilihan_rayon" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                        <i class="fa-solid fa-school text-[#19183B] opacity-80 mr-1"></i> Nama Rayon
+                    </label>
+                    <select id="pilihan_rayon" name="nama_utusan"
+                        class="w-full border border-slate-300 rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#19183B] focus:bg-slate-50 transition-all bg-white cursor-pointer">
+                        <option value="" disabled selected>-- Pilih Rayon --</option>
+                        <option value="UNUSIA">UNUSIA</option>
+                        <option value="Ponpes As-Saquin">Ponpes As-Saquin</option>
+                        <option value="SD IT Darul Ma'arif">SD IT Darul Ma'arif</option>
+                        <option value="SDN Jampang 01">SDN Jampang 01</option>
+                        <option value="SDN Bojong 01">SDN Bojong 01</option>
+                        <option value="SDN Bojong 04">SDN Bojong 04</option>
+                    </select>
+                </div>
+
+                <!-- Pilihan Nama Ranting (Disembunyikan secara default) -->
+                <div id="wrapRanting" class="hidden animate-[fadeIn_0.3s_ease-in-out]">
+                    <label for="pilihan_ranting" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                        <i class="fa-solid fa-map-location-dot text-[#19183B] opacity-80 mr-1"></i> Nama Ranting
+                    </label>
+                    <select id="pilihan_ranting" name="nama_utusan"
+                        class="w-full border border-slate-300 rounded-md px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#19183B] focus:bg-slate-50 transition-all bg-white cursor-pointer">
+                        <option value="" disabled selected>-- Pilih Ranting --</option>
+                        <option value="Bojong">Bojong</option>
+                        <option value="Jampang">Jampang</option>
+                        <option value="Kemang">Kemang</option>
+                        <option value="Pabuaran">Pabuaran</option>
+                        <option value="Parakan Jaya">Parakan Jaya</option>
+                        <option value="Pondok Udik">Pondok Udik</option>
+                        <option value="Semplak Barat">Semplak Barat</option>
+                        <option value="Tegal">Tegal</option>
+                        <option value="Atang Senjaya">Atang Senjaya</option>
+                    </select>
+                </div>
+
+                <!-- Tombol Submit -->
+                <div class="pt-5">
+                    <!-- MODIFIKASI: Penambahan hover:-translate-y-0.5 dan hover:shadow-lg untuk efek interaktif -->
+                    <button type="submit" class="w-full bg-[#19183B] text-white font-bold py-3.5 rounded-md hover:bg-[#2b295c] hover:-translate-y-0.5 hover:shadow-lg transition-all duration-300 uppercase text-sm tracking-wide shadow-sm">
+                        Simpan Data
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer Standar & Bersih -->
+    <footer class="bg-pn-hf text-slate-300 py-6 text-xs text-center border-t border-slate-800 mt-auto">
+        <div class="max-w-5xl mx-auto px-4">
+            <p class="font-semibold text-white mb-1 nav-font uppercase tracking-wide text-xs">PAC PSNU PAGAR NUSA KECAMATAN KEMANG</p>
+            <p class="text-slate-400 text-[11px]">&copy; 2026 Media Pac Pagarnusa Kecamatan Kemang.</p>
+        </div>
+    </footer>
+
+<!-- Tambahan sedikit CSS untuk animasi muncul (fade-in) form rayon/ranting -->
+<style>
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<script>
+    // 1. Logika Tampilan Conditional Form (Rayon/Ranting)
+    const radioRayon = document.getElementById('radioRayon');
+    const radioRanting = document.getElementById('radioRanting');
+    const wrapRayon = document.getElementById('wrapRayon');
+    const wrapRanting = document.getElementById('wrapRanting');
+    const selectRayon = document.getElementById('pilihan_rayon');
+    const selectRanting = document.getElementById('pilihan_ranting');
+
+    function aturTampilanForm() {
+        if (radioRayon.checked) {
+            wrapRayon.classList.remove('hidden');
+            selectRayon.setAttribute('required', 'true');
+            selectRayon.disabled = false;
+            
+            wrapRanting.classList.add('hidden');
+            selectRanting.removeAttribute('required');
+            selectRanting.disabled = true;
+            selectRanting.value = "";
+        } else if (radioRanting.checked) {
+            wrapRanting.classList.remove('hidden');
+            selectRanting.setAttribute('required', 'true');
+            selectRanting.disabled = false;
+            
+            wrapRayon.classList.add('hidden');
+            selectRayon.removeAttribute('required');
+            selectRayon.disabled = true;
+            selectRayon.value = "";
+        }
+    }
+
+    radioRayon.addEventListener('change', aturTampilanForm);
+    radioRanting.addEventListener('change', aturTampilanForm);
+
+    // 2. Logika Pengiriman Data Ke Google Spreadsheet
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxLs1nDf7wYLjp_QV0IqT9VSqq4iVTDWy_5fAJShgIzqk5VAJQ9H8Ep7rDrFeoQznuq/exec'; 
+    const form = document.getElementById('databaseForm');
+    const btnSubmit = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        
+        btnSubmit.disabled = true;
+        btnSubmit.innerText = 'Mengirim Data...';
+
+        // Tangkap isi form
+        const formData = new FormData(form);
+
+        // Bungkus data ke format JSON untuk Kode.gs
+        const payload = {
+            action: "add_database",
+            nama: formData.get('nama'),
+            kelas_semester: formData.get('kelas_semester'),
+            kategori: formData.get('kategori'),
+            nama_utusan: formData.get('nama_utusan')
+        };
+
+        // Kirim data dengan mode 'no-cors'
+        fetch(scriptURL, { 
+            method: 'POST',
+            mode: 'no-cors', // <-- KUNCI PERBAIKAN: Mencegah isu CORS Google Apps Script
+            headers: {
+                'Content-Type': 'text/plain;charset=utf-8'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            // Karena mode 'no-cors', jika sampai ke .then() berarti data sudah terkirim
+            alert('Data berhasil disimpan ke Database!');
+            form.reset();
+            wrapRayon.classList.add('hidden');
+            wrapRanting.classList.add('hidden');
+        })
+        .catch(error => {
+            console.error('Error!', error.message);
+            alert('Gagal menyimpan data, periksa koneksi internet Anda.');
+        })
+        .finally(() => {
+            btnSubmit.disabled = false;
+            btnSubmit.innerText = 'Simpan Data';
+        });
+    });
+</script>
+</body>
+</html>
